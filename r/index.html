@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carve Route</title>
+<!-- Once the app is on the App Store, put its numeric id here and uncomment:
+     Safari then shows the native "open in App Store" banner on this page.
+<meta name="apple-itunes-app" content="app-id=REPLACE_APP_STORE_ID">
+-->
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, system-ui, sans-serif;
+    display: flex; min-height: 100vh; margin: 0;
+    align-items: center; justify-content: center;
+    background: Canvas; color: CanvasText;
+  }
+  main { text-align: center; padding: 32px; max-width: 420px; }
+  .icon { font-size: 56px; }
+  h1 { font-size: 28px; margin: 12px 0 4px; }
+  .stats { color: color-mix(in srgb, CanvasText 60%, Canvas); margin: 0 0 28px; }
+  a.button {
+    display: block; margin: 10px auto; padding: 14px 20px; max-width: 300px;
+    border-radius: 12px; text-decoration: none; font-weight: 600;
+    background: #0a84ff; color: white;
+  }
+  a.button.secondary { background: color-mix(in srgb, CanvasText 10%, Canvas); color: CanvasText; }
+  .fine { font-size: 13px; color: color-mix(in srgb, CanvasText 50%, Canvas); margin-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="icon">&#x1F6E3;&#xFE0F;</div>
+  <h1 id="name">A Carve route</h1>
+  <p class="stats" id="stats">Someone shared a driving route with you.</p>
+  <a class="button" id="store" href="#">Get Carve on the App&nbsp;Store</a>
+  <a class="button secondary" id="open" href="#" hidden>Open in Carve</a>
+  <p class="fine">Carve is an iPhone app for planning and driving great roads.
+     If you already have it, this link opens the route directly.</p>
+</main>
+<script>
+  // Fill in when the app is live. Until then the button explains itself.
+  const APP_STORE_URL = "";
+
+  const params = new URLSearchParams(location.search);
+  const payload = params.get("d");
+  // Decode the self-contained route payload (same base64url JSON the app
+  // uses) purely client-side — nothing is logged or sent anywhere.
+  if (payload) {
+    try {
+      const json = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+      const route = JSON.parse(json);
+      if (route.n) document.getElementById("name").textContent = route.n;
+      const stops = (route.w || []).filter(w => w.t === "stop").length;
+      document.getElementById("stats").textContent =
+        stops ? `A driving route with ${stops} stop${stops === 1 ? "" : "s"}, shared with you.`
+              : "A driving route, shared with you.";
+    } catch (e) { /* malformed payload: keep the generic text */ }
+  }
+
+  const store = document.getElementById("store");
+  if (APP_STORE_URL) {
+    store.href = APP_STORE_URL;
+  } else {
+    store.textContent = "Carve is coming to the App Store";
+    store.style.opacity = 0.6;
+    store.addEventListener("click", e => e.preventDefault());
+  }
+
+  // "Open in Carve" backstop: reachable when someone lands here despite
+  // having the app (e.g. link opened from an in-app browser that skips
+  // universal links). Rebuild the custom-scheme form from this URL.
+  const token = location.pathname.split("/").filter(Boolean)[1];
+  if (payload) {
+    const open = document.getElementById("open");
+    open.hidden = false;
+    open.href = "carve://route?d=" + encodeURIComponent(payload)
+      + (token ? "&t=" + encodeURIComponent(token) : "");
+  }
+</script>
+</body>
+</html>

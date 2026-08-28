@@ -1,0 +1,5 @@
+# Every /r/<token> path serves the landing page (Cloudflare Pages / Netlify
+# rewrite syntax). iOS with Carve installed never reaches it — universal
+# links open the app directly.
+/r/* /r/index.html 200
+/r /r/index.html 200

@@ -1,0 +1,12 @@
+{
+    "applinks": {
+        "details": [
+            {
+                "appIDs": ["242SBHS7RS.chenstack.Carve"],
+                "components": [
+                    { "/": "/r*", "comment": "Carve route share links" }
+                ]
+            }
+        ]
+    }
+}
