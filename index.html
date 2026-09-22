@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carve — Take the long way. Keep it that way.</title>
-<meta name="description" content="Plan the roads you want to drive, share your route, and follow it with offline maps and voice guidance. Built for iPhone and CarPlay.">
-<meta property="og:title" content="Carve — Take the long way. Keep it that way.">
-<meta property="og:description" content="Plan the roads you want to drive, share your route, and follow it with offline maps and voice guidance.">
+<title>Carve — Your way, not the highway.</title>
+<meta name="description" content="Plan and drive the best roads. Works offline. Carve for iPhone and CarPlay.">
+<meta property="og:title" content="Carve — Your way, not the highway.">
+<meta property="og:description" content="Plan and drive the best roads. Works offline.">
 <meta property="og:image" content="https://carve.run/assets/hero-night.jpg">
 <meta property="og:url" content="https://carve.run/">
 <meta name="theme-color" content="#07090C">
@@ -46,24 +46,29 @@
     margin-top: 26px; max-width: 520px;
   }
   .lede strong { color: var(--ink); font-weight: 560; }
-  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 38px; align-items: center; }
-  .cta-note { font-size: 13.5px; color: var(--ink-faint); }
+  .cta-row { margin-top: 38px; }
+  .cta-stack { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .cta-note { font-size: 13.5px; color: var(--ink-dim); font-weight: 560; letter-spacing: .01em; }
+  .cta-note small { display: block; color: var(--ink-faint); font-weight: 500; font-size: 12.5px; margin-top: 2px; }
 
-  /* Keep the car (about 24.5% across the source photo) centered on phones.
-     Scale the photo and route trace together so the line stays on the road. */
+  /* Keep the car (about 24.5% across the source photo) centered on phones:
+     the photo and route trace scale together at 204% so the line stays on
+     the road, anchored to the bottom of a box shorter than the photo, so
+     the empty sky at the top is cropped rather than shown. */
   @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
     .hero {
       min-height: 0;
-      padding: calc(min(115vw, 620px) - 28px) 0 56px;
+      padding: calc(min(96vw, 560px) - 20px) 0 56px;
     }
     .hero-media {
       bottom: auto;
-      height: min(115vw, 620px);
+      height: min(96vw, 560px);
       overflow: hidden;
     }
     .hero-img, .hero-trace {
       inset: auto auto 0 0;
       width: 204%;
+      max-width: none;
       height: auto;
       aspect-ratio: 1672 / 941;
     }
@@ -73,9 +78,13 @@
         linear-gradient(to bottom, transparent 78%, var(--bg) 100%);
     }
     .hero-inner { width: 100%; padding-inline: 24px; }
-    .hero h1 { font-size: clamp(30px, 8.2vw, 64px); }
-    .hero .lede { margin-top: 22px; }
-    .hero .cta-row { margin-top: 28px; }
+    .hero h1 { font-size: clamp(34px, 9.4vw, 64px); }
+    .hero .lede { margin-top: 18px; font-size: 18px; }
+    .hero .cta-row { margin-top: 26px; }
+    .vp { padding: 56px 0; gap: 34px; }
+    .statement { padding: 96px 0 0; }
+    .pricing { padding: 72px 0 96px; }
+    .price-card { padding: 32px 26px 30px; }
   }
 
   /* ═══ VALUE PROP ═════════════════════════════════════════════════════ */
@@ -142,7 +151,7 @@
     font-size: clamp(32px, 4.8vw, 56px); font-weight: 680;
     letter-spacing: -0.038em; line-height: 1.1;
   }
-  .statement em { font-style: normal; color: var(--glow); }
+  .statement em { font-style: normal; color: var(--glow); white-space: nowrap; }
 
   /* offline art */
   .offline-art { max-width: 420px; margin: 0 auto; }
@@ -200,8 +209,7 @@
   .plan-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--start); font-weight: 800; }
   .price-card.pro .plan-list li::before { color: var(--glow); }
   .price-card p.fine { color: var(--ink-faint); font-size: 13px; line-height: 1.5; margin-top: 22px; }
-  .price-card .btn { margin-top: auto; align-self: flex-start; }
-  .price-card .btn:not(:first-child) { margin-top: 26px; }
+  .price-card .cta-stack { margin-top: 26px; }
 
   .draw { stroke-dasharray: var(--len, 1200); stroke-dashoffset: var(--len, 1200);
           animation: draw 2.4s cubic-bezier(.22,.61,.36,1) .15s forwards; }
@@ -220,7 +228,7 @@
       <img class="appicon" src="/assets/icon-128.png" alt="" width="34" height="34">
       <img class="mark" src="/assets/wordmark-dark.png" alt="Carve" width="300" height="45">
     </a>
-    <a class="nav-cta" href="#pricing">Early access</a>
+    <a class="nav-cta" data-get-app href="mailto:support@carve.run?subject=Carve%20early%20access%20beta">Get the App</a>
   </div>
 </nav>
 
@@ -267,15 +275,15 @@
   </div>
 
   <div class="wrap hero-inner">
-    <h1>Take the long way.<br><span class="soft">Keep it that way.</span></h1>
+    <h1>Your way,<br><span class="soft">not the highway.</span></h1>
     <p class="lede">
-      Plan a drive around the roads you love. Carve <strong>follows your route,
-      turn by turn</strong> — even when cell service ends.
+      Plan and drive the best roads. <strong>Works offline.</strong>
     </p>
     <div class="cta-row">
-      <!-- TODO: add the public TestFlight URL when early access opens. -->
-      <a class="btn btn-primary" aria-disabled="true" href="#">Beta access coming soon</a>
-      <span class="cta-note">iPhone &amp; CarPlay · iOS 17+</span>
+      <div class="cta-stack">
+        <a class="btn btn-primary" data-get-app href="mailto:support@carve.run?subject=Carve%20early%20access%20beta">Get the App</a>
+        <span class="cta-note">Early access beta <small>iPhone &amp; CarPlay · iOS 17+</small></span>
+      </div>
     </div>
   </div>
 </header>
@@ -284,12 +292,12 @@
 <section class="value">
   <div class="wrap">
 
-    <div class="vp">
+    <div class="vp" id="plan">
       <div class="vp-copy rise">
         <div class="vp-kicker" style="color:var(--start)"><i></i>Plan</div>
         <h2>Pick the roads.<br>Add your stops.</h2>
-        <p>Link your favorite roads with stops for coffee, fuel, or the view.
-           Your route stays as planned while you drive.</p>
+        <p>String together the roads you love, with stops for coffee, fuel,
+           or the view. The route you plan is the route you drive.</p>
         <div class="vp-stat">Up to 30 stops &amp; route markers</div>
       </div>
       <div class="vp-art rise">
@@ -333,12 +341,12 @@
       </div>
     </div>
 
-    <div class="vp flip">
+    <div class="vp flip" id="drive">
       <div class="vp-copy rise">
         <div class="vp-kicker" style="color:var(--glow)"><i></i>Drive</div>
-        <h2>No signal.<br>Still your route.</h2>
-        <p>Download your route before you leave. Maps and voice directions
-           stay with you when cell service drops.</p>
+        <h2>No signal?<br>No problem.</h2>
+        <p>Your route is automatically downloaded before you start.
+           Directions stay with you even in dead zones.</p>
         <div class="vp-stat">Offline maps · voice directions</div>
       </div>
       <div class="vp-art rise">
@@ -383,12 +391,12 @@
       </div>
     </div>
 
-    <div class="vp">
+    <div class="vp" id="return">
       <div class="vp-copy rise">
         <div class="vp-kicker" style="color:var(--stop)"><i></i>Return</div>
         <h2>Miss a turn.<br>Keep your plan.</h2>
-        <p>A missed turn shouldn&rsquo;t change the whole drive.
-           Carve helps you get back to the route you planned.</p>
+        <p>A wrong turn shouldn&rsquo;t rewrite the drive. Carve guides you
+           back to the road you chose &mdash; never onto a faster one.</p>
         <div class="vp-stat">No automatic shortcuts</div>
       </div>
       <div class="vp-art rise">
@@ -417,12 +425,12 @@
       </div>
     </div>
 
-    <div class="vp flip">
+    <div class="vp flip" id="share">
       <div class="vp-copy rise">
         <div class="vp-kicker" style="color:var(--marker)"><i></i>Share</div>
         <h2>Good roads<br>are worth sharing.</h2>
-        <p>Send one link to the whole route. Friends can open it in Carve
-           and follow the roads you picked.</p>
+        <p>One link carries the whole route. Friends open it in Carve and
+           drive the same roads, the same stops.</p>
         <div class="vp-stat">Same roads · same stops</div>
       </div>
       <div class="vp-art rise">
@@ -488,7 +496,7 @@
   <div class="wrap">
     <div class="price-head rise">
       <h2>Free with a signal.<br><span class="soft">Pro without one.</span></h2>
-      <p>Plan, share, and drive for free. Carve Pro is for the roads where the signal ends.</p>
+      <p>Plan, share, and drive for free. Pro is for where the signal ends.</p>
     </div>
     <div class="plans">
       <div class="price-card rise">
@@ -515,8 +523,10 @@
           <li><strong>Import from Google Maps</strong></li>
         </ul>
         <p class="fine">Prices in US dollars; may vary by region. The free trial is on the yearly plan and converts to a paid subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account.</p>
-        <!-- TODO: real App Store / TestFlight URL (docs/Share-Links.md §7) -->
-        <a class="btn btn-primary" aria-disabled="true" href="#">Beta access coming soon</a>
+        <div class="cta-stack">
+          <a class="btn btn-primary" data-get-app href="mailto:support@carve.run?subject=Carve%20early%20access%20beta">Get the App</a>
+          <span class="cta-note">Early access beta</span>
+        </div>
       </div>
     </div>
   </div>
@@ -535,6 +545,13 @@
 </footer>
 
 <script>
+  // Where "Get the App" goes. Empty while the beta is by invitation, so every
+  // button asks by email; set the public TestFlight link when early access
+  // opens, then the App Store URL when live (docs/Share-Links.md §7).
+  var APP_URL = "";
+  if (APP_URL) {
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = APP_URL; });
+  }
   (function () {
     var geo = document.getElementById("roadgeo");
     var line = document.querySelector(".hero-trace .draw");
