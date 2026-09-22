@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carve — Drives worth taking</title>
-<meta name="description" content="Plan a driving route road by road, share it with a link, and drive it turn by turn — with no signal at all. Carve for iPhone and CarPlay.">
-<meta property="og:title" content="Carve — Drives worth taking">
-<meta property="og:description" content="Plan a route road by road, share it with a link, and drive it turn by turn with no signal at all.">
-<meta property="og:image" content="https://carve.run/assets/canyon-road.jpg">
+<title>Carve — Take the long way. Keep it that way.</title>
+<meta name="description" content="Plan the roads you want to drive, share your route, and follow it with offline maps and voice guidance. Built for iPhone and CarPlay.">
+<meta property="og:title" content="Carve — Take the long way. Keep it that way.">
+<meta property="og:description" content="Plan the roads you want to drive, share your route, and follow it with offline maps and voice guidance.">
+<meta property="og:image" content="https://carve.run/assets/hero-night.jpg">
 <meta property="og:url" content="https://carve.run/">
-<meta name="theme-color" content="#0b0f14">
+<meta name="theme-color" content="#07090C">
 <link rel="icon" href="/assets/favicon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/styles.css">
@@ -17,121 +17,547 @@
      so Safari shows the native banner:
 <meta name="apple-itunes-app" content="app-id=REPLACE_APP_STORE_ID">
 -->
+<style>
+  /* "Night Drive": hook, value prop, pricing. The photo hero and traced
+     route line carry the page; copy budget: no body line over ~20 words.
+     Shared tokens, nav, buttons, and footer live in /styles.css. */
+
+  /* ═══ HOOK ═══════════════════════════════════════════════════════════ */
+  .hero {
+    position: relative; overflow: hidden; display: flex; align-items: flex-end;
+    min-height: max(88vh, 620px); padding: 140px 0 96px;
+  }
+  .hero-media, .hero-img, .hero-trace { position: absolute; inset: 0; }
+  .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .hero-trace { width: 100%; height: 100%; }
+  .hero-scrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(100deg, rgba(7,9,12,.92) 0%, rgba(7,9,12,.72) 30%,
+                              rgba(7,9,12,.28) 54%, rgba(7,9,12,0) 76%),
+      linear-gradient(to bottom, rgba(7,9,12,.55) 0%, rgba(7,9,12,0) 24%,
+                                 rgba(7,9,12,0) 60%, var(--bg) 99%);
+  }
+  .hero-inner { max-width: 760px; }
+  h1 { font-size: clamp(46px, 8vw, 92px); }
+  h1 .soft, h2 .soft { color: var(--ink-dim); }
+  .lede {
+    font-size: clamp(18px, 2.1vw, 21px); color: var(--ink-dim);
+    margin-top: 26px; max-width: 520px;
+  }
+  .lede strong { color: var(--ink); font-weight: 560; }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 38px; align-items: center; }
+  .cta-note { font-size: 13.5px; color: var(--ink-faint); }
+
+  /* Keep the car (about 24.5% across the source photo) centered on phones.
+     Scale the photo and route trace together so the line stays on the road. */
+  @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+    .hero {
+      min-height: 0;
+      padding: calc(min(115vw, 620px) - 28px) 0 56px;
+    }
+    .hero-media {
+      bottom: auto;
+      height: min(115vw, 620px);
+      overflow: hidden;
+    }
+    .hero-img, .hero-trace {
+      inset: auto auto 0 0;
+      width: 204%;
+      height: auto;
+      aspect-ratio: 1672 / 941;
+    }
+    .hero-scrim {
+      background:
+        linear-gradient(to bottom, rgba(7,9,12,.5), transparent 28%),
+        linear-gradient(to bottom, transparent 78%, var(--bg) 100%);
+    }
+    .hero-inner { width: 100%; padding-inline: 24px; }
+    .hero h1 { font-size: clamp(30px, 8.2vw, 64px); }
+    .hero .lede { margin-top: 22px; }
+    .hero .cta-row { margin-top: 28px; }
+  }
+
+  /* ═══ VALUE PROP ═════════════════════════════════════════════════════ */
+  .value { padding: 40px 0 0; }
+  .vp {
+    display: grid; gap: 44px; align-items: center; padding: 84px 0;
+  }
+  @media (min-width: 900px) {
+    .vp { grid-template-columns: 1fr 1fr; gap: 90px; }
+    .vp.flip .vp-copy { order: 2; } .vp.flip .vp-art { order: 1; }
+  }
+  .vp-kicker {
+    display: inline-flex; align-items: center; gap: 9px; font-size: 12px;
+    letter-spacing: .15em; text-transform: uppercase; font-weight: 640; margin-bottom: 20px;
+  }
+  .vp-kicker i { width: 9px; height: 9px; border-radius: 3px; background: currentColor;
+                 box-shadow: 0 0 14px currentColor; }
+  .vp h2 { font-size: clamp(34px, 4.6vw, 54px); }
+  .vp-copy p { color: var(--ink-dim); font-size: 18px; margin-top: 20px; max-width: 420px; }
+  .vp-art { position: relative; }
+
+  /* phone mock */
+  .phone {
+    width: min(320px, 84%); margin: 0 auto; aspect-ratio: 9/19;
+    background: #101319; border: 1px solid var(--line-2); border-radius: 44px;
+    padding: 11px; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03);
+    transform: rotate(-2.5deg);
+  }
+  .phone-screen { width: 100%; height: 100%; border-radius: 34px; overflow: hidden;
+                  position: relative; background: linear-gradient(170deg, #131A24, #0A0E14); }
+  .phone-screen svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .p-card {
+    position: absolute; left: 11px; right: 11px; bottom: 11px;
+    background: rgba(255,255,255,.07); backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,.11); border-radius: 20px;
+    padding: 14px 15px; color: #fff;
+  }
+  .p-card .rn { font-size: 14.5px; font-weight: 660; letter-spacing: -0.02em; }
+  .p-card .rs { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 3px; }
+  .p-card .go { margin-top: 12px; display: block; text-align: center; background: #fff;
+                color: #0A0E14; border-radius: 999px; padding: 9px; font-size: 13px; font-weight: 680; }
+  .p-banner {
+    position: absolute; left: 11px; right: 11px; top: 11px;
+    background: rgba(240,138,28,.94); color: #fff; border-radius: 15px;
+    padding: 10px 13px; font-size: 12.5px; font-weight: 640; line-height: 1.3;
+    box-shadow: 0 8px 24px rgba(240,138,28,.35);
+  }
+
+  .vp-stat {
+    display: inline-block; margin-top: 26px; padding: 8px 14px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px;
+    letter-spacing: .04em; color: var(--ink-faint);
+    border: 1px solid var(--line); border-radius: 999px; background: var(--bg-2);
+  }
+
+  /* share art */
+  .share-art { max-width: 400px; margin: 0 auto; }
+  .share-art svg { width: 100%; height: auto; display: block; }
+
+  /* identity beat */
+  .statement { padding: 136px 0 0; text-align: center; }
+  .statement p {
+    font-size: clamp(32px, 4.8vw, 56px); font-weight: 680;
+    letter-spacing: -0.038em; line-height: 1.1;
+  }
+  .statement em { font-style: normal; color: var(--glow); }
+
+  /* offline art */
+  .offline-art { max-width: 420px; margin: 0 auto; }
+  .offline-art svg { width: 100%; height: auto; display: block; }
+
+  /* ── quiet capability strip ── */
+  .strip {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 26px 0; margin-top: 40px;
+  }
+  .strip .wrap {
+    display: flex; flex-wrap: wrap; gap: 14px 34px; justify-content: center;
+    color: var(--ink-faint); font-size: 14px; letter-spacing: .02em;
+  }
+  .strip span { display: inline-flex; align-items: center; gap: 9px; }
+  .strip i { width: 4px; height: 4px; border-radius: 999px; background: var(--ink-ghost); }
+
+  /* ═══ PRICING ════════════════════════════════════════════════════════ */
+  .pricing { padding: 96px 0 130px; position: relative; overflow: hidden; }
+  .pricing::before {
+    content: ""; position: absolute; left: 50%; bottom: -40%; width: 1100px; height: 620px;
+    transform: translateX(-50%);
+    background: radial-gradient(50% 50% at 50% 50%, rgba(94,155,199,.10), transparent 70%);
+  }
+  .price-head { text-align: center; max-width: 620px; margin: 0 auto 44px; position: relative; z-index: 1; }
+  .price-head h2 { font-size: clamp(34px, 4.6vw, 54px); }
+  .price-head p { color: var(--ink-dim); font-size: 18px; margin-top: 18px; }
+  .plans {
+    position: relative; z-index: 1; display: grid; gap: 18px;
+    max-width: 880px; margin: 0 auto;
+  }
+  @media (min-width: 760px) { .plans { grid-template-columns: 1fr 1fr; align-items: stretch; } }
+  .price-card {
+    background: rgba(18,22,28,.6); backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--line-2); border-radius: 28px; padding: 40px 36px 38px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    display: flex; flex-direction: column;
+  }
+  .price-card.pro { border-color: rgba(94,155,199,.45);
+    background: linear-gradient(180deg, rgba(94,155,199,.10), rgba(18,22,28,.6) 55%); }
+  .price-card .appicon {
+    width: 56px; height: 56px; border-radius: 13px; margin-bottom: 22px; display: block;
+    box-shadow: 0 6px 24px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.1);
+  }
+  .plan-name { font-size: 14px; letter-spacing: .14em; text-transform: uppercase;
+               font-weight: 640; color: var(--ink-faint); }
+  .price-num { font-size: clamp(44px, 5.5vw, 60px); font-weight: 700; letter-spacing: -0.045em;
+               line-height: 1; margin-top: 12px; }
+  .price-num small { font-size: 18px; font-weight: 600; letter-spacing: 0; color: var(--ink-dim); margin-left: 4px; }
+  .price-sub { color: var(--glow); font-size: 14px; letter-spacing: .06em; font-weight: 640; margin-top: 12px; }
+  .plan-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 11px; }
+  .plan-list li { position: relative; padding-left: 26px; color: var(--ink-dim); font-size: 16px; }
+  .plan-list li strong { color: var(--ink); font-weight: 600; }
+  .plan-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--start); font-weight: 800; }
+  .price-card.pro .plan-list li::before { color: var(--glow); }
+  .price-card p.fine { color: var(--ink-faint); font-size: 13px; line-height: 1.5; margin-top: 22px; }
+  .price-card .btn { margin-top: auto; align-self: flex-start; }
+  .price-card .btn:not(:first-child) { margin-top: 26px; }
+
+  .draw { stroke-dasharray: var(--len, 1200); stroke-dashoffset: var(--len, 1200);
+          animation: draw 2.4s cubic-bezier(.22,.61,.36,1) .15s forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .draw { animation: none; stroke-dashoffset: 0; }
+  }
+</style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <a class="mark" href="/" aria-label="Carve"><img src="/assets/wordmark-dark.png" alt="Carve" width="300" height="45"></a>
-    <nav>
-      <a class="hide-sm" href="#how">How it works</a>
-      <a class="hide-sm" href="#pro">Carve Pro</a>
-      <a class="hide-sm" href="/support/">Support</a>
-      <a class="cta" href="#get">Get Carve</a>
-    </nav>
-  </header>
+<div class="grain" aria-hidden="true"></div>
 
-  <section class="hero" style="padding:0">
-    <img src="/assets/canyon-road.jpg" alt="A winding canyon road at golden hour" width="1400" height="1050" fetchpriority="high">
-    <div class="veil"></div>
-    <div class="copy">
-      <h1>Drives worth taking.</h1>
-      <p>Plan a route on the roads you actually want, keep it on your phone for when the signal goes, and send it to whoever should ride along.</p>
-      <div class="actions">
-        <a class="button" href="#get">Get Carve for iPhone</a>
-        <a class="button secondary" href="#how">See how it works</a>
+<nav class="top">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="Carve">
+      <img class="appicon" src="/assets/icon-128.png" alt="" width="34" height="34">
+      <img class="mark" src="/assets/wordmark-dark.png" alt="Carve" width="300" height="45">
+    </a>
+    <a class="nav-cta" href="#pricing">Early access</a>
+  </div>
+</nav>
+
+<!-- ═══ 1 · HOOK ═══════════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-media" aria-hidden="true">
+    <img class="hero-img" src="/assets/hero-night.jpg" alt="" width="1672" height="941" fetchpriority="high">
+    <svg class="hero-trace" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <path id="roadgeo" d="M 6.2 857.7 C 12.9 852.2, 31.5 834.2, 46.4 824.7 C 61.2 815.2, 78.8 808.2, 95.3 800.4 C 111.8 792.6, 128.6 785.4, 145.2 778.0 C 161.8 770.6, 178.5 763.6, 195.1 756.2 C 211.7 748.9, 227.9 741.4, 244.5 733.9 C 261.1 726.4, 277.9 719.1, 294.5 711.5 C 311.1 703.9, 328.3 696.3, 344.1 688.1 C 359.9 679.9, 373.7 669.0, 389.4 662.2 C 405.1 655.4, 422.0 652.5, 438.4 647.5 C 454.8 642.5, 471.9 638.9, 488.0 632.5 C 504.1 626.1, 518.9 616.1, 534.8 609.0 C 550.7 601.9, 566.7 595.2, 583.2 589.6 C 599.7 584.0, 616.5 579.7, 633.6 575.4 C 650.7 571.1, 668.5 567.6, 686.0 563.7 C 703.5 559.8, 721.0 556.1, 738.3 552.0 C 755.6 547.9, 772.6 543.2, 789.8 539.3 C 807.0 535.4, 824.4 532.6, 841.5 528.6 C 858.6 524.6, 876.3 521.4, 892.2 515.4 C 908.1 509.4, 928.0 504.3, 936.8 492.6 C 945.5 480.9, 943.4 453.3, 944.7 445.4"/>
+        <filter id="bloom" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="22"/>
+        </filter>
+        <filter id="halo" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="6"/>
+        </filter>
+        <linearGradient id="recede" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
+          <stop offset="0" stop-color="#5FC8FF" stop-opacity="1"/>
+          <stop offset=".55" stop-color="#5E9BC7" stop-opacity=".82"/>
+          <stop offset=".88" stop-color="#5E9BC7" stop-opacity=".26"/>
+          <stop offset="1" stop-color="#5E9BC7" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="recede-core" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity="1"/>
+          <stop offset=".5" stop-color="#DCEFFF" stop-opacity=".95"/>
+          <stop offset=".88" stop-color="#C9E3F7" stop-opacity=".3"/>
+          <stop offset="1" stop-color="#C9E3F7" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="30"
+           stroke-linecap="round" filter="url(#bloom)" opacity=".55"/>
+      <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="11"
+           stroke-linecap="round" filter="url(#halo)" opacity=".95"/>
+      <use href="#roadgeo" class="draw" fill="none" stroke="url(#recede-core)"
+           stroke-width="3.2" stroke-linecap="round"/>
+      <g>
+        <circle cx="598" cy="586" r="19" fill="#F08A1C" opacity=".18"/>
+        <circle cx="598" cy="586" r="8" fill="#F08A1C" stroke="#fff" stroke-width="2"/>
+        <circle cx="823" cy="532" r="15" fill="#6A5FE8" opacity=".16"/>
+        <circle cx="823" cy="532" r="6" fill="#6A5FE8" stroke="#fff" stroke-width="1.7"/>
+      </g>
+    </svg>
+    <div class="hero-scrim"></div>
+  </div>
+
+  <div class="wrap hero-inner">
+    <h1>Take the long way.<br><span class="soft">Keep it that way.</span></h1>
+    <p class="lede">
+      Plan a drive around the roads you love. Carve <strong>follows your route,
+      turn by turn</strong> — even when cell service ends.
+    </p>
+    <div class="cta-row">
+      <!-- TODO: add the public TestFlight URL when early access opens. -->
+      <a class="btn btn-primary" aria-disabled="true" href="#">Beta access coming soon</a>
+      <span class="cta-note">iPhone &amp; CarPlay · iOS 17+</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ 2 · VALUE PROP ═════════════════════════════════════════════════ -->
+<section class="value">
+  <div class="wrap">
+
+    <div class="vp">
+      <div class="vp-copy rise">
+        <div class="vp-kicker" style="color:var(--start)"><i></i>Plan</div>
+        <h2>Pick the roads.<br>Add your stops.</h2>
+        <p>Link your favorite roads with stops for coffee, fuel, or the view.
+           Your route stays as planned while you drive.</p>
+        <div class="vp-stat">Up to 30 stops &amp; route markers</div>
+      </div>
+      <div class="vp-art rise">
+        <div class="phone">
+          <div class="phone-screen">
+            <svg viewBox="0 0 300 620" aria-label="A planned Carve route on the map">
+              <g stroke="#FFFFFF" stroke-opacity=".045" stroke-width="1">
+                <path d="M0 115 H300 M0 240 H300 M0 385 H300 M0 505 H300"/>
+                <path d="M65 0 V620 M150 0 V620 M235 0 V620"/>
+              </g>
+              <path id="proute" d="M55 556 C 88 490, 66 442, 112 398 C 158 354, 124 300, 165 250
+                       C 200 206, 178 158, 222 118"
+                    fill="none" stroke="#2E92FF" stroke-opacity=".25" stroke-width="13" stroke-linecap="round"/>
+              <use href="#proute" stroke="#2E92FF" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+              <defs>
+                <linearGradient id="gs" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#299E47"/><stop offset="1" stop-color="#70D373"/>
+                </linearGradient>
+                <linearGradient id="go" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ED7D0D"/><stop offset="1" stop-color="#FFB342"/>
+                </linearGradient>
+                <linearGradient id="gm" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#4A40D6"/><stop offset="1" stop-color="#8075F2"/>
+                </linearGradient>
+                <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#24262B"/><stop offset="1" stop-color="#5C616B"/>
+                </linearGradient>
+              </defs>
+              <circle cx="55" cy="556" r="11" fill="url(#gs)" stroke="#fff" stroke-width="2.5"/>
+              <circle cx="112" cy="398" r="10" fill="url(#go)" stroke="#fff" stroke-width="2.5"/>
+              <circle cx="165" cy="250" r="8" fill="url(#gm)" stroke="#fff" stroke-width="2.5"/>
+              <circle cx="222" cy="118" r="11" fill="url(#gd)" stroke="#fff" stroke-width="2.5"/>
+            </svg>
+            <div class="p-card">
+              <div class="rn">Mines Road loop</div>
+              <div class="rs">92 mi · 2 h 51 m · roundtrip</div>
+              <span class="go">Go Now</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <section id="how">
-    <header>
-      <h2>Built for the drive, not the commute.</h2>
-      <p>Mainstream navigation optimises for arriving early and assumes a live connection. Carve does neither.</p>
-    </header>
-    <div class="grid">
-      <div class="card">
-        <div class="glyph">⟶</div>
-        <h3>The route is the route.</h3>
-        <p>Up to 30 waypoints between start and finish — markers to pin the road you want, stops where you'll pause. Carve never quietly reroutes you onto something faster.</p>
+    <div class="vp flip">
+      <div class="vp-copy rise">
+        <div class="vp-kicker" style="color:var(--glow)"><i></i>Drive</div>
+        <h2>No signal.<br>Still your route.</h2>
+        <p>Download your route before you leave. Maps and voice directions
+           stay with you when cell service drops.</p>
+        <div class="vp-stat">Offline maps · voice directions</div>
       </div>
-      <div class="card">
-        <div class="glyph">◎</div>
-        <h3>Works when the signal doesn't.</h3>
-        <p>The map and every turn are downloaded for the whole route before you set off. Losing coverage never cancels, pauses, or restarts a drive.</p>
-      </div>
-      <div class="card">
-        <div class="glyph">↗</div>
-        <h3>Send the drive, not directions.</h3>
-        <p>One link opens the exact route — stops, markers, and order — on anyone's phone. Bring a drive over from Google Maps in one paste.</p>
+      <div class="vp-art rise">
+        <div class="offline-art">
+          <svg viewBox="0 0 420 300" aria-label="Offline bundle downloaded: map, route, and turns">
+            <defs>
+              <linearGradient id="cardg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#161B22"/><stop offset="1" stop-color="#10141A"/>
+              </linearGradient>
+            </defs>
+            <!-- giant zero-bars glyph -->
+            <g transform="translate(52,40)">
+              <rect x="0" y="96" width="22" height="34" rx="6" fill="#3A434F"/>
+              <rect x="34" y="72" width="22" height="58" rx="6" fill="#3A434F"/>
+              <rect x="68" y="44" width="22" height="86" rx="6" fill="#1D232B"/>
+              <rect x="102" y="12" width="22" height="118" rx="6" fill="#1D232B"/>
+              <text x="62" y="192" text-anchor="middle" font-family="ui-sans-serif,-apple-system,sans-serif"
+                    font-size="30" font-weight="700" fill="#EDF3F9" letter-spacing="-1">No bars</text>
+              <text x="62" y="222" text-anchor="middle" font-family="ui-sans-serif,-apple-system,sans-serif"
+                    font-size="15" fill="#616D7C">still guiding</text>
+            </g>
+            <!-- downloaded bundle card -->
+            <g transform="translate(210,52)">
+              <rect x="0" y="0" width="182" height="196" rx="20" fill="url(#cardg)"
+                    stroke="#2A323C" stroke-width="1"/>
+              <text x="20" y="36" font-family="ui-sans-serif,-apple-system,sans-serif"
+                    font-size="13" font-weight="650" fill="#9AA7B6" letter-spacing=".8">SAVED FOR OFFLINE</text>
+              <g font-family="ui-sans-serif,-apple-system,sans-serif" font-size="15" fill="#EDF3F9">
+                <circle cx="28" cy="70" r="9" fill="none" stroke="#34B055" stroke-width="2"/>
+                <path d="M24 70l3 3 5 -6" stroke="#34B055" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="48" y="75">Maps</text>
+                <circle cx="28" cy="110" r="9" fill="none" stroke="#34B055" stroke-width="2"/>
+                <path d="M24 110l3 3 5 -6" stroke="#34B055" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="48" y="115">Your route</text>
+                <circle cx="28" cy="150" r="9" fill="none" stroke="#34B055" stroke-width="2"/>
+                <path d="M24 150l3 3 5 -6" stroke="#34B055" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="48" y="155">Every turn</text>
+              </g>
+            </g>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="chips" aria-label="More features">
-      <span class="chip">CarPlay</span>
-      <span class="chip">Voice guidance</span>
-      <span class="chip">Elevation profile</span>
-      <span class="chip">Scenic or shortest</span>
-      <span class="chip">Roundtrips</span>
-      <span class="chip">Start from anywhere</span>
-      <span class="chip">Resumes after a restart</span>
-      <span class="chip">Guided back when you stray</span>
-      <span class="chip">Live traffic</span>
-    </div>
-  </section>
 
-  <section id="pro">
-    <header>
-      <h2>Free with a signal. Pro without one.</h2>
-      <p>Everything you need to plan, share, and drive is free. Carve Pro is for the roads where the signal ends.</p>
-    </header>
+    <div class="vp">
+      <div class="vp-copy rise">
+        <div class="vp-kicker" style="color:var(--stop)"><i></i>Return</div>
+        <h2>Miss a turn.<br>Keep your plan.</h2>
+        <p>A missed turn shouldn&rsquo;t change the whole drive.
+           Carve helps you get back to the route you planned.</p>
+        <div class="vp-stat">No automatic shortcuts</div>
+      </div>
+      <div class="vp-art rise">
+        <div class="phone" style="transform:rotate(2.5deg)">
+          <div class="phone-screen">
+            <svg viewBox="0 0 300 620" aria-label="Carve guiding back to the route after a missed turn">
+              <g stroke="#FFFFFF" stroke-opacity=".045" stroke-width="1">
+                <path d="M0 115 H300 M0 240 H300 M0 385 H300 M0 505 H300"/>
+                <path d="M65 0 V620 M150 0 V620 M235 0 V620"/>
+              </g>
+              <!-- the chosen road, held -->
+              <path d="M70 590 C 110 500, 90 430, 140 360 C 186 296, 170 210, 220 140"
+                    fill="none" stroke="#2E92FF" stroke-opacity=".25" stroke-width="13" stroke-linecap="round"/>
+              <path d="M70 590 C 110 500, 90 430, 140 360 C 186 296, 170 210, 220 140"
+                    fill="none" stroke="#2E92FF" stroke-width="4.5" stroke-linecap="round"/>
+              <!-- the deviation and the way back -->
+              <path d="M118 430 C 150 428, 186 440, 208 470"
+                    fill="none" stroke="#F08A1C" stroke-width="4" stroke-linecap="round"
+                    stroke-dasharray="1 10"/>
+              <circle cx="208" cy="470" r="10" fill="#F08A1C" stroke="#fff" stroke-width="2.5"/>
+              <circle cx="208" cy="470" r="20" fill="#F08A1C" opacity=".15"/>
+            </svg>
+            <div class="p-banner">↩ Head back to your route</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vp flip">
+      <div class="vp-copy rise">
+        <div class="vp-kicker" style="color:var(--marker)"><i></i>Share</div>
+        <h2>Good roads<br>are worth sharing.</h2>
+        <p>Send one link to the whole route. Friends can open it in Carve
+           and follow the roads you picked.</p>
+        <div class="vp-stat">Same roads · same stops</div>
+      </div>
+      <div class="vp-art rise">
+        <div class="share-art">
+          <svg viewBox="0 0 400 320" aria-label="A route shared over Messages: a friend replies I'm in">
+            <defs>
+              <linearGradient id="shg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#1B222C"/><stop offset="1" stop-color="#141A22"/>
+              </linearGradient>
+            </defs>
+            <!-- incoming bubble with the route link preview -->
+            <g>
+              <rect x="18" y="22" width="268" height="172" rx="24" fill="url(#shg)"
+                    stroke="#2A323C" stroke-width="1"/>
+              <!-- mini route preview -->
+              <path d="M52 148 C 84 122, 74 96, 108 78 C 138 62, 158 70, 186 54"
+                    fill="none" stroke="#2E92FF" stroke-opacity=".3" stroke-width="10" stroke-linecap="round"/>
+              <path d="M52 148 C 84 122, 74 96, 108 78 C 138 62, 158 70, 186 54"
+                    fill="none" stroke="#2E92FF" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="52" cy="148" r="7" fill="#34B055" stroke="#fff" stroke-width="2"/>
+              <circle cx="108" cy="78" r="6" fill="#F08A1C" stroke="#fff" stroke-width="2"/>
+              <circle cx="186" cy="54" r="7" fill="#24262B" stroke="#fff" stroke-width="2"/>
+              <text x="220" y="84" font-family="ui-sans-serif,-apple-system,sans-serif"
+                    font-size="15" font-weight="700" fill="#EDF3F9">92 mi</text>
+              <text x="52" y="180" font-family="ui-sans-serif,-apple-system,sans-serif"
+                    font-size="16.5" font-weight="680" fill="#EDF3F9">Mines Road loop</text>
+              <text x="176" y="180" font-family="ui-monospace,Menlo,monospace"
+                    font-size="12" fill="#616D7C">carve.run/r/x7f2</text>
+            </g>
+            <!-- reply -->
+            <g>
+              <rect x="266" y="222" width="116" height="46" rx="23" fill="#2E92FF"/>
+              <text x="324" y="251" text-anchor="middle"
+                    font-family="ui-sans-serif,-apple-system,sans-serif"
+                    font-size="17" font-weight="640" fill="#fff">I&#8217;m in.</text>
+              <text x="382" y="290" text-anchor="end"
+                    font-family="ui-sans-serif,-apple-system,sans-serif"
+                    font-size="12" fill="#616D7C">Delivered</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- everything else, one quiet line -->
+  <div class="strip rise">
+    <div class="wrap">
+      <span>CarPlay</span><span><i></i>Voice guidance</span><span><i></i>Import Google&nbsp;Maps stops</span><span><i></i>Elevation profiles</span>
+      <span><i></i>Auto-resume</span>
+    </div>
+  </div>
+</section>
+
+<!-- identity beat — the thesis, said once, big -->
+<section class="statement">
+  <div class="wrap"><p class="rise">Some roads are <em>the whole point.</em></p></div>
+</section>
+
+<!-- ═══ 3 · PRICING ════════════════════════════════════════════════════ -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="price-head rise">
+      <h2>Free with a signal.<br><span class="soft">Pro without one.</span></h2>
+      <p>Plan, share, and drive for free. Carve Pro is for the roads where the signal ends.</p>
+    </div>
     <div class="plans">
-      <div class="card plan">
-        <div class="name">Carve</div>
-        <div class="price">Free</div>
-        <div class="alt">No account required</div>
-        <ul>
+      <div class="price-card rise">
+        <div class="plan-name">Carve</div>
+        <div class="price-num">Free</div>
+        <div class="price-sub">No account needed</div>
+        <ul class="plan-list">
           <li>Plan routes road by road, up to 30 waypoints</li>
-          <li>Save, share by link, and preview any shared route</li>
-          <li>Turn-by-turn drives with voice, while you have a connection</li>
+          <li>Save, share by link, open any shared route</li>
+          <li>Turn-by-turn with voice, while you have a signal</li>
           <li>Elevation profile, scenic or shortest, roundtrips</li>
           <li>Auto-resume, start from anywhere, off-route pointer</li>
         </ul>
       </div>
-      <div class="card plan pro">
-        <div class="name">Carve Pro</div>
-        <div class="price">$29.99 <small>/ year</small></div>
-        <div class="alt">7-day free trial · or $4.99 / month</div>
-        <ul>
-          <li><strong>Drive without a signal</strong> — map and turns downloaded for the route</li>
-          <li><strong>Guided back onto the route</strong> — turn-by-turn directions when you stray</li>
-          <li><strong>CarPlay</strong> — the drive on the car's screen</li>
-          <li><strong>Import from Google Maps</strong> — a directions link becomes a Carve route</li>
+      <div class="price-card pro rise">
+        <img class="appicon" src="/assets/icon-128.png" alt="" width="56" height="56">
+        <div class="plan-name">Carve Pro</div>
+        <div class="price-num">$29.99<small>/ year</small></div>
+        <div class="price-sub">7-DAY FREE TRIAL · OR $4.99 / MONTH</div>
+        <ul class="plan-list">
+          <li><strong>Drive without a signal</strong> — the map and every turn, downloaded</li>
+          <li><strong>Guided back onto the route</strong>, turn by turn</li>
+          <li><strong>CarPlay</strong></li>
+          <li><strong>Import from Google Maps</strong></li>
         </ul>
-        <p class="fine">Prices in US dollars; may vary by region. The free trial applies to the yearly plan and converts to a paid subscription unless cancelled before it ends. Subscriptions renew automatically and are managed through your Apple Account.</p>
+        <p class="fine">Prices in US dollars; may vary by region. The free trial is on the yearly plan and converts to a paid subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account.</p>
+        <!-- TODO: real App Store / TestFlight URL (docs/Share-Links.md §7) -->
+        <a class="btn btn-primary" aria-disabled="true" href="#">Beta access coming soon</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="get" class="get">
-    <img class="icon" src="/assets/icon-512.png" alt="" width="96" height="96">
-    <h2>Carve for iPhone &amp; CarPlay</h2>
-    <p>Requires iOS 17 or later. Coming to the App Store — testers on TestFlight get it first.</p>
-    <div class="actions">
-      <!-- Replace with the App Store link when live:
-           <a class="button" href="https://apps.apple.com/app/idREPLACE">Download on the App Store</a> -->
-      <a class="button" href="mailto:support@carve.run?subject=Carve%20TestFlight">Ask for a TestFlight invite</a>
+<footer>
+  <div class="wrap">
+    <span>Carve — for the roads worth driving.</span>
+    <div class="links">
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/support/">Support</a>
     </div>
-  </section>
+    <span>iPhone · iOS 17+ · CarPlay</span>
+  </div>
+</footer>
 
-  <footer>
-    <div class="row">
-      <div>© 2026 Carve</div>
-      <nav>
-        <a href="/privacy/">Privacy</a>
-        <a href="/terms/">Terms</a>
-        <a href="/support/">Support</a>
-      </nav>
-    </div>
-  </footer>
-</div>
+<script>
+  (function () {
+    var geo = document.getElementById("roadgeo");
+    var line = document.querySelector(".hero-trace .draw");
+    if (geo && line && geo.getTotalLength) {
+      line.style.setProperty("--len", geo.getTotalLength());
+    }
+  })();
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var items = document.querySelectorAll(".rise");
+    if (reduce || !("IntersectionObserver" in window)) {
+      items.forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: .12 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
 </body>
 </html>
