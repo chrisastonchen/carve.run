@@ -25,7 +25,7 @@
   /* ═══ HOOK ═══════════════════════════════════════════════════════════ */
   .hero {
     position: relative; overflow: hidden; display: flex; align-items: flex-end;
-    min-height: max(88vh, 620px); padding: 140px 0 96px;
+    min-height: max(84vh, 600px); padding: 140px 0 72px;
   }
   .hero-media, .hero-img, .hero-trace { position: absolute; inset: 0; }
   .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
@@ -58,7 +58,7 @@
   @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
     .hero {
       min-height: 0;
-      padding: calc(min(96vw, 560px) - 20px) 0 56px;
+      padding: calc(min(96vw, 560px) - 20px) 0 8px;
     }
     .hero-media {
       bottom: auto;
@@ -81,16 +81,12 @@
     .hero h1 { font-size: clamp(34px, 9.4vw, 64px); }
     .hero .lede { margin-top: 18px; font-size: 18px; }
     .hero .cta-row { margin-top: 26px; }
-    .vp { padding: 56px 0; gap: 34px; }
-    .statement { padding: 96px 0 0; }
-    .pricing { padding: 72px 0 96px; }
-    .price-card { padding: 32px 26px 30px; }
   }
 
   /* ═══ VALUE PROP ═════════════════════════════════════════════════════ */
-  .value { padding: 40px 0 0; }
+  .value { padding: 16px 0 0; }
   .vp {
-    display: grid; gap: 44px; align-items: center; padding: 84px 0;
+    display: grid; gap: 44px; align-items: center; padding: 64px 0;
   }
   @media (min-width: 900px) {
     .vp { grid-template-columns: 1fr 1fr; gap: 90px; }
@@ -129,10 +125,12 @@
                 color: #0A0E14; border-radius: 999px; padding: 9px; font-size: 13px; font-weight: 680; }
   .p-banner {
     position: absolute; left: 11px; right: 11px; top: 11px;
+    display: flex; align-items: center; gap: 8px;
     background: rgba(240,138,28,.94); color: #fff; border-radius: 15px;
     padding: 10px 13px; font-size: 12.5px; font-weight: 640; line-height: 1.3;
     box-shadow: 0 8px 24px rgba(240,138,28,.35);
   }
+  .p-banner svg { flex: 0 0 auto; }
 
   .vp-stat {
     display: inline-block; margin-top: 26px; padding: 8px 14px;
@@ -146,7 +144,7 @@
   .share-art svg { width: 100%; height: auto; display: block; }
 
   /* identity beat */
-  .statement { padding: 136px 0 0; text-align: center; }
+  .statement { padding: 104px 0 0; text-align: center; }
   .statement p {
     font-size: clamp(32px, 4.8vw, 56px); font-weight: 680;
     letter-spacing: -0.038em; line-height: 1.1;
@@ -157,20 +155,28 @@
   .offline-art { max-width: 420px; margin: 0 auto; }
   .offline-art svg { width: 100%; height: auto; display: block; }
 
-  /* ── quiet capability strip ── */
+  /* ── everything else, one quiet list ── */
   .strip {
     border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-    padding: 26px 0; margin-top: 40px;
+    padding: 36px 0; margin-top: 24px;
   }
-  .strip .wrap {
-    display: flex; flex-wrap: wrap; gap: 14px 34px; justify-content: center;
-    color: var(--ink-faint); font-size: 14px; letter-spacing: .02em;
+  .strip .wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .strip-label {
+    font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+    font-weight: 640; color: var(--ink-faint);
   }
-  .strip span { display: inline-flex; align-items: center; gap: 9px; }
-  .strip i { width: 4px; height: 4px; border-radius: 999px; background: var(--ink-ghost); }
+  .strip-list {
+    list-style: none; margin: 0; padding: 0; display: grid; gap: 10px;
+    color: var(--ink-dim); font-size: 16.5px; letter-spacing: .01em;
+  }
+  .strip-list li { display: flex; align-items: center; gap: 12px; }
+  .strip-list li::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px; flex: 0 0 auto;
+    background: var(--ink-ghost); box-shadow: 0 0 10px rgba(94,155,199,.35);
+  }
 
   /* ═══ PRICING ════════════════════════════════════════════════════════ */
-  .pricing { padding: 96px 0 130px; position: relative; overflow: hidden; }
+  .pricing { padding: 80px 0 104px; position: relative; overflow: hidden; }
   .pricing::before {
     content: ""; position: absolute; left: 50%; bottom: -40%; width: 1100px; height: 620px;
     transform: translateX(-50%);
@@ -216,6 +222,28 @@
   @keyframes draw { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) {
     .draw { animation: none; stroke-dashoffset: 0; }
+  }
+
+  /* Phone rhythm: sections sit close, each block a screen at most. Last in
+     the sheet on purpose — the desktop section rules above would otherwise
+     win the cascade at equal specificity. */
+  @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+    .value { padding-top: 0; }
+    .vp { padding: 28px 0; gap: 26px; }
+    .value .vp:first-child { padding-top: 12px; }
+    .vp h2 { font-size: clamp(30px, 8.6vw, 44px); }
+    .vp-copy p { margin-top: 14px; font-size: 17px; }
+    .vp-stat { margin-top: 16px; }
+    .phone { width: min(280px, 78%); }
+    .strip { margin-top: 8px; padding: 28px 0; }
+    .strip .wrap { gap: 14px; }
+    .strip-list { font-size: 16px; gap: 9px; }
+    .statement { padding: 56px 0 0; }
+    .pricing { padding: 48px 0 64px; }
+    .price-head { margin-bottom: 24px; }
+    .price-head p { margin-top: 12px; font-size: 17px; }
+    .price-card { padding: 28px 22px 26px; }
+    .plan-list { margin-top: 20px; gap: 9px; }
   }
 </style>
 </head>
@@ -279,7 +307,7 @@
     <p class="lede">
       Plan and drive the best roads. <strong>Works offline.</strong>
     </p>
-    <div class="cta-row">
+    <div class="cta-row" id="get">
       <div class="cta-stack">
         <a class="btn btn-primary" data-get-app href="mailto:support@carve.run?subject=Carve%20early%20access%20beta">Get the App</a>
         <span class="cta-note">Early access beta <small>iPhone &amp; CarPlay · iOS 17+</small></span>
@@ -419,7 +447,7 @@
               <circle cx="208" cy="470" r="10" fill="#F08A1C" stroke="#fff" stroke-width="2.5"/>
               <circle cx="208" cy="470" r="20" fill="#F08A1C" opacity=".15"/>
             </svg>
-            <div class="p-banner">↩ Head back to your route</div>
+            <div class="p-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a5 5 0 0 1 0 10h-3"/></svg>Head back to your route</div>
           </div>
         </div>
       </div>
@@ -457,7 +485,7 @@
                     font-size="15" font-weight="700" fill="#EDF3F9">92 mi</text>
               <text x="52" y="180" font-family="ui-sans-serif,-apple-system,sans-serif"
                     font-size="16.5" font-weight="680" fill="#EDF3F9">Mines Road loop</text>
-              <text x="176" y="180" font-family="ui-monospace,Menlo,monospace"
+              <text x="268" y="180" text-anchor="end" font-family="ui-monospace,Menlo,monospace"
                     font-size="12" fill="#616D7C">carve.run/r/x7f2</text>
             </g>
             <!-- reply -->
@@ -477,11 +505,17 @@
 
   </div>
 
-  <!-- everything else, one quiet line -->
-  <div class="strip rise">
+  <!-- everything else, one quiet list -->
+  <div class="strip rise" id="more">
     <div class="wrap">
-      <span>CarPlay</span><span><i></i>Voice guidance</span><span><i></i>Import Google&nbsp;Maps stops</span><span><i></i>Elevation profiles</span>
-      <span><i></i>Auto-resume</span>
+      <div class="strip-label">Also on board</div>
+      <ul class="strip-list">
+        <li>CarPlay</li>
+        <li>Voice guidance</li>
+        <li>Import Google&nbsp;Maps stops</li>
+        <li>Elevation profiles</li>
+        <li>Auto-resume after a stop or restart</li>
+      </ul>
     </div>
   </div>
 </section>
