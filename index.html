@@ -177,6 +177,10 @@
                line-height: 1; margin-top: 12px; }
   .price-num small { font-size: 18px; font-weight: 600; letter-spacing: 0; color: var(--ink-dim); margin-left: 4px; }
   .price-sub { color: var(--glow); font-size: 14px; letter-spacing: .06em; font-weight: 640; margin-top: 12px; }
+  .price-num s { color: var(--ink-faint); text-decoration-thickness: 3px; text-decoration-color: var(--stop); }
+  .price-num s small { color: var(--ink-ghost); }
+  .price-beta { color: var(--ink); font-size: 24px; font-weight: 720; letter-spacing: -0.02em; margin-top: 10px; }
+  .price-after { color: var(--ink-dim); font-size: 14px; margin-top: 8px; line-height: 1.45; }
   .plan-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 11px; }
   .plan-list li { position: relative; padding-left: 26px; color: var(--ink-dim); font-size: 16px; }
   .plan-list li strong { color: var(--ink); font-weight: 600; }
@@ -377,7 +381,7 @@
   <div class="wrap">
     <div class="price-head rise">
       <h2>Ready to Carve?</h2>
-      <p>Drive any route you&rsquo;re sent for free. Go Pro to plan your own &mdash; and drive them where the signal ends.</p>
+      <p>Upgrade to Pro to plan your own routes, drive them offline, bring them to CarPlay, and more.</p>
     </div>
     <div class="plans">
       <div class="price-card rise">
@@ -391,11 +395,12 @@
           <li>Off-route pointer back to the road</li>
         </ul>
       </div>
-      <div class="price-card pro rise">
+      <div class="price-card pro rise" id="pro">
         <img class="appicon" src="/assets/icon-128.png" alt="" width="56" height="56">
         <div class="plan-name">Carve Pro</div>
-        <div class="price-num">$29.99<small>/ year</small></div>
-        <div class="price-sub">7-DAY FREE TRIAL · OR $4.99 / MONTH</div>
+        <div class="price-num"><s>$29.99<small>/ year</small></s></div>
+        <div class="price-beta">Free during the beta</div>
+        <div class="price-after">After the beta: $29.99 a year with a 7-day free trial, or $4.99 a month.</div>
         <ul class="plan-list">
           <li><strong>Plan your own routes</strong> — road by road, up to 30 waypoints, and share them by link</li>
           <li><strong>Drive without a signal</strong> — the map and every turn, downloaded</li>
