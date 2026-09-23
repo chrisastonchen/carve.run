@@ -71,7 +71,9 @@
   // "Open in Carve" backstop: reachable when someone lands here despite
   // having the app (e.g. link opened from an in-app browser that skips
   // universal links). Rebuild the custom-scheme form from this URL.
-  const token = location.pathname.split("/").filter(Boolean)[1];
+  // From the path on hosts that rewrite /r/<token> here, from ?t= when the
+  // 404 page forwarded it (GitHub Pages).
+  const token = location.pathname.split("/").filter(Boolean)[1] || params.get("t");
   if (payload) {
     const open = document.getElementById("open");
     open.hidden = false;

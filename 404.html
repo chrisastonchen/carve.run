@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carve</title>
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="/assets/favicon-64.png" type="image/png">
+<link rel="stylesheet" href="/styles.css">
+<script>
+  // GitHub Pages has no rewrites, so a share link's /r/<token> path lands
+  // here. Hand it to the share page with the token as a query parameter;
+  // the payload in ?d= comes along untouched. (Cloudflare/Netlify use
+  // _redirects for the same job and never reach this page.)
+  (function () {
+    var parts = location.pathname.split("/").filter(Boolean);
+    if (parts[0] === "r") {
+      var params = new URLSearchParams(location.search);
+      if (parts[1] && !params.get("t")) params.set("t", parts[1]);
+      location.replace("/r/?" + params.toString());
+    }
+  })();
+</script>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<nav class="top static">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="Carve">
+      <img class="appicon" src="/assets/icon-128.png" alt="" width="34" height="34">
+      <img class="mark" src="/assets/wordmark-dark.png" alt="Carve" width="300" height="45">
+    </a>
+  </div>
+</nav>
+<main class="doc">
+  <h1>That road doesn&rsquo;t go anywhere.</h1>
+  <p class="stamp">There&rsquo;s no page at this address.</p>
+  <p><a href="/">Back to carve.run</a></p>
+</main>
+</body>
+</html>
