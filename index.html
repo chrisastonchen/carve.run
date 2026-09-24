@@ -3,110 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carve — Your way, not the highway.</title>
-<meta name="description" content="Plan and drive the best roads. Works offline. Carve for iPhone and CarPlay.">
-<meta property="og:title" content="Carve — Your way, not the highway.">
-<meta property="og:description" content="Plan and drive the best roads. Works offline.">
+<title>Carve — Maps for the love of driving.</title>
+<meta name="description" content="Offline-ready route planning and navigation for the roads worth driving. Carve for iPhone and CarPlay.">
+<meta property="og:title" content="Carve — Maps for the love of driving.">
+<meta property="og:description" content="Offline-ready route planning and navigation for every canyon, backroad, and coastline.">
 <meta property="og:image" content="https://carve.run/assets/hero-night.jpg">
 <meta property="og:url" content="https://carve.run/">
-<meta name="theme-color" content="#07090C">
+<meta name="theme-color" content="#FBF8EF">
 <link rel="icon" href="/assets/favicon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/newsreader-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css">
 <!-- Once Carve is on the App Store, put its numeric id here and uncomment
      so Safari shows the native banner:
 <meta name="apple-itunes-app" content="app-id=REPLACE_APP_STORE_ID">
 -->
 <style>
-  /* "Night Drive": hook, value prop, pricing. The photo hero and traced
-     route line carry the page; copy budget: no body line over ~20 words.
-     Shared tokens, nav, buttons, and footer live in /styles.css. */
+  /* Centred hook, one photo, four features, pricing, a dark closing band.
+     Copy budget: no body line over ~20 words. Tokens, fonts, nav,
+     buttons, and footer live in /styles.css. */
 
   /* ═══ HOOK ═══════════════════════════════════════════════════════════ */
-  .hero {
-    position: relative; overflow: hidden; display: flex; align-items: flex-end;
-    min-height: max(84vh, 600px); padding: 140px 0 72px;
-  }
-  .hero-media, .hero-img, .hero-trace { position: absolute; inset: 0; }
-  .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-  .hero-trace { width: 100%; height: 100%; }
-  .hero-scrim {
-    position: absolute; inset: 0;
-    background:
-      linear-gradient(100deg, rgba(7,9,12,.92) 0%, rgba(7,9,12,.72) 30%,
-                              rgba(7,9,12,.28) 54%, rgba(7,9,12,0) 76%),
-      linear-gradient(to bottom, rgba(7,9,12,.55) 0%, rgba(7,9,12,0) 24%,
-                                 rgba(7,9,12,0) 60%, var(--bg) 99%);
-  }
-  .hero-inner { max-width: 760px; }
-  h1 { font-size: clamp(46px, 8vw, 92px); }
-  h1 .soft, h2 .soft { color: var(--ink-dim); }
+  .hero { padding: 76px 0 0; text-align: center; }
+  .hero-inner { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+  .kicker { font-size: 14px; letter-spacing: .2em; text-transform: uppercase; font-weight: 500; color: var(--ink-dim); }
+  .hero h1 { font-size: clamp(50px, 8.4vw, 108px); margin-top: 22px; }
+  /* Wide enough that the sentence stays on one line at desktop whichever
+     word the rolodex is showing — "countryside" is the long one. Otherwise
+     the caption jumped between one line and two as the words turned. */
   .lede {
-    font-size: clamp(18px, 2.1vw, 21px); color: var(--ink-dim);
-    margin-top: 26px; max-width: 520px;
+    font-size: clamp(18px, 2.1vw, 21px); font-weight: 500; line-height: 1.4;
+    margin-top: 28px; max-width: 700px;
   }
-  .lede strong { color: var(--ink); font-weight: 560; }
-  .cta-row { margin-top: 38px; }
-  .cta-stack { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-  .cta-note { font-size: 13.5px; color: var(--ink-dim); font-weight: 560; letter-spacing: .01em; }
-  .cta-note small { display: block; color: var(--ink-faint); font-weight: 500; font-size: 12.5px; margin-top: 2px; }
+  .cta { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .note { font-size: 14px; color: var(--ink-dim); }
+  /* a beat between each hero line */
+  .hero-inner > :nth-child(2) { transition-delay: .08s; }
+  .hero-inner > :nth-child(3) { transition-delay: .16s; }
+  .hero-inner > :nth-child(4) { transition-delay: .24s; }
 
-  /* Keep the car (about 24.5% across the source photo) centered on phones:
-     the photo and route trace scale together at 204% so the line stays on
-     the road, anchored to the bottom of a box shorter than the photo, so
-     the empty sky at the top is cropped rather than shown. */
-  @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
-    .hero {
-      min-height: 0;
-      padding: calc(min(96vw, 560px) - 20px) 0 8px;
-    }
-    .hero-media {
-      bottom: auto;
-      height: min(96vw, 560px);
-      overflow: hidden;
-    }
-    .hero-img, .hero-trace {
-      inset: auto auto 0 0;
-      width: 204%;
-      max-width: none;
-      height: auto;
-      aspect-ratio: 1672 / 941;
-    }
-    .hero-scrim {
-      background:
-        linear-gradient(to bottom, rgba(7,9,12,.5), transparent 28%),
-        linear-gradient(to bottom, transparent 78%, var(--bg) 100%);
-    }
-    .hero-inner { width: 100%; padding-inline: 24px; }
-    .hero h1 { font-size: clamp(34px, 9.4vw, 64px); }
-    .hero .lede { margin-top: 18px; font-size: 18px; }
-    .hero .cta-row { margin-top: 26px; }
+  /* The rolodex: one word showing, the next queued underneath. A turn
+     slides the pair up one slot — slow to leave, gone in a blink — while
+     the box eases to the incoming word's width so the sentence re-flows
+     with it. Serif italic, like the headline's "Driving". */
+  .rolodex {
+    display: inline-block; position: relative; vertical-align: bottom; overflow: hidden;
+    height: 1.25em; line-height: 1.25em; text-align: left;
+    font-family: var(--serif); font-style: italic; font-size: 1.14em; font-weight: 500;
+    transition: width .52s cubic-bezier(.9,.03,.69,.22);
+  }
+  .rolodex-track { display: flex; flex-direction: column; }
+  .rolodex.turning .rolodex-track {
+    transform: translateY(-50%);
+    transition: transform .52s cubic-bezier(.9,.03,.69,.22);
+  }
+  .rolodex.snap, .rolodex.snap .rolodex-track { transition: none; }
+  .rolodex-word { display: block; height: 1.25em; white-space: nowrap; }
+  .rolodex-measure { position: absolute; visibility: hidden; left: 0; top: 0; }
+
+  /* ═══ THE PHOTO ══════════════════════════════════════════════════════ */
+  .shot {
+    position: relative; overflow: hidden; margin: 60px auto 0;
+    border-radius: 28px; border: 2px solid var(--ink); background: #0A0E14;
+    aspect-ratio: 1672 / 941; box-shadow: 0 40px 80px -40px rgba(21,24,28,.5);
+  }
+  .shot img, .shot svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .shot img { object-fit: cover; }
+  .draw { stroke-dasharray: var(--len, 1200); stroke-dashoffset: var(--len, 1200); }
+  .shot.in .draw { animation: draw 2.6s cubic-bezier(.22,.61,.36,1) .3s forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .draw { animation: none !important; stroke-dashoffset: 0; }
   }
 
-  /* ═══ VALUE PROP ═════════════════════════════════════════════════════ */
-  .value { padding: 16px 0 0; }
-  .vp {
-    display: grid; gap: 44px; align-items: center; padding: 64px 0;
-  }
+  /* ═══ FEATURES ═══════════════════════════════════════════════════════ */
+  .features { padding: 72px 0 0; display: grid; gap: 20px; }
+  .feat { border-radius: 28px; padding: 56px 40px; display: grid; gap: 40px; align-items: center; }
   @media (min-width: 900px) {
-    .vp { grid-template-columns: 1fr 1fr; gap: 90px; }
-    .vp.flip .vp-copy { order: 2; } .vp.flip .vp-art { order: 1; }
+    .feat { grid-template-columns: 1.05fr .95fr; gap: 56px; padding: 64px 72px; }
+    .feat.flip .feat-copy { order: 2; } .feat.flip .feat-art { order: 1; }
   }
-  .vp-kicker {
-    display: inline-flex; align-items: center; gap: 9px; font-size: 12px;
-    letter-spacing: .15em; text-transform: uppercase; font-weight: 640; margin-bottom: 20px;
+  .feat.mint { background: var(--mint); } .feat.sky { background: var(--sky); }
+  .feat.peach { background: var(--peach); } .feat.lilac { background: var(--lilac); }
+  .feat-kicker {
+    display: inline-flex; align-items: center; gap: 9px; font-size: 13px;
+    letter-spacing: .18em; text-transform: uppercase; font-weight: 600;
   }
-  .vp-kicker i { width: 9px; height: 9px; border-radius: 3px; background: currentColor;
-                 box-shadow: 0 0 14px currentColor; }
-  .vp h2 { font-size: clamp(34px, 4.6vw, 54px); }
-  .vp-copy p { color: var(--ink-dim); font-size: 18px; margin-top: 20px; max-width: 420px; }
-  .vp-art { position: relative; }
+  .feat-kicker i { width: 10px; height: 10px; border-radius: 999px; background: var(--dot); }
+  .feat h2 { font-size: clamp(36px, 4.6vw, 58px); margin-top: 18px; }
+  .feat-copy p { font-size: 18px; color: var(--ink-dim); margin-top: 18px; max-width: 440px; }
+  .chip {
+    display: inline-flex; margin-top: 24px; padding: 8px 14px; border-radius: 999px;
+    border: 1.5px solid var(--ink); font-size: 13.5px; font-weight: 600;
+    background: rgba(255,255,255,.45);
+  }
 
   /* phone frame around a real screenshot (iPhone 17 Pro, 1206×2622) */
   .phone {
-    width: min(320px, 84%); margin: 0 auto;
-    background: #101319; border: 1px solid var(--line-2); border-radius: 44px;
-    padding: 11px; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03);
+    width: min(300px, 82%); margin: 0 auto; background: #15181C; border-radius: 44px;
+    padding: 11px; box-shadow: 0 30px 60px -20px rgba(21,24,28,.45);
     transform: rotate(-2.5deg);
   }
   .phone.tilt-right { transform: rotate(2.5deg); }
@@ -116,271 +113,264 @@
                   position: relative; background: #0A0E14; }
   .phone-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-  .vp-stat {
-    display: inline-block; margin-top: 26px; padding: 8px 14px;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px;
-    letter-spacing: .04em; color: var(--ink-faint);
-    border: 1px solid var(--line); border-radius: 999px; background: var(--bg-2);
+  /* ── everything else, one row of chips ── */
+  .also { padding: 44px 0 0; text-align: center; }
+  .also-label {
+    display: block; font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+    font-weight: 600; color: var(--ink-dim); margin-bottom: 16px;
   }
-
-  /* ── everything else, one quiet list ── */
-  .strip {
-    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-    padding: 36px 0; margin-top: 24px;
-  }
-  .strip .wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-  .strip-label {
-    font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
-    font-weight: 640; color: var(--ink-faint);
-  }
-  .strip-list {
-    list-style: none; margin: 0; padding: 0; display: grid; gap: 10px;
-    color: var(--ink-dim); font-size: 16.5px; letter-spacing: .01em;
-  }
-  .strip-list li { display: flex; align-items: center; gap: 12px; }
-  .strip-list li::before {
-    content: ""; width: 6px; height: 6px; border-radius: 999px; flex: 0 0 auto;
-    background: var(--ink-ghost); box-shadow: 0 0 10px rgba(94,155,199,.35);
-  }
+  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .chips li { padding: 9px 16px; border: 1.5px solid var(--ink); border-radius: 999px; font-size: 15px; font-weight: 500; }
 
   /* ═══ PRICING ════════════════════════════════════════════════════════ */
-  .pricing { padding: 80px 0 104px; position: relative; overflow: hidden; }
-  .pricing::before {
-    content: ""; position: absolute; left: 50%; bottom: -40%; width: 1100px; height: 620px;
-    transform: translateX(-50%);
-    background: radial-gradient(50% 50% at 50% 50%, rgba(94,155,199,.10), transparent 70%);
-  }
-  .price-head { text-align: center; max-width: 620px; margin: 0 auto 44px; position: relative; z-index: 1; }
-  .price-head h2 { font-size: clamp(34px, 4.6vw, 54px); }
-  .price-head p { color: var(--ink-dim); font-size: 18px; margin-top: 18px; }
-  .plans {
-    position: relative; z-index: 1; display: grid; gap: 18px;
-    max-width: 880px; margin: 0 auto;
-  }
+  .pricing { padding: 100px 0 0; }
+  .price-head { text-align: center; max-width: 680px; margin: 0 auto 40px; }
+  .price-head h2 { font-size: clamp(40px, 5.2vw, 66px); }
+  .price-head p { color: var(--ink-dim); font-size: 18px; margin-top: 16px; }
+  .plans { display: grid; gap: 18px; max-width: 900px; margin: 0 auto; }
   @media (min-width: 760px) { .plans { grid-template-columns: 1fr 1fr; align-items: stretch; } }
   .price-card {
-    background: rgba(18,22,28,.6); backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--line-2); border-radius: 28px; padding: 40px 36px 38px;
-    box-shadow: 0 30px 80px rgba(0,0,0,.45);
-    display: flex; flex-direction: column;
+    border: 2px solid var(--ink); border-radius: 26px; padding: 36px 34px;
+    background: var(--paper); display: flex; flex-direction: column;
   }
-  .price-card.pro { border-color: rgba(94,155,199,.45);
-    background: linear-gradient(180deg, rgba(94,155,199,.10), rgba(18,22,28,.6) 55%); }
+  .price-card.pro { background: var(--lilac); }
   .price-card .appicon {
-    width: 56px; height: 56px; border-radius: 13px; margin-bottom: 22px; display: block;
-    box-shadow: 0 6px 24px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.1);
+    width: 52px; height: 52px; border-radius: 12px; margin-bottom: 20px; display: block;
+    box-shadow: 0 4px 16px rgba(21,24,28,.2);
   }
-  .plan-name { font-size: 14px; letter-spacing: .14em; text-transform: uppercase;
-               font-weight: 640; color: var(--ink-faint); }
-  .price-num { font-size: clamp(44px, 5.5vw, 60px); font-weight: 700; letter-spacing: -0.045em;
-               line-height: 1; margin-top: 12px; }
-  .price-num small { font-size: 18px; font-weight: 600; letter-spacing: 0; color: var(--ink-dim); margin-left: 4px; }
-  .price-sub { color: var(--glow); font-size: 14px; letter-spacing: .06em; font-weight: 640; margin-top: 12px; }
-  .price-num s { color: var(--ink-faint); text-decoration-thickness: 3px; text-decoration-color: var(--stop); }
-  .price-beta { color: var(--stop); font-size: 24px; font-weight: 720; letter-spacing: -0.02em; margin-top: 10px; }
+  .plan-name { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--ink-dim); }
+  .price-num { font-family: var(--serif); font-size: clamp(48px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.02em; margin-top: 14px; }
+  .price-num small { font-family: var(--sans); font-size: 16px; font-weight: 500; letter-spacing: 0; color: var(--ink-dim); margin-left: 6px; }
+  .price-num s { color: var(--ink-faint); text-decoration-thickness: 3px; text-decoration-color: var(--car); }
+  .price-sub { font-size: 14px; font-weight: 600; color: var(--ink-dim); margin-top: 12px; }
+  .price-beta { font-family: var(--serif); font-style: italic; font-size: 27px; color: var(--car); margin-top: 8px; }
   .price-after { color: var(--ink-dim); font-size: 14px; margin-top: 8px; line-height: 1.45; }
-  .plan-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 11px; }
+  .plan-list { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 11px; }
   .plan-list li { position: relative; padding-left: 26px; color: var(--ink-dim); font-size: 16px; }
   .plan-list li strong { color: var(--ink); font-weight: 600; }
-  .plan-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--start); font-weight: 800; }
-  .price-card.pro .plan-list li::before { color: var(--glow); }
+  .plan-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--ink); font-weight: 800; }
   .price-card p.fine { color: var(--ink-faint); font-size: 13px; line-height: 1.5; margin-top: 22px; }
-  .price-card .cta-stack { margin-top: 26px; }
+  /* Both cards end on a button, level with each other. */
+  .price-card .cta { margin-top: auto; padding-top: 24px; align-items: flex-start; gap: 10px; }
 
-  .draw { stroke-dasharray: var(--len, 1200); stroke-dashoffset: var(--len, 1200);
-          animation: draw 2.4s cubic-bezier(.22,.61,.36,1) .15s forwards; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  @media (prefers-reduced-motion: reduce) {
-    .draw { animation: none; stroke-dashoffset: 0; }
+  /* ═══ CLOSING BAND ═══════════════════════════════════════════════════ */
+  .band { padding: 100px 0 0; }
+  .band-inner {
+    background: var(--asphalt); color: var(--paper); border-radius: 32px;
+    padding: 92px 40px; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
   }
+  .band h2 { font-size: clamp(42px, 6.4vw, 80px); }
+  .band p { color: rgba(251,248,239,.72); font-size: 18px; margin-top: 18px; max-width: 480px; }
+  .band .cta { margin-top: 32px; }
+  .band .note { color: rgba(251,248,239,.6); }
+  .band .btn-primary { border-color: transparent; }
 
   /* Phone rhythm: sections sit close, each block a screen at most. Last in
-     the sheet on purpose — the desktop section rules above would otherwise
-     win the cascade at equal specificity. */
-  @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
-    .value { padding-top: 0; }
-    .vp { padding: 28px 0; gap: 26px; }
-    .value .vp:first-child { padding-top: 12px; }
-    .vp h2 { font-size: clamp(30px, 8.6vw, 44px); }
-    .vp-copy p { margin-top: 14px; font-size: 17px; }
-    .vp-stat { margin-top: 16px; }
-    .phone { width: min(280px, 78%); }
-    .strip { margin-top: 8px; padding: 28px 0; }
-    .strip .wrap { gap: 14px; }
-    .strip-list { font-size: 16px; gap: 9px; }
-    .pricing { padding: 56px 0 64px; }
+     the sheet on purpose — the desktop rules above would otherwise win the
+     cascade at equal specificity. */
+  @media (max-width: 720px) {
+    .hero { padding-top: 48px; }
+    .hero h1 { margin-top: 18px; }
+    .lede { margin-top: 20px; }
+    .cta { margin-top: 28px; }
+    .btn-lg { width: min(100%, 360px); }
+    .shot { aspect-ratio: 1 / 1; border-radius: 22px; margin-top: 40px; }
+    /* Keep the car (about 24.5% across the photo) centred: the photo and
+       trace scale together at 204%, anchored bottom-left, so the empty
+       sky at the top is what gets cropped. */
+    .shot img, .shot svg { inset: auto auto 0 0; width: 204%; height: auto; max-width: none; aspect-ratio: 1672 / 941; }
+    .features { padding-top: 40px; gap: 14px; }
+    .feat { padding: 32px 22px; gap: 26px; border-radius: 22px; }
+    .feat h2 { margin-top: 14px; }
+    .feat-copy p { margin-top: 14px; font-size: 17px; }
+    .chip { margin-top: 16px; }
+    .phone { width: min(260px, 78%); }
+    .also { padding-top: 32px; }
+    .pricing { padding-top: 64px; }
     .price-head { margin-bottom: 24px; }
     .price-head p { margin-top: 12px; font-size: 17px; }
-    .price-card { padding: 28px 22px 26px; }
+    .price-card { padding: 28px 22px 26px; border-radius: 22px; }
     .plan-list { margin-top: 20px; gap: 9px; }
+    .band { padding-top: 64px; }
+    .band-inner { padding: 56px 24px; border-radius: 24px; }
   }
 </style>
+<noscript><style>.rise { opacity: 1; transform: none; } .draw { stroke-dashoffset: 0; }</style></noscript>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="apple" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
+  </symbol>
+</svg>
 
 <nav class="top">
   <div class="wrap">
-    <a class="wordmark" href="/" aria-label="Carve">
-      <img class="appicon" src="/assets/icon-128.png" alt="" width="34" height="34">
-      <img class="mark" src="/assets/wordmark-dark.png" alt="Carve" width="300" height="45">
-    </a>
-    <a class="nav-cta" data-get-app href="https://testflight.apple.com/join/UUfMN7vj">Get the App</a>
+    <div class="bar">
+      <a class="wordmark" href="/" aria-label="Carve">
+        <img class="appicon" src="/assets/icon-128.png" alt="" width="32" height="32">
+        <img class="mark" src="/assets/wordmark-light.png" alt="Carve" width="300" height="45">
+      </a>
+      <div class="nav-links">
+        <a href="#plan">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="/support/">Support</a>
+      </div>
+      <a class="nav-cta" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get the app</a>
+    </div>
   </div>
 </nav>
 
 <!-- ═══ 1 · HOOK ═══════════════════════════════════════════════════════ -->
 <header class="hero">
-  <div class="hero-media" aria-hidden="true">
-    <img class="hero-img" src="/assets/hero-night.jpg" alt="" width="1672" height="941" fetchpriority="high">
-    <svg class="hero-trace" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <path id="roadgeo" d="M 6.2 857.7 C 12.9 852.2, 31.5 834.2, 46.4 824.7 C 61.2 815.2, 78.8 808.2, 95.3 800.4 C 111.8 792.6, 128.6 785.4, 145.2 778.0 C 161.8 770.6, 178.5 763.6, 195.1 756.2 C 211.7 748.9, 227.9 741.4, 244.5 733.9 C 261.1 726.4, 277.9 719.1, 294.5 711.5 C 311.1 703.9, 328.3 696.3, 344.1 688.1 C 359.9 679.9, 373.7 669.0, 389.4 662.2 C 405.1 655.4, 422.0 652.5, 438.4 647.5 C 454.8 642.5, 471.9 638.9, 488.0 632.5 C 504.1 626.1, 518.9 616.1, 534.8 609.0 C 550.7 601.9, 566.7 595.2, 583.2 589.6 C 599.7 584.0, 616.5 579.7, 633.6 575.4 C 650.7 571.1, 668.5 567.6, 686.0 563.7 C 703.5 559.8, 721.0 556.1, 738.3 552.0 C 755.6 547.9, 772.6 543.2, 789.8 539.3 C 807.0 535.4, 824.4 532.6, 841.5 528.6 C 858.6 524.6, 876.3 521.4, 892.2 515.4 C 908.1 509.4, 928.0 504.3, 936.8 492.6 C 945.5 480.9, 943.4 453.3, 944.7 445.4"/>
-        <filter id="bloom" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="22"/>
-        </filter>
-        <filter id="halo" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="6"/>
-        </filter>
-        <linearGradient id="recede" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
-          <stop offset="0" stop-color="#5FC8FF" stop-opacity="1"/>
-          <stop offset=".55" stop-color="#5E9BC7" stop-opacity=".82"/>
-          <stop offset=".88" stop-color="#5E9BC7" stop-opacity=".26"/>
-          <stop offset="1" stop-color="#5E9BC7" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="recede-core" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
-          <stop offset="0" stop-color="#FFFFFF" stop-opacity="1"/>
-          <stop offset=".5" stop-color="#DCEFFF" stop-opacity=".95"/>
-          <stop offset=".88" stop-color="#C9E3F7" stop-opacity=".3"/>
-          <stop offset="1" stop-color="#C9E3F7" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="30"
-           stroke-linecap="round" filter="url(#bloom)" opacity=".55"/>
-      <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="11"
-           stroke-linecap="round" filter="url(#halo)" opacity=".95"/>
-      <use href="#roadgeo" class="draw" fill="none" stroke="url(#recede-core)"
-           stroke-width="3.2" stroke-linecap="round"/>
-      <g>
-        <circle cx="598" cy="586" r="19" fill="#F08A1C" opacity=".18"/>
-        <circle cx="598" cy="586" r="8" fill="#F08A1C" stroke="#fff" stroke-width="2"/>
-        <circle cx="823" cy="532" r="15" fill="#6A5FE8" opacity=".16"/>
-        <circle cx="823" cy="532" r="6" fill="#6A5FE8" stroke="#fff" stroke-width="1.7"/>
-      </g>
-    </svg>
-    <div class="hero-scrim"></div>
+  <div class="wrap hero-inner">
+    <p class="kicker rise">Carve Route Planner</p>
+    <h1 class="rise">Maps for the<br>Love of <em>Driving</em></h1>
+    <p class="lede rise">Offline-ready route planning and navigation for every
+      <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-track"><span class="rolodex-word">canyon</span><span class="rolodex-word" aria-hidden="true"></span></span></span></p>
+    <div class="cta rise" id="get">
+      <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
+      <p class="note">Available on iOS / CarPlay. Coming soon to Android.</p>
+    </div>
   </div>
 
-  <div class="wrap hero-inner">
-    <h1>Your way,<br><span class="soft">not the highway.</span></h1>
-    <p class="lede">
-      Plan and drive the best roads. <strong>Works offline.</strong>
-    </p>
-    <div class="cta-row" id="get">
-      <div class="cta-stack">
-        <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj">Get the App</a>
-        <span class="cta-note">Early access beta <small>iPhone &amp; CarPlay · iOS 17+</small></span>
-      </div>
-    </div>
+  <div class="wrap">
+    <figure class="shot rise" aria-label="A car on a coast road at dusk, the route ahead traced in light">
+      <img src="/assets/hero-night.jpg" alt="" width="1672" height="941" fetchpriority="high">
+      <svg viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <path id="roadgeo" d="M 6.2 857.7 C 12.9 852.2, 31.5 834.2, 46.4 824.7 C 61.2 815.2, 78.8 808.2, 95.3 800.4 C 111.8 792.6, 128.6 785.4, 145.2 778.0 C 161.8 770.6, 178.5 763.6, 195.1 756.2 C 211.7 748.9, 227.9 741.4, 244.5 733.9 C 261.1 726.4, 277.9 719.1, 294.5 711.5 C 311.1 703.9, 328.3 696.3, 344.1 688.1 C 359.9 679.9, 373.7 669.0, 389.4 662.2 C 405.1 655.4, 422.0 652.5, 438.4 647.5 C 454.8 642.5, 471.9 638.9, 488.0 632.5 C 504.1 626.1, 518.9 616.1, 534.8 609.0 C 550.7 601.9, 566.7 595.2, 583.2 589.6 C 599.7 584.0, 616.5 579.7, 633.6 575.4 C 650.7 571.1, 668.5 567.6, 686.0 563.7 C 703.5 559.8, 721.0 556.1, 738.3 552.0 C 755.6 547.9, 772.6 543.2, 789.8 539.3 C 807.0 535.4, 824.4 532.6, 841.5 528.6 C 858.6 524.6, 876.3 521.4, 892.2 515.4 C 908.1 509.4, 928.0 504.3, 936.8 492.6 C 945.5 480.9, 943.4 453.3, 944.7 445.4"/>
+          <filter id="bloom" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="22"/>
+          </filter>
+          <filter id="halo" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="6"/>
+          </filter>
+          <linearGradient id="recede" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
+            <stop offset="0" stop-color="#5FC8FF" stop-opacity="1"/>
+            <stop offset=".55" stop-color="#5E9BC7" stop-opacity=".82"/>
+            <stop offset=".88" stop-color="#5E9BC7" stop-opacity=".26"/>
+            <stop offset="1" stop-color="#5E9BC7" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="recede-core" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
+            <stop offset="0" stop-color="#FFFFFF" stop-opacity="1"/>
+            <stop offset=".5" stop-color="#DCEFFF" stop-opacity=".95"/>
+            <stop offset=".88" stop-color="#C9E3F7" stop-opacity=".3"/>
+            <stop offset="1" stop-color="#C9E3F7" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="30"
+             stroke-linecap="round" filter="url(#bloom)" opacity=".55"/>
+        <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="11"
+             stroke-linecap="round" filter="url(#halo)" opacity=".95"/>
+        <use href="#roadgeo" class="draw" fill="none" stroke="url(#recede-core)"
+             stroke-width="3.2" stroke-linecap="round"/>
+        <g>
+          <circle cx="598" cy="586" r="19" fill="#F08A1C" opacity=".18"/>
+          <circle cx="598" cy="586" r="8" fill="#F08A1C" stroke="#fff" stroke-width="2"/>
+          <circle cx="823" cy="532" r="15" fill="#6A5FE8" opacity=".16"/>
+          <circle cx="823" cy="532" r="6" fill="#6A5FE8" stroke="#fff" stroke-width="1.7"/>
+        </g>
+      </svg>
+    </figure>
   </div>
 </header>
 
-<!-- ═══ 2 · VALUE PROP ═════════════════════════════════════════════════ -->
-<section class="value">
-  <div class="wrap">
+<!-- ═══ 2 · FEATURES ═══════════════════════════════════════════════════ -->
+<section class="features wrap" id="features">
 
-    <div class="vp" id="plan">
-      <div class="vp-copy rise">
-        <div class="vp-kicker" style="color:var(--start)"><i></i>Plan</div>
-        <h2>Pick the roads.<br>Add your stops.</h2>
-        <p>String together the roads you love, with stops for coffee, fuel,
-           or the view. The route you plan is the route you drive.</p>
-        <div class="vp-stat">Up to 30 stops &amp; route markers</div>
-      </div>
-      <div class="vp-art rise">
-        <div class="phone">
-          <div class="phone-screen">
-            <img src="/assets/shot-plan.jpg" alt="Carve&rsquo;s route preview: Big Sur, the slow way, traced along the coast with its stops numbered" width="640" height="1391" loading="lazy">
-          </div>
+  <div class="feat mint" id="plan">
+    <div class="feat-copy rise">
+      <div class="feat-kicker" style="--dot: var(--start)"><i></i>Plan</div>
+      <h2>Pick the roads.<br>Add your stops.</h2>
+      <p>String together the roads you love, with stops for coffee, fuel,
+         or the view. The route you plan is the route you drive.</p>
+      <div class="chip">Up to 30 stops &amp; route markers</div>
+    </div>
+    <div class="feat-art rise">
+      <div class="phone">
+        <div class="phone-screen">
+          <img src="/assets/shot-plan.jpg" alt="Carve&rsquo;s route preview: Big Sur, the slow way, traced along the coast with its stops numbered" width="640" height="1391" loading="lazy">
         </div>
       </div>
     </div>
-
-    <div class="vp flip" id="drive">
-      <div class="vp-copy rise">
-        <div class="vp-kicker" style="color:var(--glow)"><i></i>Drive</div>
-        <h2>No signal?<br>No problem.</h2>
-        <p>Your route is automatically downloaded before you start.
-           Directions stay with you even in dead zones.</p>
-        <div class="vp-stat">Offline maps · voice directions</div>
-      </div>
-      <div class="vp-art rise">
-        <div class="phone tilt-right">
-          <div class="phone-screen">
-            <img src="/assets/shot-drive.jpg" alt="Carve guiding a drive down the Big Sur coast: 3.4 miles to a right turn, next stop Nepenthe" width="640" height="1391" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="vp" id="return">
-      <div class="vp-copy rise">
-        <div class="vp-kicker" style="color:var(--stop)"><i></i>Return</div>
-        <h2>Miss a turn.<br>Keep your plan.</h2>
-        <p>A wrong turn shouldn&rsquo;t rewrite the drive. Carve guides you
-           back to the road you chose &mdash; never onto a faster one.</p>
-        <div class="vp-stat">No automatic shortcuts</div>
-      </div>
-      <div class="vp-art rise">
-        <div class="phone">
-          <div class="phone-screen">
-            <img src="/assets/shot-return.jpg" alt="Off the route: Carve&rsquo;s orange banner says head back to your route, 1.4 miles, with a pointer to the road" width="640" height="1391" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="vp flip" id="share">
-      <div class="vp-copy rise">
-        <div class="vp-kicker" style="color:var(--marker)"><i></i>Share</div>
-        <h2>Good roads<br>are worth sharing.</h2>
-        <p>One link carries the whole route. Friends open it in Carve and
-           drive the same roads, the same stops.</p>
-        <div class="vp-stat">Same roads · same stops</div>
-      </div>
-      <div class="vp-art rise">
-        <div class="phone tilt-right">
-          <div class="phone-screen">
-            <img src="/assets/shot-share.jpg" alt="The Carve library: saved routes as map cards, each downloaded for offline, with Share and Go Now" width="640" height="1391" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- everything else, one quiet list -->
-  <div class="strip rise" id="more">
-    <div class="wrap">
-      <div class="strip-label">Also on board</div>
-      <ul class="strip-list">
-        <li>CarPlay</li>
-        <li>Voice guidance</li>
-        <li>Import Google&nbsp;Maps stops</li>
-        <li>Elevation profiles</li>
-        <li>Auto-resume after a stop or restart</li>
-      </ul>
+  <div class="feat sky flip" id="drive">
+    <div class="feat-copy rise">
+      <div class="feat-kicker" style="--dot: var(--route)"><i></i>Drive</div>
+      <h2>No signal?<br>No problem.</h2>
+      <p>Your route is downloaded before you start. Directions stay with
+         you in every dead zone.</p>
+      <div class="chip">Offline maps · voice directions</div>
+    </div>
+    <div class="feat-art rise">
+      <div class="phone tilt-right">
+        <div class="phone-screen">
+          <img src="/assets/shot-drive.jpg" alt="Carve guiding a drive down the Big Sur coast: 3.4 miles to a right turn, next stop Nepenthe" width="640" height="1391" loading="lazy">
+        </div>
+      </div>
     </div>
   </div>
+
+  <div class="feat peach" id="return">
+    <div class="feat-copy rise">
+      <div class="feat-kicker" style="--dot: var(--stop)"><i></i>Return</div>
+      <h2>Miss a turn.<br>Keep your plan.</h2>
+      <p>A wrong turn shouldn&rsquo;t rewrite the drive. Carve guides you
+         back to the road you chose &mdash; never onto a faster one.</p>
+      <div class="chip">No automatic shortcuts</div>
+    </div>
+    <div class="feat-art rise">
+      <div class="phone">
+        <div class="phone-screen">
+          <img src="/assets/shot-return.jpg" alt="Off the route: Carve&rsquo;s orange banner says head back to your route, 1.4 miles, with a pointer to the road" width="640" height="1391" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feat lilac flip" id="share">
+    <div class="feat-copy rise">
+      <div class="feat-kicker" style="--dot: var(--marker)"><i></i>Share</div>
+      <h2>Good roads<br>are worth sharing.</h2>
+      <p>One link carries the whole route. Friends open it in Carve and
+         drive the same roads, the same stops.</p>
+      <div class="chip">Same roads · same stops</div>
+    </div>
+    <div class="feat-art rise">
+      <div class="phone tilt-right">
+        <div class="phone-screen">
+          <img src="/assets/shot-share.jpg" alt="The Carve library: saved routes as map cards, each downloaded for offline, with Share and Go Now" width="640" height="1391" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
+
+<!-- everything else, one row of chips -->
+<div class="also rise" id="more">
+  <div class="wrap">
+    <span class="also-label">Also on board</span>
+    <ul class="chips">
+      <li>CarPlay</li>
+      <li>Voice guidance</li>
+      <li>Import Google&nbsp;Maps stops</li>
+      <li>Elevation profiles</li>
+      <li>Auto-resume after a stop</li>
+    </ul>
+  </div>
+</div>
 
 <!-- ═══ 3 · PRICING ════════════════════════════════════════════════════ -->
 <section class="pricing" id="pricing">
   <div class="wrap">
     <div class="price-head rise">
-      <h2>Ready to Carve?</h2>
-      <p>Upgrade to Pro to plan your own routes, drive them offline, bring them to CarPlay, and more.</p>
+      <h2>Ride along for free.<br>Lead the way with <em>Pro</em>.</h2>
+      <p>Pro plans your own routes, drives them offline, brings them to CarPlay, and more.</p>
     </div>
     <div class="plans">
       <div class="price-card rise">
@@ -393,9 +383,13 @@
           <li>Elevation profile, auto-resume, start from anywhere</li>
           <li>Off-route pointer back to the road</li>
         </ul>
+        <div class="cta">
+          <a class="btn" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
+          <p class="note">Early access beta</p>
+        </div>
       </div>
       <div class="price-card pro rise" id="pro">
-        <img class="appicon" src="/assets/icon-128.png" alt="" width="56" height="56">
+        <img class="appicon" src="/assets/icon-128.png" alt="" width="52" height="52">
         <div class="plan-name">Carve Pro</div>
         <div class="price-num"><s>$29.99</s><small>/ year</small></div>
         <div class="price-beta">Free during the beta</div>
@@ -408,10 +402,24 @@
           <li><strong>Import from Google Maps</strong></li>
         </ul>
         <p class="fine">Prices in US dollars; may vary by region. The free trial is on the yearly plan and converts to a paid subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account.</p>
-        <div class="cta-stack">
-          <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj">Get the App</a>
-          <span class="cta-note">Early access beta</span>
+        <div class="cta">
+          <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
+          <p class="note">Early access beta</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4 · CLOSING ════════════════════════════════════════════════════ -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-inner rise">
+      <h2>Your way,<br><em>not the highway.</em></h2>
+      <p>Plan the roads you love, drive them without a signal, and bring your friends along.</p>
+      <div class="cta">
+        <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
+        <p class="note">Available on iOS / CarPlay. Coming soon to Android.</p>
       </div>
     </div>
   </div>
@@ -425,7 +433,7 @@
       <a href="/terms/">Terms</a>
       <a href="/support/">Support</a>
     </div>
-    <span>iPhone · iOS 17+ · CarPlay</span>
+    <span>iPhone · CarPlay · iOS 17+</span>
   </div>
 </footer>
 
@@ -438,10 +446,62 @@
   }
   (function () {
     var geo = document.getElementById("roadgeo");
-    var line = document.querySelector(".hero-trace .draw");
+    var line = document.querySelector(".shot .draw");
     if (geo && line && geo.getTotalLength) {
       line.style.setProperty("--len", geo.getTotalLength());
     }
+  })();
+  // The rolodex. Every turn queues the next word under the current one,
+  // sizes the box for it, and slides the pair up a slot; when the slide
+  // ends the new word becomes the current one and the track snaps back,
+  // invisibly, to the top. A tab in the background may never fire
+  // transitionend, so a timer finishes the turn if the event doesn't.
+  (function () {
+    var words = ["canyon", "backroad", "countryside", "coastline", "mountain"];
+    var box = document.getElementById("rolodex");
+    if (!box) return;
+    var track = box.firstElementChild;
+    var current = track.children[0], incoming = track.children[1];
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var index = 0, settle = null;
+
+    function widthOf(word) {
+      var probe = document.createElement("span");
+      probe.className = "rolodex-word rolodex-measure";
+      probe.textContent = word;
+      box.appendChild(probe);
+      var width = probe.getBoundingClientRect().width;
+      probe.remove();
+      return width;
+    }
+    function fit(word) { box.style.width = Math.ceil(widthOf(word)) + "px"; }
+    function finish() {
+      if (!box.classList.contains("turning")) return;
+      clearTimeout(settle);
+      current.textContent = incoming.textContent;
+      incoming.textContent = "";
+      box.classList.add("snap");
+      box.classList.remove("turning");
+      void track.offsetHeight;
+      box.classList.remove("snap");
+    }
+    function turn() {
+      finish();
+      index = (index + 1) % words.length;
+      if (reduce) { current.textContent = words[index]; fit(words[index]); return; }
+      incoming.textContent = words[index];
+      fit(words[index]);
+      box.classList.add("turning");
+      settle = setTimeout(finish, 900);
+    }
+    track.addEventListener("transitionend", function (e) {
+      if (e.propertyName === "transform") finish();
+    });
+    window.addEventListener("resize", function () { fit(current.textContent); });
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
+      fit(words[0]);
+      setInterval(turn, 2600);
+    });
   })();
   (function () {
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

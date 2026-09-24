@@ -1,82 +1,126 @@
-/* carve.run — what every page shares: the "Night Drive" design tokens, the
-   nav, buttons, footer, motion, and the long-form pages (privacy, terms,
-   support). The landing page keeps its own section styles inline. */
+/* carve.run — what every page shares: the design tokens, the fonts, nav,
+   buttons, footer, motion, and the long-form pages (privacy, terms,
+   support). The landing page keeps its own section styles inline.
+
+   The look: warm paper, near-black ink, a Garamond-flavoured serif for
+   headlines — regular weight, with the italic for the one word that
+   matters — a friendly geometric sans for everything else, and pastel
+   fills with an ink outline for the things you can press. */
+
+/* Self-hosted so a visit never calls Google. Latin subsets of the
+   variable fonts; anything outside Latin falls through to the system. */
+@font-face {
+  font-family: "Newsreader";
+  src: url("/assets/fonts/newsreader.woff2") format("woff2");
+  font-weight: 200 800; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("/assets/fonts/newsreader-italic.woff2") format("woff2");
+  font-weight: 200 800; font-style: italic; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/figtree.woff2") format("woff2");
+  font-weight: 300 900; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 :root {
-  --ink:       #EDF3F9;
-  --ink-dim:   #9AA7B6;
-  --ink-faint: #616D7C;
-  --ink-ghost: #3A434F;
-  --bg:        #07090C;
-  --bg-2:      #0D1015;
-  --bg-3:      #12161C;
-  --line:      #1D232B;
-  --line-2:    #2A323C;
-  --glow:      #5E9BC7;
-  --core:      #C9E3F7;
-  --start:     #34B055;
-  --stop:      #F08A1C;
+  --paper:     #FBF8EF;
+  --paper-2:   #F3EEE1;
+  --ink:       #15181C;
+  --ink-dim:   #5D636C;
+  --ink-faint: #8B9098;
+  --line:      #E2DCCC;
+  --sky:       #D4E7FF;
+  --sky-deep:  #B9D6FF;
+  --mint:      #DCF1E2;
+  --peach:     #FFE4D3;
+  --lilac:     #E7E1FF;
+  --start:     #2E9E52;
+  --stop:      #E4731C;
   --marker:    #6A5FE8;
   --route:     #2E92FF;
+  --car:       #E0342B;
+  --asphalt:   #15181C;
+  --serif: "Newsreader", "Iowan Old Style", Palatino, Georgia, serif;
+  --sans: "Figtree", -apple-system, "SF Pro Text", system-ui, sans-serif;
   --max: 1120px;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  margin: 0; background: var(--bg); color: var(--ink);
-  font-family: ui-sans-serif, -apple-system, "SF Pro Text", system-ui, sans-serif;
-  font-size: 17px; line-height: 1.55;
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-size: 17px; line-height: 1.55;
   -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 30px; position: relative; z-index: 2; }
-h1, h2, h3 { margin: 0; font-weight: 680; letter-spacing: -0.038em; line-height: 1.04; }
+h1, h2, h3 {
+  margin: 0; font-family: var(--serif); font-weight: 400;
+  letter-spacing: -0.02em; line-height: 1.02; font-optical-sizing: auto;
+}
+h1 em, h2 em, h3 em { font-style: italic; }
 a { color: inherit; } p { margin: 0; }
 img { display: block; max-width: 100%; }
 
+/* paper grain */
 .grain {
-  position: fixed; inset: 0; z-index: 9; pointer-events: none; opacity: .035;
+  position: fixed; inset: 0; z-index: 9; pointer-events: none; opacity: .05;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>\
 <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter>\
 <rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
 
-/* ── nav: floats over the landing hero; sits in flow on the other pages ── */
-nav.top { position: absolute; top: 0; left: 0; right: 0; z-index: 5; }
-nav.top.static { position: relative; }
-nav.top .wrap { display: flex; align-items: center; justify-content: space-between; padding: 26px 30px; }
-.wordmark { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+/* ── nav: an outlined bar, in flow on every page ── */
+nav.top { position: relative; z-index: 5; padding-top: 18px; }
+nav.top .bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 12px 10px 16px; border: 2px solid var(--ink); border-radius: 18px;
+  background: var(--paper);
+}
+.wordmark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
 .wordmark .appicon {
-  width: 34px; height: 34px; display: block; border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.10);
+  width: 32px; height: 32px; display: block; border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(21,24,28,.18);
 }
-.wordmark .mark { height: 18px; width: auto; display: block; }
-.nav-cta {
-  font-size: 14px; font-weight: 620; text-decoration: none; color: var(--ink-dim);
-  border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 18px;
-  transition: color .18s, border-color .18s;
-}
-.nav-cta:hover { color: var(--ink); border-color: var(--ink-faint); }
+.wordmark .mark { height: 17px; width: auto; display: block; }
+.nav-links { display: flex; gap: 26px; font-size: 15px; font-weight: 500; }
+.nav-links a { text-decoration: none; color: var(--ink-dim); transition: color .18s; }
+.nav-links a:hover { color: var(--ink); }
+@media (max-width: 720px) { .nav-links { display: none; } }
 
-/* ── buttons ── */
-.btn {
-  display: inline-flex; align-items: center; gap: 9px; padding: 15px 27px;
-  border-radius: 999px; text-decoration: none; font-weight: 640; font-size: 15.5px;
-  border: 1px solid transparent; transition: all .18s;
+/* ── buttons: pastel fill, ink outline ── */
+.btn, .nav-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px 22px; border-radius: 12px;
+  border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-weight: 600; font-size: 16px; line-height: 1;
+  text-decoration: none; white-space: nowrap;
+  transition: background .18s, transform .18s;
 }
-.btn-primary { background: var(--core); color: #07090C; }
+.btn-primary, .nav-cta { background: var(--sky); }
+.btn:hover, .nav-cta:hover { background: var(--sky-deep); }
+.btn:active, .nav-cta:active { transform: translateY(1px); }
+.btn-lg { padding: 18px 28px; font-size: 17px; border-radius: 14px; }
+.nav-cta { padding: 10px 16px; font-size: 14.5px; border-radius: 10px; }
+.btn .apple, .nav-cta .apple { width: 17px; height: 17px; flex: 0 0 auto; margin-top: -2px; }
 .btn-primary[aria-disabled="true"] {
   background: transparent; color: var(--ink-faint);
-  border-color: var(--line-2); border-style: dashed; cursor: default;
+  border-style: dashed; border-color: var(--ink-faint); cursor: default;
 }
 
 /* ── footer ── */
-footer { padding: 34px 0 56px; color: var(--ink-ghost); font-size: 13.5px;
+footer { padding: 28px 0 44px; margin-top: 24px; color: var(--ink-faint); font-size: 14px;
          border-top: 1px solid var(--line); }
 footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px 28px; }
 footer .links { display: flex; gap: 20px; }
-footer .links a { color: var(--ink-faint); text-decoration: none; }
-footer .links a:hover { color: var(--ink-dim); }
+footer .links a { color: var(--ink-dim); text-decoration: none; }
+footer .links a:hover { color: var(--ink); }
 
 /* ── motion ── */
 .rise { opacity: 0; transform: translateY(16px);
@@ -88,29 +132,30 @@ footer .links a:hover { color: var(--ink-dim); }
 }
 
 /* ── long-form pages ── */
-.doc { max-width: 720px; margin: 0 auto; padding: 28px 30px 80px; position: relative; z-index: 2; }
-.doc h1 { font-size: clamp(36px, 6vw, 56px); }
+.doc { max-width: 720px; margin: 0 auto; padding: 48px 30px 80px; position: relative; z-index: 2; }
+.doc h1 { font-size: clamp(40px, 6.5vw, 64px); }
 .doc .stamp { color: var(--ink-faint); font-size: 15px; margin: 14px 0 34px; }
-.doc h2 { font-size: 26px; letter-spacing: -0.025em; margin: 44px 0 12px; }
-.doc h3 { font-size: 18px; letter-spacing: -0.015em; margin: 26px 0 8px; }
+.doc h2 { font-size: 30px; margin: 44px 0 12px; }
+.doc h3 { font-size: 22px; letter-spacing: -0.01em; margin: 26px 0 8px; }
 .doc p, .doc li { color: var(--ink-dim); }
 .doc p + p { margin-top: 12px; }
-.doc strong { color: var(--ink); font-weight: 640; }
-.doc a { color: var(--glow); text-decoration: none; }
+.doc strong { color: var(--ink); font-weight: 600; }
+.doc a { color: var(--route); text-decoration: none; }
 .doc a:hover { text-decoration: underline; }
 .doc ul { padding-left: 22px; margin: 10px 0; }
 .doc li + li { margin-top: 6px; }
 .doc .note {
-  background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 18px;
+  background: var(--paper-2); border: 1px solid var(--line); border-radius: 18px;
   padding: 18px 20px; margin: 20px 0; color: var(--ink-dim); font-size: 16px;
 }
 .doc table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 15px; }
 .doc th, .doc td { text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
 .doc th { color: var(--ink-faint); font-weight: 600; }
-details { border: 1px solid var(--line); border-radius: 16px; padding: 4px 18px; margin: 10px 0; background: var(--bg-2); }
-summary { cursor: pointer; font-weight: 660; padding: 11px 0; color: var(--ink); }
+details { border: 1px solid var(--line); border-radius: 16px; padding: 4px 18px; margin: 10px 0; background: var(--paper-2); }
+summary { cursor: pointer; font-weight: 600; padding: 11px 0; color: var(--ink); }
 details p { padding: 0 0 14px; }
 @media (max-width: 560px) {
-  nav.top .wrap { padding: 20px 20px; }
+  nav.top { padding-top: 12px; }
+  nav.top .bar { padding: 8px 8px 8px 12px; border-radius: 14px; }
   .wrap, .doc { padding-left: 20px; padding-right: 20px; }
 }
