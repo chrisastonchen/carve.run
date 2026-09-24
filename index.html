@@ -226,7 +226,7 @@
       <img class="appicon" src="/assets/icon-128.png" alt="" width="34" height="34">
       <img class="mark" src="/assets/wordmark-dark.png" alt="Carve" width="300" height="45">
     </a>
-    <a class="nav-cta" data-get-app href="mailto:support@carve.run?subject=Carve%20early%20access%20beta">Get the App</a>
+    <a class="nav-cta" data-get-app href="https://testflight.apple.com/join/UUfMN7vj">Get the App</a>
   </div>
 </nav>
 
@@ -279,7 +279,7 @@
     </p>
     <div class="cta-row" id="get">
       <div class="cta-stack">
-        <a class="btn btn-primary" data-get-app href="mailto:support@carve.run?subject=Carve%20early%20access%20beta">Get the App</a>
+        <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj">Get the App</a>
         <span class="cta-note">Early access beta <small>iPhone &amp; CarPlay · iOS 17+</small></span>
       </div>
     </div>
@@ -409,7 +409,7 @@
         </ul>
         <p class="fine">Prices in US dollars; may vary by region. The free trial is on the yearly plan and converts to a paid subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account.</p>
         <div class="cta-stack">
-          <a class="btn btn-primary" data-get-app href="mailto:support@carve.run?subject=Carve%20early%20access%20beta">Get the App</a>
+          <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj">Get the App</a>
           <span class="cta-note">Early access beta</span>
         </div>
       </div>
@@ -430,10 +430,9 @@
 </footer>
 
 <script>
-  // Where "Get the App" goes. Empty while the beta is by invitation, so every
-  // button asks by email; set the public TestFlight link when early access
-  // opens, then the App Store URL when live (docs/Share-Links.md §7).
-  var APP_URL = "";
+  // Where "Get the App" goes: the public TestFlight beta. The anchors carry
+  // the same link in their href, so it works with scripts off too.
+  var APP_URL = "https://testflight.apple.com/join/UUfMN7vj";
   if (APP_URL) {
     document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = APP_URL; });
   }
