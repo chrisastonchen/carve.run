@@ -66,6 +66,18 @@ h1 em, h2 em, h3 em { font-style: italic; }
 a { color: inherit; } p { margin: 0; }
 img { display: block; max-width: 100%; }
 
+/* The page sits on a map: a wireframe terrain under everything, fixed, so
+   the paper and its cards slide over a landscape that stays put. Drawn in
+   ink on transparency, so it needs no blending. */
+.terrain {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: url("/assets/terrain.png") no-repeat center center / cover;
+  opacity: .6;   /* ambient, not a diagram — the one knob for how present it is */
+}
+/* A phone crops a narrow slice of the mesh, which magnifies it; ease off
+   so it stays as quiet there as it is on a wide screen. */
+@media (max-width: 720px) { .terrain { opacity: .46; } }
+
 /* paper grain */
 .grain {
   position: fixed; inset: 0; z-index: 9; pointer-events: none; opacity: .05;

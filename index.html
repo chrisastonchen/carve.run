@@ -30,12 +30,11 @@
   .hero-inner { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
   .kicker { font-size: 14px; letter-spacing: .2em; text-transform: uppercase; font-weight: 500; color: var(--ink-dim); }
   .hero h1 { font-size: clamp(50px, 8.4vw, 108px); margin-top: 22px; }
-  /* Wide enough that the sentence stays on one line at desktop whichever
-     word the rolodex is showing — "countryside" is the long one. Otherwise
-     the caption jumped between one line and two as the words turned. */
+  /* Broken by hand after "navigation", so the turning word always has a
+     line of its own and the caption can't reflow as the words change width. */
   .lede {
-    font-size: clamp(18px, 2.1vw, 21px); font-weight: 500; line-height: 1.4;
-    margin-top: 28px; max-width: 700px;
+    font-size: clamp(20px, 2.7vw, 27px); font-weight: 500; line-height: 1.38;
+    margin-top: 28px; text-wrap: balance;
   }
   .cta { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
   .note { font-size: 14px; color: var(--ink-dim); }
@@ -63,19 +62,46 @@
   .rolodex-word { display: block; height: 1.25em; white-space: nowrap; }
   .rolodex-measure { position: absolute; visibility: hidden; left: 0; top: 0; }
 
-  /* ═══ THE PHOTO ══════════════════════════════════════════════════════ */
-  .shot {
-    position: relative; overflow: hidden; margin: 60px auto 0;
-    border-radius: 28px; border: 2px solid var(--ink); background: #0A0E14;
-    aspect-ratio: 1672 / 941; box-shadow: 0 40px 80px -40px rgba(21,24,28,.5);
+  /* ═══ THE ROUTE ══════════════════════════════════════════════════════
+     A road that comes in off the left, loops once, and runs off the
+     right — full-bleed, so it reads as a stretch of a much longer drive.
+     Its stops and waypoints ride on it, and the puck drives the loop for
+     as long as anyone watches. */
+  .ribbon-band {
+    position: relative; width: 100%; overflow: hidden;
+    height: clamp(230px, 25vw, 380px); margin-top: 56px;
   }
-  .shot img, .shot svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .shot img { object-fit: cover; }
-  .draw { stroke-dasharray: var(--len, 1200); stroke-dashoffset: var(--len, 1200); }
-  .shot.in .draw { animation: draw 2.6s cubic-bezier(.22,.61,.36,1) .3s forwards; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .ribbon { display: block; width: 100%; height: 100%; }
+  .road-casing {
+    fill: none; stroke: var(--asphalt); stroke-width: 17;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .road-dash {
+    fill: none; stroke: var(--paper); stroke-width: 2.6; opacity: .85;
+    stroke-dasharray: 15 17; stroke-linecap: round;
+  }
+  /* The road draws itself in: a thick stroke along the same geometry,
+     used as a mask, so the markers and road names arrive with it. */
+  .reveal {
+    fill: none; stroke: #fff; stroke-width: 64; stroke-linecap: round;
+    stroke-dasharray: 2200; stroke-dashoffset: 2200;
+    animation: drawRoad 2.8s cubic-bezier(.22,.61,.36,1) .25s forwards;
+  }
+  @keyframes drawRoad { to { stroke-dashoffset: 0; } }
+  .road-name {
+    fill: var(--ink-faint); font-family: var(--sans); font-size: 13px;
+    font-weight: 600; letter-spacing: .16em;
+  }
+  .pin { stroke: var(--paper); stroke-width: 3.5; }
+  .pin.start { fill: var(--start); }
+  .pin.stop { fill: var(--stop); }
+  .pin-num { fill: #fff; font-family: var(--sans); font-size: 17px; font-weight: 700; text-anchor: middle; }
+  .wp { fill: var(--marker); stroke: var(--paper); stroke-width: 3.5; }
+  .puck-halo { fill: var(--route); opacity: .18; }
+  .puck-dot { fill: var(--route); stroke: #fff; stroke-width: 2.5; }
+  .puck-arrow { fill: #fff; }
   @media (prefers-reduced-motion: reduce) {
-    .draw { animation: none !important; stroke-dashoffset: 0; }
+    .reveal { animation: none; stroke-dashoffset: 0; }
   }
 
   /* ═══ FEATURES ═══════════════════════════════════════════════════════ */
@@ -175,11 +201,10 @@
     .lede { margin-top: 20px; }
     .cta { margin-top: 28px; }
     .btn-lg { width: min(100%, 360px); }
-    .shot { aspect-ratio: 1 / 1; border-radius: 22px; margin-top: 40px; }
-    /* Keep the car (about 24.5% across the photo) centred: the photo and
-       trace scale together at 204%, anchored bottom-left, so the empty
-       sky at the top is what gets cropped. */
-    .shot img, .shot svg { inset: auto auto 0 0; width: 204%; height: auto; max-width: none; aspect-ratio: 1672 / 941; }
+    /* The band's own slice crops from the right, so a phone gets the
+       start, the loop, and a road running off the edge. */
+    .ribbon-band { margin-top: 36px; }
+    .road-name { font-size: 15px; }
     .features { padding-top: 40px; gap: 14px; }
     .feat { padding: 32px 22px; gap: 26px; border-radius: 22px; }
     .feat h2 { margin-top: 14px; }
@@ -196,9 +221,10 @@
     .band-inner { padding: 56px 24px; border-radius: 24px; }
   }
 </style>
-<noscript><style>.rise { opacity: 1; transform: none; } .draw { stroke-dashoffset: 0; }</style></noscript>
+<noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
 </head>
 <body>
+<div class="terrain" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <svg style="display:none" aria-hidden="true">
   <symbol id="apple" viewBox="0 0 24 24">
@@ -228,7 +254,7 @@
   <div class="wrap hero-inner">
     <p class="kicker rise">Carve Route Planner</p>
     <h1 class="rise">Maps for the<br>Love of <em>Driving</em></h1>
-    <p class="lede rise">Offline-ready route planning and navigation for every
+    <p class="lede rise">Offline-ready route planning and navigation<br>for every
       <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-track"><span class="rolodex-word">canyon</span><span class="rolodex-word" aria-hidden="true"></span></span></span></p>
     <div class="cta rise" id="get">
       <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
@@ -236,45 +262,64 @@
     </div>
   </div>
 
-  <div class="wrap">
-    <figure class="shot rise" aria-label="A car on a coast road at dusk, the route ahead traced in light">
-      <img src="/assets/hero-night.jpg" alt="" width="1672" height="941" fetchpriority="high">
-      <svg viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <path id="roadgeo" d="M 6.2 857.7 C 12.9 852.2, 31.5 834.2, 46.4 824.7 C 61.2 815.2, 78.8 808.2, 95.3 800.4 C 111.8 792.6, 128.6 785.4, 145.2 778.0 C 161.8 770.6, 178.5 763.6, 195.1 756.2 C 211.7 748.9, 227.9 741.4, 244.5 733.9 C 261.1 726.4, 277.9 719.1, 294.5 711.5 C 311.1 703.9, 328.3 696.3, 344.1 688.1 C 359.9 679.9, 373.7 669.0, 389.4 662.2 C 405.1 655.4, 422.0 652.5, 438.4 647.5 C 454.8 642.5, 471.9 638.9, 488.0 632.5 C 504.1 626.1, 518.9 616.1, 534.8 609.0 C 550.7 601.9, 566.7 595.2, 583.2 589.6 C 599.7 584.0, 616.5 579.7, 633.6 575.4 C 650.7 571.1, 668.5 567.6, 686.0 563.7 C 703.5 559.8, 721.0 556.1, 738.3 552.0 C 755.6 547.9, 772.6 543.2, 789.8 539.3 C 807.0 535.4, 824.4 532.6, 841.5 528.6 C 858.6 524.6, 876.3 521.4, 892.2 515.4 C 908.1 509.4, 928.0 504.3, 936.8 492.6 C 945.5 480.9, 943.4 453.3, 944.7 445.4"/>
-          <filter id="bloom" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="22"/>
-          </filter>
-          <filter id="halo" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="6"/>
-          </filter>
-          <linearGradient id="recede" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
-            <stop offset="0" stop-color="#5FC8FF" stop-opacity="1"/>
-            <stop offset=".55" stop-color="#5E9BC7" stop-opacity=".82"/>
-            <stop offset=".88" stop-color="#5E9BC7" stop-opacity=".26"/>
-            <stop offset="1" stop-color="#5E9BC7" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="recede-core" gradientUnits="userSpaceOnUse" x1="6" y1="858" x2="945" y2="445">
-            <stop offset="0" stop-color="#FFFFFF" stop-opacity="1"/>
-            <stop offset=".5" stop-color="#DCEFFF" stop-opacity=".95"/>
-            <stop offset=".88" stop-color="#C9E3F7" stop-opacity=".3"/>
-            <stop offset="1" stop-color="#C9E3F7" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="30"
-             stroke-linecap="round" filter="url(#bloom)" opacity=".55"/>
-        <use href="#roadgeo" fill="none" stroke="url(#recede)" stroke-width="11"
-             stroke-linecap="round" filter="url(#halo)" opacity=".95"/>
-        <use href="#roadgeo" class="draw" fill="none" stroke="url(#recede-core)"
-             stroke-width="3.2" stroke-linecap="round"/>
-        <g>
-          <circle cx="598" cy="586" r="19" fill="#F08A1C" opacity=".18"/>
-          <circle cx="598" cy="586" r="8" fill="#F08A1C" stroke="#fff" stroke-width="2"/>
-          <circle cx="823" cy="532" r="15" fill="#6A5FE8" opacity=".16"/>
-          <circle cx="823" cy="532" r="6" fill="#6A5FE8" stroke="#fff" stroke-width="1.7"/>
+  <div class="ribbon-band">
+    <svg class="ribbon" viewBox="0 0 1440 420" preserveAspectRatio="xMinYMid slice"
+         xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="ribbon-title">
+      <title id="ribbon-title">A Carve route: a road that loops once and carries on, its stops and waypoints marked along the way</title>
+      <defs>
+        <path id="road" fill="none" d="M -60 318 C 60 318, 200 292, 340 290 C 390 290, 430 250, 430 200 C 430 150, 390 110, 340 110 C 290 110, 250 150, 250 200 C 250 250, 290 290, 340 290 C 470 290, 560 262, 690 244 C 830 224, 880 150, 1010 168 C 1140 186, 1230 232, 1340 214 C 1420 201, 1460 180, 1500 150"/>
+        <mask id="reveal-road">
+          <use class="reveal" href="#road" xlink:href="#road"/>
+        </mask>
+      </defs>
+
+      <g mask="url(#reveal-road)">
+        <use class="road-casing" href="#road" xlink:href="#road"/>
+        <use class="road-dash" href="#road" xlink:href="#road"/>
+
+        <text class="road-name" dy="-16">
+          <textPath href="#road" xlink:href="#road" startOffset="9%">Old La Honda Road</textPath>
+        </text>
+        <text class="road-name" dy="-16">
+          <textPath href="#road" xlink:href="#road" startOffset="50%">Skyline Boulevard</textPath>
+        </text>
+        <text class="road-name" dy="-16">
+          <textPath href="#road" xlink:href="#road" startOffset="77%">Pacific Coast Highway</textPath>
+        </text>
+
+        <circle class="wp" cx="253" cy="294" r="8.5"/>
+        <circle class="wp" cx="636" cy="252" r="8.5"/>
+        <circle class="wp" cx="990" cy="166" r="8.5"/>
+        <circle class="wp" cx="1394" cy="202" r="8.5"/>
+
+        <g transform="translate(92 309)">
+          <circle class="pin start" r="16"/>
+          <path d="M -4 -7.5 V 7.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M -4 -7 L 6 -3.2 L -4 0.6 Z" fill="#fff"/>
         </g>
-      </svg>
-    </figure>
+        <g transform="translate(384 121)">
+          <circle class="pin stop" r="17"/>
+          <text class="pin-num" dy=".36em">1</text>
+        </g>
+        <g transform="translate(793 217)">
+          <circle class="pin stop" r="17"/>
+          <text class="pin-num" dy=".36em">2</text>
+        </g>
+        <g transform="translate(1191 206)">
+          <circle class="pin stop" r="17"/>
+          <text class="pin-num" dy=".36em">3</text>
+        </g>
+
+        <g class="puck">
+          <animateMotion dur="19s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#road" xlink:href="#road"/>
+          </animateMotion>
+          <circle class="puck-halo" r="25"/>
+          <circle class="puck-dot" r="14"/>
+          <path class="puck-arrow" d="M -4.5 -6 L 6.5 0 L -4.5 6 Z"/>
+        </g>
+      </g>
+    </svg>
   </div>
 </header>
 
@@ -444,12 +489,12 @@
   if (APP_URL) {
     document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = APP_URL; });
   }
+  // The puck's travel is SMIL, which no media query reaches — so park it
+  // at the start of the road when motion isn't wanted.
   (function () {
-    var geo = document.getElementById("roadgeo");
-    var line = document.querySelector(".shot .draw");
-    if (geo && line && geo.getTotalLength) {
-      line.style.setProperty("--len", geo.getTotalLength());
-    }
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var svg = document.querySelector(".ribbon");
+    if (svg && svg.pauseAnimations) svg.pauseAnimations();
   })();
   // The rolodex. Every turn queues the next word under the current one,
   // sizes the box for it, and slides the pair up a slot; when the slide
