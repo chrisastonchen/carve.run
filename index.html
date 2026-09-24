@@ -44,23 +44,34 @@
   .hero-inner > :nth-child(4) { transition-delay: .24s; }
 
   /* The rolodex: one word showing, the next queued underneath. A turn
-     slides the pair up one slot — slow to leave, gone in a blink — while
-     the box eases to the incoming word's width so the sentence re-flows
-     with it. Serif italic, like the headline's "Driving". */
+     slides the pair up one slot — slow to leave, gone in a blink. Serif
+     italic, like the headline's "Driving".
+
+     The slot is held at the width of the longest word for the whole
+     cycle. It used to size itself to each word, which meant a centred
+     line re-centred on every turn and "for every" slid left and right
+     under a word that was supposed to be the only thing moving. */
   .rolodex {
-    display: inline-block; position: relative; vertical-align: bottom; overflow: hidden;
-    height: 1.25em; line-height: 1.25em; text-align: left;
-    font-family: var(--serif); font-style: italic; font-size: 1.14em; font-weight: 500;
-    transition: width .52s cubic-bezier(.9,.03,.69,.22);
+    display: inline-block; position: relative; text-align: left;
+    font-family: var(--serif); font-style: italic; font-size: 1.14em;
+    font-weight: 500; line-height: 1.3;
   }
+  /* An invisible line of real text holding the longest word. It gives the
+     slot both its width and — because it is the only thing in normal flow
+     — its baseline. Clipping the slot itself would have handed the
+     inline-block a baseline at its bottom edge, which is why the word used
+     to ride above the sentence it sits in. */
+  .rolodex-gauge { display: block; visibility: hidden; white-space: nowrap; }
+  .rolodex-view { position: absolute; inset: 0; overflow: hidden; }
   .rolodex-track { display: flex; flex-direction: column; }
   .rolodex.turning .rolodex-track {
     transform: translateY(-50%);
     transition: transform .52s cubic-bezier(.9,.03,.69,.22);
   }
   .rolodex.snap, .rolodex.snap .rolodex-track { transition: none; }
-  .rolodex-word { display: block; height: 1.25em; white-space: nowrap; }
-  .rolodex-measure { position: absolute; visibility: hidden; left: 0; top: 0; }
+  /* Same font-size and line box as the gauge, so the word that shows lands
+     on exactly the gauge's baseline. */
+  .rolodex-word { display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; }
 
   /* ═══ THE ROUTE ══════════════════════════════════════════════════════
      A road traced off the terrain mesh behind the page — one of its
@@ -261,7 +272,7 @@
     <p class="kicker rise">Carve Route Planner</p>
     <h1 class="rise">Maps for the<br>Love of <em>Driving</em></h1>
     <p class="lede rise">Offline-ready navigation<br>for every
-      <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-track"><span class="rolodex-word">canyon</span><span class="rolodex-word" aria-hidden="true"></span></span></span></p>
+      <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-gauge" aria-hidden="true">countryside</span><span class="rolodex-view"><span class="rolodex-track"><span class="rolodex-word">canyon</span><span class="rolodex-word" aria-hidden="true"></span></span></span></span></p>
     <div class="cta rise" id="get">
       <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
       <p class="note">Available on iOS / CarPlay. Coming soon to Android.</p>
@@ -518,21 +529,24 @@
     var words = ["canyon", "backroad", "countryside", "coastline", "mountain"];
     var box = document.getElementById("rolodex");
     if (!box) return;
-    var track = box.firstElementChild;
+    var gauge = box.querySelector(".rolodex-gauge");
+    var track = box.querySelector(".rolodex-track");
     var current = track.children[0], incoming = track.children[1];
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var index = 0, settle = null;
 
-    function widthOf(word) {
-      var probe = document.createElement("span");
-      probe.className = "rolodex-word rolodex-measure";
-      probe.textContent = word;
-      box.appendChild(probe);
-      var width = probe.getBoundingClientRect().width;
-      probe.remove();
-      return width;
+    // Park the longest word in the gauge, so the slot is that wide for the
+    // whole cycle and nothing before it moves. Measured, not guessed, so a
+    // font swap or a change of font size can't leave a word clipped.
+    function fitWidest() {
+      var widest = words[0], max = 0;
+      words.forEach(function (word) {
+        gauge.textContent = word;
+        var width = gauge.getBoundingClientRect().width;
+        if (width > max) { max = width; widest = word; }
+      });
+      gauge.textContent = widest;
     }
-    function fit(word) { box.style.width = Math.ceil(widthOf(word)) + "px"; }
     function finish() {
       if (!box.classList.contains("turning")) return;
       clearTimeout(settle);
@@ -546,18 +560,17 @@
     function turn() {
       finish();
       index = (index + 1) % words.length;
-      if (reduce) { current.textContent = words[index]; fit(words[index]); return; }
+      if (reduce) { current.textContent = words[index]; return; }
       incoming.textContent = words[index];
-      fit(words[index]);
       box.classList.add("turning");
       settle = setTimeout(finish, 900);
     }
     track.addEventListener("transitionend", function (e) {
       if (e.propertyName === "transform") finish();
     });
-    window.addEventListener("resize", function () { fit(current.textContent); });
+    window.addEventListener("resize", fitWidest);
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
-      fit(words[0]);
+      fitWidest();
       setInterval(turn, 2600);
     });
   })();
