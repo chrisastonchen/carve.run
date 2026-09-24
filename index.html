@@ -6,7 +6,7 @@
 <title>Carve — Maps for the love of driving.</title>
 <meta name="description" content="Offline-ready route planning and navigation for the roads worth driving. Carve for iPhone and CarPlay.">
 <meta property="og:title" content="Carve — Maps for the love of driving.">
-<meta property="og:description" content="Offline-ready route planning and navigation for every canyon, backroad, and coastline.">
+<meta property="og:description" content="Offline-ready navigation for every canyon, backroad, and coastline.">
 <meta property="og:image" content="https://carve.run/assets/hero-night.jpg">
 <meta property="og:url" content="https://carve.run/">
 <meta name="theme-color" content="#FBF8EF">
@@ -21,22 +21,22 @@
 <meta name="apple-itunes-app" content="app-id=REPLACE_APP_STORE_ID">
 -->
 <style>
-  /* Centred hook, one photo, four features, pricing, a dark closing band.
+  /* Centred hook, the route, four features, pricing, a dark closing band.
      Copy budget: no body line over ~20 words. Tokens, fonts, nav,
      buttons, and footer live in /styles.css. */
 
   /* ═══ HOOK ═══════════════════════════════════════════════════════════ */
-  .hero { padding: 76px 0 0; text-align: center; }
+  .hero { padding: clamp(32px, 5vh, 72px) 0 0; text-align: center; }
   .hero-inner { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
   .kicker { font-size: 14px; letter-spacing: .2em; text-transform: uppercase; font-weight: 500; color: var(--ink-dim); }
-  .hero h1 { font-size: clamp(50px, 8.4vw, 108px); margin-top: 22px; }
+  .hero h1 { font-size: clamp(50px, 8.4vw, 104px); margin-top: clamp(12px, 2.2vh, 22px); }
   /* Broken by hand after "navigation", so the turning word always has a
      line of its own and the caption can't reflow as the words change width. */
   .lede {
     font-size: clamp(20px, 2.7vw, 27px); font-weight: 500; line-height: 1.38;
-    margin-top: 28px; text-wrap: balance;
+    margin-top: clamp(16px, 3vh, 28px); text-wrap: balance;
   }
-  .cta { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .cta { margin-top: clamp(20px, 3.4vh, 34px); display: flex; flex-direction: column; align-items: center; gap: 14px; }
   .note { font-size: 14px; color: var(--ink-dim); }
   /* a beat between each hero line */
   .hero-inner > :nth-child(2) { transition-delay: .08s; }
@@ -63,13 +63,16 @@
   .rolodex-measure { position: absolute; visibility: hidden; left: 0; top: 0; }
 
   /* ═══ THE ROUTE ══════════════════════════════════════════════════════
-     A road that comes in off the left, loops once, and runs off the
-     right — full-bleed, so it reads as a stretch of a much longer drive.
-     Its stops and waypoints ride on it, and the puck drives the loop for
-     as long as anyone watches. */
+     A road traced off the terrain mesh behind the page — one of its
+     wires, smoothed — running off both edges, so it reads as a stretch of
+     a much longer drive. Its stops and waypoints ride on it, and the puck
+     drives it for as long as anyone watches. */
   .ribbon-band {
     position: relative; width: 100%; overflow: hidden;
-    height: clamp(230px, 25vw, 380px); margin-top: 56px;
+    /* Height off the viewport's shorter constraint: on a wide-but-short
+       screen a width-only size pushed the road below the fold. */
+    height: clamp(200px, min(21vw, 26vh), 320px);
+    margin-top: clamp(20px, 3vh, 46px);
   }
   .ribbon { display: block; width: 100%; height: 100%; }
   .road-casing {
@@ -84,7 +87,7 @@
      used as a mask, so the markers and road names arrive with it. */
   .reveal {
     fill: none; stroke: #fff; stroke-width: 64; stroke-linecap: round;
-    stroke-dasharray: 2200; stroke-dashoffset: 2200;
+    stroke-dasharray: 1620; stroke-dashoffset: 1620;
     animation: drawRoad 2.8s cubic-bezier(.22,.61,.36,1) .25s forwards;
   }
   @keyframes drawRoad { to { stroke-dashoffset: 0; } }
@@ -97,11 +100,14 @@
   .pin.stop { fill: var(--stop); }
   .pin-num { fill: #fff; font-family: var(--sans); font-size: 17px; font-weight: 700; text-anchor: middle; }
   .wp { fill: var(--marker); stroke: var(--paper); stroke-width: 3.5; }
+  .puck { opacity: 0; animation: puckIn .7s ease 2.5s forwards; }
+  @keyframes puckIn { to { opacity: 1; } }
   .puck-halo { fill: var(--route); opacity: .18; }
-  .puck-dot { fill: var(--route); stroke: #fff; stroke-width: 2.5; }
+  .puck-dot { fill: var(--route); stroke: #fff; stroke-width: 5; }
   .puck-arrow { fill: #fff; }
   @media (prefers-reduced-motion: reduce) {
     .reveal { animation: none; stroke-dashoffset: 0; }
+    .puck { animation: none; opacity: 1; }
   }
 
   /* ═══ FEATURES ═══════════════════════════════════════════════════════ */
@@ -254,7 +260,7 @@
   <div class="wrap hero-inner">
     <p class="kicker rise">Carve Route Planner</p>
     <h1 class="rise">Maps for the<br>Love of <em>Driving</em></h1>
-    <p class="lede rise">Offline-ready route planning and navigation<br>for every
+    <p class="lede rise">Offline-ready navigation<br>for every
       <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-track"><span class="rolodex-word">canyon</span><span class="rolodex-word" aria-hidden="true"></span></span></span></p>
     <div class="cta rise" id="get">
       <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
@@ -267,7 +273,9 @@
          xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="ribbon-title">
       <title id="ribbon-title">A Carve route: a road that loops once and carries on, its stops and waypoints marked along the way</title>
       <defs>
-        <path id="road" fill="none" d="M -60 318 C 60 318, 200 292, 340 290 C 390 290, 430 250, 430 200 C 430 150, 390 110, 340 110 C 290 110, 250 150, 250 200 C 250 250, 290 290, 340 290 C 470 290, 560 262, 690 244 C 830 224, 880 150, 1010 168 C 1140 186, 1230 232, 1340 214 C 1420 201, 1460 180, 1500 150"/>
+        <!-- Traced off the terrain mesh behind the page: one of its wires,
+             followed left to right and smoothed into a road. -->
+        <path id="road" fill="none" d="M -60 169 C -40 167, 20 161, 60 157 C 100 154, 140 145, 179 147 C 219 148, 259 156, 299 165 C 339 173, 379 188, 419 197 C 459 206, 499 214, 539 220 C 578 225, 618 227, 658 230 C 699 232, 741 235, 782 234 C 822 233, 862 227, 901 222 C 941 218, 981 207, 1021 207 C 1061 206, 1101 213, 1141 220 C 1181 228, 1221 243, 1261 252 C 1300 261, 1340 269, 1380 274 C 1420 279, 1480 280, 1500 282"/>
         <mask id="reveal-road">
           <use class="reveal" href="#road" xlink:href="#road"/>
         </mask>
@@ -277,48 +285,53 @@
         <use class="road-casing" href="#road" xlink:href="#road"/>
         <use class="road-dash" href="#road" xlink:href="#road"/>
 
+        <!-- Names sit in the gaps the markers leave, so nothing collides. -->
         <text class="road-name" dy="-16">
-          <textPath href="#road" xlink:href="#road" startOffset="9%">Old La Honda Road</textPath>
+          <textPath href="#road" xlink:href="#road" startOffset="14.5%">Old La Honda Road</textPath>
         </text>
         <text class="road-name" dy="-16">
-          <textPath href="#road" xlink:href="#road" startOffset="50%">Skyline Boulevard</textPath>
+          <textPath href="#road" xlink:href="#road" startOffset="46%">Skyline Boulevard</textPath>
         </text>
         <text class="road-name" dy="-16">
-          <textPath href="#road" xlink:href="#road" startOffset="77%">Pacific Coast Highway</textPath>
+          <textPath href="#road" xlink:href="#road" startOffset="72%">Pacific Coast Highway</textPath>
         </text>
 
-        <circle class="wp" cx="253" cy="294" r="8.5"/>
-        <circle class="wp" cx="636" cy="252" r="8.5"/>
-        <circle class="wp" cx="990" cy="166" r="8.5"/>
-        <circle class="wp" cx="1394" cy="202" r="8.5"/>
+        <circle class="wp" cx="385" cy="188" r="8.5"/>
+        <circle class="wp" cx="570" cy="223" r="8.5"/>
+        <circle class="wp" cx="854" cy="228" r="8.5"/>
+        <circle class="wp" cx="1304" cy="261" r="8.5"/>
 
-        <g transform="translate(92 309)">
+        <g transform="translate(74 156)">
           <circle class="pin start" r="16"/>
           <path d="M -4 -7.5 V 7.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
           <path d="M -4 -7 L 6 -3.2 L -4 0.6 Z" fill="#fff"/>
         </g>
-        <g transform="translate(384 121)">
+        <g transform="translate(492 212)">
           <circle class="pin stop" r="17"/>
           <text class="pin-num" dy=".36em">1</text>
         </g>
-        <g transform="translate(793 217)">
+        <g transform="translate(963 213)">
           <circle class="pin stop" r="17"/>
           <text class="pin-num" dy=".36em">2</text>
         </g>
-        <g transform="translate(1191 206)">
+        <g transform="translate(1398 276)">
           <circle class="pin stop" r="17"/>
           <text class="pin-num" dy=".36em">3</text>
         </g>
 
-        <g class="puck">
-          <animateMotion dur="19s" repeatCount="indefinite" rotate="auto">
+      </g>
+
+      <!-- Outside the mask: the puck is wider than the band the reveal
+           uncovers, so it fades in once the road has finished drawing. -->
+      <g class="puck">
+        <g>
+          <animateMotion dur="15s" repeatCount="indefinite" rotate="auto">
             <mpath href="#road" xlink:href="#road"/>
           </animateMotion>
-          <circle class="puck-halo" r="25"/>
-          <circle class="puck-dot" r="14"/>
-          <path class="puck-arrow" d="M -4.5 -6 L 6.5 0 L -4.5 6 Z"/>
+          <circle class="puck-halo" r="50"/>
+          <circle class="puck-dot" r="28"/>
+          <path class="puck-arrow" d="M -9 -12 L 13 0 L -9 12 Z"/>
         </g>
-      </g>
     </svg>
   </div>
 </header>
