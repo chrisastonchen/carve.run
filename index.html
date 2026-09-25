@@ -154,7 +154,29 @@
     box-shadow: 0 26px 50px -26px rgba(21,24,28,.55);
   }
   .detail img { display: block; width: 100%; height: auto; }
-  .detail.tall { max-width: 420px; margin-inline: auto; }
+  /* Two crops of one screen, stacked: the card, then the map it sits on. */
+  .pair { display: grid; gap: 14px; max-width: 430px; margin-inline: auto; }
+
+  /* A phone's status bar, drawn rather than screenshotted, so it can say
+     the thing the section is about. */
+  .statusbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #0F1729; color: #fff; padding: 9px 16px 7px;
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+  }
+  .statusbar .no-service { display: inline-flex; align-items: center; gap: 7px; }
+  .statusbar svg { width: 15px; height: 15px; display: block; }
+
+  /* Other routes behind the one on top. */
+  .stack { position: relative; }
+  .stack-card {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    height: 44px; border-radius: 18px; background: #1B2637;
+    box-shadow: 0 14px 30px -20px rgba(21,24,28,.6);
+  }
+  .stack-card.one { width: 76%; top: -30px; background: #16202F; }
+  .stack-card.two { width: 88%; top: -15px; }
+  .stack .detail { position: relative; }
 
   /* CarPlay: the line-art dash, with the screenshot let into its screen.
      The screen's rectangle was measured off the drawing, so the two stay
@@ -239,7 +261,7 @@
     .feat h2 { margin-top: 14px; }
     .feat-copy p { margin-top: 14px; font-size: 17px; }
     .chip { margin-top: 16px; }
-    .detail.tall { max-width: 300px; }
+    .pair { max-width: 300px; }
     .also { padding-top: 32px; }
     .pricing { padding-top: 64px; }
     .price-head { margin-bottom: 24px; }
@@ -284,7 +306,7 @@
     <p class="kicker rise">Carve Route Planner</p>
     <h1 class="rise">Maps for the<br>Love of <em>Driving</em></h1>
     <p class="lede rise">Offline-ready navigation<br>for every
-      <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-gauge" aria-hidden="true">countryside</span><span class="rolodex-view"><span class="rolodex-track"><span class="rolodex-word">canyon</span><span class="rolodex-word" aria-hidden="true"></span></span></span></span></p>
+      <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-gauge" aria-hidden="true">countryside 🌾</span><span class="rolodex-view"><span class="rolodex-track"><span class="rolodex-word">mountain ⛰️</span><span class="rolodex-word" aria-hidden="true"></span></span></span></span></p>
     <div class="cta rise" id="get">
       <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
       <p class="note">Available on iOS and CarPlay. Android and Android&nbsp;Auto coming soon.</p>
@@ -371,9 +393,14 @@
       <div class="chip">Up to 30 stops &amp; route markers</div>
     </div>
     <div class="feat-art rise">
-      <figure class="detail tall">
-          <img src="/assets/detail-plan.jpg" alt="Carve&rsquo;s route preview: Woodside to Cambria, its stops listed in order, drive time, miles and the elevation profile" loading="lazy">
+      <div class="pair">
+        <figure class="detail">
+          <img src="/assets/detail-plan.jpg" alt="Carve&rsquo;s route preview: Big Sur, the slow way &mdash; a written description of the drive, its stops listed in order, and drive time, miles and the elevation profile" loading="lazy">
         </figure>
+        <figure class="detail">
+          <img src="/assets/detail-plan-map.jpg" alt="The same route on the map: the coast road traced from Carmel down to Julia Pfeiffer Burns, its stops numbered along the way" loading="lazy">
+        </figure>
+      </div>
     </div>
   </div>
 
@@ -387,8 +414,26 @@
     </div>
     <div class="feat-art rise">
       <figure class="detail">
-          <img src="/assets/detail-drive.jpg" alt="Carve&rsquo;s guidance banner: 3.4 miles to a right turn" loading="lazy">
-        </figure>
+        <div class="statusbar" aria-hidden="true">
+          <span>9:41</span>
+          <span class="no-service">No Service
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M2 2 L22 22" opacity=".9"/>
+              <path d="M4.5 9.5a12 12 0 0 1 5-2.9" opacity=".5"/>
+              <path d="M14.5 6.6a12 12 0 0 1 5 2.9" opacity=".5"/>
+              <path d="M8 13a7 7 0 0 1 2.4-1.5" opacity=".5"/>
+              <path d="M13.6 11.5A7 7 0 0 1 16 13" opacity=".5"/>
+              <circle cx="12" cy="17.5" r="1.1" fill="currentColor" stroke="none" opacity=".5"/>
+            </svg>
+            <svg viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="1" y="1" width="20" height="12" rx="3.5" opacity=".45"/>
+              <rect x="3" y="3" width="10" height="8" rx="2" fill="currentColor" stroke="none"/>
+              <path d="M23.5 5.2v3.6" stroke-linecap="round" opacity=".45"/>
+            </svg>
+          </span>
+        </div>
+        <img src="/assets/detail-drive.jpg" alt="Carve guiding a drive down the Big Sur coast with no signal: 3.4 miles to a right turn, the route drawn ahead on the map" loading="lazy">
+      </figure>
     </div>
   </div>
 
@@ -402,7 +447,7 @@
     </div>
     <div class="feat-art rise">
       <figure class="detail">
-          <img src="/assets/detail-return.jpg" alt="Off the route: Carve&rsquo;s orange banner says turn left onto Bixby Creek Bridge to get back on" loading="lazy">
+          <img src="/assets/detail-return.jpg" alt="Off the route: an orange banner says turn left onto Bixby Creek Bridge, and the map shows the way back to the road" loading="lazy">
         </figure>
     </div>
   </div>
@@ -410,15 +455,19 @@
   <div class="feat lilac flip" id="share">
     <div class="feat-copy rise">
       <div class="feat-kicker" style="--dot: var(--marker)"><i></i>Share</div>
-      <h2>Good roads<br>are worth sharing.</h2>
+      <h2>Great drives<br>are worth sharing.</h2>
       <p>One link carries the whole route. Friends open it in Carve and
          drive the same roads, the same stops.</p>
       <div class="chip">Same roads · same stops</div>
     </div>
     <div class="feat-art rise">
-      <figure class="detail">
-        <img src="/assets/detail-share.jpg" alt="A Carve route card: Skyline dawn patrol, 28.3 miles, one stop, downloaded, with Share and Go Now" loading="lazy">
-      </figure>
+      <div class="stack">
+        <span class="stack-card one" aria-hidden="true"></span>
+        <span class="stack-card two" aria-hidden="true"></span>
+        <figure class="detail">
+          <img src="/assets/detail-share.jpg" alt="A Carve route card: Skyline dawn patrol, 28.3 miles, one stop, downloaded, with Share and Go Now" loading="lazy">
+        </figure>
+      </div>
     </div>
   </div>
 
@@ -547,7 +596,7 @@
   // invisibly, to the top. A tab in the background may never fire
   // transitionend, so a timer finishes the turn if the event doesn't.
   (function () {
-    var words = ["canyon", "backroad", "countryside", "coastline", "mountain"];
+    var words = ["mountain ⛰️", "coastline 🌊", "countryside 🌾", "canyon 🏜️", "backroad 🏁"];
     var box = document.getElementById("rolodex");
     if (!box) return;
     var gauge = box.querySelector(".rolodex-gauge");
