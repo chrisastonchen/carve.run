@@ -154,8 +154,12 @@
     box-shadow: 0 26px 50px -26px rgba(21,24,28,.55);
   }
   .detail img { display: block; width: 100%; height: auto; }
-  /* Two crops of one screen, stacked: the card, then the map it sits on. */
-  .pair { display: grid; gap: 14px; max-width: 430px; margin-inline: auto; }
+  /* A screen recording, played once and silently: the library, the route's
+     card, then the whole drive on the map — more than a still could say.
+     It starts when it is scrolled to, not at load, or it would have run to
+     the end before anyone reached this far down. */
+  .detail.reel { max-width: 340px; margin-inline: auto; }
+  .detail video { display: block; width: 100%; height: auto; }
 
   /* A phone's status bar, drawn rather than screenshotted, so it can say
      the thing the section is about. */
@@ -262,7 +266,7 @@
     .feat h2 { margin-top: 14px; }
     .feat-copy p { margin-top: 14px; font-size: 17px; }
     .chip { margin-top: 16px; }
-    .pair { max-width: 300px; }
+    .detail.reel { max-width: 280px; }
     .also { padding-top: 32px; }
     .pricing { padding-top: 64px; }
     .price-head { margin-bottom: 24px; }
@@ -394,14 +398,13 @@
       <div class="chip">Up to 30 stops &amp; route markers</div>
     </div>
     <div class="feat-art rise">
-      <div class="pair">
-        <figure class="detail">
-          <img src="/assets/detail-plan.jpg" alt="Carve&rsquo;s route preview: Big Sur, the slow way &mdash; a written description of the drive, its stops listed in order, and drive time, miles and the elevation profile" loading="lazy">
-        </figure>
-        <figure class="detail">
-          <img src="/assets/detail-plan-map.jpg" alt="The same route on the map: the coast road traced from Carmel down to Julia Pfeiffer Burns, its stops numbered along the way" loading="lazy">
-        </figure>
-      </div>
+      <figure class="detail reel">
+        <video poster="/assets/route-preview-poster.jpg" width="640" height="1392"
+               muted playsinline preload="metadata"
+               aria-label="Opening a saved route in Carve: the library, then Big Sur, the slow way with its description, stops, drive time and elevation, then the whole route on the map">
+          <source src="/assets/route-preview.mp4" type="video/mp4">
+        </video>
+      </figure>
     </div>
   </div>
 
@@ -584,12 +587,34 @@
   if (APP_URL) {
     document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = APP_URL; });
   }
-  // The puck's travel is SMIL, which no media query reaches — so park it
-  // at the start of the road when motion isn't wanted.
+  // Two kinds of motion no media query reaches: the puck's travel is SMIL,
+  // and the loop plays itself. Park both when motion isn't wanted — the
+  // video falls back to its poster, which is its own first frame.
   (function () {
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     var svg = document.querySelector(".ribbon");
     if (svg && svg.pauseAnimations) svg.pauseAnimations();
+    document.querySelectorAll("video").forEach(function (v) {
+      v.dataset.hold = "1";
+      v.pause();
+      v.currentTime = 0;
+    });
+  })();
+  // Play each loop once, the first time it comes into view. A failed play()
+  // (a data saver, a policy) simply leaves the poster up.
+  (function () {
+    var videos = document.querySelectorAll(".detail video");
+    if (!videos.length || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        if (e.target.dataset.hold) return;
+        var playing = e.target.play();
+        if (playing && playing.catch) playing.catch(function () {});
+      });
+    }, { threshold: .35 });
+    videos.forEach(function (v) { io.observe(v); });
   })();
   // The rolodex. Every turn queues the next word under the current one,
   // sizes the box for it, and slides the pair up a slot; when the slide
