@@ -127,6 +127,9 @@
   @media (min-width: 900px) {
     .feat { grid-template-columns: 1.05fr .95fr; gap: 56px; padding: 64px 72px; }
     .feat.flip .feat-copy { order: 2; } .feat.flip .feat-art { order: 1; }
+    /* The dash is 16:9 — it needs the whole card, not a column. */
+    .feat.wide { grid-template-columns: 1fr; gap: 40px; justify-items: center; text-align: center; }
+    .feat.wide .feat-copy p { margin-inline: auto; }
   }
   .feat.mint { background: var(--mint); } .feat.sky { background: var(--sky); }
   .feat.peach { background: var(--peach); } .feat.lilac { background: var(--lilac); }
@@ -143,18 +146,27 @@
     background: rgba(255,255,255,.45);
   }
 
-  /* phone frame around a real screenshot (iPhone 17 Pro, 1206×2622) */
-  .phone {
-    width: min(300px, 82%); margin: 0 auto; background: #15181C; border-radius: 44px;
-    padding: 11px; box-shadow: 0 30px 60px -20px rgba(21,24,28,.45);
-    transform: rotate(-2.5deg);
+  /* A piece of the app rather than a whole phone: four screenshots cropped
+     to the part that makes the point, each its own shape. Five identical
+     handsets in a row said the same thing five times. */
+  .detail {
+    margin: 0; border-radius: 20px; overflow: hidden; background: #0A0E14;
+    box-shadow: 0 26px 50px -26px rgba(21,24,28,.55);
   }
-  .phone.tilt-right { transform: rotate(2.5deg); }
-  /* The screen carries the screenshot's exact aspect, so nothing is cropped
-     at the edges — the bezel is added around it, not taken out of it. */
-  .phone-screen { width: 100%; aspect-ratio: 1206 / 2622; border-radius: 34px; overflow: hidden;
-                  position: relative; background: #0A0E14; }
-  .phone-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .detail img { display: block; width: 100%; height: auto; }
+  .detail.tall { max-width: 420px; margin-inline: auto; }
+
+  /* CarPlay: the line-art dash, with the screenshot let into its screen.
+     The screen's rectangle was measured off the drawing, so the two stay
+     registered at any width. The shot is 5:3 and the screen is wider, so
+     it sits centred on its own black rather than being cropped. */
+  .dash { position: relative; width: 100%; }
+  .dash > img { display: block; width: 100%; height: auto; }
+  .dash-screen {
+    position: absolute; left: 11.85%; top: 23.08%; width: 72.07%; height: 61.73%;
+    background: #0B0E12; border-radius: 10px; overflow: hidden;
+  }
+  .dash-screen img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
   /* ── everything else, one row of chips ── */
   .also { padding: 44px 0 0; text-align: center; }
@@ -227,7 +239,7 @@
     .feat h2 { margin-top: 14px; }
     .feat-copy p { margin-top: 14px; font-size: 17px; }
     .chip { margin-top: 16px; }
-    .phone { width: min(260px, 78%); }
+    .detail.tall { max-width: 300px; }
     .also { padding-top: 32px; }
     .pricing { padding-top: 64px; }
     .price-head { margin-bottom: 24px; }
@@ -275,7 +287,7 @@
       <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-gauge" aria-hidden="true">countryside</span><span class="rolodex-view"><span class="rolodex-track"><span class="rolodex-word">canyon</span><span class="rolodex-word" aria-hidden="true"></span></span></span></span></p>
     <div class="cta rise" id="get">
       <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
-      <p class="note">Available on iOS / CarPlay. Coming soon to Android.</p>
+      <p class="note">Available on iOS and CarPlay. Android and Android&nbsp;Auto coming soon.</p>
     </div>
   </div>
 
@@ -359,11 +371,9 @@
       <div class="chip">Up to 30 stops &amp; route markers</div>
     </div>
     <div class="feat-art rise">
-      <div class="phone">
-        <div class="phone-screen">
-          <img src="/assets/shot-plan.jpg" alt="Carve&rsquo;s route preview: Big Sur, the slow way, traced along the coast with its stops numbered" width="640" height="1391" loading="lazy">
-        </div>
-      </div>
+      <figure class="detail tall">
+          <img src="/assets/detail-plan.jpg" alt="Carve&rsquo;s route preview: Woodside to Cambria, its stops listed in order, drive time, miles and the elevation profile" loading="lazy">
+        </figure>
     </div>
   </div>
 
@@ -376,11 +386,9 @@
       <div class="chip">Offline maps · voice directions</div>
     </div>
     <div class="feat-art rise">
-      <div class="phone tilt-right">
-        <div class="phone-screen">
-          <img src="/assets/shot-drive.jpg" alt="Carve guiding a drive down the Big Sur coast: 3.4 miles to a right turn, next stop Nepenthe" width="640" height="1391" loading="lazy">
-        </div>
-      </div>
+      <figure class="detail">
+          <img src="/assets/detail-drive.jpg" alt="Carve&rsquo;s guidance banner: 3.4 miles to a right turn" loading="lazy">
+        </figure>
     </div>
   </div>
 
@@ -393,11 +401,9 @@
       <div class="chip">No automatic shortcuts</div>
     </div>
     <div class="feat-art rise">
-      <div class="phone">
-        <div class="phone-screen">
-          <img src="/assets/shot-return.jpg" alt="Off the route: Carve&rsquo;s orange banner says head back to your route, 1.4 miles, with a pointer to the road" width="640" height="1391" loading="lazy">
-        </div>
-      </div>
+      <figure class="detail">
+          <img src="/assets/detail-return.jpg" alt="Off the route: Carve&rsquo;s orange banner says turn left onto Bixby Creek Bridge to get back on" loading="lazy">
+        </figure>
     </div>
   </div>
 
@@ -410,10 +416,26 @@
       <div class="chip">Same roads · same stops</div>
     </div>
     <div class="feat-art rise">
-      <div class="phone tilt-right">
-        <div class="phone-screen">
-          <img src="/assets/shot-share.jpg" alt="The Carve library: saved routes as map cards, each downloaded for offline, with Share and Go Now" width="640" height="1391" loading="lazy">
-        </div>
+      <figure class="detail">
+        <img src="/assets/detail-share.jpg" alt="A Carve route card: Skyline dawn patrol, 28.3 miles, one stop, downloaded, with Share and Go Now" loading="lazy">
+      </figure>
+    </div>
+  </div>
+
+  <div class="feat sky wide" id="carplay">
+    <div class="feat-copy rise">
+      <div class="feat-kicker" style="--dot: var(--route)"><i></i>CarPlay</div>
+      <h2>Your route, on the dash.</h2>
+      <p>The same roads, the same stops, the same voice &mdash; on the
+         screen that&rsquo;s already in the car.</p>
+      <div class="chip">Android &amp; Android&nbsp;Auto coming soon</div>
+    </div>
+    <div class="feat-art rise">
+      <div class="dash">
+        <img src="/assets/dash.png" alt="" width="920" height="520" loading="lazy">
+        <span class="dash-screen">
+          <img src="/assets/shot-carplay.jpg" alt="Carve on a car&rsquo;s CarPlay screen: 91 feet to drive west, the route ahead drawn on the map" width="800" height="480" loading="lazy">
+        </span>
       </div>
     </div>
   </div>
@@ -425,7 +447,6 @@
   <div class="wrap">
     <span class="also-label">Also on board</span>
     <ul class="chips">
-      <li>CarPlay</li>
       <li>Voice guidance</li>
       <li>Import Google&nbsp;Maps stops</li>
       <li>Elevation profiles</li>
@@ -488,7 +509,7 @@
       <p>Plan the roads you love, drive them without a signal, and bring your friends along.</p>
       <div class="cta">
         <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
-        <p class="note">Available on iOS / CarPlay. Coming soon to Android.</p>
+        <p class="note">Available on iOS and CarPlay. Android and Android&nbsp;Auto coming soon.</p>
       </div>
     </div>
   </div>
