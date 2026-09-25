@@ -167,15 +167,16 @@
   .statusbar .no-service { display: inline-flex; align-items: center; gap: 7px; }
   .statusbar svg { width: 15px; height: 15px; display: block; }
 
-  /* Other routes behind the one on top. */
-  .stack { position: relative; }
+  /* Other routes behind the one on top. The fan hangs inside the box's
+     own padding, so the section's spacing below it still holds. */
+  .stack { position: relative; padding-bottom: 32px; }
   .stack-card {
     position: absolute; left: 50%; transform: translateX(-50%);
     height: 44px; border-radius: 18px; background: #1B2637;
     box-shadow: 0 14px 30px -20px rgba(21,24,28,.6);
   }
-  .stack-card.one { width: 76%; bottom: -30px; background: #16202F; }
-  .stack-card.two { width: 88%; bottom: -15px; }
+  .stack-card.one { width: 76%; bottom: 0; background: #16202F; }
+  .stack-card.two { width: 88%; bottom: 16px; }
   .stack .detail { position: relative; }
 
   /* CarPlay: the line-art dash, with the screenshot let into its screen.
