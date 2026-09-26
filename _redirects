@@ -3,3 +3,7 @@
 # links open the app directly.
 /r/* /r/index.html 200
 /r /r/index.html 200
+# Short links: a bare token is the whole path. Ten characters from the
+# app's alphabet can't spell a real page or file (no dots, no underscores),
+# and the real pages above this line resolve first.
+/:token /r/index.html 200

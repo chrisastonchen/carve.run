@@ -2,9 +2,52 @@
     "applinks": {
         "details": [
             {
-                "appIDs": ["242SBHS7RS.chenstack.Carve"],
+                "appIDs": [
+                    "242SBHS7RS.chenstack.Carve"
+                ],
                 "components": [
-                    { "/": "/r*", "comment": "Carve route share links" }
+                    {
+                        "/": "/r*",
+                        "comment": "Long links: /r/<token>?d=<route>"
+                    },
+                    {
+                        "/": "/privacy*",
+                        "exclude": true,
+                        "comment": "The site's pages stay in Safari"
+                    },
+                    {
+                        "/": "/terms*",
+                        "exclude": true
+                    },
+                    {
+                        "/": "/support*",
+                        "exclude": true
+                    },
+                    {
+                        "/": "/assets*",
+                        "exclude": true
+                    },
+                    {
+                        "/": "/styles.css",
+                        "exclude": true,
+                        "comment": "Root files that are also ten characters"
+                    },
+                    {
+                        "/": "/index.html",
+                        "exclude": true
+                    },
+                    {
+                        "/": "/_redirects",
+                        "exclude": true
+                    },
+                    {
+                        "/": "/??????????",
+                        "comment": "Short links: carve.run/<ten-character token>"
+                    },
+                    {
+                        "/": "/????????????????????????????????",
+                        "comment": "Tokens minted before 2026-09-26: thirty-two hex characters"
+                    }
                 ]
             }
         ]

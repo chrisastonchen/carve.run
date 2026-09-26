@@ -74,11 +74,13 @@
   // From the path on hosts that rewrite /r/<token> here, from ?t= when the
   // 404 page forwarded it (GitHub Pages).
   const token = location.pathname.split("/").filter(Boolean)[1] || params.get("t");
-  if (payload) {
+  if (payload || token) {
     const open = document.getElementById("open");
     open.hidden = false;
-    open.href = "carve://route?d=" + encodeURIComponent(payload)
-      + (token ? "&t=" + encodeURIComponent(token) : "");
+    const query = payload
+      ? "d=" + encodeURIComponent(payload) + (token ? "&t=" + encodeURIComponent(token) : "")
+      : "t=" + encodeURIComponent(token);   // a short link: the app redeems the token
+    open.href = "carve://route?" + query;
   }
 </script>
 </body>

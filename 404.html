@@ -14,9 +14,18 @@
   // _redirects for the same job and never reach this page.)
   (function () {
     var parts = location.pathname.split("/").filter(Boolean);
+    var params = new URLSearchParams(location.search);
+    // The long form's path: /r/<token>?d=<route>.
     if (parts[0] === "r") {
-      var params = new URLSearchParams(location.search);
       if (parts[1] && !params.get("t")) params.set("t", parts[1]);
+      location.replace("/r/?" + params.toString());
+      return;
+    }
+    // A short link: the whole path is the token — ten characters from the
+    // app's look-alike-free alphabet (RouteShareCodec.tokenAlphabet), or
+    // the thirty-two hex characters of one minted before 2026-09-26.
+    if (parts.length === 1 && /^([2-9a-kmnp-zA-HJ-NP-Z]{10}|[0-9a-fA-F]{32})$/.test(parts[0])) {
+      params.set("t", parts[0]);
       location.replace("/r/?" + params.toString());
     }
   })();
