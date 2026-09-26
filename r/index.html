@@ -99,16 +99,13 @@
   // redeeming a share token, which is exactly what this page is for.
   const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
-  // The map needs a Mapbox public token, and this file is in a public
-  // repo — GitHub's push protection blocks Mapbox tokens outright, which is
-  // the correct answer for a key that can be spent. Empty, the page draws
-  // the route's own shape instead, which needs nothing.
-  //
-  // To turn the map on: either paste a token restricted to carve.run here
-  // and allow it past push protection, or point MAP_ENDPOINT at a proxy
-  // that holds the token server-side and leave this empty.
-  const MAPBOX_TOKEN = "";
-  const MAP_ENDPOINT = "https://api.mapbox.com";
+  // The map comes from carve.run/map/<token>, a Cloudflare Worker that
+  // holds the Mapbox token as a secret and caches what it fetches
+  // (cloudflare/map-worker.js). Nothing to lift from this page, every
+  // request same-origin so Cloudflare's rules can see it, and a link opened
+  // forty times costs one Mapbox request. Until that route exists the image
+  // 404s and the page draws the route's own shape instead.
+  const MAP_PATH = "/map/";
 
   // Try the app, fall back to the store. There is no way to ask iOS
   // whether an app is installed, so the scheme is attempted and the store
@@ -193,51 +190,16 @@
     return true;
   }
 
-  /// Google's polyline encoding, which is how the Static Images API takes a
-  /// path without putting every coordinate in the URL.
-  function encodePolyline(points) {
-    let lastLat = 0, lastLon = 0, out = "";
-    const chunk = (value) => {
-      let v = value < 0 ? ~(value << 1) : (value << 1);
-      let s = "";
-      while (v >= 0x20) { s += String.fromCharCode((0x20 | (v & 0x1f)) + 63); v >>= 5; }
-      return s + String.fromCharCode(v + 63);
-    };
-    for (const p of points) {
-      const lat = Math.round(p[0] * 1e5), lon = Math.round(p[1] * 1e5);
-      out += chunk(lat - lastLat) + chunk(lon - lastLon);
-      lastLat = lat; lastLon = lon;
-    }
-    return out;
-  }
 
-  /// A frozen path can be thousands of points and the URL has a limit; at
-  /// this size the line is still the road's shape.
-  function thin(points, most) {
-    if (points.length <= most) return points;
-    const step = (points.length - 1) / (most - 1);
-    const out = [];
-    for (let i = 0; i < most; i++) out.push(points[Math.round(i * step)]);
-    return out;
-  }
 
-  /// The route on a real map. Overlays draw in the order they are listed,
-  /// so the pins come after the line.
-  function mapURL(route) {
-    if (!MAPBOX_TOKEN || !route.points || route.points.length < 2) return null;
-    const overlays = ["path-5+2e92ff-1(" + encodeURIComponent(encodePolyline(thin(route.points, 260))) + ")"];
-    const pin = (colour, point) => "pin-s+" + colour + "(" + point[1].toFixed(5) + "," + point[0].toFixed(5) + ")";
-    (route.stopPoints || []).slice(0, 12).forEach(s => overlays.push(pin("e4731c", s)));
-    overlays.push(pin("2e9e52", route.points[0]));
-    overlays.push(pin("ffffff", route.points[route.points.length - 1]));
-    return MAP_ENDPOINT + "/styles/v1/mapbox/outdoors-v12/static/"
-      + overlays.join(",") + "/auto/640x480@2x?padding=48&access_token=" + MAPBOX_TOKEN;
+  function mapURL() {
+    return token ? MAP_PATH + encodeURIComponent(token) : null;
   }
 
   /// The map if it comes, the drawn shape if it doesn't — offline, or a
   /// token that has stopped working, still leaves the route recognisable.
   function drawRoute(route) {
-    const url = mapURL(route);
+    const url = mapURL();
     if (!url) return drawShape(route.points, route.stopPoints);
     const image = new Image();
     image.alt = "";
