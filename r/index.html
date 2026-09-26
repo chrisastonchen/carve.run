@@ -27,12 +27,16 @@
      it in APP_STORE_ID below and the bar appears; until then there is
      nothing to point it at. -->
 <style>
-  .route { max-width: 460px; margin: 0 auto; padding: 8px 24px 64px; text-align: center; }
+  /* No outline here: the page is one card already, and a box around the
+     wordmark made it a second one. */
+  nav.top .bar { border: none; background: transparent; padding-left: 0; }
+    .route { max-width: 460px; margin: 0 auto; padding: 8px 24px 64px; text-align: center; }
   .shape {
     position: relative; background: #0E1319; border-radius: 22px;
     border: 2px solid var(--ink); overflow: hidden; aspect-ratio: 4 / 3;
   }
-  .shape svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .shape svg, .shape img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .shape img { object-fit: cover; }
   .shape .waiting {
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
     color: #5D636C; font-size: 14px;
@@ -70,7 +74,7 @@
   <h1 id="name">A Carve route</h1>
   <div class="stats" id="stats" hidden></div>
   <p class="shared" id="shared">Someone shared a driving route with you.</p>
-  <a class="btn btn-primary btn-lg" id="cta" href="#"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get Carve</a>
+  <a class="btn btn-primary btn-lg" id="cta" href="#"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Continue in App</a>
   <p class="fine">Carve plans drives on the roads worth taking and keeps them on your
      phone for when the signal goes. Open this link again once you have the app
      and the route is yours.</p>
@@ -95,8 +99,39 @@
   // redeeming a share token, which is exactly what this page is for.
   const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
+  // The map needs a Mapbox public token, and this file is in a public
+  // repo — GitHub's push protection blocks Mapbox tokens outright, which is
+  // the correct answer for a key that can be spent. Empty, the page draws
+  // the route's own shape instead, which needs nothing.
+  //
+  // To turn the map on: either paste a token restricted to carve.run here
+  // and allow it past push protection, or point MAP_ENDPOINT at a proxy
+  // that holds the token server-side and leave this empty.
+  const MAPBOX_TOKEN = "";
+  const MAP_ENDPOINT = "https://api.mapbox.com";
 
-  document.getElementById("cta").href = APP_STORE_URL;
+  // Try the app, fall back to the store. There is no way to ask iOS
+  // whether an app is installed, so the scheme is attempted and the store
+  // follows unless the page goes away — which is what happens when the app
+  // takes over. Without that check the store would open behind the app,
+  // waiting on return.
+  const cta = document.getElementById("cta");
+  cta.href = APP_STORE_URL;
+  cta.addEventListener("click", function (event) {
+    if (!token && !payload) return;   // nothing to open: let the store link work
+    event.preventDefault();
+    let left = false;
+    const leaving = function () { left = true; };
+    window.addEventListener("pagehide", leaving, { once: true });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) leaving();
+    }, { once: true });
+    const query = (payload ? "d=" + encodeURIComponent(payload) : "")
+      + (payload && token ? "&" : "")
+      + (token ? "t=" + encodeURIComponent(token) : "");
+    setTimeout(function () { if (!left) location.href = APP_STORE_URL; }, 1500);
+    location.href = "carve://route?" + query;
+  });
   if (APP_STORE_ID) {
     const meta = document.createElement("meta");
     meta.name = "apple-itunes-app";
@@ -158,6 +193,64 @@
     return true;
   }
 
+  /// Google's polyline encoding, which is how the Static Images API takes a
+  /// path without putting every coordinate in the URL.
+  function encodePolyline(points) {
+    let lastLat = 0, lastLon = 0, out = "";
+    const chunk = (value) => {
+      let v = value < 0 ? ~(value << 1) : (value << 1);
+      let s = "";
+      while (v >= 0x20) { s += String.fromCharCode((0x20 | (v & 0x1f)) + 63); v >>= 5; }
+      return s + String.fromCharCode(v + 63);
+    };
+    for (const p of points) {
+      const lat = Math.round(p[0] * 1e5), lon = Math.round(p[1] * 1e5);
+      out += chunk(lat - lastLat) + chunk(lon - lastLon);
+      lastLat = lat; lastLon = lon;
+    }
+    return out;
+  }
+
+  /// A frozen path can be thousands of points and the URL has a limit; at
+  /// this size the line is still the road's shape.
+  function thin(points, most) {
+    if (points.length <= most) return points;
+    const step = (points.length - 1) / (most - 1);
+    const out = [];
+    for (let i = 0; i < most; i++) out.push(points[Math.round(i * step)]);
+    return out;
+  }
+
+  /// The route on a real map. Overlays draw in the order they are listed,
+  /// so the pins come after the line.
+  function mapURL(route) {
+    if (!MAPBOX_TOKEN || !route.points || route.points.length < 2) return null;
+    const overlays = ["path-5+2e92ff-1(" + encodeURIComponent(encodePolyline(thin(route.points, 260))) + ")"];
+    const pin = (colour, point) => "pin-s+" + colour + "(" + point[1].toFixed(5) + "," + point[0].toFixed(5) + ")";
+    (route.stopPoints || []).slice(0, 12).forEach(s => overlays.push(pin("e4731c", s)));
+    overlays.push(pin("2e9e52", route.points[0]));
+    overlays.push(pin("ffffff", route.points[route.points.length - 1]));
+    return MAP_ENDPOINT + "/styles/v1/mapbox/outdoors-v12/static/"
+      + overlays.join(",") + "/auto/640x480@2x?padding=48&access_token=" + MAPBOX_TOKEN;
+  }
+
+  /// The map if it comes, the drawn shape if it doesn't — offline, or a
+  /// token that has stopped working, still leaves the route recognisable.
+  function drawRoute(route) {
+    const url = mapURL(route);
+    if (!url) return drawShape(route.points, route.stopPoints);
+    const image = new Image();
+    image.alt = "";
+    image.onload = function () {
+      const shape = document.getElementById("shape");
+      shape.innerHTML = "";
+      shape.appendChild(image);
+    };
+    image.onerror = function () { drawShape(route.points, route.stopPoints); };
+    image.src = url;
+    return true;
+  }
+
   function show(route) {
     if (!route) return false;
     if (route.name) {
@@ -173,7 +266,7 @@
       stats.innerHTML = bits.map(b => "<span>" + b + "</span>").join("");
       stats.hidden = false;
     }
-    const drawn = drawShape(route.points, route.stopPoints);
+    const drawn = drawRoute(route);
     if (!drawn) document.getElementById("waiting").textContent = "";
     return true;
   }
