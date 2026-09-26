@@ -3,7 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carve Route</title>
+<title>A Carve route</title>
+<meta name="description" content="Someone shared a driving route with you. Open it in Carve to drive it turn by turn, with the map and every turn downloaded before you go.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Carve">
+<meta property="og:title" content="A Carve route">
+<meta property="og:description" content="Someone shared a driving route with you — open it in Carve.">
+<meta property="og:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cars on a canyon road at sunset">
+<meta property="og:url" content="https://carve.run/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A Carve route">
+<meta name="twitter:description" content="Someone shared a driving route with you — open it in Carve.">
+<meta name="twitter:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
+<meta name="theme-color" content="#15181C">
 <!-- Once the app is on the App Store, put its numeric id here and uncomment:
      Safari then shows the native "open in App Store" banner on this page.
 <meta name="apple-itunes-app" content="app-id=REPLACE_APP_STORE_ID">
@@ -73,7 +88,11 @@
   // universal links). Rebuild the custom-scheme form from this URL.
   // From the path on hosts that rewrite /r/<token> here, from ?t= when the
   // 404 page forwarded it (GitHub Pages).
-  const token = location.pathname.split("/").filter(Boolean)[1] || params.get("t");
+  // The token sits in a different place in each link form: the whole path
+  // of a short link, the second segment of an /r/<token> one, or ?t= when
+  // the 404 page forwarded it.
+  const segments = location.pathname.split("/").filter(Boolean);
+  const token = (segments[0] === "r" ? segments[1] : segments[0]) || params.get("t");
   if (payload || token) {
     const open = document.getElementById("open");
     open.hidden = false;
