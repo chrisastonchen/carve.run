@@ -251,7 +251,7 @@
     return true;
   }
 
-  function show(route) {
+  function show(route, withMap) {
     if (!route) return false;
     if (route.name) {
       document.getElementById("name").textContent = route.name;
@@ -266,7 +266,10 @@
       stats.innerHTML = bits.map(b => "<span>" + b + "</span>").join("");
       stats.hidden = false;
     }
-    const drawn = drawRoute(route);
+    // One Mapbox request per page view, not two: the embedded payload's
+    // pass draws the free shape, and only the backend's — which is the
+    // version worth showing — asks for the map.
+    const drawn = withMap ? drawRoute(route) : drawShape(route.points, route.stopPoints);
     if (!drawn) document.getElementById("waiting").textContent = "";
     return true;
   }
@@ -329,10 +332,12 @@
     // The backend has the current version; the payload is the fallback, and
     // is shown first when present so the page isn't blank while we ask.
     const embedded = fromPayload();
-    if (embedded) show(embedded);
+    if (embedded) show(embedded, false);
     const fresh = await fromBackend();
     if (fresh) {
-      show(fresh);
+      show(fresh, true);
+    } else if (embedded) {
+      drawRoute(embedded);
     } else if (!embedded) {
       document.getElementById("waiting").textContent = "This route couldn’t be loaded.";
       document.getElementById("shared").textContent =
