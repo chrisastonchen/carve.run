@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "run.carve.app",
+      "sha256_cert_fingerprints": [
+        "88:AE:B6:6D:60:9F:44:02:AD:14:84:A4:5C:36:E0:8E:90:6E:69:9B:41:3D:4C:27:7E:E5:36:61:B3:44:68:82"
+      ]
+    }
+  }
+]
