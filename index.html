@@ -2,212 +2,176 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carve — Maps for the love of driving.</title>
-<meta name="description" content="Offline-ready route planning and navigation for the roads worth driving. Carve for iPhone and CarPlay.">
-<meta property="og:title" content="Carve — Maps for the love of driving.">
-<meta property="og:description" content="Offline-ready navigation for every canyon, backroad, and coastline.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carve — For the love of driving.</title>
+<meta name="description" content="Plan routes and drive the exact roads you want — offline, with CarPlay and Android Auto. Carve for iPhone and Android.">
+<meta property="og:title" content="Carve — For the love of driving.">
+<meta property="og:description" content="Plan routes. Drive the exact roads you want. For iPhone and CarPlay, Android and Android Auto.">
 <meta property="og:image" content="https://carve.run/assets/hero-night.jpg?v=d68c427aa3">
 <meta property="og:url" content="https://carve.run/">
-<meta name="theme-color" content="#FBF8EF">
+<meta name="theme-color" content="#1D5B3A">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
-<link rel="preload" href="/assets/fonts/newsreader.woff2?v=662a6e2a1a" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/newsreader-italic.woff2?v=3c4f766e09" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=3e6d22f7f9">
 <!-- Once Carve is on the App Store, put its numeric id here and uncomment
      so Safari shows the native banner:
 <meta name="apple-itunes-app" content="app-id=REPLACE_APP_STORE_ID">
 -->
 <style>
-  /* Centred hook, the route, four features, pricing, a dark closing band.
-     Copy budget: no body line over ~20 words. Tokens, fonts, nav,
-     buttons, and footer live in /styles.css?v=3e6d22f7f9. */
+  /* The App Store listing, as a page (2026-10-04): the aerial road and
+     "For the love of driving." on one side, the app on a deep green on the
+     other, its six screens in the store's words; then pricing and the
+     closing band. Figtree throughout. Shared tokens, footer and motion live
+     in /styles.css?v=3e6d22f7f9. */
 
-  /* ═══ HOOK ═══════════════════════════════════════════════════════════ */
-  .hero { padding: clamp(32px, 5vh, 72px) 0 0; text-align: center; }
-  .hero-inner { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-  .kicker { font-size: 14px; letter-spacing: .2em; text-transform: uppercase; font-weight: 500; color: var(--ink-dim); }
-  .hero h1 { font-size: clamp(50px, 8.4vw, 104px); margin-top: clamp(12px, 2.2vh, 22px); }
-  /* Broken by hand after "navigation", so the turning word always has a
-     line of its own and the caption can't reflow as the words change width. */
-  .lede {
-    font-size: clamp(20px, 2.7vw, 27px); font-weight: 500; line-height: 1.38;
-    margin-top: clamp(16px, 3vh, 28px); text-wrap: balance;
+  :root { --green: #1D5B3A; --green-deep: #174B30; }
+  /* One typeface on this page, like the store's images. Figtree has no
+     italic, so emphasis keeps its weight rather than a fake slant. */
+  .landing h1, .landing h2, .landing h3 {
+    font-family: var(--sans); font-weight: 700; letter-spacing: -0.025em; line-height: 1.08;
   }
-  .cta { margin-top: clamp(20px, 3.4vh, 34px); display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .note { font-size: 14px; color: var(--ink-dim); }
-  /* a beat between each hero line */
-  .hero-inner > :nth-child(2) { transition-delay: .08s; }
-  .hero-inner > :nth-child(3) { transition-delay: .16s; }
-  .hero-inner > :nth-child(4) { transition-delay: .24s; }
+  .landing em { font-style: normal; }
 
-  /* The rolodex: one word showing, the next queued underneath. A turn
-     slides the pair up one slot — slow to leave, gone in a blink. Serif
-     italic, like the headline's "Driving".
-
-     The slot is held at the width of the longest word for the whole
-     cycle. It used to size itself to each word, which meant a centred
-     line re-centred on every turn and "for every" slid left and right
-     under a word that was supposed to be the only thing moving. */
-  .rolodex {
-    display: inline-block; position: relative; text-align: left;
-    font-family: var(--serif); font-style: italic; font-size: 1.14em;
-    font-weight: 500; line-height: 1.3;
-  }
-  /* An invisible line of real text holding the longest word. It gives the
-     slot both its width and — because it is the only thing in normal flow
-     — its baseline. Clipping the slot itself would have handed the
-     inline-block a baseline at its bottom edge, which is why the word used
-     to ride above the sentence it sits in. */
-  .rolodex-gauge { display: block; visibility: hidden; white-space: nowrap; }
-  .rolodex-view { position: absolute; inset: 0; overflow: hidden; }
-  .rolodex-track { display: flex; flex-direction: column; }
-  .rolodex.turning .rolodex-track {
-    transform: translateY(-50%);
-    transition: transform .52s cubic-bezier(.9,.03,.69,.22);
-  }
-  .rolodex.snap, .rolodex.snap .rolodex-track { transition: none; }
-  /* Same font-size and line box as the gauge, so the word that shows lands
-     on exactly the gauge's baseline. */
-  .rolodex-word { display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; }
-
-  /* ═══ THE ROUTE ══════════════════════════════════════════════════════
-     A road traced off the terrain mesh behind the page — one of its
-     wires, smoothed — running off both edges, so it reads as a stretch of
-     a much longer drive. Its stops and waypoints ride on it, and the puck
-     drives it for as long as anyone watches. */
-  .ribbon-band {
-    position: relative; width: 100%; overflow: hidden;
-    /* Height off the viewport's shorter constraint: on a wide-but-short
-       screen a width-only size pushed the road below the fold. */
-    height: clamp(200px, min(21vw, 26vh), 320px);
-    margin-top: clamp(20px, 3vh, 46px);
-  }
-  .ribbon { display: block; width: 100%; height: 100%; }
-  .road-casing {
-    fill: none; stroke: var(--asphalt); stroke-width: 17;
-    stroke-linecap: round; stroke-linejoin: round;
-  }
-  .road-dash {
-    fill: none; stroke: var(--paper); stroke-width: 2.6; opacity: .85;
-    stroke-dasharray: 15 17; stroke-linecap: round;
-  }
-  /* The road draws itself in: a thick stroke along the same geometry,
-     used as a mask, so the markers and road names arrive with it. */
-  .reveal {
-    fill: none; stroke: #fff; stroke-width: 64; stroke-linecap: round;
-    stroke-dasharray: 1620; stroke-dashoffset: 1620;
-    animation: drawRoad 2.8s cubic-bezier(.22,.61,.36,1) .25s forwards;
-  }
-  @keyframes drawRoad { to { stroke-dashoffset: 0; } }
-  .road-name {
-    fill: var(--ink-faint); font-family: var(--sans); font-size: 13px;
-    font-weight: 600; letter-spacing: .16em;
-  }
-  .pin { stroke: var(--paper); stroke-width: 3.5; }
-  .pin.start { fill: var(--start); }
-  .pin.stop { fill: var(--stop); }
-  .pin-num { fill: #fff; font-family: var(--sans); font-size: 17px; font-weight: 700; text-anchor: middle; }
-  .wp { fill: var(--marker); stroke: var(--paper); stroke-width: 3.5; }
-  .puck { opacity: 0; animation: puckIn .7s ease 2.5s forwards; }
-  @keyframes puckIn { to { opacity: 1; } }
-  .puck-halo { fill: var(--route); opacity: .18; }
-  .puck-dot { fill: var(--route); stroke: #fff; stroke-width: 5; }
-  .puck-arrow { fill: #fff; }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { animation: none; stroke-dashoffset: 0; }
-    .puck { animation: none; opacity: 1; }
-  }
-
-  /* ═══ FEATURES ═══════════════════════════════════════════════════════ */
-  .features { padding: 72px 0 0; display: grid; gap: 20px; }
-  .feat { border-radius: 28px; padding: 56px 40px; display: grid; gap: 40px; align-items: center; }
+  /* ═══ THE TWO PANELS ═════════════════════════════════════════════════ */
+  .split { display: grid; grid-template-columns: 1fr; background: var(--green); position: relative; z-index: 2; }
   @media (min-width: 900px) {
-    .feat { grid-template-columns: 1.05fr .95fr; gap: 56px; padding: 64px 72px; }
-    .feat.flip .feat-copy { order: 2; } .feat.flip .feat-art { order: 1; }
-    /* The dash is 16:9 — it needs the whole card, not a column. */
-    .feat.wide { grid-template-columns: 1fr; gap: 40px; justify-items: center; text-align: center; }
-    .feat.wide .feat-copy p { margin-inline: auto; }
-  }
-  .feat.mint { background: var(--mint); } .feat.sky { background: var(--sky); }
-  .feat.peach { background: var(--peach); } .feat.lilac { background: var(--lilac); }
-  .feat-kicker {
-    display: inline-flex; align-items: center; gap: 9px; font-size: 13px;
-    letter-spacing: .18em; text-transform: uppercase; font-weight: 600;
-  }
-  .feat-kicker i { width: 10px; height: 10px; border-radius: 999px; background: var(--dot); }
-  .feat h2 { font-size: clamp(36px, 4.6vw, 58px); margin-top: 18px; }
-  .feat-copy p { font-size: 18px; color: var(--ink-dim); margin-top: 18px; max-width: 440px; }
-  .chip {
-    display: inline-flex; margin-top: 24px; padding: 8px 14px; border-radius: 999px;
-    border: 1.5px solid var(--ink); font-size: 13.5px; font-weight: 600;
-    background: rgba(255,255,255,.45);
+    .split { grid-template-columns: 1fr 1fr; min-height: 100vh; min-height: 100svh; }
   }
 
-  /* A piece of the app rather than a whole phone: four screenshots cropped
-     to the part that makes the point, each its own shape. Five identical
-     handsets in a row said the same thing five times. */
-  .detail {
-    margin: 0; border-radius: 20px; overflow: hidden; background: #0A0E14;
-    box-shadow: 0 26px 50px -26px rgba(21,24,28,.55);
+  /* ── left: the aerial road, the name, the way in ── */
+  .art { position: relative; overflow: hidden; background: var(--green); color: #fff; }
+  .aerial { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  /* The road fades into the green the words sit on, as the store's first
+     image does — low enough that both cars stay in the clear. */
+  .art::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 0;
+    height: calc(100vw * 1.25); pointer-events: none;
+    background: linear-gradient(to bottom, rgba(29,91,58,0) 66%, rgba(29,91,58,.78) 86%, var(--green) 100%);
   }
-  .detail img { display: block; width: 100%; height: auto; }
-  /* A screen recording, played once and silently: the library, the route's
-     card, then the whole drive on the map — more than a still could say.
-     It starts when it is scrolled to, not at load, or it would have run to
-     the end before anyone reached this far down. */
-  .detail.reel { max-width: 340px; margin-inline: auto; }
-  .detail video { display: block; width: 100%; height: auto; }
+  .art-copy {
+    position: relative; z-index: 1;
+    margin-top: -22vw; padding: 0 24px 52px;
+    display: flex; flex-direction: column; align-items: flex-start;
+  }
+  /* Side by side, the panel is wider than the art is tall enough to fill,
+     so the art sits at the panel's width and is lifted just enough that the
+     red car (64% down it) clears the words at the bottom — but never so far
+     that the blue car (18% down) leaves the top. The art fades into the green
+     at its foot; the words get their own green underneath. */
+  @media (min-width: 900px) {
+    .art { display: flex; align-items: flex-end; }
+    .aerial {
+      position: absolute; left: 0; width: 100%; height: auto; aspect-ratio: 4 / 5;
+      top: calc(-1 * clamp(0px, 40vw + 390px - 100vh, 11.25vw - 24px));
+      -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+    }
+    .art::after {
+      top: auto; bottom: 0; height: 400px;
+      background: linear-gradient(to top, var(--green) 0, var(--green) 110px, rgba(29,91,58,.74) 290px, rgba(29,91,58,0) 400px);
+    }
+    .art-copy { margin-top: 0; padding: 0 clamp(36px, 5vw, 80px) clamp(44px, 8vh, 88px); }
+    .art .tagline { max-width: none; font-size: clamp(30px, 2.9vw, 42px); }
+  }
+  .logo { margin: 0; line-height: 0; }
+  .logo svg { display: block; width: clamp(170px, 17vw, 250px); height: auto; color: #fff; }
+  .tagline {
+    margin-top: 16px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.12;
+    font-size: clamp(30px, 3vw, 42px); max-width: 9.6em;
+    text-shadow: 0 2px 18px rgba(10, 36, 22, .35);
+  }
 
-  /* A phone's status bar, drawn rather than screenshotted, so it can say
-     the thing the section is about. */
-  .statusbar {
-    display: flex; align-items: center; justify-content: space-between;
-    background: #0F1729; color: #fff; padding: 9px 16px 7px;
-    font-family: var(--sans); font-size: 13px; font-weight: 600;
+  /* The way in: white, like a store badge on the green. */
+  .get {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 28px;
+    padding: 16px 26px; border-radius: 999px; background: #fff; color: var(--green);
+    font-weight: 700; font-size: 17px; line-height: 1; text-decoration: none; white-space: nowrap;
+    box-shadow: 0 10px 28px -12px rgba(8, 30, 18, .55);
+    transition: background .18s, transform .18s;
   }
-  .statusbar .no-service { display: inline-flex; align-items: center; gap: 7px; }
-  .statusbar svg { width: 15px; height: 15px; display: block; }
+  .get:hover { background: #EAF4EE; }
+  .get:active { transform: translateY(1px); }
+  .get svg { width: 19px; height: 19px; flex: 0 0 auto; margin-top: -2px; }
 
-  /* Other routes behind the one on top. The fan hangs inside the box's
-     own padding, so the section's spacing below it still holds. */
-  .stack { position: relative; padding-bottom: 32px; }
-  .stack-card {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    height: 44px; border-radius: 18px; background: #1B2637;
-    box-shadow: 0 14px 30px -20px rgba(21,24,28,.6);
+  /* Where it runs: Apple and CarPlay, then Android and Android Auto. */
+  .platforms {
+    list-style: none; margin: 18px 0 0; padding: 0;
+    display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,.86);
   }
-  .stack-card.one { width: 76%; bottom: 0; background: #16202F; }
-  .stack-card.two { width: 88%; bottom: 16px; }
-  .stack .detail { position: relative; }
+  .platforms li { display: flex; }
+  .platforms svg { width: 21px; height: 21px; display: block; }
+  .platforms .sep { width: 1px; height: 18px; background: currentColor; opacity: .45; }
 
-  /* CarPlay: the line-art dash, with the screenshot let into its screen.
-     The screen's rectangle was measured off the drawing, so the two stay
-     registered at any width. The shot is 5:3 and the screen is wider, so
-     it sits centred on its own black rather than being cropped. */
-  .dash { position: relative; width: 100%; }
-  .dash > img { display: block; width: 100%; height: auto; }
-  .dash-screen {
-    position: absolute; left: 11.85%; top: 23.08%; width: 72.07%; height: 61.73%;
-    background: #0B0E12; border-radius: 10px; overflow: hidden;
+  /* ── right: the app, on the store's green ── */
+  .show {
+    background: var(--green); color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 56px 0 60px; min-width: 0;
+    --ph: clamp(400px, 66vh, 640px);          /* the phone's height */
+    --pw: calc(var(--ph) / 2.0906);           /* and its width: screen 1320×2868, bezel 3.5% */
   }
-  .dash-screen img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  @media (max-width: 899px) { .show { --ph: clamp(380px, 62svh, 560px); padding: 8px 0 56px; } }
 
-  /* ── everything else, one row of chips ── */
-  .also { padding: 44px 0 0; text-align: center; }
-  .also-label {
-    display: block; font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
-    font-weight: 600; color: var(--ink-dim); margin-bottom: 16px;
+  .carousel { width: 100%; }
+  .slides {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; overscroll-behavior-x: contain;
   }
-  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-  .chips li { padding: 9px 16px; border: 1.5px solid var(--ink); border-radius: 999px; font-size: 15px; font-weight: 500; }
+  .slides::-webkit-scrollbar { display: none; }
+  .slide {
+    flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always;
+    display: flex; flex-direction: column; align-items: center; margin: 0;
+    padding: 6px 24px 0;
+  }
+
+  /* A phone, drawn: a black bezel round the screen, the island over it. */
+  .phone {
+    width: var(--pw); padding: calc(var(--pw) * .035); border-radius: calc(var(--pw) * .165);
+    background: #0C0D0E;
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.14), 0 34px 60px -26px rgba(4, 22, 12, .7);
+  }
+  .screen {
+    position: relative; aspect-ratio: 1320 / 2868; overflow: hidden;
+    border-radius: calc(var(--pw) * .13); background: #000;
+  }
+  .screen img, .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* The island, drawn over every screen: the recordings had theirs (with the
+     recording's red dot and ring) painted out to exactly this pill. */
+  .island {
+    position: absolute; left: 32.12%; width: 34.09%; top: 1.05%; height: 4.67%;
+    border-radius: 999px; background: #000; z-index: 1;
+  }
+  /* The CarPlay picture is a dashboard, not a phone: shown as itself. */
+  .dashboard {
+    height: var(--ph); aspect-ratio: 941 / 1672; border-radius: calc(var(--pw) * .1);
+    overflow: hidden; box-shadow: 0 34px 60px -26px rgba(4, 22, 12, .7);
+  }
+  .dashboard img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .slide figcaption {
+    margin-top: 30px; max-width: 17em; min-height: 2.4em; text-align: center;
+    font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+    font-size: clamp(22px, 2vw, 29px); text-wrap: balance;
+  }
+
+  .dots { display: flex; justify-content: center; gap: 4px; margin-top: 22px; }
+  .dots button {
+    width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .dots button::before {
+    content: ""; width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.42);
+    transition: width .3s ease, background .3s ease;
+  }
+  .dots button[aria-current="true"]::before { width: 24px; background: #fff; }
+  .dots button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 999px; }
 
   /* ═══ PRICING ════════════════════════════════════════════════════════ */
   .pricing { padding: 100px 0 0; }
   .price-head { text-align: center; max-width: 680px; margin: 0 auto 40px; }
-  .price-head h2 { font-size: clamp(40px, 5.2vw, 66px); }
+  .price-head h2 { font-size: clamp(36px, 4.6vw, 58px); }
   .price-head p { color: var(--ink-dim); font-size: 18px; margin-top: 16px; }
   .plans { display: grid; gap: 18px; max-width: 900px; margin: 0 auto; }
   @media (min-width: 760px) { .plans { grid-template-columns: 1fr 1fr; align-items: stretch; } }
@@ -221,19 +185,22 @@
     box-shadow: 0 4px 16px rgba(21,24,28,.2);
   }
   .plan-name { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--ink-dim); }
-  .price-num { font-family: var(--serif); font-size: clamp(48px, 5.5vw, 64px); line-height: 1; letter-spacing: -0.02em; margin-top: 14px; }
-  .price-num small { font-family: var(--sans); font-size: 16px; font-weight: 500; letter-spacing: 0; color: var(--ink-dim); margin-left: 6px; }
+  .price-num { font-weight: 800; font-size: clamp(44px, 5vw, 58px); line-height: 1; letter-spacing: -0.03em; margin-top: 14px; }
+  .price-num small { font-size: 16px; font-weight: 500; letter-spacing: 0; color: var(--ink-dim); margin-left: 6px; }
   .price-num s { color: var(--ink-faint); text-decoration-thickness: 3px; text-decoration-color: var(--car); }
   .price-sub { font-size: 14px; font-weight: 600; color: var(--ink-dim); margin-top: 12px; }
-  .price-beta { font-family: var(--serif); font-style: italic; font-size: 27px; color: var(--car); margin-top: 8px; }
+  .price-beta { font-weight: 700; font-size: 23px; letter-spacing: -0.01em; color: var(--car); margin-top: 10px; }
   .price-after { color: var(--ink-dim); font-size: 14px; margin-top: 8px; line-height: 1.45; }
   .plan-list { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 11px; }
   .plan-list li { position: relative; padding-left: 26px; color: var(--ink-dim); font-size: 16px; }
   .plan-list li strong { color: var(--ink); font-weight: 600; }
   .plan-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--ink); font-weight: 800; }
   .price-card p.fine { color: var(--ink-faint); font-size: 13px; line-height: 1.5; margin-top: 22px; }
+  .cta { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .note { font-size: 14px; color: var(--ink-dim); }
   /* Both cards end on a button, level with each other. */
   .price-card .cta { margin-top: auto; padding-top: 24px; align-items: flex-start; gap: 10px; }
+  .btn svg { width: 17px; height: 17px; flex: 0 0 auto; margin-top: -2px; }
 
   /* ═══ CLOSING BAND ═══════════════════════════════════════════════════ */
   .band { padding: 100px 0 0; }
@@ -242,32 +209,14 @@
     padding: 92px 40px; text-align: center;
     display: flex; flex-direction: column; align-items: center;
   }
-  .band h2 { font-size: clamp(42px, 6.4vw, 80px); }
+  .band h2 { font-size: clamp(40px, 6vw, 74px); }
   .band p { color: rgba(251,248,239,.72); font-size: 18px; margin-top: 18px; max-width: 480px; }
   .band .cta { margin-top: 32px; }
-  .band .note { color: rgba(251,248,239,.6); }
   .band .btn-primary { border-color: transparent; }
+  .band .platforms { margin-top: 4px; color: rgba(251,248,239,.78); }
 
-  /* Phone rhythm: sections sit close, each block a screen at most. Last in
-     the sheet on purpose — the desktop rules above would otherwise win the
-     cascade at equal specificity. */
   @media (max-width: 720px) {
-    .hero { padding-top: 48px; }
-    .hero h1 { margin-top: 18px; }
-    .lede { margin-top: 20px; }
-    .cta { margin-top: 28px; }
     .btn-lg { width: min(100%, 360px); }
-    /* The band's own slice crops from the right, so a phone gets the
-       start, the loop, and a road running off the edge. */
-    .ribbon-band { margin-top: 36px; }
-    .road-name { font-size: 15px; }
-    .features { padding-top: 40px; gap: 14px; }
-    .feat { padding: 32px 22px; gap: 26px; border-radius: 22px; }
-    .feat h2 { margin-top: 14px; }
-    .feat-copy p { margin-top: 14px; font-size: 17px; }
-    .chip { margin-top: 16px; }
-    .detail.reel { max-width: 280px; }
-    .also { padding-top: 32px; }
     .pricing { padding-top: 64px; }
     .price-head { margin-bottom: 24px; }
     .price-head p { margin-top: 12px; font-size: 17px; }
@@ -279,236 +228,111 @@
 </style>
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
 </head>
-<body>
+<body class="landing">
 <div class="terrain" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <svg style="display:none" aria-hidden="true">
   <symbol id="apple" viewBox="0 0 24 24">
     <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
   </symbol>
+  <!-- CarPlay's mark: a ring open on the right, round a play triangle. -->
+  <symbol id="carplay" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/>
+    <path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/>
+  </symbol>
+  <!-- Android and Android Auto, from Simple Icons (CC0). -->
+  <symbol id="android" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/>
+  </symbol>
+  <symbol id="androidauto" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/>
+  </symbol>
+  <symbol id="wordmark" viewBox="0 0 300 45">
+    <path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z"/>
+    <path fill="currentColor" d="M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z"/>
+    <path fill="currentColor" d="M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z"/>
+    <path fill="currentColor" d="M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z"/>
+    <path fill="currentColor" d="M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/>
+  </symbol>
 </svg>
 
-<nav class="top">
-  <div class="wrap">
-    <div class="bar">
-      <a class="wordmark" href="/" aria-label="Carve">
-        <img class="appicon" src="/assets/icon-128.png?v=87d1534580" alt="" width="32" height="32">
-        <img class="mark" src="/assets/wordmark-light.png?v=87d7b93bbc" alt="Carve" width="300" height="45">
-      </a>
-      <div class="nav-links">
-        <a href="#plan">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="/support/">Support</a>
-      </div>
-      <a class="nav-cta" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get the app</a>
-    </div>
-  </div>
-</nav>
-
-<!-- ═══ 1 · HOOK ═══════════════════════════════════════════════════════ -->
-<header class="hero">
-  <div class="wrap hero-inner">
-    <p class="kicker rise">Carve Route Planner</p>
-    <h1 class="rise">Maps for the<br>Love of <em>Driving</em></h1>
-    <p class="lede rise">Offline-ready navigation<br>for every
-      <span class="rolodex" id="rolodex" aria-live="off"><span class="rolodex-gauge" aria-hidden="true">countryside 🌾</span><span class="rolodex-view"><span class="rolodex-track"><span class="rolodex-word">mountain ⛰️</span><span class="rolodex-word" aria-hidden="true"></span></span></span></span></p>
-    <div class="cta rise" id="get">
-      <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
-      <p class="note">Available on iOS and CarPlay. Android and Android&nbsp;Auto coming soon.</p>
+<main>
+<!-- ═══ 1 · THE TWO PANELS ═════════════════════════════════════════════ -->
+<section class="split" aria-label="Carve">
+  <div class="art">
+    <img class="aerial" src="/assets/aerial.jpg?v=14ee667752" width="1200" height="1500" fetchpriority="high"
+         alt="An illustrated mountain road from above, winding over a bridge and a river, with a red car and a blue car on its bends">
+    <div class="art-copy">
+      <h1 class="logo"><svg viewBox="0 0 300 45" role="img" aria-label="Carve"><use href="#wordmark"/></svg></h1>
+      <p class="tagline">For the love of driving.</p>
+      <a class="get" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+      <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
+        <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
+        <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
+        <li class="sep" aria-hidden="true"></li>
+        <li><svg role="img" aria-label="Android"><use href="#android"/></svg></li>
+        <li><svg role="img" aria-label="Android Auto"><use href="#androidauto"/></svg></li>
+      </ul>
     </div>
   </div>
 
-  <div class="ribbon-band">
-    <svg class="ribbon" viewBox="0 0 1440 420" preserveAspectRatio="xMinYMid slice"
-         xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="ribbon-title">
-      <title id="ribbon-title">A Carve route: a road that loops once and carries on, its stops and waypoints marked along the way</title>
-      <defs>
-        <!-- Traced off the terrain mesh behind the page: one of its wires,
-             followed left to right and smoothed into a road. -->
-        <path id="road" fill="none" d="M -60 169 C -40 167, 20 161, 60 157 C 100 154, 140 145, 179 147 C 219 148, 259 156, 299 165 C 339 173, 379 188, 419 197 C 459 206, 499 214, 539 220 C 578 225, 618 227, 658 230 C 699 232, 741 235, 782 234 C 822 233, 862 227, 901 222 C 941 218, 981 207, 1021 207 C 1061 206, 1101 213, 1141 220 C 1181 228, 1221 243, 1261 252 C 1300 261, 1340 269, 1380 274 C 1420 279, 1480 280, 1500 282"/>
-        <mask id="reveal-road">
-          <use class="reveal" href="#road" xlink:href="#road"/>
-        </mask>
-      </defs>
-
-      <g mask="url(#reveal-road)">
-        <use class="road-casing" href="#road" xlink:href="#road"/>
-        <use class="road-dash" href="#road" xlink:href="#road"/>
-
-        <!-- Names sit in the gaps the markers leave, so nothing collides. -->
-        <text class="road-name" dy="-16">
-          <textPath href="#road" xlink:href="#road" startOffset="14.5%">Old La Honda Road</textPath>
-        </text>
-        <text class="road-name" dy="-16">
-          <textPath href="#road" xlink:href="#road" startOffset="46%">Skyline Boulevard</textPath>
-        </text>
-        <text class="road-name" dy="-16">
-          <textPath href="#road" xlink:href="#road" startOffset="72%">Pacific Coast Highway</textPath>
-        </text>
-
-        <circle class="wp" cx="385" cy="188" r="8.5"/>
-        <circle class="wp" cx="570" cy="223" r="8.5"/>
-        <circle class="wp" cx="854" cy="228" r="8.5"/>
-        <circle class="wp" cx="1304" cy="261" r="8.5"/>
-
-        <g transform="translate(74 156)">
-          <circle class="pin start" r="16"/>
-          <path d="M -4 -7.5 V 7.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M -4 -7 L 6 -3.2 L -4 0.6 Z" fill="#fff"/>
-        </g>
-        <g transform="translate(492 212)">
-          <circle class="pin stop" r="17"/>
-          <text class="pin-num" dy=".36em">1</text>
-        </g>
-        <g transform="translate(963 213)">
-          <circle class="pin stop" r="17"/>
-          <text class="pin-num" dy=".36em">2</text>
-        </g>
-        <g transform="translate(1398 276)">
-          <circle class="pin stop" r="17"/>
-          <text class="pin-num" dy=".36em">3</text>
-        </g>
-
-      </g>
-
-      <!-- Outside the mask: the puck is wider than the band the reveal
-           uncovers, so it fades in once the road has finished drawing. -->
-      <g class="puck">
-        <g>
-          <animateMotion dur="15s" repeatCount="indefinite" rotate="auto">
-            <mpath href="#road" xlink:href="#road"/>
-          </animateMotion>
-          <circle class="puck-halo" r="50"/>
-          <circle class="puck-dot" r="28"/>
-          <path class="puck-arrow" d="M -9 -12 L 13 0 L -9 12 Z"/>
-        </g>
-    </svg>
-  </div>
-</header>
-
-<!-- ═══ 2 · FEATURES ═══════════════════════════════════════════════════ -->
-<section class="features wrap" id="features">
-
-  <div class="feat mint" id="plan">
-    <div class="feat-copy rise">
-      <div class="feat-kicker" style="--dot: var(--start)"><i></i>Plan</div>
-      <h2>Pick the roads.<br>Add your stops.</h2>
-      <p>String together the roads you love, with stops for coffee, fuel,
-         or the view. The route you plan is the route you drive.</p>
-      <div class="chip">Up to 30 stops &amp; route markers</div>
-    </div>
-    <div class="feat-art rise">
-      <figure class="detail reel">
-        <video poster="/assets/route-preview-poster.jpg?v=09baa50b4a" width="640" height="1392"
-               muted playsinline preload="metadata"
-               aria-label="Opening a saved route in Carve: the library, then Big Sur, the slow way with its description, stops, drive time and elevation, then the whole route on the map">
-          <source src="/assets/route-preview.mp4?v=fff88cad12" type="video/mp4">
-        </video>
-      </figure>
-    </div>
-  </div>
-
-  <div class="feat sky flip" id="drive">
-    <div class="feat-copy rise">
-      <div class="feat-kicker" style="--dot: var(--route)"><i></i>Drive</div>
-      <h2>No signal?<br>No problem.</h2>
-      <p>Your route is downloaded before you start. Directions stay with
-         you in every dead zone.</p>
-      <div class="chip">Offline maps · voice directions</div>
-    </div>
-    <div class="feat-art rise">
-      <figure class="detail">
-        <div class="statusbar" aria-hidden="true">
-          <span>9:41</span>
-          <span class="no-service">No Service
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <path d="M2 2 L22 22" opacity=".9"/>
-              <path d="M4.5 9.5a12 12 0 0 1 5-2.9" opacity=".5"/>
-              <path d="M14.5 6.6a12 12 0 0 1 5 2.9" opacity=".5"/>
-              <path d="M8 13a7 7 0 0 1 2.4-1.5" opacity=".5"/>
-              <path d="M13.6 11.5A7 7 0 0 1 16 13" opacity=".5"/>
-              <circle cx="12" cy="17.5" r="1.1" fill="currentColor" stroke="none" opacity=".5"/>
-            </svg>
-            <svg viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.4">
-              <rect x="1" y="1" width="20" height="12" rx="3.5" opacity=".45"/>
-              <rect x="3" y="3" width="10" height="8" rx="2" fill="currentColor" stroke="none"/>
-              <path d="M23.5 5.2v3.6" stroke-linecap="round" opacity=".45"/>
-            </svg>
-          </span>
-        </div>
-        <img src="/assets/detail-drive.jpg?v=425ce5bbf5" alt="Carve guiding a drive down the Big Sur coast with no signal: 3.4 miles to a right turn, the route drawn ahead on the map" loading="lazy">
-      </figure>
-    </div>
-  </div>
-
-  <div class="feat peach" id="return">
-    <div class="feat-copy rise">
-      <div class="feat-kicker" style="--dot: var(--stop)"><i></i>Return</div>
-      <h2>Miss a turn.<br>Keep your plan.</h2>
-      <p>A wrong turn shouldn&rsquo;t rewrite the drive. Carve guides you
-         back to the road you chose &mdash; never onto a faster one.</p>
-      <div class="chip">No automatic shortcuts</div>
-    </div>
-    <div class="feat-art rise">
-      <figure class="detail">
-          <img src="/assets/detail-return.jpg?v=af6b81db1e" alt="Off the route: an orange banner says turn left onto Bixby Creek Bridge, and the map shows the way back to the road" loading="lazy">
+  <div class="show">
+    <div class="carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="What Carve does">
+      <div class="slides" id="slides">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 6">
+          <div class="phone"><div class="screen">
+            <video muted playsinline preload="auto" poster="/assets/plan-first.jpg?v=f4c93da7d5" data-end="/assets/plan-last.jpg?v=1118533b73"
+                   aria-label="Carve opening a route from Clayton to Mammoth Lakes and drawing it on the map, with its stops, drive time and climb">
+              <source src="/assets/plan.mp4?v=cd9cf69cc2" type="video/mp4">
+            </video>
+            <span class="island" aria-hidden="true"></span>
+          </div></div>
+          <figcaption>Plan routes. Drive the exact roads you want.</figcaption>
         </figure>
-    </div>
-  </div>
-
-  <div class="feat lilac flip" id="share">
-    <div class="feat-copy rise">
-      <div class="feat-kicker" style="--dot: var(--marker)"><i></i>Share</div>
-      <h2>Great drives<br>are worth sharing.</h2>
-      <p>One link carries the whole route. Friends open it in Carve and
-         drive the same roads, the same stops.</p>
-      <div class="chip">Same roads · same stops</div>
-    </div>
-    <div class="feat-art rise">
-      <div class="stack">
-        <span class="stack-card one" aria-hidden="true"></span>
-        <span class="stack-card two" aria-hidden="true"></span>
-        <figure class="detail">
-          <img src="/assets/detail-share.jpg?v=9906274bb2" alt="A Carve route card: Skyline dawn patrol, 28.3 miles, one stop, downloaded, with Share and Go Now" loading="lazy">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 6">
+          <div class="phone"><div class="screen">
+            <img src="/assets/shot-offline.jpg?v=eac8bc4763" width="660" height="1434" loading="lazy" alt="Turn-by-turn on La Honda Road in airplane mode, its maps downloaded">
+            <span class="island" aria-hidden="true"></span>
+          </div></div>
+          <figcaption>Never lose your way, even without signal.</figcaption>
+        </figure>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 6">
+          <div class="phone"><div class="screen">
+            <img src="/assets/shot-return.jpg?v=86b0579a2c" width="660" height="1434" loading="lazy" alt="After a wrong turn, an orange line leads back to the planned route">
+            <span class="island" aria-hidden="true"></span>
+          </div></div>
+          <figcaption>Wrong turn? Get guided back without re-routing.</figcaption>
+        </figure>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 6">
+          <div class="dashboard">
+            <img src="/assets/shot-carplay-dash.jpg?v=b6e7eccb0f" width="760" height="1350" loading="lazy" alt="A car's dashboard with Carve on its CarPlay screen, a route to Mammoth Lakes ready to go">
+          </div>
+          <figcaption>Put your drive on the dash with CarPlay.</figcaption>
+        </figure>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 6">
+          <div class="phone"><div class="screen">
+            <video muted playsinline preload="none" poster="/assets/dice-first.jpg?v=c3095f5688" data-end="/assets/dice-last.jpg?v=fd8f3eb56e"
+                   aria-label="Tapping the dice: Carve generates a loop from where you are, then draws the Woodside Loop on the map">
+              <source src="/assets/dice.mp4?v=a3cf0a6369" type="video/mp4">
+            </video>
+            <span class="island" aria-hidden="true"></span>
+          </div></div>
+          <figcaption>Not sure where to go? Roll the dice.</figcaption>
+        </figure>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 6">
+          <div class="phone"><div class="screen">
+            <img src="/assets/shot-import.jpg?v=83e4f75486" width="660" height="1434" loading="lazy" alt="Importing a route by pasting a Google Maps link">
+            <span class="island" aria-hidden="true"></span>
+          </div></div>
+          <figcaption>Import existing routes from Google Maps.</figcaption>
         </figure>
       </div>
+      <div class="dots" id="dots" aria-label="Choose a screen"></div>
     </div>
   </div>
-
-  <div class="feat sky wide" id="carplay">
-    <div class="feat-copy rise">
-      <div class="feat-kicker" style="--dot: var(--route)"><i></i>CarPlay</div>
-      <h2>Your route, on the dash.</h2>
-      <p>The same roads, the same stops, the same voice &mdash; on the
-         screen that&rsquo;s already in the car.</p>
-      <div class="chip">Android &amp; Android&nbsp;Auto coming soon</div>
-    </div>
-    <div class="feat-art rise">
-      <div class="dash">
-        <img src="/assets/dash.png?v=70d17e6145" alt="" width="920" height="520" loading="lazy">
-        <span class="dash-screen">
-          <img src="/assets/shot-carplay.jpg?v=405d0ab167" alt="Carve on a car&rsquo;s CarPlay screen: 91 feet to drive west, the route ahead drawn on the map" width="800" height="480" loading="lazy">
-        </span>
-      </div>
-    </div>
-  </div>
-
 </section>
 
-<!-- everything else, one row of chips -->
-<div class="also rise" id="more">
-  <div class="wrap">
-    <span class="also-label">Also on board</span>
-    <ul class="chips">
-      <li>Voice guidance</li>
-      <li>Import Google&nbsp;Maps stops</li>
-      <li>Elevation profiles</li>
-      <li>Auto-resume after a stop</li>
-    </ul>
-  </div>
-</div>
-
-<!-- ═══ 3 · PRICING ════════════════════════════════════════════════════ -->
+<!-- ═══ 2 · PRICING ════════════════════════════════════════════════════ -->
 <section class="pricing" id="pricing">
   <div class="wrap">
     <div class="price-head rise">
@@ -528,7 +352,7 @@
           <li>Off-route pointer back to the road</li>
         </ul>
         <div class="cta">
-          <a class="btn" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
+          <a class="btn" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
           <p class="note">Early access beta</p>
         </div>
       </div>
@@ -546,7 +370,7 @@
         </ul>
         <p class="fine">Prices in US dollars; may vary by region. The free trial converts to a paid yearly subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account.</p>
         <div class="cta">
-          <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
+          <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
           <p class="note">Early access beta</p>
         </div>
       </div>
@@ -554,19 +378,26 @@
   </div>
 </section>
 
-<!-- ═══ 4 · CLOSING ════════════════════════════════════════════════════ -->
+<!-- ═══ 3 · CLOSING ════════════════════════════════════════════════════ -->
 <section class="band">
   <div class="wrap">
     <div class="band-inner rise">
       <h2>Your way,<br><em>not the highway.</em></h2>
       <p>Plan the roads you love, drive them without a signal, and bring your friends along.</p>
       <div class="cta">
-        <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Get started on iPhone</a>
-        <p class="note">Available on iOS and CarPlay. Android and Android&nbsp;Auto coming soon.</p>
+        <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+        <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
+          <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
+          <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
+          <li class="sep" aria-hidden="true"></li>
+          <li><svg role="img" aria-label="Android"><use href="#android"/></svg></li>
+          <li><svg role="img" aria-label="Android Auto"><use href="#androidauto"/></svg></li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="wrap">
@@ -576,100 +407,134 @@
       <a href="/terms/">Terms</a>
       <a href="/support/">Support</a>
     </div>
-    <span>iPhone · CarPlay · iOS 26+</span>
+    <span>iPhone · CarPlay · Android · Android Auto</span>
   </div>
 </footer>
 
 <script>
-  // Where "Get the App" goes: the public TestFlight beta. The anchors carry
-  // the same link in their href, so it works with scripts off too.
-  var APP_URL = "https://testflight.apple.com/join/UUfMN7vj";
-  if (APP_URL) {
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = APP_URL; });
-  }
-  // Two kinds of motion no media query reaches: the puck's travel is SMIL,
-  // and the loop plays itself. Park both when motion isn't wanted — the
-  // video falls back to its poster, which is its own first frame.
+  // Where "Get started" goes, by the visitor's phone: Google Play on Android;
+  // the App Store everywhere else — or, until the listing is live, the public
+  // TestFlight beta. The anchors carry the beta link and the iPhone wording,
+  // so the page still works with scripts off.
+  var LINKS = {
+    appStore: "",  // REPLACE once live: https://apps.apple.com/app/id<numeric App Store id>
+    beta: "https://testflight.apple.com/join/UUfMN7vj",
+    play: "https://play.google.com/store/apps/details?id=run.carve.app"
+  };
   (function () {
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    var svg = document.querySelector(".ribbon");
-    if (svg && svg.pauseAnimations) svg.pauseAnimations();
-    document.querySelectorAll("video").forEach(function (v) {
-      v.dataset.hold = "1";
-      v.pause();
-      v.currentTime = 0;
-    });
+    var ua = navigator.userAgent || "";
+    var android = /android/i.test(ua);
+    var url = android ? LINKS.play : (LINKS.appStore || LINKS.beta);
+    var label = android ? "Get started on Android" : "Get started on iPhone";
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = url; });
+    document.querySelectorAll("[data-get-label]").forEach(function (s) { s.textContent = label; });
+    if (android) {
+      document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
+    }
   })();
-  // Play each loop once, the first time it comes into view. A failed play()
-  // (a data saver, a policy) simply leaves the poster up.
-  (function () {
-    var videos = document.querySelectorAll(".detail video");
-    if (!videos.length || !("IntersectionObserver" in window)) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        io.unobserve(e.target);
-        if (e.target.dataset.hold) return;
-        var playing = e.target.play();
-        if (playing && playing.catch) playing.catch(function () {});
-      });
-    }, { threshold: .35 });
-    videos.forEach(function (v) { io.observe(v); });
-  })();
-  // The rolodex. Every turn queues the next word under the current one,
-  // sizes the box for it, and slides the pair up a slot; when the slide
-  // ends the new word becomes the current one and the track snaps back,
-  // invisibly, to the top. A tab in the background may never fire
-  // transitionend, so a timer finishes the turn if the event doesn't.
-  (function () {
-    var words = ["mountain ⛰️", "coastline 🌊", "countryside 🌾", "canyon 🏜️", "backroad 🏁"];
-    var box = document.getElementById("rolodex");
-    if (!box) return;
-    var gauge = box.querySelector(".rolodex-gauge");
-    var track = box.querySelector(".rolodex-track");
-    var current = track.children[0], incoming = track.children[1];
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var index = 0, settle = null;
 
-    // Park the longest word in the gauge, so the slot is that wide for the
-    // whole cycle and nothing before it moves. Measured, not guessed, so a
-    // font swap or a change of font size can't leave a word clipped.
-    function fitWidest() {
-      var widest = words[0], max = 0;
-      words.forEach(function (word) {
-        gauge.textContent = word;
-        var width = gauge.getBoundingClientRect().width;
-        if (width > max) { max = width; widest = word; }
+  // The carousel: the store's six images, one at a time. Two are screen
+  // recordings — planning a route, rolling the dice — each played once, the
+  // first time its slide is on screen, and left on its last frame. A slide
+  // with a recording waits for it to finish; the rest hold five seconds. A
+  // swipe or a dot takes over the timing, and a hover holds it. With reduced
+  // motion nothing moves by itself, and the recordings show their last frame.
+  (function () {
+    var track = document.getElementById("slides");
+    var dotsBox = document.getElementById("dots");
+    var carousel = document.getElementById("carousel");
+    if (!track) return;
+    var slides = Array.prototype.slice.call(track.children);
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var HOLD = 5000, AFTER_VIDEO = 2500;
+    var index = 0, timer = null, visible = false, hovering = false;
+
+    var dots = slides.map(function (slide, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "Show " + (i + 1) + " of " + slides.length + ": " + slide.querySelector("figcaption").textContent);
+      b.addEventListener("click", function () { go(i); });
+      dotsBox.appendChild(b);
+      return b;
+    });
+
+    // Each slide's recording, if it has one, and whether it has had its play.
+    var videos = slides.map(function (slide) { return slide.querySelector("video"); });
+    var done = videos.map(function (v) { return !v; });
+    function finish(i) {
+      done[i] = true;
+      videos[i].poster = videos[i].dataset.end;
+    }
+    videos.forEach(function (v, i) {
+      if (!v) return;
+      v.addEventListener("ended", function () { done[i] = true; schedule(AFTER_VIDEO); });
+      if (reduce) { finish(i); v.setAttribute("preload", "none"); }
+    });
+
+    function go(i) {
+      track.scrollTo({ left: i * track.clientWidth, behavior: reduce ? "auto" : "smooth" });
+    }
+    function settle(i) {
+      if (i === index && dots[i].getAttribute("aria-current")) return;
+      index = i;
+      dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); });
+      slides.forEach(function (s, j) { s.setAttribute("aria-hidden", j === i ? "false" : "true"); });
+      playOrPause();
+      schedule();
+    }
+    function playOrPause() {
+      videos.forEach(function (v, i) {
+        if (!v || done[i]) return;
+        if (i === index && visible) {
+          var p = v.play();
+          // Blocked (Low Power Mode, a data saver): show the finished frame instead.
+          if (p && p.catch) p.catch(function () { finish(i); schedule(); });
+        } else {
+          v.pause();
+        }
       });
-      gauge.textContent = widest;
     }
-    function finish() {
-      if (!box.classList.contains("turning")) return;
-      clearTimeout(settle);
-      current.textContent = incoming.textContent;
-      incoming.textContent = "";
-      box.classList.add("snap");
-      box.classList.remove("turning");
-      void track.offsetHeight;
-      box.classList.remove("snap");
+    // Next slide after `wait` — a short beat after a recording ends, else the usual hold.
+    function schedule(wait) {
+      clearTimeout(timer);
+      if (reduce || !visible || hovering) return;
+      // A recording runs its course first.
+      if (!done[index]) return;
+      timer = setTimeout(function () { go((index + 1) % slides.length); }, wait || HOLD);
     }
-    function turn() {
-      finish();
-      index = (index + 1) % words.length;
-      if (reduce) { current.textContent = words[index]; return; }
-      incoming.textContent = words[index];
-      box.classList.add("turning");
-      settle = setTimeout(finish, 900);
-    }
-    track.addEventListener("transitionend", function (e) {
-      if (e.propertyName === "transform") finish();
+
+    var settleTimer = null;
+    track.addEventListener("scroll", function () {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function () {
+        settle(Math.round(track.scrollLeft / track.clientWidth));
+      }, 90);
+    }, { passive: true });
+    window.addEventListener("resize", function () { go(index); });
+
+    carousel.addEventListener("mouseenter", function () { hovering = true; schedule(); });
+    carousel.addEventListener("mouseleave", function () { hovering = false; schedule(); });
+    document.addEventListener("visibilitychange", function () {
+      visible = !document.hidden && visible;
+      if (document.hidden) { clearTimeout(timer); videos.forEach(function (v) { if (v) v.pause(); }); }
+      else { observeAgain(); }
     });
-    window.addEventListener("resize", fitWidest);
-    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
-      fitWidest();
-      setInterval(turn, 2600);
-    });
+
+    var io = null;
+    function observeAgain() { if (io) { io.unobserve(carousel); io.observe(carousel); } }
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        playOrPause();
+        schedule();
+      }, { threshold: .5 });
+      io.observe(carousel);
+    } else {
+      visible = true;
+    }
+    settle(0);
   })();
+
   (function () {
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var items = document.querySelectorAll(".rise");
