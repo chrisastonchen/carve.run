@@ -15,10 +15,8 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=3e6d22f7f9">
-<!-- Once Carve is on the App Store, put its numeric id here and uncomment
-     so Safari shows the native banner:
-<meta name="apple-itunes-app" content="app-id=REPLACE_APP_STORE_ID">
--->
+<!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
+<meta name="apple-itunes-app" content="app-id=6808087716">
 <style>
   /* The App Store listing, as a page (2026-10-04): the aerial road and
      "For the love of driving." on one side, the app on a deep green on the
@@ -309,7 +307,7 @@
     <div class="art-copy">
       <h1 class="logo"><svg viewBox="0 0 300 45" role="img" aria-label="Carve"><use href="#wordmark"/></svg></h1>
       <p class="tagline">For the love of driving.</p>
-      <a class="get" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+      <a class="get" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
       <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
         <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
         <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
@@ -402,7 +400,7 @@
           <li>Off-route pointer back to the road</li>
         </ul>
         <div class="cta">
-          <a class="btn" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+          <a class="btn" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
           <p class="note">Early access beta</p>
         </div>
       </div>
@@ -420,7 +418,7 @@
         </ul>
         <p class="fine">Prices in US dollars; may vary by region. The free trial converts to a paid yearly subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account or Google Play account.</p>
         <div class="cta">
-          <a class="btn btn-primary" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+          <a class="btn btn-primary" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
           <p class="note">Early access beta</p>
         </div>
       </div>
@@ -435,7 +433,7 @@
       <h2>Your way,<br><em>not the highway.</em></h2>
       <p>Plan the roads you love, drive them without a signal, and bring your friends along.</p>
       <div class="cta">
-        <a class="btn btn-primary btn-lg" data-get-app href="https://testflight.apple.com/join/UUfMN7vj"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+        <a class="btn btn-primary btn-lg" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
         <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
           <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
           <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
@@ -462,19 +460,18 @@
 </footer>
 
 <script>
-  // Where "Get started" goes, by the visitor's phone: Google Play on Android;
-  // the App Store everywhere else — or, until the listing is live, the public
-  // TestFlight beta. The anchors carry the beta link and the iPhone wording,
-  // so the page still works with scripts off.
+  // Where "Get started" goes, by the visitor's phone: Google Play on Android,
+  // the App Store everywhere else (live 2026-10-05; no country in the path,
+  // so each visitor gets their own storefront). The anchors carry the App
+  // Store link and the iPhone wording, so the page still works with scripts off.
   var LINKS = {
-    appStore: "",  // REPLACE once live: https://apps.apple.com/app/id<numeric App Store id>
-    beta: "https://testflight.apple.com/join/UUfMN7vj",
+    appStore: "https://apps.apple.com/app/carve-route-planner/id6808087716",
     play: "https://play.google.com/store/apps/details?id=run.carve.app"
   };
   (function () {
     var ua = navigator.userAgent || "";
     var android = /android/i.test(ua);
-    var url = android ? LINKS.play : (LINKS.appStore || LINKS.beta);
+    var url = android ? LINKS.play : LINKS.appStore;
     var label = android ? "Get started on Android" : "Get started on iPhone";
     document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = url; });
     document.querySelectorAll("[data-get-label]").forEach(function (s) { s.textContent = label; });

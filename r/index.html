@@ -21,10 +21,8 @@
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="stylesheet" href="/styles.css?v=3e6d22f7f9">
-<!-- Safari's own "Open in the app" bar. It needs the numeric App Store id,
-     which only exists once the listing does — a bundle id will not do. Put
-     it in APP_STORE_ID below and the bar appears; until then there is
-     nothing to point it at. -->
+<!-- Safari's own "Open in the app" bar comes from APP_STORE_ID below: the
+     listing's numeric id (a bundle id will not do). -->
 <style>
   /* No outline here: the page is one card already, and a box around the
      wordmark made it a second one. */
@@ -75,7 +73,7 @@
   <h1 id="name">A Carve route</h1>
   <div class="stats" id="stats" hidden></div>
   <p class="shared" id="shared">Someone shared a driving route with you.</p>
-  <a class="btn btn-primary btn-lg" id="cta" href="#"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Continue in App</a>
+  <a class="btn btn-primary btn-lg" id="cta" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Continue in App</a>
   <p class="fine">Carve plans drives on the roads worth taking and keeps them on your
      phone for when the signal goes. Open this link again once you have the app
      and the route is yours.</p>
@@ -88,12 +86,12 @@
 </svg>
 
 <script>
-  // Where the one button goes. The TestFlight beta until the App Store
-  // listing exists; then the listing's URL, and APP_STORE_ID below.
-  const APP_STORE_URL = "https://testflight.apple.com/join/UUfMN7vj";
-  // Safari's native "Open in the app" bar needs the numeric id from the
-  // listing. Set it and the bar appears on its own.
-  const APP_STORE_ID = "";
+  // Where the one button goes when Carve isn't installed: the App Store
+  // listing (live 2026-10-05), with no country in the path so each visitor
+  // gets their own storefront.
+  const APP_STORE_URL = "https://apps.apple.com/app/carve-route-planner/id6808087716";
+  // Safari's native "Open in the app" bar, from the listing's numeric id.
+  const APP_STORE_ID = "6808087716";
 
   // Publishable by design — the same key the app ships. Row-level security
   // is the boundary, and the only thing it can reach without a session is
