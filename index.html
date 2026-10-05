@@ -26,7 +26,7 @@
      closing band. Figtree throughout. Shared tokens, footer and motion live
      in /styles.css?v=3e6d22f7f9. */
 
-  :root { --green: #1D5B3A; --green-deep: #174B30; }
+  :root { --green: #1D5B3A; --ink-green: #0F563B; }
   /* One typeface on this page, like the store's images. Figtree has no
      italic, so emphasis keeps its weight rather than a fake slant. */
   .landing h1, .landing h2, .landing h3 {
@@ -104,9 +104,13 @@
   .platforms svg { width: 21px; height: 21px; display: block; }
   .platforms .sep { width: 1px; height: 18px; background: currentColor; opacity: .45; }
 
-  /* ── right: the app, on the store's green ── */
+  /* ── right: the app, on each store image's own colour ── */
+  /* The panel takes the colour of the store image the slide copies — sky
+     for planning, mint for offline, and so on — crossfading as it turns;
+     the words, arrows and dots are the images' headline green. */
   .show {
-    background: var(--green); color: #fff;
+    background: #D4E6FD; color: var(--ink-green);
+    transition: background-color .6s ease;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 56px 0 60px; min-width: 0;
     --ph: clamp(400px, 66vh, 640px);          /* the phone's height */
@@ -114,7 +118,8 @@
   }
   @media (max-width: 899px) { .show { --ph: clamp(380px, 62svh, 560px); padding: 8px 0 56px; } }
 
-  .carousel { width: 100%; }
+  .carousel { width: 100%; position: relative; --arrow: 46px; --arrow-gap: 22px; }
+  @media (max-width: 899px) { .carousel { --arrow: 40px; --arrow-gap: 10px; } }
   .slides {
     display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
     scrollbar-width: none; overscroll-behavior-x: contain;
@@ -130,7 +135,7 @@
   .phone {
     width: var(--pw); padding: calc(var(--pw) * .035); border-radius: calc(var(--pw) * .165);
     background: #0C0D0E;
-    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.14), 0 34px 60px -26px rgba(4, 22, 12, .7);
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.14), 0 34px 60px -28px rgba(15, 40, 30, .5);
   }
   .screen {
     position: relative; aspect-ratio: 1320 / 2868; overflow: hidden;
@@ -146,7 +151,7 @@
   /* The CarPlay picture is a dashboard, not a phone: shown as itself. */
   .dashboard {
     height: var(--ph); aspect-ratio: 941 / 1672; border-radius: calc(var(--pw) * .1);
-    overflow: hidden; box-shadow: 0 34px 60px -26px rgba(4, 22, 12, .7);
+    overflow: hidden; box-shadow: 0 34px 60px -28px rgba(15, 40, 30, .5);
   }
   .dashboard img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -156,17 +161,38 @@
     font-size: clamp(22px, 2vw, 29px); text-wrap: balance;
   }
 
+  /* Previous and next, level with the middle of the screen and just clear
+     of it — and of the CarPlay picture, the widest thing they flank — but
+     never off the panel's edge. */
+  .arrow {
+    position: absolute; z-index: 2; top: calc(6px + var(--ph) / 2); transform: translateY(-50%);
+    width: var(--arrow); height: var(--arrow); border-radius: 999px; border: 0; padding: 0;
+    display: grid; place-items: center; cursor: pointer; color: var(--ink-green);
+    background: rgba(255,255,255,.55); box-shadow: 0 2px 10px -4px rgba(15, 40, 30, .3);
+    transition: background .18s;
+  }
+  .arrow:hover { background: rgba(255,255,255,.85); }
+  .arrow:active { transform: translateY(-50%) scale(.96); }
+  .arrow:focus-visible { outline: 2px solid var(--ink-green); outline-offset: 2px; }
+  .arrow svg { width: 20px; height: 20px; display: block; }
+  .arrow.prev { left: max(6px, calc(50% - var(--pw) * .59 - var(--arrow-gap) - var(--arrow))); }
+  .arrow.next { right: max(6px, calc(50% - var(--pw) * .59 - var(--arrow-gap) - var(--arrow))); }
+
   .dots { display: flex; justify-content: center; gap: 4px; margin-top: 22px; }
   .dots button {
     width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer;
     display: grid; place-items: center;
   }
   .dots button::before {
-    content: ""; width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.42);
+    content: ""; width: 8px; height: 8px; border-radius: 999px; background: rgba(15, 86, 59, .28);
     transition: width .3s ease, background .3s ease;
   }
-  .dots button[aria-current="true"]::before { width: 24px; background: #fff; }
-  .dots button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 999px; }
+  .dots button[aria-current="true"]::before { width: 24px; background: var(--ink-green); }
+  .dots button:focus-visible { outline: 2px solid var(--ink-green); outline-offset: -2px; border-radius: 999px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .show, .dots button::before { transition: none; }
+  }
 
   /* ═══ PRICING ════════════════════════════════════════════════════════ */
   .pricing { padding: 100px 0 0; }
@@ -279,7 +305,7 @@
   <div class="show">
     <div class="carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="What Carve does">
       <div class="slides" id="slides">
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 6">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 6" data-bg="#D4E6FD">
           <div class="phone"><div class="screen">
             <video muted playsinline preload="auto" poster="/assets/plan-first.jpg?v=f4c93da7d5" data-end="/assets/plan-last.jpg?v=1118533b73"
                    aria-label="Carve opening a route from Clayton to Mammoth Lakes and drawing it on the map, with its stops, drive time and climb">
@@ -289,27 +315,27 @@
           </div></div>
           <figcaption>Plan routes. Drive the exact roads you want.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 6">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 6" data-bg="#DBF0E1">
           <div class="phone"><div class="screen">
             <img src="/assets/shot-offline.jpg?v=eac8bc4763" width="660" height="1434" loading="lazy" alt="Turn-by-turn on La Honda Road in airplane mode, its maps downloaded">
             <span class="island" aria-hidden="true"></span>
           </div></div>
           <figcaption>Never lose your way, even without signal.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 6">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 6" data-bg="#FEE3D2">
           <div class="phone"><div class="screen">
             <img src="/assets/shot-return.jpg?v=86b0579a2c" width="660" height="1434" loading="lazy" alt="After a wrong turn, an orange line leads back to the planned route">
             <span class="island" aria-hidden="true"></span>
           </div></div>
           <figcaption>Wrong turn? Get guided back without re-routing.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 6">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 6" data-bg="#F1E3C0">
           <div class="dashboard">
             <img src="/assets/shot-carplay-dash.jpg?v=b6e7eccb0f" width="760" height="1350" loading="lazy" alt="A car's dashboard with Carve on its CarPlay screen, a route to Mammoth Lakes ready to go">
           </div>
           <figcaption>Put your drive on the dash with CarPlay.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 6">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 6" data-bg="#E6E0FE">
           <div class="phone"><div class="screen">
             <video muted playsinline preload="none" poster="/assets/dice-first.jpg?v=c3095f5688" data-end="/assets/dice-last.jpg?v=fd8f3eb56e"
                    aria-label="Tapping the dice: Carve generates a loop from where you are, then draws the Woodside Loop on the map">
@@ -319,7 +345,7 @@
           </div></div>
           <figcaption>Not sure where to go? Roll the dice.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 6">
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 6" data-bg="#FAF7EE">
           <div class="phone"><div class="screen">
             <img src="/assets/shot-import.jpg?v=83e4f75486" width="660" height="1434" loading="lazy" alt="Importing a route by pasting a Google Maps link">
             <span class="island" aria-hidden="true"></span>
@@ -327,6 +353,12 @@
           <figcaption>Import existing routes from Google Maps.</figcaption>
         </figure>
       </div>
+      <button class="arrow prev" type="button" id="prev" aria-controls="slides" aria-label="Previous">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="arrow next" type="button" id="next" aria-controls="slides" aria-label="Next">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
       <div class="dots" id="dots" aria-label="Choose a screen"></div>
     </div>
   </div>
@@ -433,21 +465,24 @@
     }
   })();
 
-  // The carousel: the store's six images, one at a time. Two are screen
+  // The carousel: the store's six images, one at a time, each on its own colour. Two are screen
   // recordings — planning a route, rolling the dice — each played once, the
   // first time its slide is on screen, and left on its last frame. A slide
   // with a recording waits for it to finish; the rest hold five seconds. A
-  // swipe or a dot takes over the timing, and a hover holds it. With reduced
+  // swipe, an arrow or a dot takes over the timing, and a hover holds it. With reduced
   // motion nothing moves by itself, and the recordings show their last frame.
   (function () {
     var track = document.getElementById("slides");
     var dotsBox = document.getElementById("dots");
     var carousel = document.getElementById("carousel");
+    var panel = carousel.closest(".show");
     if (!track) return;
     var slides = Array.prototype.slice.call(track.children);
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var HOLD = 5000, AFTER_VIDEO = 2500;
-    var index = 0, timer = null, visible = false, hovering = false;
+    // `index` is the slide on screen; `target` the one being scrolled to, so
+    // a second click before the first slide lands still counts.
+    var index = 0, target = 0, timer = null, visible = false, hovering = false;
 
     var dots = slides.map(function (slide, i) {
       var b = document.createElement("button");
@@ -471,12 +506,22 @@
       if (reduce) { finish(i); v.setAttribute("preload", "none"); }
     });
 
+    // The arrows step one either way, round from the last to the first.
+    document.getElementById("prev").addEventListener("click", function () { go((target - 1 + slides.length) % slides.length); });
+    document.getElementById("next").addEventListener("click", function () { go((target + 1) % slides.length); });
+
+    // To slide i: the dots, the recordings and the timer move with the click,
+    // not when the scroll lands; the scroll's own settle then just agrees.
     function go(i) {
+      target = i;
       track.scrollTo({ left: i * track.clientWidth, behavior: reduce ? "auto" : "smooth" });
+      settle(i);
     }
     function settle(i) {
+      target = i;
       if (i === index && dots[i].getAttribute("aria-current")) return;
       index = i;
+      panel.style.backgroundColor = slides[i].dataset.bg;
       dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); });
       slides.forEach(function (s, j) { s.setAttribute("aria-hidden", j === i ? "false" : "true"); });
       playOrPause();
