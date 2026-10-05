@@ -104,6 +104,24 @@
   .platforms svg { width: 21px; height: 21px; display: block; }
   .platforms .sep { width: 1px; height: 18px; background: currentColor; opacity: .45; }
 
+  /* On a phone: everything centred on the page, the line on one line —
+     sized to the screen's width (it is about 10 of its own font sizes
+     wide), and Get started a full-width button — up to a tablet's
+     reasonable width. */
+  @media (max-width: 899px) {
+    .art-copy { align-items: center; text-align: center; }
+    .tagline {
+      max-width: none; white-space: nowrap;
+      font-size: clamp(22px, calc((100vw - 48px) / 10.3), 40px);
+    }
+    .get {
+      width: 100%; max-width: 480px; justify-content: center;
+      padding: 20px 26px; font-size: 19px; margin-top: 30px;
+    }
+    .get svg { width: 21px; height: 21px; }
+    .platforms { margin-top: 20px; }
+  }
+
   /* ── right: the app, on each store image's own colour ── */
   /* The panel takes the colour of the store image the slide copies — sky
      for planning, mint for offline, and so on — crossfading as it turns;
