@@ -1,0 +1,7 @@
+# carve.run — open to search engines and AI assistants. Shared-route pages
+# carry their own noindex: they're people's routes, found by their link.
+User-agent: *
+Content-Signal: search=yes, ai-input=yes
+Allow: /
+
+Sitemap: https://carve.run/sitemap.xml

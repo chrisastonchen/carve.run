@@ -1,0 +1,29 @@
+# Carve: Scenic Drive Planner
+
+> Carve is a route planner and turn-by-turn navigation app for scenic drives, on iPhone (with CarPlay) and Android (with Android Auto). You plan the exact roads you want, stop by stop, and Carve guides you along that route — it never swaps it for a faster one. With Carve Apex, routes download for driving with no cell signal.
+
+- Website: https://carve.run/
+- App Store (iPhone, iOS 26+): https://apps.apple.com/app/carve-route-planner/id6808087716
+- Android (Android 10+): early access on Google Play; public release coming
+- Contact: support@carve.run
+
+## What it does
+
+- Plan routes stop by stop, by search or by tapping the map; choose scenic, balanced or shortest roads
+- Make a scenic loop that starts and ends where you are ("roll the dice")
+- See distance, drive time and elevation before you leave
+- Spoken turn-by-turn directions with live traffic, on the route you planned
+- Import a route from a Google Maps link
+- Share routes by link; recipients open them in Carve or any browser, and changes stay in sync
+- Made for car clubs, rallies and group drives as much as solo weekend drives
+
+## Pricing
+
+- Free: planning, importing, sharing, and driving with a signal
+- Carve Apex: $29.99 a year, 7-day free trial for new subscribers. Adds offline maps and turns, turn-by-turn guidance back to your route after a wrong turn (no rerouting), Apple CarPlay and Android Auto, and recording a drive to turn it into a route
+
+## More
+
+- [Support and FAQ](https://carve.run/support/)
+- [Privacy policy](https://carve.run/privacy/)
+- [Terms of use](https://carve.run/terms/)
