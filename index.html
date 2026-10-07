@@ -527,19 +527,22 @@
 </footer>
 
 <script>
-  // Where "Get started" goes, by the visitor's phone: Google Play on Android,
-  // the App Store everywhere else (live 2026-10-05; no country in the path,
-  // so each visitor gets their own storefront). The anchors carry the App
-  // Store link and the iPhone wording, so the page still works with scripts off.
+  // Where "Get started" goes, by the visitor's phone: on Android, the beta's
+  // Google Group — joining it is what lets a Google account into the closed
+  // test, until the app is public on Google Play
+  // (https://play.google.com/store/apps/details?id=run.carve.app); the App
+  // Store everywhere else (live 2026-10-05; no country in the path, so each
+  // visitor gets their own storefront). The anchors carry the App Store link
+  // and the iPhone wording, so the page still works with scripts off.
   var LINKS = {
     appStore: "https://apps.apple.com/app/carve-route-planner/id6808087716",
-    play: "https://play.google.com/store/apps/details?id=run.carve.app"
+    androidBeta: "https://groups.google.com/g/carve-beta"
   };
   (function () {
     var ua = navigator.userAgent || "";
     var android = /android/i.test(ua);
-    var url = android ? LINKS.play : LINKS.appStore;
-    var label = android ? "Get started on Android" : "Get started on iPhone";
+    var url = android ? LINKS.androidBeta : LINKS.appStore;
+    var label = android ? "Join the Android beta" : "Get started on iPhone";
     document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = url; });
     document.querySelectorAll("[data-get-label]").forEach(function (s) { s.textContent = label; });
     if (android) {
