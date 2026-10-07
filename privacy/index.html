@@ -43,6 +43,7 @@
   <h2>Your account</h2>
   <p>You can use Carve without an account; you'll need one to drive, record and keep routes in sync. You sign in with Apple or with Google. From that sign-in Carve's backend keeps an account identifier and what your provider passes on: with Google, your email address, name and Google profile picture; with Apple, nothing more — Carve doesn't ask Apple for your name or email.</p>
   <p>Your account also has a <strong>username</strong> you choose, and optionally a <strong>display name</strong> and a <strong>profile picture</strong>. These are how you appear to other people: other signed-in Carve users can see them, they appear on routes you share, and your profile picture is stored at a public web address. Profile pictures are re-encoded when you choose them, which removes location and camera details from the photo.</p>
+  <p>You can also add a <strong>photo to a route</strong> you made, taken with your camera or chosen from your library. Carve sees only the photo you pick. It's re-encoded at the size you frame it, which removes location and camera details, then checked automatically before anyone else can see it; a photo that fails the check is deleted. Once added, it's stored at a public web address and shown as the route's picture to anyone you share the route with. You can change or remove it at any time. If you report someone's photo, Carve keeps the report — which photo, and your account — to review it, and hides that photo on your device.</p>
 
   <h2>Your routes</h2>
   <ul>
@@ -54,7 +55,7 @@
   </ul>
 
   <h2>Sharing routes</h2>
-  <p>Every route you keep in your account has a link — carve.run followed by a short code — that opens it. Anyone who has the link can see the route — its name, points, stops, road path and description — and your username and profile picture as the person who made it. Links you send are outside Carve's control. Links never include your location or when you've driven the route.</p>
+  <p>Every route you keep in your account has a link — carve.run followed by a short code — that opens it. Anyone who has the link can see the route — its name, points, stops, road path, description and photo — and your username and profile picture as the person who made it. Links you send are outside Carve's control. Links never include your location or when you've driven the route.</p>
   <p>When a link is shared in a message, carve.run shows a preview — the route's name, length and a small map of it, drawn by Mapbox.</p>
 
   <h2>Location</h2>
@@ -81,13 +82,13 @@
     </tr>
     <tr>
       <td><strong>Supabase</strong></td>
-      <td>Your account, profile, routes and profile picture.</td>
+      <td>Your account, profile, routes, profile picture and route photos.</td>
       <td>Carve's backend: it hosts the accounts and routes described above.</td>
     </tr>
     <tr>
       <td><strong>Anthropic</strong></td>
-      <td>A route's name, length, time, climb, highest and lowest points, the names of its roads and stops, and the towns it starts and ends in — no coordinates and nothing that identifies you.</td>
-      <td>Writing the short description under a route's name, and choosing the picture of the kind of country it drives through.</td>
+      <td>A route's name, length, time, climb, highest and lowest points, the names of its roads and stops, and the towns it starts and ends in — no coordinates and nothing that identifies you. Photos you add to routes.</td>
+      <td>Writing the short description under a route's name, and choosing the picture of the kind of country it drives through. Checking a route photo before anyone else sees it.</td>
     </tr>
     <tr>
       <td><strong>Amazon Web Services</strong></td>
@@ -100,7 +101,7 @@
       <td>Hosting carve.run and its link previews, and protecting it from abuse.</td>
     </tr>
   </table>
-  <p>Mapbox, Anthropic and Amazon don't receive your name or contact details from Carve. To keep usage fair, the service that writes route descriptions counts requests by IP address; those counts are deleted after a week.</p>
+  <p>Mapbox, Anthropic and Amazon don't receive your name or contact details from Carve. To keep usage fair, the services that write route descriptions and choose route pictures count requests by IP address, and photo checks are counted by account; those counts are deleted after a week.</p>
 
   <h2>Carve Apex and purchases</h2>
   <p>Subscriptions are sold through the App Store on iPhone and Google Play on Android, which handle payment and billing; Carve never sees your card or bank details. Each purchase is tied to your Carve account — on iPhone with your account identifier, on Android with a one-way hash of it — so that it follows your account. Carve doesn't keep purchase records on its servers.</p>
@@ -113,7 +114,7 @@
   </ul>
 
   <h2>Keeping and deleting your data</h2>
-  <p>Your data stays until you delete it. You can delete a route in the app, remove offline maps from a route's menu, and sign out at any time. <strong>Delete Account</strong>, in the app under Me, permanently erases your account, profile, profile picture, routes (including ones you'd deleted) and their links from Carve's servers, removes them from that device, and revokes Sign in with Apple. Route descriptions and voice recordings that aren't linked to anyone are kept.</p>
+  <p>Your data stays until you delete it. You can delete a route in the app, remove offline maps from a route's menu, and sign out at any time. <strong>Delete Account</strong>, in the app under Me, permanently erases your account, profile, profile picture, route photos, routes (including ones you'd deleted) and their links from Carve's servers, removes them from that device, and revokes Sign in with Apple. Route descriptions and voice recordings that aren't linked to anyone are kept.</p>
   <p>On iPhone, the app's data is included in your device backups according to your iOS settings; your sign-in stays on the device. On Android, the app's data isn't backed up, except your sign-in in Google's Block Store, which signing out or deleting your account removes.</p>
 
   <h2>Children</h2>
