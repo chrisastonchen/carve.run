@@ -171,3 +171,52 @@ details p { padding: 0 0 14px; }
   nav.top .bar { padding: 8px 8px 8px 12px; border-radius: 14px; }
   .wrap, .doc { padding-left: 20px; padding-right: 20px; }
 }
+
+/* ── drive guides (/drives/): built by scripts/drives/build_pages.py ── */
+.drive .crumbs { font-size: 14px; color: var(--ink-faint); margin-bottom: 14px; }
+.drive .crumbs a { color: var(--ink-dim); }
+.drive .road { margin-top: 12px; color: var(--ink-faint); font-size: 15px; font-weight: 600; letter-spacing: .01em; }
+.drive .lede, .drives .lede { margin-top: 18px; font-size: 19px; color: var(--ink); }
+.drive .stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 26px 0 0;
+  border: 2px solid var(--ink); border-radius: 18px; background: var(--paper); overflow: hidden;
+}
+.drive .stats div { padding: 14px 16px; border-left: 1px solid var(--line); }
+.drive .stats div:first-child { border-left: 0; }
+.drive .stats dt { font-size: 13px; color: var(--ink-faint); font-weight: 600; }
+.drive .stats dd { margin: 2px 0 0; font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; white-space: nowrap; }
+.drive .route-map { display: block; margin-top: 18px; border: 2px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--paper-2); }
+.drive .route-map img { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; }
+.drive-cta { margin-top: 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.drive-cta p { font-size: 15px; color: var(--ink-faint); max-width: 34em; }
+.drive-cta.closing { margin-top: 48px; padding-top: 30px; border-top: 1px solid var(--line); }
+.doc .drive-cta a.btn { color: var(--ink); }
+.doc .drive-cta a.btn:hover { text-decoration: none; }
+.drive .stops { padding-left: 24px; }
+.drive .stops li { padding-left: 4px; }
+.drive .stops li + li { margin-top: 10px; }
+.drive .stops strong { display: block; }
+.drive .more { list-style: none; padding: 0; }
+.drive .more span { color: var(--ink-faint); font-size: 15px; }
+.drive .sources { margin-top: 30px; font-size: 13.5px; color: var(--ink-faint); }
+.doc.drives { max-width: 1040px; }
+.drives .lede { max-width: 36em; }
+.drives .drive-cards { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.drives .drive-cards li + li { margin-top: 0; }
+.drives .drive-cards a {
+  display: flex; flex-direction: column; height: 100%; text-decoration: none;
+  border: 2px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--paper);
+  transition: transform .18s;
+}
+.drives .drive-cards a:hover { transform: translateY(-2px); text-decoration: none; }
+.drives .drive-cards img { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; background: var(--paper-2); border-bottom: 1px solid var(--line); }
+.drives .drive-cards .name { padding: 12px 16px 0; font-family: var(--serif); font-size: 24px; color: var(--ink); letter-spacing: -0.01em; line-height: 1.15; }
+.drives .drive-cards .meta { padding: 4px 16px 14px; font-size: 14px; color: var(--ink-faint); }
+@media (max-width: 900px) { .drives .drive-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .drive .stats { grid-template-columns: 1fr 1fr; }
+  .drive .stats div:nth-child(3) { border-left: 0; }
+  .drive .stats div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .drives .drive-cards { grid-template-columns: 1fr; }
+  .drive-cta .btn { width: 100%; }
+}

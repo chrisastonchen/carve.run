@@ -22,6 +22,23 @@
 - Free: planning, importing, sharing, and driving with a signal
 - Carve Apex: $29.99 a year, 7-day free trial for new subscribers. Adds offline maps and turns, turn-by-turn guidance back to your route after a wrong turn (no rerouting), Apple CarPlay and Android Auto, and recording a drive to turn it into a route
 
+## Famous drives
+Guides to famous drives, each with a route that opens in Carve: https://carve.run/drives/
+
+- [Skyline Boulevard](https://carve.run/drives/skyline-boulevard/): CA-35, Highway 92 to Saratoga Gap, Santa Cruz Mountains, California. Drive Skyline Boulevard (CA-35) from Highway 92 to Saratoga Gap along the crest of the Santa Cruz Mountains. Map, stops including Alice's Restaurant, and tips.
+- [Big Sur, Highway 1](https://carve.run/drives/big-sur-highway-1/): CA-1, Carmel to San Simeon, Central Coast, California. Drive Big Sur on Highway 1 from Carmel to San Simeon: Bixby Bridge, McWay Falls, the elephant seals. Map, stops, current road status and tips.
+- [Tioga Pass](https://carve.run/drives/tioga-pass/): Tioga Road and CA-120, Crane Flat to Lee Vining, Yosemite National Park, California. Drive Tioga Road across Yosemite from Crane Flat over 9,945-ft Tioga Pass to Lee Vining. Map, stops, opening season, fees and tips.
+- [Angeles Crest Highway](https://carve.run/drives/angeles-crest-highway/): CA-2, La Cañada Flintridge to Newcomb's Ranch, San Gabriel Mountains, California. Drive the Angeles Crest Highway (CA-2) from La Cañada Flintridge to Newcomb's Ranch in the San Gabriel Mountains. Map, stops, 2026 closure status and tips.
+- [Million Dollar Highway](https://carve.run/drives/million-dollar-highway/): US-550, Ouray to Silverton, San Juan Mountains, Colorado. Drive the Million Dollar Highway (US-550) from Ouray to Silverton: cliffside road with no guardrails over 11,018-ft Red Mountain Pass. Map, stops, season and tips.
+- [Beartooth Highway](https://carve.run/drives/beartooth-highway/): US-212, Red Lodge to Cooke City, Montana and Wyoming. Drive the Beartooth Highway (US-212) from Red Lodge to Cooke City over 10,947-ft Beartooth Pass. Map, stops, opening season and tips for this All-American Road.
+- [Going-to-the-Sun Road](https://carve.run/drives/going-to-the-sun-road/): West Glacier to St. Mary, Glacier National Park, Montana. Drive Going-to-the-Sun Road across Glacier National Park, from West Glacier over Logan Pass to St. Mary. Map, stops, 2026 season, vehicle limits and tips.
+- [Tail of the Dragon](https://carve.run/drives/tail-of-the-dragon/): US-129 at Deals Gap, North Carolina and Tennessee. Drive the Tail of the Dragon, US-129 at Deals Gap: 318 curves in 11 miles on the North Carolina–Tennessee line. Map, stops, rules and tips.
+- [Cherohala Skyway](https://carve.run/drives/cherohala-skyway/): TN-165 and NC-143, Tellico Plains to Robbinsville, Tennessee and North Carolina. Drive the Cherohala Skyway from Tellico Plains, TN to Robbinsville, NC: 15 overlooks, a crest above 5,400 feet and fall color. Map, stops, season and tips.
+- [Blue Ridge Parkway](https://carve.run/drives/blue-ridge-parkway/): Mileposts 384 to 451, Asheville to Waterrock Knob, North Carolina. Drive the Blue Ridge Parkway from Asheville to Waterrock Knob, its highest section: Mount Pisgah, Graveyard Fields, Richland Balsam. Map, stops, fall color and tips.
+- [Kancamagus Highway](https://carve.run/drives/kancamagus-highway/): NH-112, Lincoln to Conway, White Mountains, New Hampshire. Drive the Kancamagus Highway (NH-112) from Lincoln to Conway through the White Mountains: overlooks, waterfalls and peak fall foliage. Map, stops and tips.
+- [Overseas Highway](https://carve.run/drives/overseas-highway/): US-1, Key Largo to Key West, Florida Keys. Drive the Overseas Highway (US-1) from Key Largo to Key West across 42 bridges, including the Seven Mile Bridge. Map, stops, best time to go and tips.
+<!-- /drives -->
+
 ## More
 
 - [Support and FAQ](https://carve.run/support/)
