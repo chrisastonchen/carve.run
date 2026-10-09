@@ -15,13 +15,13 @@
 - Spoken turn-by-turn directions with live traffic, on the route you planned
 - Import a route from a Google Maps link
 - Share routes by link; recipients open them in Carve or any browser, and changes stay in sync
-- Caravan: drivers on the same route see each other on the map and car screen, by name, within 20 miles (Carve Apex; opt-in per drive, no location history)
+- Group: drivers on the same route see each other on the map and car screen, by name, within 20 miles (Carve Apex; opt-in per drive, no location history)
 - Made for car clubs, rallies and group drives as much as solo weekend drives
 
 ## Pricing
 
 - Free: planning, importing, sharing, and driving with a signal
-- Carve Apex: $29.99 a year, 7-day free trial for new subscribers. Adds offline maps and turns, turn-by-turn guidance back to your route after a wrong turn (no rerouting), Apple CarPlay and Android Auto, Caravan (see your group on the map), and recording a drive to turn it into a route
+- Carve Apex: $29.99 a year, 7-day free trial for new subscribers. Adds offline maps and turns, turn-by-turn guidance back to your route after a wrong turn (no rerouting), Apple CarPlay and Android Auto, Group (see your whole group on the map), and recording a drive to turn it into a route
 
 ## Famous drives
 Guides to famous drives, each with a route that opens in Carve: https://carve.run/drives/
