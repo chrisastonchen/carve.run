@@ -15,7 +15,7 @@
 - Spoken turn-by-turn directions with live traffic, on the route you planned
 - Import a route from a Google Maps link
 - Share routes by link; recipients open them in Carve or any browser, and changes stay in sync
-- Group: drivers on the same route see each other on the map and car screen, by name, within 20 miles (Carve Apex; opt-in per drive, no location history)
+- Group: drivers on the same route see each other on the map and car screen, by name, anywhere on the route (Carve Apex; opt-in per drive, no location history)
 - Made for car clubs, rallies and group drives as much as solo weekend drives
 
 ## Pricing
