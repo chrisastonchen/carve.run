@@ -31,10 +31,10 @@
 
 <main class="doc">
   <h1>Privacy Policy</h1>
-  <p class="stamp">Effective 7 October 2026</p>
+  <p class="stamp">Effective 11 October 2026</p>
 
   <div class="note">
-    <strong>The short version.</strong> Carve uses your location on your phone to draw the map and guide your drives; the coordinates needed for maps, directions and search go to the mapping services that provide them. With an account, your routes are kept on Carve's servers so they're on all your devices, and they're private to you unless you share a route's link. Carve has no ads, no advertising trackers, and no analytics of its own. We don't sell data, and we never see your payment details.
+    <strong>The short version.</strong> Carve uses your location on your phone to draw the map and guide your drives; the coordinates needed for maps, directions and search go to the mapping services that provide them. With an account, your routes are kept on Carve's servers so they're on all your devices, and they're private to you unless you share a route's link. If you turn on <strong>Caravan</strong> for a drive, the people sharing the same route near you see where you are, by name, until the drive ends; Carve keeps only your latest position, and deletes it when you stop. Carve has no ads, no advertising trackers, and no analytics of its own. We don't sell data, and we never see your payment details.
   </div>
 
   <h2>Who we are</h2>
@@ -59,9 +59,20 @@
   <p>Every route you keep in your account has a link — carve.run followed by a short code — that opens it. Anyone who has the link can see the route — its name, points, stops, road path, description and photo — and your username and profile picture as the person who made it. Links you send are outside Carve's control. Links never include your location or when you've driven the route.</p>
   <p>When a link is shared in a message, carve.run shows a preview — the route's name, length and a small map of it, drawn by Mapbox.</p>
 
+  <h2>Caravan: driving together</h2>
+  <p>Caravan, part of Carve Apex, lets people driving the same route see each other on the map. It's off unless you turn it on, for one route at a time, from the route's preview or during the drive.</p>
+  <ul>
+    <li><strong>What others see.</strong> While Caravan is on and you're within about 3 miles of the route, your phone sends Carve's server your position every few seconds (every 20 seconds while you're stopped), with your heading, speed, how far along the route you are, whether you're stopped and which way you're driving it. Other Carve users sharing the same route — or a copy of it — within 20 miles of you see your position on their map and car screen, with your display name (or username) and profile picture, how far ahead or behind you are, and how long ago you last updated.</li>
+    <li><strong>Only while you share, and only nearby.</strong> You see others only while you're sharing yourself. Further than about 3 miles from the route your phone stops sending and your position is removed, so turning Caravan on at home doesn't reveal it unless you live near the route. The server checks the distances itself; it doesn't rely on the app.</li>
+    <li><strong>No history.</strong> The server keeps one record for you: your latest position on the route. It's deleted when you turn Caravan off, end the drive or leave the route, and if your phone loses its connection first, others see it as where you were last seen for up to 30 minutes, after which it's deleted. Carve doesn't keep a record of where you've driven.</li>
+    <li><strong>Are you driving in a group?</strong> When you open a route near people already sharing it, the app may ask whether you'd like to join them. To ask, it sends the server the route and where you are, and gets back only how many people are sharing within a mile — never who or where. Your position isn't stored; the server keeps only when your account last asked, so it can be asked at most every 15 seconds.</li>
+    <li><strong>Hide and Report.</strong> You can hide any driver: neither of you will see the other again. Hidden drivers are listed under Me, where you can show them again. You can report a driver; Carve keeps the report — who, on which route, and your account — to review it.</li>
+  </ul>
+  <p>Your name in Caravan is the display name you set under Me, or your username. Deleting your account deletes your position, hidden drivers and reports with it.</p>
+
   <h2>Location</h2>
   <p>Carve asks for location access to centre the map, to plan from where you are, and to guide a drive or record one. During a drive or a recording it tracks your position continuously — on Android with a notification showing while it does, on iPhone in the background while the drive is active — so it can announce turns, clear stops, and tell when you've left the route. Carve doesn't ask for location access at other times in the background.</p>
-  <p>Your location is processed on the device and is not sent to Carve's servers. Coordinates go to the services below only as needed to do what you asked. You can withdraw location access at any time in your phone's settings; the map still works, but drives can't be guided.</p>
+  <p>Your location is processed on the device and is not sent to Carve's servers, except while you use Caravan, as described above. Coordinates go to the services below only as needed to do what you asked. You can withdraw location access at any time in your phone's settings; the map still works, but drives can't be guided.</p>
 
   <h2>Services that receive data</h2>
   <table>
@@ -83,8 +94,8 @@
     </tr>
     <tr>
       <td><strong>Supabase</strong></td>
-      <td>Your account, profile, routes, profile picture and route photos.</td>
-      <td>Carve's backend: it hosts the accounts and routes described above.</td>
+      <td>Your account, profile, routes, profile picture and route photos; while you use Caravan, your latest position on the route.</td>
+      <td>Carve's backend: it hosts the accounts and routes described above, and passes Caravan positions between the people sharing a route.</td>
     </tr>
     <tr>
       <td><strong>Anthropic</strong></td>
@@ -120,7 +131,7 @@
   </ul>
 
   <h2>Keeping and deleting your data</h2>
-  <p>Your data stays until you delete it. You can delete a route in the app, remove offline maps from a route's menu, and sign out at any time. <strong>Delete Account</strong>, in the app under Me, permanently erases your account, profile, profile picture, route photos, routes (including ones you'd deleted) and their links from Carve's servers, removes them from that device, and revokes Sign in with Apple. Route descriptions and voice recordings that aren't linked to anyone are kept.</p>
+  <p>Your data stays until you delete it. You can delete a route in the app, remove offline maps from a route's menu, and sign out at any time. <strong>Delete Account</strong>, in the app under Me, permanently erases your account, profile, profile picture, route photos, routes (including ones you'd deleted) and their links, and your Caravan position, hidden drivers and reports from Carve's servers, removes them from that device, and revokes Sign in with Apple. Route descriptions and voice recordings that aren't linked to anyone are kept.</p>
   <p>On iPhone, the app's data is included in your device backups according to your iOS settings; your sign-in stays on the device. On Android, the app's data isn't backed up, except your sign-in in Google's Block Store, which signing out or deleting your account removes.</p>
 
   <h2>Children</h2>
