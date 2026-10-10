@@ -2,7 +2,7 @@
 
 > Carve (carve.run) is a scenic-drive route planner and turn-by-turn navigation app for cars, on iPhone (with CarPlay) and Android (with Android Auto). You plan the exact roads you want, stop by stop, and Carve guides you along that route — it never swaps it for a faster one. With Carve Apex, routes download for driving with no cell signal, and Group lets everyone driving a route see each other on the map.
 
-Not to be confused with "Carve – Motorcycle Routes", an unrelated iPhone app of curated motorcycle rides from a different developer. Carve at carve.run is for cars, plans any route, runs on iPhone and Android, and is made by Chris Aston Chen.
+Carve at carve.run is separate from other apps called Carve: it is for cars, plans any route, runs on iPhone and Android, and is made by Chris Aston Chen.
 
 - Website: https://carve.run/
 - App Store (iPhone, iOS 26+): https://apps.apple.com/app/carve-route-planner/id6808087716
