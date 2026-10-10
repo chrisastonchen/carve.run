@@ -107,6 +107,27 @@
   .stops { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
   .stops li { display: flex; align-items: center; gap: 12px; padding: 13px 14px; font-weight: 600; }
   .stops li + li { border-top: 1px solid #EEE8DA; }
+  .gmaps {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; margin-top: 12px;
+    border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink);
+    font: inherit; font-size: 15.5px; font-weight: 600; cursor: pointer;
+  }
+  .gmaps:hover { background: #FBF8EF; }
+  .gmaps svg { width: 18px; height: 18px; color: var(--ink-dim); }
+  .gmaps-warning {
+    width: min(400px, calc(100vw - 32px)); box-sizing: border-box; padding: 24px; border: 0; border-radius: 20px;
+    background: #fff; color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  }
+  .gmaps-warning::backdrop { background: rgba(21,24,28,.45); }
+  .gmaps-warning h2 { margin: 0 0 8px; font-family: var(--sans); font-size: 20px; font-weight: 700; }
+  .gmaps-warning p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--ink-dim); }
+  .gmaps-warning .actions { display: flex; gap: 10px; margin-top: 20px; }
+  .gmaps-warning .actions > * {
+    flex: 1; min-height: 46px; padding: 0 12px; display: flex; align-items: center; justify-content: center; border-radius: 12px; white-space: nowrap;
+    font: inherit; font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer;
+  }
+  #gmaps-cancel { flex: 0 0 auto; padding: 0 20px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+  #gmaps-open { background: var(--route); color: #fff; }
   .stops .pin {
     flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--stop); color: #fff;
     display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;
@@ -163,6 +184,15 @@
   <p class="missing" id="missing">Loading the route…</p>
 </main>
 
+<dialog id="gmaps-warning" class="gmaps-warning" aria-labelledby="gmaps-title">
+  <h2 id="gmaps-title">Open in Google Maps?</h2>
+  <p>Google Maps finds its own fastest way between a few points on this route, so it may take different roads than Carve. Check the route before you drive.</p>
+  <div class="actions">
+    <button type="button" id="gmaps-cancel">Cancel</button>
+    <a id="gmaps-open" href="#" target="_blank" rel="noopener">Open Google Maps</a>
+  </div>
+</dialog>
+
 <div class="dock" id="dock" aria-hidden="true">
   <div class="what"><b id="bar-name"></b><span id="bar-stats"></span></div>
   <a id="bar-cta" href="#get" tabindex="-1">Drive it</a>
@@ -208,6 +238,13 @@
   // reach without a session is redeeming a share token.
   const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
+
+  {
+    const dialog = document.getElementById("gmaps-warning");
+    document.getElementById("gmaps-cancel").addEventListener("click", () => dialog.close());
+    document.getElementById("gmaps-open").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+  }
 
   const ua = navigator.userAgent || "";
   const isAndroid = /android/i.test(ua);
@@ -328,7 +365,10 @@
         el("h2", {}, "Stops along the way"),
         el("ol", { class: "stops" }, stops.map((stop, i) =>
           el("li", {}, el("span", { class: "pin", "aria-hidden": "true" }, String(i + 1)), stop.name))),
+        googleMapsButton(info.googleMaps),
       ));
+    } else if (info.googleMaps) {
+      main.append(googleMapsButton(info.googleMaps));
     }
 
     // Why Carve.
@@ -401,6 +441,21 @@
     document.addEventListener("visibilitychange", () => { if (document.hidden) leaving(); }, { once: true });
     setTimeout(() => { if (!left) location.href = APP_STORE_URL; }, 1500);
     location.href = "carve://route?" + query;
+  }
+
+  // MARK: - Google Maps
+  // For someone in the group without Carve: a close version of the route in
+  // Google Maps (the Worker's googleMapsURL), after a word that Google
+  // drives its own fastest way between the points, as the apps say it.
+  function googleMapsButton(url) {
+    if (!url) return null;
+    const button = el("button", { type: "button", class: "gmaps" }, icon("stat-stops"), "Open in Google Maps");
+    button.addEventListener("click", () => {
+      const dialog = document.getElementById("gmaps-warning");
+      document.getElementById("gmaps-open").href = url;
+      if (dialog.showModal) dialog.showModal(); else location.href = url;
+    });
+    return button;
   }
 
   // MARK: - The QR code
