@@ -84,6 +84,14 @@
   .platforms .sep { width: 1px; height: 20px; background: currentColor; opacity: .4; }
   .open-hint { font-size: 13.5px; color: var(--ink-dim); text-align: center; margin: 2px 0 0; }
   body.desktop .cta { display: none; }
+  .scan {
+    align-self: stretch; display: flex; align-items: center; gap: 20px; padding: 16px;
+    background: #fff; border: 1px solid var(--line); border-radius: 20px;
+  }
+  .scan svg { width: 148px; height: 148px; flex: none; display: block; }
+  .scan-words { display: flex; flex-direction: column; gap: 4px; }
+  .scan-words b { font-size: 19px; }
+  .scan-words span { font-size: 14.5px; color: var(--ink-dim); }
 
   .route h2 { font-size: 26px; margin: 40px 0 12px; }
   .stops { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
@@ -277,8 +285,15 @@
       isAndroid ? "Drive it on Android" : "Drive it on iPhone",
     );
     cta.addEventListener("click", openInApp);
+    // On a computer, the link as a QR code where the phone's button goes.
+    const desktop = document.body.classList.contains("desktop");
+    const code = desktop ? qrSVG(location.origin + location.pathname + location.search) : null;
     main.append(el("div", { class: "get" },
       cta,
+      code ? el("div", { class: "scan" }, code,
+        el("div", { class: "scan-words" },
+          el("b", {}, "Scan to drive it on your phone"),
+          el("span", {}, "Opens the route in Carve, or gets you the app."))) : null,
       el("div", { class: "platforms" },
         el("a", { href: APP_STORE_URL, title: "iPhone and CarPlay", "aria-label": "Carve for iPhone and CarPlay on the App Store" },
           icon("apple"), icon("carplay")),
@@ -286,8 +301,8 @@
         el("a", { href: ANDROID_URL, title: "Android and Android Auto", "aria-label": "Carve for Android and Android Auto" },
           icon("android"), icon("androidauto")),
       ),
-      document.body.classList.contains("desktop")
-        ? el("p", { class: "open-hint" }, "Open this link on your phone to drive it.")
+      desktop
+        ? (code ? null : el("p", { class: "open-hint" }, "Open this link on your phone to drive it."))
         : el("p", { class: "open-hint" }, "Already have Carve? The button opens the route in the app."),
     ));
 
@@ -371,6 +386,191 @@
     document.addEventListener("visibilitychange", () => { if (document.hidden) leaving(); }, { once: true });
     setTimeout(() => { if (!left) location.href = APP_STORE_URL; }, 1500);
     location.href = "carve://route?" + query;
+  }
+
+  // MARK: - The QR code
+  // A computer can't drive the route, so it shows this page's link as a QR
+  // code to scan with the phone. Byte mode, error correction M, versions
+  // 1–10 (links up to 213 bytes); longer links get the words alone. After
+  // Nayuki's QR Code generator (MIT), cut down to what a link needs.
+  const QR_ECC_PER_BLOCK = [0, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26];
+  const QR_BLOCKS = [0, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5];
+
+  function qrMatrix(text) {
+    const bytes = Array.from(new TextEncoder().encode(text));
+    const rawModules = (v) => {
+      let n = (16 * v + 128) * v + 64;
+      if (v >= 2) { const a = Math.floor(v / 7) + 2; n -= (25 * a - 10) * a - 55; if (v >= 7) n -= 36; }
+      return n;
+    };
+    const dataCodewords = (v) => Math.floor(rawModules(v) / 8) - QR_ECC_PER_BLOCK[v] * QR_BLOCKS[v];
+    let version = 1;
+    while (version <= 10 && 4 + (version < 10 ? 8 : 16) + bytes.length * 8 > dataCodewords(version) * 8) version++;
+    if (version > 10) return null;
+
+    // The bits: byte mode, the length, the bytes, then padding.
+    const bits = [];
+    const put = (value, length) => { for (let i = length - 1; i >= 0; i--) bits.push((value >>> i) & 1); };
+    put(4, 4);
+    put(bytes.length, version < 10 ? 8 : 16);
+    bytes.forEach(b => put(b, 8));
+    const capacity = dataCodewords(version) * 8;
+    put(0, Math.min(4, capacity - bits.length));
+    put(0, (8 - bits.length % 8) % 8);
+    for (let pad = 0xEC; bits.length < capacity; pad ^= 0xEC ^ 0x11) put(pad, 8);
+    const data = [];
+    for (let i = 0; i < bits.length; i += 8) data.push(parseInt(bits.slice(i, i + 8).join(""), 2));
+
+    // Reed–Solomon error correction, block by block, then interleaved.
+    const mul = (x, y) => {
+      let z = 0;
+      for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; }
+      return z;
+    };
+    const eccLength = QR_ECC_PER_BLOCK[version];
+    const divisor = new Array(eccLength).fill(0);
+    divisor[eccLength - 1] = 1;
+    for (let i = 0, root = 1; i < eccLength; i++, root = mul(root, 2)) {
+      for (let j = 0; j < eccLength; j++) {
+        divisor[j] = mul(divisor[j], root);
+        if (j + 1 < eccLength) divisor[j] ^= divisor[j + 1];
+      }
+    }
+    const remainder = (block) => {
+      const result = new Array(eccLength).fill(0);
+      for (const b of block) {
+        const factor = b ^ result.shift();
+        result.push(0);
+        divisor.forEach((d, i) => { result[i] ^= mul(d, factor); });
+      }
+      return result;
+    };
+    const blockCount = QR_BLOCKS[version];
+    const rawCodewords = Math.floor(rawModules(version) / 8);
+    const shortBlocks = blockCount - rawCodewords % blockCount;
+    const shortLength = Math.floor(rawCodewords / blockCount);
+    const blocks = [];
+    for (let i = 0, k = 0; i < blockCount; i++) {
+      const block = data.slice(k, k + shortLength - eccLength + (i < shortBlocks ? 0 : 1));
+      k += block.length;
+      const ecc = remainder(block);
+      if (i < shortBlocks) block.push(0);
+      blocks.push(block.concat(ecc));
+    }
+    const codewords = [];
+    for (let i = 0; i < blocks[0].length; i++) {
+      blocks.forEach((block, j) => { if (i !== shortLength - eccLength || j >= shortBlocks) codewords.push(block[i]); });
+    }
+
+    // The grid: finders, timing, alignment, format and version, then the data.
+    const size = version * 4 + 17;
+    const dark = Array.from({ length: size }, () => new Array(size).fill(false));
+    const fixed = Array.from({ length: size }, () => new Array(size).fill(false));
+    const set = (x, y, on) => { dark[y][x] = on; fixed[y][x] = true; };
+    for (let i = 0; i < size; i++) { set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    for (const [cx, cy] of [[3, 3], [size - 4, 3], [3, size - 4]]) {
+      for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) {
+        const x = cx + dx, y = cy + dy, d = Math.max(Math.abs(dx), Math.abs(dy));
+        if (x >= 0 && x < size && y >= 0 && y < size) set(x, y, d !== 2 && d !== 4);
+      }
+    }
+    if (version > 1) {
+      const count = Math.floor(version / 7) + 2;
+      const step = Math.ceil((version * 4 + 4) / (count * 2 - 2)) * 2;
+      const at = [6];
+      for (let p = size - 7; at.length < count; p -= step) at.splice(1, 0, p);
+      at.forEach((y, i) => at.forEach((x, j) => {
+        if ((i === 0 && j === 0) || (i === 0 && j === count - 1) || (i === count - 1 && j === 0)) return;
+        for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(x + dx, y + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1);
+      }));
+    }
+    const drawFormat = (mask) => {
+      const value = mask; // error correction M is 00
+      let rem = value;
+      for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+      const word = ((value << 10) | rem) ^ 0x5412;
+      const bit = (i) => ((word >>> i) & 1) === 1;
+      for (let i = 0; i <= 5; i++) set(8, i, bit(i));
+      set(8, 7, bit(6)); set(8, 8, bit(7)); set(7, 8, bit(8));
+      for (let i = 9; i < 15; i++) set(14 - i, 8, bit(i));
+      for (let i = 0; i < 8; i++) set(size - 1 - i, 8, bit(i));
+      for (let i = 8; i < 15; i++) set(8, size - 15 + i, bit(i));
+      set(8, size - 8, true);
+    };
+    drawFormat(0);
+    if (version >= 7) {
+      let rem = version;
+      for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25);
+      const word = (version << 12) | rem;
+      for (let i = 0; i < 18; i++) {
+        const on = ((word >>> i) & 1) === 1, a = size - 11 + i % 3, b = Math.floor(i / 3);
+        set(a, b, on); set(b, a, on);
+      }
+    }
+    let n = 0;
+    for (let right = size - 1; right >= 1; right -= 2) {
+      if (right === 6) right = 5;
+      for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++) {
+        const x = right - j, y = ((right + 1) & 2) === 0 ? size - 1 - vert : vert;
+        if (!fixed[y][x] && n < codewords.length * 8) {
+          dark[y][x] = ((codewords[n >>> 3] >>> (7 - (n & 7))) & 1) === 1;
+          n++;
+        }
+      }
+    }
+
+    // The mask that leaves the fewest runs, blocks and imbalance.
+    const MASKS = [
+      (x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, (x) => x % 3 === 0, (x, y) => (x + y) % 3 === 0,
+      (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => x * y % 2 + x * y % 3 === 0,
+      (x, y) => (x * y % 2 + x * y % 3) % 2 === 0, (x, y) => ((x + y) % 2 + x * y % 3) % 2 === 0,
+    ];
+    const applyMask = (m) => {
+      for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!fixed[y][x] && MASKS[m](x, y)) dark[y][x] = !dark[y][x];
+    };
+    const penalty = () => {
+      let score = 0, count = 0;
+      for (let a = 0; a < size; a++) {
+        for (const line of [(i) => dark[a][i], (i) => dark[i][a]]) {
+          let run = 1;
+          for (let i = 1; i <= size; i++) {
+            if (i < size && line(i) === line(i - 1)) { run++; continue; }
+            if (run >= 5) score += run - 2;
+            run = 1;
+          }
+        }
+      }
+      for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+        if (dark[y][x]) count++;
+        if (x < size - 1 && y < size - 1 && dark[y][x] === dark[y][x + 1] && dark[y][x] === dark[y + 1][x] && dark[y][x] === dark[y + 1][x + 1]) score += 3;
+      }
+      return score + Math.floor(Math.abs(count * 20 - size * size * 10) / (size * size)) * 10;
+    };
+    let best = 0, bestScore = Infinity;
+    for (let m = 0; m < 8; m++) {
+      applyMask(m); drawFormat(m);
+      const score = penalty();
+      if (score < bestScore) { best = m; bestScore = score; }
+      applyMask(m);
+    }
+    applyMask(best); drawFormat(best);
+    return dark;
+  }
+
+  /** The link as an SVG QR code with its quiet border, or null when it's too long. */
+  function qrSVG(text) {
+    const grid = qrMatrix(text);
+    if (!grid) return null;
+    const size = grid.length + 8;
+    let path = "";
+    grid.forEach((row, y) => row.forEach((on, x) => { if (on) path += `M${x + 4} ${y + 4}h1v1h-1z`; }));
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+    svg.setAttribute("shape-rendering", "crispEdges");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "QR code for this route's link");
+    svg.innerHTML = `<rect width="${size}" height="${size}" fill="#fff"/><path d="${path}" fill="#15181C"/>`;
+    return svg;
   }
 
   // MARK: - The route
