@@ -93,8 +93,7 @@
   .scan .code { flex: none; padding: 6px; background: #fff; border-radius: 18px; }
   .scan .code svg { width: 164px; height: 164px; display: block; }
   .scan-words { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-  .scan-words .eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
-  .scan .scan-words h2 { margin: 0; font-size: 26px; line-height: 1.12; letter-spacing: -0.01em; }
+  .scan .scan-words h2 { margin: 0; text-wrap: balance; font-size: 26px; line-height: 1.12; letter-spacing: -0.01em; }
   .scan-words ul { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
   .scan-words li { display: flex; align-items: center; gap: 9px; }
   .scan-words li svg { width: 18px; height: 18px; flex: none; opacity: .9; }
@@ -304,8 +303,7 @@
       code ? el("div", { class: "scan" },
         el("div", { class: "code" }, code),
         el("div", { class: "scan-words" },
-          el("span", { class: "eyebrow" }, "Scan with your phone"),
-          el("h2", {}, `Take ${name} with you`),
+          el("h2", {}, "Scan to drive this route with Carve"),
           el("ul", {},
             el("li", {}, icon("why-road"), "Turn by turn on these exact roads"),
             el("li", {}, icon("why-offline"), "Keeps going when the signal drops"),
