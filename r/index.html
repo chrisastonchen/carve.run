@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/styles.css?v=a7f38b5fc4">
 <!-- The route itself arrives as JSON in #route-data, written into this page
      by the Worker (cloudflare/map-worker.js) from the shared route: name,
-     numbers, photo, blurb, roads, stops, maker and roughly where it is. A
+     numbers, photo, blurb, stops, maker and roughly where it is. A
      link to someone who has never heard of Carve, so the page sells the
      drive first and the app second. Safari's own "Open in the app" bar
      comes from APP_STORE_ID below. -->
@@ -86,10 +86,6 @@
   body.desktop .cta { display: none; }
 
   .route h2 { font-size: 26px; margin: 40px 0 12px; }
-  .map img { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: 16px; border: 1px solid var(--line); }
-  .roads { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; font-size: 14.5px; font-weight: 600; }
-  .roads .road { padding: 6px 11px; border-radius: 9px; background: var(--sky); }
-  .roads .arrow { color: var(--ink-faint); }
   .stops { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
   .stops li { display: flex; align-items: center; gap: 12px; padding: 13px 14px; font-weight: 600; }
   .stops li + li { border-top: 1px solid #EEE8DA; }
@@ -294,22 +290,6 @@
         ? el("p", { class: "open-hint" }, "Open this link on your phone to drive it.")
         : el("p", { class: "open-hint" }, "Already have Carve? The button opens the route in the app."),
     ));
-
-    // The route: its map (when the top is the photo) and the roads it takes.
-    const roads = info.roads || [];
-    if ((hasPhoto && token) || roads.length) {
-      const section = el("section", { class: "map" }, el("h2", {}, "The route"));
-      if (hasPhoto && token) {
-        const map = el("img", { src: "/map/" + encodeURIComponent(token), alt: name + " on a map", loading: "lazy" });
-        map.addEventListener("error", () => map.remove());
-        section.append(map);
-      }
-      if (roads.length) {
-        section.append(el("div", { class: "roads", "aria-label": "Roads, in order" },
-          roads.map((road, i) => [i ? el("span", { class: "arrow", "aria-hidden": "true" }, "→") : null, el("span", { class: "road" }, road)])));
-      }
-      main.append(section);
-    }
 
     // The stops.
     const stops = info.stops || [];
