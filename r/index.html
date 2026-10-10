@@ -84,14 +84,25 @@
   .platforms .sep { width: 1px; height: 20px; background: currentColor; opacity: .4; }
   .open-hint { font-size: 13.5px; color: var(--ink-dim); text-align: center; margin: 2px 0 0; }
   body.desktop .cta { display: none; }
+  /* On a computer: the link to scan, on Carve's green. */
   .scan {
-    align-self: stretch; display: flex; align-items: center; gap: 20px; padding: 16px;
-    background: #fff; border: 1px solid var(--line); border-radius: 20px;
+    align-self: stretch; display: flex; align-items: center; gap: 28px; padding: 24px;
+    background: #1D5B3A; color: #fff; border-radius: 24px;
+    box-shadow: 0 14px 34px rgba(29,91,58,.22);
   }
-  .scan svg { width: 148px; height: 148px; flex: none; display: block; }
-  .scan-words { display: flex; flex-direction: column; gap: 4px; }
-  .scan-words b { font-size: 19px; }
-  .scan-words span { font-size: 14.5px; color: var(--ink-dim); }
+  .scan .code { flex: none; padding: 6px; background: #fff; border-radius: 18px; }
+  .scan .code svg { width: 164px; height: 164px; display: block; }
+  .scan-words { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .scan-words .eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+  .scan .scan-words h2 { margin: 0; font-size: 26px; line-height: 1.12; letter-spacing: -0.01em; }
+  .scan-words ul { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
+  .scan-words li { display: flex; align-items: center; gap: 9px; }
+  .scan-words li svg { width: 18px; height: 18px; flex: none; opacity: .9; }
+  .scan-words .how { font-size: 13.5px; opacity: .72; margin-top: 2px; }
+  @media (max-width: 560px) {
+    .scan { flex-direction: column; text-align: center; }
+    .scan-words li { justify-content: center; }
+  }
 
   .route h2 { font-size: 26px; margin: 40px 0 12px; }
   .stops { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
@@ -290,10 +301,16 @@
     const code = desktop ? qrSVG(location.origin + location.pathname + location.search) : null;
     main.append(el("div", { class: "get" },
       cta,
-      code ? el("div", { class: "scan" }, code,
+      code ? el("div", { class: "scan" },
+        el("div", { class: "code" }, code),
         el("div", { class: "scan-words" },
-          el("b", {}, "Scan to drive it on your phone"),
-          el("span", {}, "Opens the route in Carve, or gets you the app."))) : null,
+          el("span", { class: "eyebrow" }, "Scan with your phone"),
+          el("h2", {}, `Take ${name} with you`),
+          el("ul", {},
+            el("li", {}, icon("why-road"), "Turn by turn on these exact roads"),
+            el("li", {}, icon("why-offline"), "Keeps going when the signal drops"),
+            el("li", {}, icon("carplay"), "On CarPlay and Android Auto too")),
+          el("span", { class: "how" }, "Point your phone’s camera at the code."))) : null,
       el("div", { class: "platforms" },
         el("a", { href: APP_STORE_URL, title: "iPhone and CarPlay", "aria-label": "Carve for iPhone and CarPlay on the App Store" },
           icon("apple"), icon("carplay")),
@@ -390,11 +407,12 @@
 
   // MARK: - The QR code
   // A computer can't drive the route, so it shows this page's link as a QR
-  // code to scan with the phone. Byte mode, error correction M, versions
-  // 1–10 (links up to 213 bytes); longer links get the words alone. After
+  // code to scan with the phone. Byte mode, error correction Q (a quarter
+  // of it can be lost: Carve's icon sits in the middle), versions 1–10
+  // (links up to 151 bytes); longer links get the words alone. After
   // Nayuki's QR Code generator (MIT), cut down to what a link needs.
-  const QR_ECC_PER_BLOCK = [0, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26];
-  const QR_BLOCKS = [0, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5];
+  const QR_ECC_PER_BLOCK = [0, 13, 22, 18, 26, 18, 24, 18, 22, 20, 24];
+  const QR_BLOCKS = [0, 1, 1, 2, 2, 4, 4, 6, 6, 8, 8];
 
   function qrMatrix(text) {
     const bytes = Array.from(new TextEncoder().encode(text));
@@ -485,7 +503,7 @@
       }));
     }
     const drawFormat = (mask) => {
-      const value = mask; // error correction M is 00
+      const value = (3 << 3) | mask; // error correction Q is 11
       let rem = value;
       for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
       const word = ((value << 10) | rem) ^ 0x5412;
@@ -557,19 +575,28 @@
     return dark;
   }
 
-  /** The link as an SVG QR code with its quiet border, or null when it's too long. */
+  /** The link as an SVG QR code with Carve's icon in the middle, or null
+   *  when it's too long. The icon covers under 7% of the code, well inside
+   *  what error correction Q puts back. */
   function qrSVG(text) {
     const grid = qrMatrix(text);
     if (!grid) return null;
-    const size = grid.length + 8;
+    const quiet = 3, n = grid.length, size = n + quiet * 2;
     let path = "";
-    grid.forEach((row, y) => row.forEach((on, x) => { if (on) path += `M${x + 4} ${y + 4}h1v1h-1z`; }));
+    grid.forEach((row, y) => row.forEach((on, x) => { if (on) path += `M${x + quiet} ${y + quiet}h1v1h-1z`; }));
+    let hole = Math.round(n * 0.25);
+    if (hole % 2 !== n % 2) hole++;
+    const at = quiet + (n - hole) / 2;
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
-    svg.setAttribute("shape-rendering", "crispEdges");
     svg.setAttribute("role", "img");
     svg.setAttribute("aria-label", "QR code for this route's link");
-    svg.innerHTML = `<rect width="${size}" height="${size}" fill="#fff"/><path d="${path}" fill="#15181C"/>`;
+    svg.innerHTML =
+      `<defs><clipPath id="qr-icon"><rect x="${at + 0.6}" y="${at + 0.6}" width="${hole - 1.2}" height="${hole - 1.2}" rx="${hole * 0.22}"/></clipPath></defs>` +
+      `<rect width="${size}" height="${size}" fill="#fff"/>` +
+      `<path d="${path}" fill="#15181C" shape-rendering="crispEdges"/>` +
+      `<rect x="${at}" y="${at}" width="${hole}" height="${hole}" rx="${hole * 0.26}" fill="#fff"/>` +
+      `<image href="/assets/icon-128.png?v=87d1534580" x="${at + 0.6}" y="${at + 0.6}" width="${hole - 1.2}" height="${hole - 1.2}" clip-path="url(#qr-icon)"/>`;
     return svg;
   }
 
