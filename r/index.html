@@ -5,56 +5,132 @@
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A Carve route</title>
-<meta name="description" content="Someone shared a driving route with you. Open it in Carve to drive it turn by turn, with the map and every turn downloaded before you go.">
+<meta name="description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Carve">
 <meta property="og:title" content="A Carve route">
-<meta property="og:description" content="Someone shared a driving route with you — open it in Carve.">
+<meta property="og:description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
 <meta property="og:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cars on a canyon road at sunset">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A Carve route">
-<meta name="twitter:description" content="Someone shared a driving route with you — open it in Carve.">
+<meta name="twitter:description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
 <meta name="twitter:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
 <meta name="theme-color" content="#FBF8EF">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="stylesheet" href="/styles.css?v=a7f38b5fc4">
-<!-- Safari's own "Open in the app" bar comes from APP_STORE_ID below: the
-     listing's numeric id (a bundle id will not do). -->
+<!-- The route itself arrives as JSON in #route-data, written into this page
+     by the Worker (cloudflare/map-worker.js) from the shared route: name,
+     numbers, photo, blurb, roads, stops, maker and roughly where it is. A
+     link to someone who has never heard of Carve, so the page sells the
+     drive first and the app second. Safari's own "Open in the app" bar
+     comes from APP_STORE_ID below. -->
 <style>
-  /* No outline here: the page is one card already, and a box around the
-     wordmark made it a second one. */
   nav.top .bar { border: none; background: transparent; padding-left: 0; }
-    .route { max-width: 460px; margin: 0 auto; padding: 8px 24px 64px; text-align: center; }
-  .shape {
-    position: relative; background: #0E1319; border-radius: 22px;
-    border: 2px solid var(--ink); overflow: hidden;
-    /* The shape the preview image is, so the page shows it uncropped. */
-    aspect-ratio: 1200 / 630;
+  .route { max-width: 680px; margin: 0 auto; padding: 0 20px 120px; }
+  .route h1, .route h2 { font-family: var(--sans); font-weight: 700; letter-spacing: -0.02em; }
+
+  /* The top: the route's photo with its name over it, or, with no photo,
+     its map with the name underneath. */
+  .hero { position: relative; border-radius: 22px; overflow: hidden; background: #1D5B3A; }
+  .hero .picture { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; }
+  .hero.photo .picture { aspect-ratio: 16 / 10; }
+  .hero.photo::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(10,12,16,0) 38%, rgba(10,12,16,.8) 100%);
   }
-  .shape svg, .shape img { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .shape img { object-fit: cover; }
-  .shape .waiting {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    color: #5D636C; font-size: 14px;
+  .heading { display: flex; flex-direction: column; gap: 6px; padding: 18px 2px 0; }
+  .hero.photo .heading { position: absolute; left: 20px; right: 20px; bottom: 18px; padding: 0; color: #fff; z-index: 1; }
+  .place { font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
+  .hero.photo .place { color: rgba(255,255,255,.9); }
+  .route h1 { margin: 0; font-size: clamp(34px, 8vw, 48px); line-height: 1.02; }
+  .byline { display: flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--ink-dim); }
+  .hero.photo .byline { color: #fff; }
+  .byline img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+  .hero.photo .byline img { border: 1.5px solid #fff; }
+  .hero:not(.photo) { background: none; border-radius: 0; overflow: visible; }
+  .hero:not(.photo) .picture { border-radius: 22px; border: 1px solid var(--line); background: #E8EEF0; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-top: 20px; }
+  .stat {
+    display: flex; flex-direction: column; gap: 4px; padding: 12px 14px;
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
   }
-  .route h1 { font-size: clamp(30px, 7vw, 42px); margin-top: 26px; }
-  .stats {
-    display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 18px;
-    margin-top: 14px; color: var(--ink-dim); font-size: 15.5px; font-weight: 500;
+  .stat .value { display: flex; align-items: center; gap: 7px; font-size: 21px; font-weight: 700; }
+  .stat svg { width: 19px; height: 19px; flex: none; color: var(--route); }
+  .stat .label { font-size: 12.5px; color: var(--ink-dim); }
+  .blurb { font-size: 17px; line-height: 1.55; margin: 20px 0 0; }
+
+  /* One big button for the phone in hand; the platforms as two links under it. */
+  .get { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+  .cta {
+    display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px;
+    border-radius: 16px; background: var(--ink); color: #fff; text-decoration: none;
+    font-size: 17.5px; font-weight: 600;
   }
-  .stats span { white-space: nowrap; }
-  .shared { color: var(--ink-dim); font-size: 16px; margin-top: 18px; }
-  .route .btn { margin-top: 26px; }
-  .fine { color: var(--ink-faint); font-size: 13.5px; line-height: 1.5; margin-top: 22px; }
+  .cta svg { width: 21px; height: 21px; }
+  .platforms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .platforms a {
+    display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px 10px;
+    border-radius: 14px; background: #fff; border: 1px solid var(--line); color: var(--ink); text-decoration: none;
+  }
+  .platforms .icons { display: flex; gap: 12px; }
+  .platforms svg { width: 24px; height: 24px; }
+  .platforms .label { font-size: 12.5px; color: var(--ink-dim); }
+  .open-hint { font-size: 13.5px; color: var(--ink-dim); text-align: center; margin: 2px 0 0; }
+  body.desktop .cta { display: none; }
+
+  .route h2 { font-size: 26px; margin: 40px 0 12px; }
+  .map img { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: 16px; border: 1px solid var(--line); }
+  .roads { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; font-size: 14.5px; font-weight: 600; }
+  .roads .road { padding: 6px 11px; border-radius: 9px; background: var(--sky); }
+  .roads .arrow { color: var(--ink-faint); }
+  .stops { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+  .stops li { display: flex; align-items: center; gap: 12px; padding: 13px 14px; font-weight: 600; }
+  .stops li + li { border-top: 1px solid #EEE8DA; }
+  .stops .pin {
+    flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--stop); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;
+  }
+  .why { display: flex; flex-direction: column; gap: 16px; }
+  .why .row { display: flex; gap: 14px; align-items: flex-start; }
+  .why .mark { flex: none; width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; }
+  .why .mark svg { width: 22px; height: 22px; }
+  .why strong { display: block; font-size: 16.5px; }
+  .why span { font-size: 15px; color: var(--ink-dim); line-height: 1.45; }
+  .credits { font-size: 12.5px; color: var(--ink-faint); line-height: 1.5; margin-top: 40px; }
+  .credits a { color: inherit; }
+  .missing { text-align: center; padding: 48px 0; color: var(--ink-dim); }
+
+  /* On a phone, the button follows once the one above has scrolled away. */
+  .dock {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px calc(14px + env(safe-area-inset-bottom));
+    background: rgba(251,248,239,.96); border-top: 1px solid var(--line);
+    transform: translateY(110%); transition: transform .25s ease;
+  }
+  .dock.shown { transform: none; }
+  .dock .what { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .dock .what b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15px; }
+  .dock .what span { font-size: 13px; color: var(--ink-dim); }
+  .dock a { min-height: 44px; padding: 0 20px; border-radius: 12px; background: var(--route); color: #fff; font-weight: 600; text-decoration: none; display: flex; align-items: center; }
+  body.desktop .dock { display: none; }
+  @media (prefers-reduced-motion: reduce) { .dock { transition: none; } }
+  @media (max-width: 560px) {
+    .route { padding: 0 0 120px; }
+    .hero.photo { border-radius: 0; }
+    .hero:not(.photo) .picture { border-radius: 0; border-left: 0; border-right: 0; }
+    .route > :not(.hero), .hero:not(.photo) .heading { padding-left: 16px; padding-right: 16px; }
+    .stats, .get { margin-left: 16px; margin-right: 16px; padding: 0 !important; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 </style>
 </head>
 <body>
 <div class="terrain" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 
 <nav class="top static">
   <div class="wrap">
@@ -67,243 +143,313 @@
   </div>
 </nav>
 
-<main class="route">
-  <div class="shape" id="shape">
-    <div class="waiting" id="waiting">Loading the route…</div>
-  </div>
-  <h1 id="name">A Carve route</h1>
-  <div class="stats" id="stats" hidden></div>
-  <p class="shared" id="shared">Someone shared a driving route with you.</p>
-  <a class="btn btn-primary btn-lg" id="cta" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Continue in App</a>
-  <p class="fine">Carve plans drives on the roads worth taking and keeps them on your
-     phone for when the signal goes. Open this link again once you have the app
-     and the route is yours.</p>
+<main class="route" id="route">
+  <p class="missing" id="missing">Loading the route…</p>
 </main>
+
+<div class="dock" id="dock" aria-hidden="true">
+  <div class="what"><b id="bar-name"></b><span id="bar-stats"></span></div>
+  <a id="bar-cta" href="#get" tabindex="-1">Drive it</a>
+</div>
 
 <svg style="display:none" aria-hidden="true">
   <symbol id="apple" viewBox="0 0 24 24">
     <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
   </symbol>
+  <!-- CarPlay's mark: a ring open on the right, round a play triangle. -->
+  <symbol id="carplay" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/>
+    <path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/>
+  </symbol>
+  <!-- Android and Android Auto, from Simple Icons (CC0). -->
+  <symbol id="android" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/>
+  </symbol>
+  <symbol id="androidauto" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/>
+  </symbol>
+  <!-- The stats' marks; the preview card draws the same (supabase/functions/og-card/card.ts). -->
+  <symbol id="stat-distance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c5 0 4-7 7-7s2-7 7-7"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/></symbol>
+  <symbol id="stat-time" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="stat-climb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19 9.5 9l4 6 2.5-3.5L21 19z"/></symbol>
+  <symbol id="stat-stops" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+  <symbol id="why-road" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19c5 0 4-7 8-7s3-7 8-7"/></symbol>
+  <symbol id="why-offline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0M3 3l18 18"/></symbol>
+  <symbol id="why-group" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 3-5 6-5s6 2 6 5M14 15c3 0 8 1 8 5"/></symbol>
 </svg>
 
 <script>
-  // Where the one button goes when Carve isn't installed: the App Store
-  // listing (live 2026-10-05), with no country in the path so each visitor
-  // gets their own storefront.
+  // The stores. Android goes to the beta's Google Group until the app is
+  // public on Google Play (as on the landing page); then PLAY_URL.
   const APP_STORE_URL = "https://apps.apple.com/app/carve-route-planner/id6808087716";
-  // Safari's native "Open in the app" bar, from the listing's numeric id.
   const APP_STORE_ID = "6808087716";
+  const ANDROID_URL = "https://groups.google.com/g/carve-beta";
+  // const PLAY_URL = "https://play.google.com/store/apps/details?id=run.carve.app";
 
-  // Publishable by design — the same key the app ships. Row-level security
-  // is the boundary, and the only thing it can reach without a session is
-  // redeeming a share token, which is exactly what this page is for.
+  // Publishable by design — the same key the app ships. Only used when the
+  // Worker didn't hand the page its route (an old ?d= link, or the Worker
+  // down): row-level security is the boundary, and the only thing it can
+  // reach without a session is redeeming a share token.
   const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
-  // The map comes from carve.run/map/<token>, a Cloudflare Worker that
-  // holds the Mapbox token as a secret and caches what it fetches
-  // (cloudflare/map-worker.js). Nothing to lift from this page, every
-  // request same-origin so Cloudflare's rules can see it, and a link opened
-  // forty times costs one Mapbox request. Until that route exists the image
-  // 404s and the page draws the route's own shape instead.
-  const MAP_PATH = "/map/";
 
-  // Try the app, fall back to the store. There is no way to ask iOS
-  // whether an app is installed, so the scheme is attempted and the store
-  // follows unless the page goes away — which is what happens when the app
-  // takes over. Without that check the store would open behind the app,
-  // waiting on return.
-  const cta = document.getElementById("cta");
-  cta.href = APP_STORE_URL;
-  cta.addEventListener("click", function (event) {
-    if (!token && !payload) return;   // nothing to open: let the store link work
-    event.preventDefault();
-    let left = false;
-    const leaving = function () { left = true; };
-    window.addEventListener("pagehide", leaving, { once: true });
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) leaving();
-    }, { once: true });
-    const query = (payload ? "d=" + encodeURIComponent(payload) : "")
-      + (payload && token ? "&" : "")
-      + (token ? "t=" + encodeURIComponent(token) : "");
-    setTimeout(function () { if (!left) location.href = APP_STORE_URL; }, 1500);
-    location.href = "carve://route?" + query;
-  });
-  if (APP_STORE_ID) {
+  const ua = navigator.userAgent || "";
+  const isAndroid = /android/i.test(ua);
+  const isApple = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+  if (!isAndroid && !isApple) document.body.classList.add("desktop");
+
+  // The token sits in a different place in each link form: the whole path
+  // of a short link, the second segment of an /r/<token> one, or ?t= when
+  // the 404 page forwarded it. ?d= is the old self-contained link.
+  const params = new URLSearchParams(location.search);
+  const segments = location.pathname.split("/").filter(Boolean);
+  const token = (segments[0] === "r" ? segments[1] : segments[0]) || params.get("t");
+  const payload = params.get("d");
+
+  if (APP_STORE_ID && isApple) {
     const meta = document.createElement("meta");
     meta.name = "apple-itunes-app";
     meta.content = "app-id=" + APP_STORE_ID;
     document.head.appendChild(meta);
   }
 
-  // The token sits in a different place in each link form: the whole path
-  // of a short link, the second segment of an /r/<token> one, or ?t= when
-  // the 404 page forwarded it.
-  const params = new URLSearchParams(location.search);
-  const segments = location.pathname.split("/").filter(Boolean);
-  const token = (segments[0] === "r" ? segments[1] : segments[0]) || params.get("t");
-  const payload = params.get("d");
+  // MARK: - Building the page
 
-  function miles(metres) { return Math.round(metres / 1609.344).toLocaleString(); }
+  function el(tag, attrs, ...children) {
+    const node = document.createElement(tag);
+    for (const [key, value] of Object.entries(attrs || {})) {
+      if (value === null || value === undefined || value === false) continue;
+      if (key === "class") node.className = value;
+      else node.setAttribute(key, value);
+    }
+    for (const child of children.flat(Infinity)) {
+      if (child === null || child === undefined || child === false) continue;
+      node.append(child.nodeType ? child : document.createTextNode(String(child)));
+    }
+    return node;
+  }
+  function icon(id) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("aria-hidden", "true");
+    const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+    use.setAttribute("href", "#" + id);
+    svg.append(use);
+    return svg;
+  }
+
+  const LABELS = { distance: "distance", time: "drive time", climb: "climbing", stops: "on the way" };
+
+  function render(info) {
+    const main = document.getElementById("route");
+    main.innerHTML = "";
+    const name = info.name || "A Carve route";
+    document.title = name + " — a drive on Carve";
+
+    // The top.
+    const hasPhoto = !!(info.photo && info.photo.url);
+    const picture = el("img", {
+      class: "picture",
+      src: hasPhoto ? info.photo.url : (token ? "/map/" + encodeURIComponent(token) : null),
+      alt: hasPhoto ? "" : name + " on a map",
+      fetchpriority: "high",
+    });
+    picture.addEventListener("error", () => picture.remove());
+    const heading = el("div", { class: "heading" },
+      info.place ? el("span", { class: "place" }, info.place.long || info.place.short) : null,
+      el("h1", {}, name),
+      info.author ? el("div", { class: "byline" }, "A drive by ", el("strong", {}, "@" + info.author)) : null,
+    );
+    main.append(el("div", { class: "hero" + (hasPhoto ? " photo" : "") }, picture.getAttribute("src") ? picture : null, heading));
+
+    // The numbers.
+    const stats = (info.stats || []).filter(s => s && s.text);
+    if (stats.length) {
+      main.append(el("div", { class: "stats" }, stats.map(s =>
+        el("div", { class: "stat" },
+          el("span", { class: "value" }, LABELS[s.kind] ? icon("stat-" + s.kind) : null, s.text),
+          el("span", { class: "label" }, LABELS[s.kind] || ""),
+        ),
+      )));
+    }
+    if (info.blurb) main.append(el("p", { class: "blurb" }, info.blurb));
+
+    // The way in.
+    const cta = el("a", { class: "cta", id: "get", href: isAndroid ? ANDROID_URL : APP_STORE_URL },
+      icon(isAndroid ? "android" : "apple"),
+      isAndroid ? "Drive it in Carve" : "Drive it in Carve, free",
+    );
+    cta.addEventListener("click", openInApp);
+    main.append(el("div", { class: "get" },
+      cta,
+      el("div", { class: "platforms" },
+        el("a", { href: APP_STORE_URL, "aria-label": "Carve for iPhone and CarPlay on the App Store" },
+          el("span", { class: "icons" }, icon("apple"), icon("carplay")),
+          el("span", { class: "label" }, "iPhone · CarPlay")),
+        el("a", { href: ANDROID_URL, "aria-label": "Carve for Android and Android Auto" },
+          el("span", { class: "icons" }, icon("android"), icon("androidauto")),
+          el("span", { class: "label" }, "Android · Android Auto")),
+      ),
+      document.body.classList.contains("desktop")
+        ? el("p", { class: "open-hint" }, "Open this link on your phone to drive it.")
+        : el("p", { class: "open-hint" }, "Already have Carve? The button opens the route in the app."),
+    ));
+
+    // The route: its map (when the top is the photo) and the roads it takes.
+    const roads = info.roads || [];
+    if ((hasPhoto && token) || roads.length) {
+      const section = el("section", { class: "map" }, el("h2", {}, "The route"));
+      if (hasPhoto && token) {
+        const map = el("img", { src: "/map/" + encodeURIComponent(token), alt: name + " on a map", loading: "lazy" });
+        map.addEventListener("error", () => map.remove());
+        section.append(map);
+      }
+      if (roads.length) {
+        section.append(el("div", { class: "roads", "aria-label": "Roads, in order" },
+          roads.map((road, i) => [i ? el("span", { class: "arrow", "aria-hidden": "true" }, "→") : null, el("span", { class: "road" }, road)])));
+      }
+      main.append(section);
+    }
+
+    // The stops.
+    const stops = info.stops || [];
+    if (stops.length) {
+      main.append(el("section", {},
+        el("h2", {}, "Stops along the way"),
+        el("ol", { class: "stops" }, stops.map((stop, i) =>
+          el("li", {}, el("span", { class: "pin", "aria-hidden": "true" }, String(i + 1)), stop.name))),
+      ));
+    }
+
+    // Why Carve.
+    main.append(el("section", {},
+      el("h2", {}, "Why drive it in Carve"),
+      el("div", { class: "why" },
+        why("why-road", "#D4E7FF", "#1A5FB4", "These exact roads",
+          "Turn by turn, without rerouting you onto the freeway. Miss a turn and Carve leads you back to this road."),
+        why("why-offline", "#DCF1E2", "#2E7D46", "No signal, no problem",
+          "Download the route and its map before you go. Ridges and canyons drop service; Carve keeps going."),
+        why("why-group", "#FFE4D3", "#B4561A", "Bring the group",
+          "Everyone driving the route sees each other on the map and the car's screen, by name."),
+        el("span", {}, "On iPhone and Android, with CarPlay and Android Auto."),
+      ),
+    ));
+
+    // Where the photo came from, and the small print.
+    const credit = hasPhoto && info.photo.credit
+      ? el("span", {}, "Photo: ", info.photo.creditURL
+          ? el("a", { href: info.photo.creditURL, rel: "noopener" }, info.photo.credit)
+          : info.photo.credit, ". ")
+      : null;
+    main.append(el("p", { class: "credits" }, credit,
+      "Distance, time and climbing are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
+
+    // The bar that follows on a phone.
+    document.getElementById("bar-name").textContent = name;
+    document.getElementById("bar-stats").textContent = stats.slice(0, 2).map(s => s.text).join(" · ");
+    const barCta = document.getElementById("bar-cta");
+    barCta.href = cta.href;
+    barCta.addEventListener("click", openInApp);
+    if ("IntersectionObserver" in window) {
+      const dock = document.getElementById("dock");
+      new IntersectionObserver(([entry]) => {
+        const show = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        dock.classList.toggle("shown", show);
+        dock.setAttribute("aria-hidden", show ? "false" : "true");
+        barCta.tabIndex = show ? 0 : -1;
+      }).observe(cta);
+    }
+  }
+
+  function why(symbol, fill, ink, title, text) {
+    const mark = el("span", { class: "mark", style: "background:" + fill + ";color:" + ink }, icon(symbol));
+    return el("div", { class: "row" }, mark, el("div", {}, el("strong", {}, title), el("span", {}, text)));
+  }
+
+  // MARK: - Opening the app
+
+  // Try the app, fall back to the store. There is no way to ask a phone
+  // whether an app is installed: on iPhone the scheme is attempted and the
+  // store follows unless the page goes away, which is what happens when the
+  // app takes over; on Android an intent link names the app and its own
+  // fallback.
+  function openInApp(event) {
+    if (!token && !payload) return;   // nothing to open: let the store link work
+    if (document.body.classList.contains("desktop")) return;
+    event.preventDefault();
+    const query = (payload ? "d=" + encodeURIComponent(payload) : "")
+      + (payload && token ? "&" : "")
+      + (token ? "t=" + encodeURIComponent(token) : "");
+    if (isAndroid) {
+      location.href = "intent://route?" + query + "#Intent;scheme=carve;package=run.carve.app;"
+        + "S.browser_fallback_url=" + encodeURIComponent(ANDROID_URL) + ";end";
+      return;
+    }
+    let left = false;
+    const leaving = () => { left = true; };
+    window.addEventListener("pagehide", leaving, { once: true });
+    document.addEventListener("visibilitychange", () => { if (document.hidden) leaving(); }, { once: true });
+    setTimeout(() => { if (!left) location.href = APP_STORE_URL; }, 1500);
+    location.href = "carve://route?" + query;
+  }
+
+  // MARK: - The route
+
+  function fromPage() {
+    const node = document.getElementById("route-data");
+    if (!node) return null;
+    try { return JSON.parse(node.textContent); } catch (e) { return null; }
+  }
+
+  function miles(meters) { return Math.round(meters / 1609.344).toLocaleString("en-US"); }
   function duration(seconds) {
-    const h = Math.floor(seconds / 3600), m = Math.round((seconds % 3600) / 60);
-    return h ? h + " hr " + m + " min" : m + " min";
+    const total = Math.round(seconds / 60), h = Math.floor(total / 60), m = total % 60;
+    return h ? (m ? h + " hr " + m + " min" : h + " hr") : m + " min";
   }
 
-  /// The drive's own shape, drawn from its coordinates — no map tiles, so
-  /// the page costs nothing to serve and works wherever it is opened.
-  function drawShape(points, stops) {
-    if (!points || points.length < 2) return false;
-    const lats = points.map(p => p[0]), lons = points.map(p => p[1]);
-    const midLat = (Math.min(...lats) + Math.max(...lats)) / 2;
-    // Longitude degrees shrink toward the poles; without this the shape is
-    // stretched sideways everywhere but the equator.
-    const k = Math.cos(midLat * Math.PI / 180);
-    const xs = lons.map(l => l * k), ys = lats.map(l => -l);
-    const minX = Math.min(...xs), maxX = Math.max(...xs);
-    const minY = Math.min(...ys), maxY = Math.max(...ys);
-    const pad = 0.12;
-    const spanX = (maxX - minX) || 1e-6, spanY = (maxY - minY) || 1e-6;
-    const span = Math.max(spanX, spanY) * (1 + pad * 2);
-    const offX = (minX + maxX) / 2 - span / 2, offY = (minY + maxY) / 2 - span / 2;
-    const at = (lat, lon) => [
-      ((lon * k - offX) / span) * 100,
-      ((-lat - offY) / span) * 100,
-    ];
-    const d = points.map((p, i) => {
-      const [x, y] = at(p[0], p[1]);
-      return (i ? "L" : "M") + x.toFixed(2) + " " + y.toFixed(2);
-    }).join(" ");
-    const marks = (stops || []).map(s => {
-      const [x, y] = at(s[0], s[1]);
-      return '<circle cx="' + x.toFixed(2) + '" cy="' + y.toFixed(2) + '" r="2.1" fill="#E4731C" stroke="#0E1319" stroke-width="0.9"/>';
-    }).join("");
-    const [sx, sy] = at(points[0][0], points[0][1]);
-    const [ex, ey] = at(points[points.length - 1][0], points[points.length - 1][1]);
-    document.getElementById("shape").innerHTML =
-      '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">' +
-      '<path d="' + d + '" fill="none" stroke="#2E92FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>' +
-      marks +
-      '<circle cx="' + sx.toFixed(2) + '" cy="' + sy.toFixed(2) + '" r="2.6" fill="#2E9E52" stroke="#0E1319" stroke-width="0.9"/>' +
-      '<circle cx="' + ex.toFixed(2) + '" cy="' + ey.toFixed(2) + '" r="2.6" fill="#EDF3F9" stroke="#0E1319" stroke-width="0.9"/>' +
-      "</svg>";
-    return true;
-  }
-
-
-
-  function mapURL() {
-    return token ? MAP_PATH + encodeURIComponent(token) : null;
-  }
-
-  /// The map if it comes, the drawn shape if it doesn't — offline, or a
-  /// token that has stopped working, still leaves the route recognisable.
-  function drawRoute(route) {
-    const url = mapURL();
-    if (!url) return drawShape(route.points, route.stopPoints);
-    const image = new Image();
-    image.alt = "";
-    image.onload = function () {
-      const shape = document.getElementById("shape");
-      shape.innerHTML = "";
-      shape.appendChild(image);
-    };
-    image.onerror = function () { drawShape(route.points, route.stopPoints); };
-    image.src = url;
-    return true;
-  }
-
-  function show(route, withMap) {
-    if (!route) return false;
-    if (route.name) {
-      document.getElementById("name").textContent = route.name;
-      document.title = route.name + " — a Carve route";
-    }
-    const bits = [];
-    if (route.distanceMeters) bits.push(miles(route.distanceMeters) + " miles");
-    if (route.stops) bits.push(route.stops + (route.stops === 1 ? " stop" : " stops"));
-    if (route.durationSeconds) bits.push(duration(route.durationSeconds));
-    if (bits.length) {
-      const stats = document.getElementById("stats");
-      stats.innerHTML = bits.map(b => "<span>" + b + "</span>").join("");
-      stats.hidden = false;
-    }
-    // One Mapbox request per page view, not two: the embedded payload's
-    // pass draws the free shape, and only the backend's — which is the
-    // version worth showing — asks for the map.
-    const drawn = withMap ? drawRoute(route) : drawShape(route.points, route.stopPoints);
-    if (!drawn) document.getElementById("waiting").textContent = "";
-    return true;
-  }
-
-  /// The embedded payload: no server, no network, works for old links.
+  /// The old self-contained link: just a name and how many stops.
   function fromPayload() {
     if (!payload) return null;
     try {
       const wire = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
-      const points = [[wire.s.a, wire.s.o]]
-        .concat((wire.w || []).map(w => [w.a, w.o]))
-        .concat([[wire.e.a, wire.e.o]]);
-      return {
-        name: wire.n,
-        stops: (wire.w || []).filter(w => w.t === "stop").length,
-        points: points,
-        stopPoints: (wire.w || []).filter(w => w.t === "stop").map(w => [w.a, w.o]),
-      };
+      const stops = (wire.w || []).filter(w => w.t === "stop").length;
+      return { name: wire.n, stats: stops ? [{ kind: "stops", text: stops + (stops === 1 ? " stop" : " stops") }] : [] };
     } catch (e) { return null; }
   }
 
-  /// The route as it stands now, redeemed from the backend — the only
-  /// source a short link has, and the current version either way.
+  /// Straight from the backend, when the Worker didn't write the route in.
   async function fromBackend() {
     if (!token) return null;
     try {
       const response = await fetch(SUPABASE_URL + "/rest/v1/rpc/redeem_share_token", {
         method: "POST",
-        headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
-          "content-type": "application/json",
-        },
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY, "content-type": "application/json" },
         body: JSON.stringify({ share_token: token }),
       });
       if (!response.ok) return null;
-      const rows = await response.json();
-      const row = rows && rows[0];
+      const row = (await response.json())[0];
       if (!row) return null;
-      const geometry = (row.payload && row.payload.pathGeometry) || [];
-      const waypoints = (row.payload && row.payload.waypoints) || [];
-      const points = geometry.length >= 2
-        ? geometry.map(p => [p.latitude, p.longitude])
-        : [[row.start_lat, row.start_lon]]
-            .concat(waypoints.map(w => [w.location.latitude, w.location.longitude]))
-            .concat([[row.end_lat, row.end_lon]]);
+      const p = row.payload || {};
+      const stats = [];
+      if (row.distance_meters) stats.push({ kind: "distance", text: miles(row.distance_meters) + " mi" });
+      if (row.duration_seconds) stats.push({ kind: "time", text: duration(row.duration_seconds) });
+      if (row.stop_count) stats.push({ kind: "stops", text: row.stop_count + (row.stop_count === 1 ? " stop" : " stops") });
       return {
-        name: row.name,
-        distanceMeters: row.distance_meters,
-        durationSeconds: row.duration_seconds,
-        stops: row.stop_count,
-        points: points,
-        stopPoints: waypoints.filter(w => w.type === "stop")
-          .map(w => [w.location.latitude, w.location.longitude]),
+        name: row.name, stats, blurb: p.blurb || null,
+        photo: p.photo && /^https:\/\//.test(p.photo.url || "") ? p.photo : null,
+        stops: (p.waypoints || []).filter(w => w.type === "stop")
+          .sort((a, b) => (a.order || 0) - (b.order || 0))
+          .map((w, i) => ({ name: (w.label || "").trim() || "Stop " + (i + 1) })),
       };
     } catch (e) { return null; }
   }
 
   (async function () {
-    // The backend has the current version; the payload is the fallback, and
-    // is shown first when present so the page isn't blank while we ask.
-    const embedded = fromPayload();
-    if (embedded) show(embedded, false);
-    const fresh = await fromBackend();
-    if (fresh) {
-      show(fresh, true);
-    } else if (embedded) {
-      drawRoute(embedded);
-    } else if (!embedded) {
-      document.getElementById("waiting").textContent = "This route couldn’t be loaded.";
-      document.getElementById("shared").textContent =
-        "The link may have been removed, or you may be offline.";
+    const info = fromPage() || await fromBackend() || fromPayload();
+    if (info) {
+      render(info);
+    } else {
+      document.getElementById("missing").textContent =
+        "This route couldn’t be loaded. The link may have been removed, or you may be offline.";
     }
   })();
 </script>
