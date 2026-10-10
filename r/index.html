@@ -64,22 +64,24 @@
   .stat .label { font-size: 12.5px; color: var(--ink-dim); }
   .blurb { font-size: 17px; line-height: 1.55; margin: 20px 0 0; }
 
-  /* One big button for the phone in hand; the platforms as two links under it. */
-  .get { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+  /* One big button for the phone in hand; under it every platform's icons,
+     each pair a link to its store (the landing page's row). */
+  .get { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 24px; }
   .cta {
+    align-self: stretch;
     display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px;
-    border-radius: 16px; background: var(--ink); color: #fff; text-decoration: none;
-    font-size: 17.5px; font-weight: 600;
+    border-radius: 999px; background: var(--ink); color: #fff; text-decoration: none;
+    font-size: 17.5px; font-weight: 600; box-shadow: 0 8px 22px rgba(21,24,28,.18);
   }
   .cta svg { width: 21px; height: 21px; }
-  .platforms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .platforms { display: flex; align-items: center; gap: 6px; color: var(--ink-dim); }
   .platforms a {
-    display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px 10px;
-    border-radius: 14px; background: #fff; border: 1px solid var(--line); color: var(--ink); text-decoration: none;
+    display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 12px;
+    color: inherit; text-decoration: none;
   }
-  .platforms .icons { display: flex; gap: 12px; }
-  .platforms svg { width: 24px; height: 24px; }
-  .platforms .label { font-size: 12.5px; color: var(--ink-dim); }
+  .platforms a:hover { color: var(--ink); background: rgba(21,24,28,.05); }
+  .platforms svg { width: 22px; height: 22px; display: block; }
+  .platforms .sep { width: 1px; height: 20px; background: currentColor; opacity: .4; }
   .open-hint { font-size: 13.5px; color: var(--ink-dim); text-align: center; margin: 2px 0 0; }
   body.desktop .cta { display: none; }
 
@@ -276,18 +278,17 @@
     // The way in.
     const cta = el("a", { class: "cta", id: "get", href: isAndroid ? ANDROID_URL : APP_STORE_URL },
       icon(isAndroid ? "android" : "apple"),
-      isAndroid ? "Drive it in Carve" : "Drive it in Carve, free",
+      isAndroid ? "Drive it on Android" : "Drive it on iPhone",
     );
     cta.addEventListener("click", openInApp);
     main.append(el("div", { class: "get" },
       cta,
       el("div", { class: "platforms" },
-        el("a", { href: APP_STORE_URL, "aria-label": "Carve for iPhone and CarPlay on the App Store" },
-          el("span", { class: "icons" }, icon("apple"), icon("carplay")),
-          el("span", { class: "label" }, "iPhone · CarPlay")),
-        el("a", { href: ANDROID_URL, "aria-label": "Carve for Android and Android Auto" },
-          el("span", { class: "icons" }, icon("android"), icon("androidauto")),
-          el("span", { class: "label" }, "Android · Android Auto")),
+        el("a", { href: APP_STORE_URL, title: "iPhone and CarPlay", "aria-label": "Carve for iPhone and CarPlay on the App Store" },
+          icon("apple"), icon("carplay")),
+        el("span", { class: "sep", "aria-hidden": "true" }),
+        el("a", { href: ANDROID_URL, title: "Android and Android Auto", "aria-label": "Carve for Android and Android Auto" },
+          icon("android"), icon("androidauto")),
       ),
       document.body.classList.contains("desktop")
         ? el("p", { class: "open-hint" }, "Open this link on your phone to drive it.")
