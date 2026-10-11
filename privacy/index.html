@@ -34,7 +34,7 @@
   <p class="stamp">Effective 11 October 2026</p>
 
   <div class="note">
-    <strong>The short version.</strong> Carve uses your location on your phone to draw the map and guide your drives; the coordinates needed for maps, directions and search go to the mapping services that provide them. With an account, your routes are kept on Carve's servers so they're on all your devices, and they're private to you unless you share a route's link. If you turn on <strong>Group</strong> for a drive, the people sharing the same route near you see where you are, by name, until the drive ends; Carve keeps only your latest position, and deletes it when you stop. Carve has no ads and no advertising trackers. It keeps a record of which features and routes you use — never your coordinates — for 90 days, so we can see the app working, and you can turn that off. We don't sell data, and we never see your payment details.
+    <strong>The short version.</strong> Carve uses your location on your phone to draw the map and guide your drives; the coordinates needed for maps, directions and search go to the mapping services that provide them. Weather comes from Apple Weather, which is told only areas about 11 km across — never your exact position. With an account, your routes are kept on Carve's servers so they're on all your devices, and they're private to you unless you share a route's link. If you turn on <strong>Group</strong> for a drive, the people sharing the same route near you see where you are, by name, until the drive ends; Carve keeps only your latest position, and deletes it when you stop. Carve has no ads and no advertising trackers. It keeps a record of which features and routes you use — never your coordinates — for 90 days, so we can see the app working, and you can turn that off. We don't sell data, and we never see your payment details.
   </div>
 
   <h2>Who we are</h2>
@@ -77,7 +77,10 @@
 
   <h2>Location</h2>
   <p>Carve asks for location access to centre the map, to plan from where you are, and to guide a drive or record one. During a drive or a recording it tracks your position continuously — on Android with a notification showing while it does, on iPhone in the background while the drive is active — so it can announce turns, clear stops, and tell when you've left the route. Carve doesn't ask for location access at other times in the background.</p>
-  <p>Your location is processed on the device and is not sent to Carve's servers, except while you use Group, as described above. Coordinates go to the services below only as needed to do what you asked. You can withdraw location access at any time in your phone's settings; the map still works, but drives can't be guided.</p>
+  <p>Your location is processed on the device and is not sent to Carve's servers, except while you use Group, as described above, and — on Android, rounded to an area about 11 km across — to get the weather where you are during a drive (see Weather, below). Coordinates go to the services below only as needed to do what you asked. You can withdraw location access at any time in your phone's settings; the map still works, but drives can't be guided.</p>
+
+  <h2>Weather</h2>
+  <p>Carve shows forecasts from Apple Weather: along a route, for when you'll reach each part of it; on the map, when you turn on its Weather layer; and during a drive, for where you are and what's ahead. To get them, the app asks for the forecast at a few places — points along the route, the parts of the map in view, and during a drive where you are — but each is first rounded to the middle of an area about 11 km (7 miles) across, so Apple Weather is never told your exact position or your route's exact path. On iPhone the app asks Apple Weather itself; on Android it asks Carve's server, which asks Apple Weather and keeps nothing. Forecasts are kept on your device for a day, so a drive has its weather without signal.</p>
 
   <h2>Services that receive data</h2>
   <table>
@@ -93,14 +96,19 @@
       <td>Search, stop names, Sign in with Apple, Carve Apex purchases, and the car and lock-screen displays — under <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's privacy policy</a>.</td>
     </tr>
     <tr>
+      <td><strong>Apple Weather</strong></td>
+      <td>Places to forecast — points along a route, areas of the map in view, and during a drive where you are — each rounded to the middle of an area about 11 km across; on Android, sent by Carve's server rather than your device.</td>
+      <td>Weather along routes, on the map and during drives — under <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's privacy policy</a>.</td>
+    </tr>
+    <tr>
       <td><strong>Google</strong> (Android, and Google sign-in on iPhone)</td>
       <td>Your Google Account for sign-in and Google Play purchases; on Android, your Carve sign-in, kept in Google's encrypted Block Store; drive status for Android Auto.</td>
       <td>Sign in with Google, Carve Apex purchases, staying signed in after you reinstall or move to a new phone, and the car display — under <a href="https://policies.google.com/privacy" rel="noopener">Google's privacy policy</a>.</td>
     </tr>
     <tr>
       <td><strong>Supabase</strong></td>
-      <td>Your account, profile, routes, profile picture and route photos; usage events, unless you turn them off; while you use Group, your latest position on the route.</td>
-      <td>Carve's backend: it hosts the accounts and routes described above, and passes Group positions between the people sharing a route.</td>
+      <td>Your account, profile, routes, profile picture and route photos; usage events, unless you turn them off; while you use Group, your latest position on the route; on Android, the rounded places to forecast, which it doesn't keep.</td>
+      <td>Carve's backend: it hosts the accounts and routes described above, passes Group positions between the people sharing a route, and asks Apple Weather for Android.</td>
     </tr>
     <tr>
       <td><strong>Anthropic</strong></td>
@@ -123,7 +131,7 @@
       <td>Hosting carve.run and its link previews, and protecting it from abuse.</td>
     </tr>
   </table>
-  <p>Mapbox, Anthropic, Amazon and Wikimedia don't receive your name or contact details from Carve. To keep usage fair, the services that write route descriptions and choose route pictures count requests by IP address, and photo checks are counted by account; those counts are deleted after a week.</p>
+  <p>Mapbox, Apple Weather, Anthropic, Amazon and Wikimedia don't receive your name or contact details from Carve. To keep usage fair, the services that write route descriptions, choose route pictures and fetch weather for Android count requests by IP address, and photo checks are counted by account; those counts are deleted after a week.</p>
 
   <h2>Carve Apex and purchases</h2>
   <p>Subscriptions are sold through the App Store on iPhone and Google Play on Android, which handle payment and billing; Carve never sees your card or bank details. Each purchase is tied to your Carve account — on iPhone with your account identifier, on Android with a one-way hash of it — so that it follows your account. Carve doesn't keep purchase records on its servers.</p>
