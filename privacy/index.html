@@ -79,6 +79,9 @@
   <p>Carve asks for location access to centre the map, to plan from where you are, and to guide a drive or record one. During a drive or a recording it tracks your position continuously — on Android with a notification showing while it does, on iPhone in the background while the drive is active — so it can announce turns, clear stops, and tell when you've left the route. Carve doesn't ask for location access at other times in the background.</p>
   <p>Your location is processed on the device and is not sent to Carve's servers, except while you use Group, as described above, and — on Android, rounded to an area about 11 km across — to get the weather where you are during a drive (see Weather, below). Coordinates go to the services below only as needed to do what you asked. You can withdraw location access at any time in your phone's settings; the map still works, but drives can't be guided.</p>
 
+  <h2>Describing a drive</h2>
+  <p>You can describe a drive, or a change to one, in your own words — “a twisty hour, coffee halfway, back by 5” — typed or spoken. Speech is turned into text on your phone; the recording never leaves it. What you asked goes to Carve's server with the route as words — its name, length and time, the names of its roads, stops and towns, and the names of places the app found for it, with how far and how long — and the server asks Anthropic what to change, and then how to tell you what changed. Anthropic never receives coordinates, and nothing that identifies you: finding places and working out routes happen on your phone, with the services below. Carve doesn't keep what you asked. To keep the free allowance fair, the server counts requests by account, or by IP address if you're not signed in.</p>
+
   <h2>Weather</h2>
   <p>Carve shows forecasts from Apple Weather: along a route, for when you'll reach each part of it; on the map, when you turn on its Weather layer; and during a drive, for where you are and what's ahead. To get them, the app asks for the forecast at a few places — points along the route, the parts of the map in view, and during a drive where you are — but each is first rounded to the middle of an area about 11 km (7 miles) across, so Apple Weather is never told your exact position or your route's exact path. On iPhone the app asks Apple Weather itself; on Android it asks Carve's server, which asks Apple Weather and keeps nothing. Forecasts are kept on your device for a day, so a drive has its weather without signal.</p>
 
@@ -112,8 +115,8 @@
     </tr>
     <tr>
       <td><strong>Anthropic</strong></td>
-      <td>A route's name, length, time, climb, highest and lowest points, the names of its roads and stops, and the towns it starts and ends in — no coordinates and nothing that identifies you. Photos you add to routes, and photos from Wikimedia Commons taken near a route.</td>
-      <td>Writing the short description under a route's name, and choosing the picture of the kind of country it drives through. Checking a route photo before anyone else sees it, and choosing a photo from Wikimedia Commons for a route without one.</td>
+      <td>A route's name, length, time, climb, highest and lowest points, the names of its roads and stops, and the towns it starts and ends in — no coordinates and nothing that identifies you. What you ask when you describe a drive or a change, with the names of places found for it. Photos you add to routes, and photos from Wikimedia Commons taken near a route.</td>
+      <td>Writing the short description under a route's name, and choosing the picture of the kind of country it drives through. Turning what you describe into changes to the route, and telling you what changed. Checking a route photo before anyone else sees it, and choosing a photo from Wikimedia Commons for a route without one.</td>
     </tr>
     <tr>
       <td><strong>Wikimedia Commons</strong></td>
@@ -131,7 +134,7 @@
       <td>Hosting carve.run and its link previews, and protecting it from abuse.</td>
     </tr>
   </table>
-  <p>Mapbox, Apple Weather, Anthropic, Amazon and Wikimedia don't receive your name or contact details from Carve. To keep usage fair, the services that write route descriptions, choose route pictures and fetch weather for Android count requests by IP address, and photo checks are counted by account; those counts are deleted after a week.</p>
+  <p>Mapbox, Apple Weather, Anthropic, Amazon and Wikimedia don't receive your name or contact details from Carve. To keep usage fair, the services that write route descriptions, choose route pictures and fetch weather for Android count requests by IP address, describing drives is counted by account (or IP address without one), and photo checks are counted by account; those counts are deleted after a week.</p>
 
   <h2>Carve Apex and purchases</h2>
   <p>Subscriptions are sold through the App Store on iPhone and Google Play on Android, which handle payment and billing; Carve never sees your card or bank details. Each purchase is tied to your Carve account — on iPhone with your account identifier, on Android with a one-way hash of it — so that it follows your account. Carve doesn't keep purchase records on its servers.</p>
