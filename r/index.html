@@ -292,6 +292,30 @@
 
   const LABELS = { distance: "distance", time: "drive time", climb: "climbing", stops: "on the way" };
 
+  // Kilometers and meters for a viewer outside the US and the UK, as the
+  // apps' Automatic units have it (2026-10-12). The numbers arrive worded
+  // in miles and feet, the way link previews show them.
+  const METRIC = (() => {
+    try {
+      const region = new Intl.Locale(navigator.language || "en-US").maximize().region || "US";
+      return !["US", "GB", "LR", "MM"].includes(region);
+    } catch (e) { return false; }
+  })();
+
+  function inViewersUnits(stat, info) {
+    if (!METRIC) return stat.text;
+    const number = parseFloat(String(stat.text).replace(/,/g, ""));
+    if (stat.kind === "distance") {
+      const meters = info.distanceMeters || (Number.isFinite(number) ? number * 1609.344 : null);
+      if (meters) return Math.round(meters / 1000).toLocaleString("en-US") + " km";
+    }
+    if (stat.kind === "climb") {
+      const feet = info.climbFeet || number;
+      if (Number.isFinite(feet)) return Math.round(feet / 3.28084).toLocaleString("en-US") + " m";
+    }
+    return stat.text;
+  }
+
   function render(info) {
     const main = document.getElementById("route");
     main.innerHTML = "";
@@ -315,7 +339,7 @@
     main.append(el("div", { class: "hero" + (hasPhoto ? " photo" : "") }, picture.getAttribute("src") ? picture : null, heading));
 
     // The numbers.
-    const stats = (info.stats || []).filter(s => s && s.text);
+    const stats = (info.stats || []).filter(s => s && s.text).map(s => ({ ...s, text: inViewersUnits(s, info) }));
     if (stats.length) {
       main.append(el("div", { class: "stats" }, stats.map(s =>
         el("div", { class: "stat" },
@@ -695,7 +719,7 @@
       if (row.duration_seconds) stats.push({ kind: "time", text: duration(row.duration_seconds) });
       if (row.stop_count) stats.push({ kind: "stops", text: row.stop_count + (row.stop_count === 1 ? " stop" : " stops") });
       return {
-        name: row.name, stats, blurb: p.blurb || null,
+        name: row.name, stats, distanceMeters: row.distance_meters || null, blurb: p.blurb || null,
         photo: p.photo && /^https:\/\//.test(p.photo.url || "") ? p.photo : null,
         stops: (p.waypoints || []).filter(w => w.type === "stop")
           .sort((a, b) => (a.order || 0) - (b.order || 0))
