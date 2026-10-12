@@ -299,7 +299,7 @@
     document.title = name + " — a drive on Carve";
 
     // The top.
-    const hasPhoto = !!(info.photo && info.photo.url);
+    const hasPhoto = !!(info.photo && /^https:\/\//.test(info.photo.url || ""));
     const picture = el("img", {
       class: "picture",
       src: hasPhoto ? info.photo.url : (token ? "/map/" + encodeURIComponent(token) : null),
@@ -387,7 +387,7 @@
 
     // Where the photo came from, and the small print.
     const credit = hasPhoto && info.photo.credit
-      ? el("span", {}, "Photo: ", info.photo.creditURL
+      ? el("span", {}, "Photo: ", /^https:\/\//.test(info.photo.creditURL || "")
           ? el("a", { href: info.photo.creditURL, rel: "noopener" }, info.photo.credit)
           : info.photo.credit, ". ")
       : null;
