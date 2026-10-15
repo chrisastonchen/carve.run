@@ -21,7 +21,7 @@
 <meta name="theme-color" content="#FBF8EF">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
-<link rel="stylesheet" href="/styles.css?v=a7f38b5fc4">
+<link rel="stylesheet" href="/styles.css?v=ff3fe75e2f">
 <!-- The route itself arrives as JSON in #route-data, written into this page
      by the Worker (cloudflare/map-worker.js) from the shared route: name,
      numbers, photo, blurb, stops, maker and roughly where it is. A
@@ -62,6 +62,17 @@
   .stat .value { display: flex; align-items: center; gap: 7px; font-size: 21px; font-weight: 700; }
   .stat svg { width: 19px; height: 19px; flex: none; color: var(--route); }
   .stat .label { font-size: 12.5px; color: var(--ink-dim); }
+  /* How twisty, as the app's route overview has it: the words on the left,
+     the four levels on the right with the road's own at full. */
+  .intensity {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 8px;
+    padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  }
+  .intensity .words { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .intensity .level { display: flex; align-items: center; gap: 8px; font-size: 21px; font-weight: 700; }
+  .intensity .line { font-size: 12.5px; color: var(--ink-dim); }
+  .intensity .scale { display: flex; gap: 6px; flex: none; }
+  .intensity .scale .off { opacity: .35; }
   .blurb { font-size: 17px; line-height: 1.55; margin: 20px 0 0; }
 
   /* One big button for the phone in hand; under it every platform's icons,
@@ -292,6 +303,62 @@
 
   const LABELS = { distance: "distance", time: "drive time", climb: "climbing", stops: "on the way" };
 
+  // How twisty the road is — the apps' RoadIntensity and its mark: the
+  // road's bend as one white line (TwistLine, on a 24-point square) in a
+  // coloured disc edged in white (2026-10-14). The Worker works it out; the
+  // page does too when it reads the route itself.
+  const INTENSITY = [
+    { level: "leisurely", title: "Leisurely", line: "Gentle curves, open road", below: 90, colour: "#3B8A3E", weight: 2.0, path: "M9 21L15 3" },
+    { level: "sweeping", title: "Sweeping", line: "Long, flowing bends", below: 180, colour: "#C0860A", weight: 2.4, path: "M6 21C14 21 18 17 12 12C6 7 10 3 18 3" },
+    { level: "twisty", title: "Twisty", line: "Bend after bend", below: 300, colour: "#D2591F", weight: 2.8, path: "M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" },
+    { level: "intense", title: "Intense", line: "Hairpins and switchbacks", below: Infinity, colour: "#9B1C1C", weight: 3.0, path: "M7 21L17 17.5L7 14L17 10.5L7 7L17 3.5" },
+  ];
+  function disc(band, size, off) {
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("width", size); svg.setAttribute("height", size);
+    svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("aria-hidden", "true");
+    if (off) svg.setAttribute("class", "off");
+    const circle = document.createElementNS(ns, "circle");
+    for (const [k, v] of [["cx", 12], ["cy", 12], ["r", 11.15], ["fill", band.colour], ["stroke", "#fff"], ["stroke-width", 1.7]]) circle.setAttribute(k, v);
+    const line = document.createElementNS(ns, "path");
+    for (const [k, v] of [["d", band.path], ["transform", "translate(12 12) scale(.58) translate(-12 -12)"], ["fill", "none"],
+      ["stroke", "#fff"], ["stroke-width", band.weight], ["stroke-linecap", "round"], ["stroke-linejoin", "round"]]) line.setAttribute(k, v);
+    svg.append(circle, line);
+    return svg;
+  }
+  /// RoadCurvature.bendsPerKm: degrees of bend a kilometre; a turn of more
+  /// than 75° at one point is a junction, not a bend. `points` are [lat, lng].
+  function intensityOf(points) {
+    if (!points || points.length < 3) return null;
+    const r = Math.PI / 180;
+    const meters = ([a, b], [c, d]) => {
+      const h = Math.sin((c - a) * r / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin((d - b) * r / 2) ** 2;
+      return 2 * 6371008.8 * Math.asin(Math.sqrt(h));
+    };
+    const bearing = ([a, b], [c, d]) => {
+      const y = Math.sin((d - b) * r) * Math.cos(c * r);
+      const x = Math.cos(a * r) * Math.sin(c * r) - Math.sin(a * r) * Math.cos(c * r) * Math.cos((d - b) * r);
+      return ((Math.atan2(y, x) / r) % 360 + 360) % 360;
+    };
+    let length = 0, turning = 0, previous = null;
+    for (let i = 1; i < points.length; i++) {
+      const segment = meters(points[i - 1], points[i]);
+      length += segment;
+      if (segment <= 1) continue;
+      const heading = bearing(points[i - 1], points[i]);
+      if (previous !== null) {
+        let delta = Math.abs(previous - heading) % 360;
+        if (delta > 180) delta = 360 - delta;
+        if (delta <= 75) turning += delta;
+      }
+      previous = heading;
+    }
+    const bends = Math.round(length > 1 ? turning / (length / 1000) : 0);
+    const band = INTENSITY.find(b => bends < b.below);
+    return { level: band.level, title: band.title, line: band.line };
+  }
+
   // Kilometers and meters for a viewer outside the US and the UK, as the
   // apps' Automatic units have it (2026-10-12). The numbers arrive worded
   // in miles and feet, the way link previews show them.
@@ -347,6 +414,14 @@
           el("span", { class: "label" }, LABELS[s.kind] || ""),
         ),
       )));
+    }
+    const level = INTENSITY.find(band => info.intensity && band.level === info.intensity.level);
+    if (level) {
+      main.append(el("div", { class: "intensity", role: "img", "aria-label": "Intensity: " + level.title + ", " + level.line.toLowerCase() },
+        el("div", { class: "words" },
+          el("span", { class: "level" }, disc(level, 22), level.title),
+          el("span", { class: "line" }, level.line)),
+        el("div", { class: "scale" }, INTENSITY.map(band => disc(band, 24, band !== level)))));
     }
     if (info.blurb) main.append(el("p", { class: "blurb" }, info.blurb));
 
@@ -416,7 +491,7 @@
           : info.photo.credit, ". ")
       : null;
     main.append(el("p", { class: "credits" }, credit,
-      "Distance, time and climbing are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
+      "Distance, time, climbing and intensity are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
 
     // The bar that follows on a phone.
     document.getElementById("bar-name").textContent = name;
@@ -720,6 +795,8 @@
       if (row.stop_count) stats.push({ kind: "stops", text: row.stop_count + (row.stop_count === 1 ? " stop" : " stops") });
       return {
         name: row.name, stats, distanceMeters: row.distance_meters || null, blurb: p.blurb || null,
+        intensity: p.pathNeedsMatching === true || !Array.isArray(p.pathGeometry) ? null
+          : intensityOf(p.pathGeometry.map(q => [q.latitude, q.longitude])),
         photo: p.photo && /^https:\/\//.test(p.photo.url || "") ? p.photo : null,
         stops: (p.waypoints || []).filter(w => w.type === "stop")
           .sort((a, b) => (a.order || 0) - (b.order || 0))

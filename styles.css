@@ -196,6 +196,17 @@ details p { padding: 0 0 14px; }
 .drive .stops li { padding-left: 4px; }
 .drive .stops li + li { margin-top: 10px; }
 .drive .stops strong { display: block; }
+/* How twisty the road is, as the app's route overview shows it: the words
+   on the left, the four levels on the right, the road's own at full. */
+.drive .intensity { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 12px 0 0; padding: 14px 18px; border: 2px solid var(--ink); border-radius: 18px; background: var(--paper); }
+.drive .intensity .words { display: flex; flex-direction: column; line-height: 1.25; }
+.drive .intensity .label { font-size: 13px; color: var(--ink-faint); font-weight: 600; }
+.drive .intensity strong { font-size: 20px; color: var(--ink); }
+.drive .intensity .words span:last-child { font-size: 14px; color: var(--ink-faint); }
+.drive .intensity .scale { display: flex; gap: 7px; flex: none; }
+.disc { display: block; flex: none; }
+.disc.off { opacity: .35; }
+.drives .drive-cards .level { display: flex; align-items: center; gap: 7px; padding: 0 16px 14px; margin-top: -8px; font-size: 14px; font-weight: 600; color: var(--ink); }
 .drive .more { list-style: none; padding: 0; }
 .drive .more span { color: var(--ink-faint); font-size: 15px; }
 .drive .sources { margin-top: 30px; font-size: 13.5px; color: var(--ink-faint); }
