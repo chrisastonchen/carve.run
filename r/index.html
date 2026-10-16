@@ -279,6 +279,17 @@
 
   // MARK: - Building the page
 
+  /// A stop's letter, as the apps mark it (the user, 2026-10-16): 1 is A,
+  /// 26 is Z, then AA, AB… (the apps' RoutePointOrder).
+  function stopLetter(n) {
+    let letters = "";
+    for (let rest = n; rest > 0; rest = Math.floor(rest / 26)) {
+      rest -= 1;
+      letters = String.fromCharCode(65 + rest % 26) + letters;
+    }
+    return letters;
+  }
+
   function el(tag, attrs, ...children) {
     const node = document.createElement(tag);
     for (const [key, value] of Object.entries(attrs || {})) {
@@ -463,7 +474,7 @@
       main.append(el("section", {},
         el("h2", {}, "Stops along the way"),
         el("ol", { class: "stops" }, stops.map((stop, i) =>
-          el("li", {}, el("span", { class: "pin", "aria-hidden": "true" }, String(i + 1)), stop.name))),
+          el("li", {}, el("span", { class: "pin", "aria-hidden": "true" }, stopLetter(i + 1)), stop.name))),
         googleMapsButton(info.googleMaps),
       ));
     } else if (info.googleMaps) {
@@ -800,7 +811,7 @@
         photo: p.photo && /^https:\/\//.test(p.photo.url || "") ? p.photo : null,
         stops: (p.waypoints || []).filter(w => w.type === "stop")
           .sort((a, b) => (a.order || 0) - (b.order || 0))
-          .map((w, i) => ({ name: (w.label || "").trim() || "Stop " + (i + 1) })),
+          .map((w, i) => ({ name: (w.label || "").trim() || "Stop " + stopLetter(i + 1) })),
       };
     } catch (e) { return null; }
   }
