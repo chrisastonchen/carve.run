@@ -816,8 +816,21 @@
     } catch (e) { return null; }
   }
 
+  /// A short link shared the moment its route was saved: the phone sends
+  /// the route up as the link goes out (2026-10-16), so for a second or two
+  /// the backend may not have it yet. Asked again for a few seconds before
+  /// saying it's missing.
+  async function fromBackendWaiting() {
+    for (let attempt = 0; attempt < 5; attempt++) {
+      if (attempt) await new Promise(resolve => setTimeout(resolve, 1500));
+      const info = await fromBackend();
+      if (info) return info;
+    }
+    return null;
+  }
+
   (async function () {
-    const info = fromPage() || await fromBackend() || fromPayload();
+    const info = fromPage() || (payload ? await fromBackend() : await fromBackendWaiting()) || fromPayload();
     if (info) {
       render(info);
     } else {
