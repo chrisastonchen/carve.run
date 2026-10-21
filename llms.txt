@@ -25,7 +25,7 @@ Carve at carve.run is separate from other apps called Carve: it is for cars, pla
 ## Pricing
 
 - Free: planning, importing, sharing, and driving with a signal
-- Carve Apex: $29.99 a year with a 7-day free trial for new subscribers, or $4.99 a month. Adds offline maps and turns, Group (see your whole group on the map), turn-by-turn guidance back to your route after a wrong turn (no rerouting), Apple CarPlay and Android Auto, and recording a drive to turn it into a route
+- Carve Apex: $29.99 a year with a 7-day free trial for new subscribers, or $4.99 a month. Adds offline maps and turns, Group (see your whole group on the map), 3D route previews (one free), Apple CarPlay and Android Auto, and recording a drive to turn it into a route. Turn-by-turn guidance back to your route after a wrong turn (no rerouting) is free with a signal
 
 ## Famous drives
 Guides to famous drives, each with a route that opens in Carve: https://carve.run/drives/
