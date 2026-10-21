@@ -41,7 +41,7 @@
   <p>Carve is an app for planning and driving routes, for iPhone and CarPlay and for Android and Android Auto, made by Chris Aston Chen (“Carve”, “we”). This policy explains what the apps do with information, and what your choices are. Questions: <a href="mailto:support@carve.run">support@carve.run</a>.</p>
 
   <h2>Your account</h2>
-  <p>You can use Carve without an account; you'll need one to drive, record and keep routes in sync. You sign in with Apple or with Google. From that sign-in Carve's backend keeps an account identifier and what your provider passes on: with Google, your email address, name and Google profile picture; with Apple, nothing more — Carve doesn't ask Apple for your name or email.</p>
+  <p>Carve needs an account, which also keeps your routes in sync across your devices. You sign in with Apple, with Google, or with your email address and a six-digit code Carve emails you. From that sign-in Carve's backend keeps an account identifier and what your provider passes on: with Google, your email address, name and Google profile picture; with Apple, nothing more — Carve doesn't ask Apple for your name or email; with email, the address you gave.</p>
   <p>Your account also has a <strong>username</strong> you choose, and optionally a <strong>display name</strong> and a <strong>profile picture</strong>. These are how you appear to other people: other signed-in Carve users can see them, they appear on routes you share, and your profile picture is stored at a public web address. Profile pictures are re-encoded when you choose them, which removes location and camera details from the photo.</p>
   <p>You can also add a <strong>photo to a route</strong> you made, taken with your camera or chosen from your library. Carve sees only the photo you pick. It's re-encoded at the size you frame it, which removes location and camera details, then checked automatically before anyone else can see it; a photo that fails the check is deleted. Once added, it's stored at a public web address and shown as the route's picture to anyone you share the route with. You can change or remove it at any time. If you report someone's photo, Carve keeps the report — which photo, and your account — to review it, and hides that photo on your device.</p>
   <p>If a route you made has no photo of its own, Carve looks for one: a <strong>freely licensed photo from Wikimedia Commons</strong> taken near the route. To find it, the app sends Carve's server up to four points from the middle of the route — never where it starts or ends — rounded to about a kilometre, with the towns at its ends, the names of its roads and the route's name. Carve's server, not your device, asks Wikimedia Commons for photos taken near those points, and for photos named after the route's roads and the places in its name, and doesn't keep the points. A photo found this way is copied to a public web address and shown with its photographer's name and licence, which links to the photo's page. You can remove it, or replace it with your own; once removed, Carve doesn't look again for that route.</p>
@@ -127,6 +127,11 @@
       <td><strong>Amazon Web Services</strong></td>
       <td>The words of spoken directions, such as “In half a mile, turn left onto Skyline Boulevard.”</td>
       <td>Turning directions into the voice you hear. The recordings are shared by everyone, not tied to you.</td>
+    </tr>
+    <tr>
+      <td><strong>Resend</strong></td>
+      <td>Your email address and a one-time sign-in code, if you sign in with email.</td>
+      <td>Sending the sign-in code — under <a href="https://resend.com/legal/privacy-policy" rel="noopener">Resend's privacy policy</a>.</td>
     </tr>
     <tr>
       <td><strong>Cloudflare</strong></td>
