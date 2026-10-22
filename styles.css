@@ -185,6 +185,13 @@ details p { padding: 0 0 14px; }
 .drive .stats div:first-child { border-left: 0; }
 .drive .stats dt { font-size: 13px; color: var(--ink-faint); font-weight: 600; }
 .drive .stats dd { margin: 2px 0 0; font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; white-space: nowrap; }
+.drive .drive-photo { margin: 18px 0 0; }
+.drive .drive-photo img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 2px solid var(--ink); border-radius: 18px; background: var(--paper-2); }
+.drive .drive-photo figcaption { margin-top: 6px; font-size: 12px; color: var(--ink-faint); }
+.drive .drive-photo figcaption a { color: inherit; }
+.drive .more-link { margin-top: 14px; font-weight: 600; }
+.drives .states { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px 20px; }
+.drives .states span { color: var(--ink-faint); font-size: 14px; }
 .drive .route-map { display: block; margin-top: 18px; border: 2px solid var(--ink); border-radius: 18px; overflow: hidden; background: var(--paper-2); }
 .drive .route-map img { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; }
 .drive-cta { margin-top: 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }

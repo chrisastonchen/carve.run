@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://carve.run/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://carve.run/support/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://carve.run/privacy/</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://carve.run/terms/</loc><lastmod>2026-10-13</lastmod></url>
-  <url><loc>https://carve.run/about/</loc><lastmod>2026-10-13</lastmod></url>
-  <!-- drives -->
-  <url><loc>https://carve.run/drives/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/skyline-boulevard/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/big-sur-highway-1/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/tioga-pass/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/angeles-crest-highway/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/million-dollar-highway/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/beartooth-highway/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/going-to-the-sun-road/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/tail-of-the-dragon/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/cherohala-skyway/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/blue-ridge-parkway/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/kancamagus-highway/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://carve.run/drives/overseas-highway/</loc><lastmod>2026-10-06</lastmod></url>
-  <!-- /drives -->
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap><loc>https://carve.run/sitemap-pages.xml</loc></sitemap>
+  <sitemap><loc>https://carve.run/sitemap-drives.xml</loc><lastmod>2026-10-14</lastmod></sitemap>
+</sitemapindex>
