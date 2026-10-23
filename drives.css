@@ -37,7 +37,8 @@ h1, h2, h3, p { margin: 0; }
 /* ── nav ── */
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; border-bottom: 1px solid var(--line); background: #fff; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -.02em; text-decoration: none; }
-.brand img { width: 30px; height: 30px; border-radius: 8px; }
+.brand img { width: 30px; height: 30px; border-radius: 8px; box-shadow: 0 1px 6px rgba(21,24,28,.18); }
+.brand img.wordmark { width: auto; height: 17px; border-radius: 0; box-shadow: none; }
 .nav-links { display: flex; align-items: center; gap: 22px; font-size: 15px; font-weight: 600; color: var(--ink-2); }
 .nav-links a { text-decoration: none; }
 .nav-links a:hover { color: var(--ink); }
