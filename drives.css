@@ -1,0 +1,180 @@
+/* carve.run/drives/ — the drive pages, the state pages and the index, in
+   the app's look (the user, 2026-10-23, the v3 mock without cards): Figtree,
+   a white page, the app's blue, intensity chips, and sections opened by a
+   hairline rule and their heading, as the route overview is. Built by
+   scripts/drives/page_parts.py; the rest of the site keeps styles.css. */
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/figtree.woff2?v=eddba2ef40") format("woff2");
+  font-weight: 300 900; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --ink: #111113;
+  --ink-2: #6E6E73;
+  --ink-3: #8E8E93;
+  --body: #3A3A3C;
+  --fill: #F2F2F7;
+  --line: rgba(60, 60, 67, .14);
+  --blue: #0A84FF;
+  --tint: #E8F2FF;
+  --pink: #C2185B;
+  --col: 760px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: #fff; color: var(--ink);
+  font-family: "Figtree", -apple-system, system-ui, sans-serif; font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+h1, h2, h3, p { margin: 0; }
+
+/* ── nav ── */
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; border-bottom: 1px solid var(--line); background: #fff; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -.02em; text-decoration: none; }
+.brand img { width: 30px; height: 30px; border-radius: 8px; }
+.nav-links { display: flex; align-items: center; gap: 22px; font-size: 15px; font-weight: 600; color: var(--ink-2); }
+.nav-links a { text-decoration: none; }
+.nav-links a:hover { color: var(--ink); }
+.cta { display: inline-flex; align-items: center; padding: 9px 18px; border-radius: 999px; background: var(--blue); color: #fff; font-weight: 700; font-size: 15px; text-decoration: none; white-space: nowrap; }
+.nav-links a.cta, .nav-links a.cta:hover { color: #fff; }
+
+/* ── cover ── */
+.cover { position: relative; height: 300px; background: var(--fill); overflow: hidden; }
+.cover img { width: 100%; height: 100%; object-fit: cover; }
+.cover figcaption { position: absolute; left: 12px; bottom: 8px; font-size: 11px; color: rgba(255,255,255,.88); text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+.cover figcaption a { text-decoration: none; }
+
+/* ── the column ── */
+.col { max-width: calc(var(--col) + 40px); margin: 0 auto; padding: 34px 20px 24px; }
+.crumbs { font-size: 12.5px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
+.crumbs a { text-decoration: none; }
+.crumbs a:hover { color: var(--ink); }
+h1 { font-size: 44px; line-height: 1.05; font-weight: 800; letter-spacing: -.02em; margin-top: 8px; }
+.sub { color: var(--ink-2); font-size: 16px; margin-top: 6px; }
+.lede { color: var(--ink-2); font-size: 18px; margin-top: 12px; max-width: 40em; }
+
+.facts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 14px; font-size: 16px; color: var(--ink-2); }
+.facts b { color: var(--ink); font-weight: 700; }
+.facts .sep { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-3); }
+.chip { display: inline-flex; align-items: center; gap: 5px; color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; padding: 4px 10px 4px 8px; }
+.mark { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #fff; box-shadow: 0 0 0 .5px rgba(0,0,0,.15); flex: none; }
+
+.route-map { margin-top: 18px; border-radius: 22px; overflow: hidden; background: var(--fill); }
+.route-map img { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; }
+
+/* One way into the app: a code to scan on a computer, a button on a phone. */
+.scan { display: flex; align-items: center; gap: 24px; margin-top: 18px; padding: 20px 24px; border-radius: 20px; background: var(--fill); }
+.scan .qr { width: 116px; height: 116px; flex: none; border-radius: 12px; }
+.scan b { display: block; font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+.scan p { margin-top: 4px; color: var(--ink-2); font-size: 15px; line-height: 1.45; max-width: 460px; }
+.scan .on { margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--ink-3); }
+.go { display: none; }
+.go a { display: flex; align-items: center; justify-content: center; gap: 9px; height: 54px; border-radius: 999px; background: var(--blue); color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
+.go a svg { width: 20px; height: 20px; fill: #fff; }
+.go p { text-align: center; color: var(--ink-3); font-size: 13px; margin-top: 8px; }
+@media (max-width: 760px), (pointer: coarse) {
+  .scan { display: none; }
+  .go { display: block; margin-top: 18px; }
+}
+
+/* ── sections ── */
+.sect { margin-top: 34px; padding-top: 30px; border-top: 1px solid var(--line); }
+.sect > h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 12px; }
+.prose p { font-size: 16.5px; line-height: 1.6; color: var(--body); }
+.prose p + p { margin-top: 12px; }
+.prose a, .know a, .sources a, .check a { color: var(--blue); text-decoration: none; font-weight: 600; }
+.prose a:hover, .know a:hover, .sources a:hover, .check a:hover { text-decoration: underline; }
+
+.along { list-style: none; padding: 0; margin: 0; }
+.along li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.along li:last-child { border-bottom: 0; }
+.along .dot { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 13px; flex: none; background: #8E8E93; }
+.along .dot.start { background: #34C759; }
+.along .dot.end { background: #FF3B30; }
+.along .dot svg { width: 14px; height: 14px; }
+.along .what { padding-top: 2px; }
+.along strong { font-weight: 600; }
+.along .what span { display: block; color: var(--ink-2); font-size: 15px; margin-top: 2px; }
+
+/* Elevation and curves, side by side as the route overview draws them. */
+.units { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 26px; }
+.unit .ut { font-size: 16px; font-weight: 700; }
+.unit .us { font-size: 14px; color: var(--ink-2); margin-top: 3px; }
+.unit .us em { font-style: normal; color: var(--pink); font-weight: 700; }
+.unit .ends { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 7px; }
+.elev { position: relative; height: 88px; margin-top: 12px; }
+.elev svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.elev .peak { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px #fff; }
+.elev .stem { position: absolute; bottom: 0; width: 1px; background: rgba(60,60,67,.35); }
+.bar { position: relative; margin-top: 34px; height: 14px; border-radius: 7px; }
+.bar .twisty { position: absolute; bottom: 21px; height: 5px; border: 1.5px solid var(--pink); border-bottom: 0; border-radius: 1px 1px 0 0; }
+.bar .twisty span { position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); font-size: 11.5px; font-weight: 700; color: var(--pink); white-space: nowrap; }
+.key { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); margin-top: 12px; }
+.key i { flex: 0 0 70px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }
+
+.know { padding-left: 20px; margin: 0; }
+.know li { font-size: 16px; line-height: 1.5; color: var(--body); }
+.know li + li { margin-top: 8px; }
+.check { margin-top: 12px; font-size: 16px; color: var(--body); }
+
+/* What the app adds: the same on every page. */
+.feats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; }
+.feat { display: flex; gap: 12px; align-items: flex-start; }
+.feat .ic { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: var(--tint); color: var(--blue); flex: none; }
+.feat .ic svg { width: 22px; height: 22px; }
+.feat b { display: block; font-size: 16px; letter-spacing: -.01em; }
+.feat .d { display: block; color: var(--ink-2); font-size: 14.5px; line-height: 1.4; margin-top: 2px; }
+.apex { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; color: #13623F; background: #E2F4EA; border-radius: 6px; padding: 2px 6px; vertical-align: 2px; letter-spacing: .02em; }
+.get { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+.get p { color: var(--ink-2); font-size: 14.5px; }
+.stores { display: flex; gap: 12px; flex-wrap: wrap; }
+.store { display: inline-flex; align-items: center; gap: 10px; height: 54px; padding: 0 20px 0 16px; border-radius: 14px; background: #000; color: #fff; text-decoration: none; }
+.store svg { width: 24px; height: 26px; flex: none; }
+.store small { display: block; font-size: 11px; font-weight: 500; opacity: .85; line-height: 1; }
+.store b { display: block; font-size: 19px; font-weight: 700; letter-spacing: -.01em; line-height: 1.15; }
+
+/* Drive cards: a photo and its words, no tile. */
+.cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 16px; }
+.cards a { display: block; text-decoration: none; }
+.cards img { width: 100%; height: auto; aspect-ratio: 1.6 / 1; object-fit: cover; border-radius: 16px; background: var(--fill); }
+.cards .n { display: block; font-weight: 700; font-size: 16px; letter-spacing: -.01em; margin-top: 10px; }
+.cards .m { display: flex; align-items: center; gap: 6px; color: var(--ink-2); font-size: 13.5px; margin-top: 3px; }
+.cards a:hover .n { color: var(--blue); }
+.more-link { margin-top: 18px; font-weight: 700; }
+.more-link a { color: var(--blue); text-decoration: none; }
+
+.states { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0 24px; }
+.states li { border-bottom: 1px solid var(--line); }
+.states a { display: flex; justify-content: space-between; gap: 10px; padding: 11px 0; text-decoration: none; font-weight: 600; }
+.states a:hover { color: var(--blue); }
+.states span { color: var(--ink-3); font-weight: 500; }
+
+.sources { margin-top: 30px; font-size: 13px; color: var(--ink-3); }
+
+/* ── footer ── */
+footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px 24px; padding: 26px 28px 34px; margin-top: 30px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 13.5px; }
+footer .links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+footer a { text-decoration: none; color: var(--ink-2); }
+footer a:hover { color: var(--ink); }
+
+@media (max-width: 760px) {
+  .nav { padding: 10px 16px; }
+  .nav-links a:not(.cta) { display: none; }
+  .cover { height: 170px; }
+  .col { padding: 20px 18px 10px; }
+  h1 { font-size: 32px; }
+  .facts { font-size: 15px; gap: 6px 14px; }
+  .facts .sep { display: none; }
+  .units { grid-template-columns: 1fr; gap: 30px; }
+  .feats { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: 1fr; }
+  .cards.nearby li:nth-child(n+3) { display: none; }
+  .route-map { border-radius: 18px; }
+  footer { padding: 22px 18px 30px; }
+}
