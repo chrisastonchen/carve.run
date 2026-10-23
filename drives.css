@@ -124,6 +124,10 @@ h1 { font-size: 44px; line-height: 1.05; font-weight: 800; letter-spacing: -.02e
 .know li + li { margin-top: 8px; }
 .check { margin-top: 12px; font-size: 16px; color: var(--body); }
 
+.faq h3 { font-size: 16.5px; font-weight: 700; letter-spacing: -.01em; }
+.faq p { font-size: 16px; line-height: 1.55; color: var(--body); margin-top: 4px; }
+.faq h3 + p + h3 { margin-top: 18px; }
+
 /* What the app adds: the same on every page. */
 .feats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; }
 .feat { display: flex; gap: 12px; align-items: flex-start; }
