@@ -17,11 +17,13 @@
   <url><loc>https://carve.run/drives/iowa/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kansas/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kentucky/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/louisiana/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/maine/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/maryland/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/massachusetts/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/michigan/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/minnesota/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/mississippi/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/missouri/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/montana/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nebraska/</loc><lastmod>2026-10-23</lastmod></url>
@@ -54,10 +56,12 @@
   <url><loc>https://carve.run/drives/new-brunswick/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/newfoundland-and-labrador/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nova-scotia/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/northwest-territories/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ontario/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/prince-edward-island/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/quebec/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/saskatchewan/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/yukon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/calaveras-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/del-puerto-canyon-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/la-honda-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -75,12 +79,14 @@
   <url><loc>https://carve.run/drives/highway-25-hollister-pinnacles/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-9-saratoga-santa-cruz/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/coleman-valley-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-116-russian-river/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-128-lake-berryessa/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-1-jenner-gualala/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-1-marin/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lucas-valley-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mount-tamalpais/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/oakville-grade-trinity-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/sir-francis-drake-boulevard/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/skaggs-springs-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/avenue-of-the-giants/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-128-anderson-valley/</loc><lastmod>2026-10-23</lastmod></url>
@@ -101,13 +107,17 @@
   <url><loc>https://carve.run/drives/mormon-emigrant-trail/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/carson-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ebbetts-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/glacier-point-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-120-groveland-crane-flat/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-140-merced-river/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/monitor-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sonora-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-120-east/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bishop-creek-highway-168/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/death-valley-highway-190/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/horseshoe-meadow-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/june-lake-loop/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/onion-valley-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/rock-creek-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/whitney-portal-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/caliente-bodfish-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -137,11 +147,13 @@
   <url><loc>https://carve.run/drives/mount-baldy-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mulholland-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ortega-highway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/topanga-canyon-boulevard/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-243-banning-idyllwild/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-38-mentone-big-bear/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/pines-to-palms-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/rim-of-the-world-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/banner-grade-yaqui-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-76-pala-henshaw/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-79-descanso-julian/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-94-jamul-campo/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/montezuma-grade/</loc><lastmod>2026-10-23</lastmod></url>
@@ -169,6 +181,7 @@
   <url><loc>https://carve.run/drives/skate-creek-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/spirit-lake-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/stevens-canyon-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/sunrise-road-mount-rainier/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/white-pass-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/windy-ridge/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/blewett-pass/</loc><lastmod>2026-10-23</lastmod></url>
@@ -178,6 +191,9 @@
   <url><loc>https://carve.run/drives/yakima-river-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/rattlesnake-grade/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sherman-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-141-white-salmon-trout-lake/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-142-lyle-goldendale/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-14-lyle-maryhill/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-14-columbia-gorge/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/historic-columbia-river-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/larch-mountain-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -188,7 +204,9 @@
   <url><loc>https://carve.run/drives/marys-peak-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/silver-falls-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wilson-river-highway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/cape-arago-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-101-neahkahnie/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-101-newport-yachats/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-101-curry-coast/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-101-yachats-florence/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/three-capes-scenic-route/</loc><lastmod>2026-10-23</lastmod></url>
@@ -200,18 +218,21 @@
   <url><loc>https://carve.run/drives/mckenzie-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mckenzie-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/north-santiam-highway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/willamette-pass-highway-58/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/dead-indian-memorial-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/green-springs-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/applegate-valley/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/north-umpqua-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/oregon-caves-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/elkhorn-drive/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-19-condon-dayville/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-26-john-day/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/hells-canyon-scenic-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wallowa-lake-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wallowa-mountain-loop/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/greer-grade/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/northwest-passage-lochsa/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-57-priest-lake/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lake-coeur-dalene-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/old-spiral-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/old-white-bird-grade/</loc><lastmod>2026-10-23</lastmod></url>
@@ -224,8 +245,11 @@
   <url><loc>https://carve.run/drives/payette-river-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ponderosa-pine-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sawtooth-byway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-93-challis-salmon/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-95-riggins-white-bird/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wildlife-canyon-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/apache-trail/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-60-superior-to-globe/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/usery-pass-bush-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bonita-canyon-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/gates-pass-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -253,13 +277,17 @@
   <url><loc>https://carve.run/drives/sunrise-big-lake/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/alpine-loop-utah/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/big-cottonwood-canyon/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/emigration-canyon-sr-65/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/guardsman-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ogden-canyon-monte-cristo/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/huntington-canyon/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/little-cottonwood-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nebo-loop/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/wolf-creek-pass-highway-35/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/flaming-gorge-uintas-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/logan-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mirror-lake-highway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/beaver-canyon-highway-153/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bryce-canyon-scenic-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/burr-trail-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/parowan-canyon-cedar-breaks/</loc><lastmod>2026-10-23</lastmod></url>
@@ -272,6 +300,7 @@
   <url><loc>https://carve.run/drives/zion-mount-carmel-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/arches-scenic-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/colorado-river-highway-128/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/needles-highway-211/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/capitol-reef-highway-24/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bicentennial-highway-95/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/island-in-the-sky-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -290,14 +319,18 @@
   <url><loc>https://carve.run/drives/highway-50-austin-to-eureka/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lamoille-canyon-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wheeler-peak-scenic-drive/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/cimarron-canyon-us-64/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/enchanted-circle/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/high-road-to-taos/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-434-angel-fire-to-mora/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-518-ranchos-de-taos-to-mora/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-64-tierra-amarilla-tres-piedras/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-84-espanola-to-chama/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/hyde-park-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/jemez-mountain-trail/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/low-road-to-taos/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/pecos-canyon-nm-63/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/sandia-crest-scenic-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/taos-ski-valley-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/turquoise-trail/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/emory-pass/</loc><lastmod>2026-10-23</lastmod></url>
@@ -307,6 +340,7 @@
   <url><loc>https://carve.run/drives/sunspot-scenic-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/berthoud-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/big-thompson-canyon/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/boulder-canyon-highway-119/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/clear-creek-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/golden-gate-canyon-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/guanella-pass/</loc><lastmod>2026-10-23</lastmod></url>
@@ -317,7 +351,11 @@
   <url><loc>https://carve.run/drives/peak-to-peak-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/poudre-canyon-cameron-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/trail-ridge-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-36-lyons-estes-park/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bighorn-sheep-canyon/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/cumbres-pass-colorado/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/hardscrabble-canyon-co-96/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-67-cripple-creek/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-of-legends/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/pikes-peak-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cottonwood-pass-colorado/</loc><lastmod>2026-10-23</lastmod></url>
@@ -325,26 +363,31 @@
   <url><loc>https://carve.run/drives/independence-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/loveland-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/monarch-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/rabbit-ears-pass-us-40/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/tennessee-pass-top-of-the-rockies/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/black-canyon-south-rim-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/douglas-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/grand-mesa-scenic-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mcclure-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/rim-rock-drive/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-50-blue-mesa-cimarron/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/unaweep-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/dallas-divide/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-92-black-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lizard-head-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/mesa-verde-park-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/silver-thread-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/us-550-durango-silverton/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wolf-creek-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/craig-pass-old-faithful-west-thumb/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/dunraven-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/norris-madison-gibbon-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/golden-gate-mammoth-norris/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/hayden-valley/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/jackson-to-moran-us-191/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/hoback-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lamar-valley/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/rockefeller-parkway-west-thumb/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/snake-river-canyon-wyoming/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sylvan-pass-east-entrance-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/teton-park-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -356,9 +399,11 @@
   <url><loc>https://carve.run/drives/cloud-peak-skyway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/medicine-wheel-passage/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/battle-highway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/sinks-canyon-wy-131/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/snowy-range-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wind-river-canyon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bull-lake-highway-56/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/chief-mountain-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/flathead-lake-east-shore/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/flathead-lake-west-shore/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lake-koocanusa-scenic-byway/</loc><lastmod>2026-10-23</lastmod></url>
@@ -383,6 +428,7 @@
   <url><loc>https://carve.run/drives/blue-ridge-parkway-cherokee-waterrock/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cades-cove-loop/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/foothills-parkway-tennessee/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/nc-106-highlands-dillard/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nc-28-little-tennessee/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/little-river-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/moonshiner-28-fontana/</loc><lastmod>2026-10-23</lastmod></url>
@@ -394,6 +440,7 @@
   <url><loc>https://carve.run/drives/cullasaja-gorge-us-64/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nc-107-cashiers-glenville/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nc-215-lake-logan/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/nc-226-marion-spruce-pine/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nc-63-doggett-gap/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/diamondback-nc-226a/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/us-276-looking-glass-pisgah/</loc><lastmod>2026-10-23</lastmod></url>
@@ -406,7 +453,10 @@
   <url><loc>https://carve.run/drives/nc-194-valle-crucis/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nc-261-roan-mountain/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/us-221-yonahlossee-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ashley-river-road-sc-61/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nc-12-hatteras-island/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/edisto-island-sc-174/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/sea-island-parkway-sc/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/tn-30-hiwassee-reliance/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/tn-30-pikeville-spencer/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/tn-68-coker-creek/</loc><lastmod>2026-10-23</lastmod></url>
@@ -419,6 +469,9 @@
   <url><loc>https://carve.run/drives/the-snake-us-421/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/us-321-watauga-lake/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/dragon-slayer-ky-160/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-119-whitesburg-pound-gap/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ky-30-booneville-jackson/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ky-52-irvine-beattyville/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cumberland-falls-ky-90/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/monteagle-mountain-us-41/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/natchez-trace-tennessee/</loc><lastmod>2026-10-23</lastmod></url>
@@ -427,39 +480,53 @@
   <url><loc>https://carve.run/drives/blue-ridge-parkway-rockfish-gap/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/crabtree-falls-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/goshen-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-220-covington-hot-springs/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-250-shenandoah-mountain/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-33-shenandoah-mountain/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-39-warm-springs-marlinton/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-50-gore-romney/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/skyline-drive-north/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/skyline-drive-south/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/skyline-drive-central/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/back-of-the-dragon/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/blue-ridge-parkway-roanoke-mabry-mill/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/blue-ridge-parkway-roanoke-peaks-of-otter/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/breaks-canyon-ky-80-va-83/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/burkes-garden-virginia/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/natural-bridge-big-island-va-130/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-311-catawba-paint-bank/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-58-mount-rogers/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-8-stuart-floyd/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mount-rogers-highway-603/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/catoctin-mountain-highway-77/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highland-scenic-highway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/wv-20-princeton-hinton/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cheat-mountain-highway-250/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/canaan-valley-highway-32/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-33-seneca-rocks/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/md-36-georges-creek/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-39-cranberry-richwood/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/wv-9-berkeley-springs-paw-paw/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/midland-trail-hawks-nest/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/midland-trail-ansted-lewisburg/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/seneca-trail-lewisburg-marlinton/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/caesars-head-us-276/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cherokee-foothills-sc-11/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/fort-mountain-ga-52/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sc-107-walhalla/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/okefenokee-ga-177/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/pine-mountain-ga-190/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ga-197-clarkesville-lake-burton/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ga-60-woody-gap-suches/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lookout-mountain-ga-136/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/neels-gap-us-129/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/richard-b-russell-scenic-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/wolf-pen-gap-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/fort-morgan-road-al-180/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/bankhead-al-33/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/little-river-canyon-rim-parkway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lookout-mountain-parkway-mentone/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/natchez-trace-alabama/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/talladega-scenic-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cape-san-blas-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/fort-pickens-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -515,8 +582,11 @@
   <url><loc>https://carve.run/drives/route-1a-seacoast/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cadillac-summit-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/acadia-park-loop-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/me-130-pemaquid/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/deer-isle-route-15/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/me-182-black-woods/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-1-camden-belfast/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/me-24-harpswell/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/schoodic-loop/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/evans-notch/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/grafton-notch/</loc><lastmod>2026-10-23</lastmod></url>
@@ -526,13 +596,20 @@
   <url><loc>https://carve.run/drives/jacobs-ladder-trail/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mohawk-trail/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mount-greylock-summit-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ma-143-worthington-williamsburg/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ma-23-monterey-otis/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cape-ann-highway-127/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ct-154-connecticut-river/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-169-quiet-corner/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ocean-drive-newport/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/old-kings-highway-6a/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ct-4-goshen-cornwall/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ri-77-sakonnet/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-7-housatonic/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/vineyard-south-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lake-champlain-highway-22/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-28-central-adirondacks/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ny-28n-long-lake-newcomb/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-30-long-lake/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-30-sacandaga/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-3-cranberry-lake/</loc><lastmod>2026-10-23</lastmod></url>
@@ -606,13 +683,16 @@
   <url><loc>https://carve.run/drives/ranch-road-337-medina-leakey/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ranch-road-12-wimberley-dripping-springs/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ranch-road-1431-texas/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/rr-2325-wimberley-blanco/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ranch-road-965-enchanted-rock/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/river-road-new-braunfels/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/twisted-sisters-texas/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/us-377-junction-rocksprings/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/willow-city-loop/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/big-bend-main-park-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/chisos-basin-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/davis-mountains-scenic-loop/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/fm-170-study-butte-lajitas/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/farm-road-89-buffalo-gap/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-118-alpine-fort-davis/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-118-alpine-study-butte/</loc><lastmod>2026-10-23</lastmod></url>
@@ -650,6 +730,7 @@
   <url><loc>https://carve.run/drives/mustang-padre-island-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/south-padre-island-park-road-100/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-10-illinois-river/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-259-broken-bow-smithville/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mount-scott-oklahoma/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/great-river-road-missouri/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-106-missouri/</loc><lastmod>2026-10-23</lastmod></url>
@@ -664,10 +745,15 @@
   <url><loc>https://carve.run/drives/talimena-scenic-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/pig-trail/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/flint-hills-scenic-byway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-12-niobrara-valley/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-97-sandhills/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/post-rock-byway-k-232/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sandhills-journey-highway-2/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/badlands-loop-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-16-custer-wyoming-line/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-244-mount-rushmore/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-385-custer-hot-springs/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-385-hill-city-deadwood/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/iron-mountain-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/needles-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/nemo-road-vanocker-canyon/</loc><lastmod>2026-10-23</lastmod></url>
@@ -678,12 +764,15 @@
   <url><loc>https://carve.run/drives/killdeer-mountain-four-bears/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/theodore-roosevelt-north-unit/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/theodore-roosevelt-scenic-loop/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/m-22-frankfort-to-empire/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/m-22-frankfort-to-onekama/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/m-22-leland-to-empire/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/m-22-suttons-bay-to-leland/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/old-mission-peninsula-m-37/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/pierce-stocking-scenic-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/river-road-au-sable-michigan/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/tunnel-of-trees-m-119/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/black-river-scenic-byway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/brockway-mountain-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/county-road-550-big-bay/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/h-58-pictured-rocks/</loc><lastmod>2026-10-23</lastmod></url>
@@ -696,18 +785,25 @@
   <url><loc>https://carve.run/drives/highway-131-kickapoo-valley/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-13-bayfield-cornucopia/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-23-spring-green-dodgeville/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-35-alma-to-trempealeau/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/great-river-road-lake-pepin-wisconsin/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-42-door-county/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highways-133-60-muscoda-prairie-du-chien/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highways-35-133-prairie-du-chien-to-cassville/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/edge-of-the-wilderness-highway-38/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/gunflint-trail/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-1-finland-ely/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-61-grand-marais-grand-portage/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/great-river-road-lake-pepin-minnesota/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-61-two-harbors-grand-marais/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-74-whitewater-minnesota/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-95-st-croix-minnesota/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/historic-bluff-country-highway-16/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/north-shore-scenic-drive-old-61/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/great-river-road-alton-grafton/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/great-river-road-lansing-marquette/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-52-dubuque-to-bellevue/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-84-savanna-to-galena/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/karbers-ridge-road-shawnee/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/loess-hills-murray-hill/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/stagecoach-trail-galena/</loc><lastmod>2026-10-23</lastmod></url>
@@ -715,15 +811,19 @@
   <url><loc>https://carve.run/drives/shawnee-state-forest-ohio/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-260-ohio/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-536-ohio/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-93-ironton-to-jackson/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-97-mohican-ohio/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/hocking-hills-ohio/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/rim-of-the-world-ohio/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/riverview-road-ohio/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/triple-nickel-ohio/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-135-brown-county/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-446-monroe-lake/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-450-indiana/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-46-brown-county/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-66-indiana/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ohio-river-byway-indiana/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/edgerton-highway-chitina/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/glenn-highway-matanuska/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/hatcher-pass-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/richardson-highway-thompson-pass/</loc><lastmod>2026-10-23</lastmod></url>
@@ -731,11 +831,15 @@
   <url><loc>https://carve.run/drives/seward-highway-turnagain-arm/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sterling-highway-homer/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/sterling-highway-kenai-river/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/chena-hot-springs-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/denali-park-road-savage-river/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/parks-highway-nenana-canyon/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/tok-cutoff-alaska/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/glacier-highway-juneau/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/haines-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/klondike-highway-white-pass/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/tongass-highway-ketchikan-north/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/sitka-halibut-point-sawmill-creek/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/haleakala-crater-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kahekili-highway-maui/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/road-to-hana/</loc><lastmod>2026-10-23</lastmod></url>
@@ -743,14 +847,20 @@
   <url><loc>https://carve.run/drives/hamakua-coast/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kohala-mountain-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/saddle-road-hawaii/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/farrington-highway-waianae-coast/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kalanianaole-highway-makapuu/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kamehameha-highway-windward-oahu/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kuhio-highway-hanalei-haena/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/waimea-canyon-drive/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/chilliwack-lake-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cypress-bowl-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/dallas-road-beach-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/duffey-lake-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-14-sooke-port-renfrew/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-16-terrace-prince-rupert/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-20-bella-coola/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-28-gold-river/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-37a-stewart/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-4-tofino/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/marine-drive-west-vancouver/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/mount-seymour-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -764,6 +874,7 @@
   <url><loc>https://carve.run/drives/highway-33-kelowna-rock-creek/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-3-hope-princeton/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-3a-kootenay-lake/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-5a-merritt-kamloops/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/slocan-valley-highway-6/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-8-nicola-valley/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/kootenay-highway-93/</loc><lastmod>2026-10-23</lastmod></url>
@@ -774,8 +885,10 @@
   <url><loc>https://carve.run/drives/akamina-parkway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bow-valley-parkway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cowboy-trail-highway-22/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/crowsnest-pass-highway-3/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/david-thompson-highway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/elbow-valley-highway-66/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-16-jasper-mount-robson/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bow-valley-trail-1a/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highwood-pass/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/icefields-parkway/</loc><lastmod>2026-10-23</lastmod></url>
@@ -797,6 +910,7 @@
   <url><loc>https://carve.run/drives/calabogie-road/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lanark-county-road-511/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/forks-of-the-credit-road/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/on-highway-121-fenelon-haliburton/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-28-kawarthas/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-41-bon-echo/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/hockley-valley-road/</loc><lastmod>2026-10-23</lastmod></url>
@@ -818,6 +932,7 @@
   <url><loc>https://carve.run/drives/muskoka-lakes-road-118-west/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/bolton-pass-missisquoi-valley/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/gatineau-park-parkways/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/qc-route-131-saint-michel/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-247-memphremagog/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-307-outaouais/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-329-morin-heights/</loc><lastmod>2026-10-23</lastmod></url>
@@ -825,33 +940,51 @@
   <url><loc>https://carve.run/drives/route-364-laurentians/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-132-gaspe-peninsula/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-132-gaspe-perce/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/qc-route-132-matane-sainte-anne/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-170-saguenay-fjord/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-172-saguenay-fjord/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-299-chic-chocs/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-362-charlevoix/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-371-les-equerres/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-381-charlevoix-saguenay/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/qc-route-389-manic-5/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ile-d-orleans-chemin-royal/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/blomidon-look-off-highway-358/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cabot-trail-french-mountain/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cabot-trail-cape-smokey/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cabot-trail-margaree-valley/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cabot-trail-north-mountain/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ns-cape-george-route-337/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/ceilidh-trail-highway-19/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/eastern-shore-highway-7/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/fundy-coast-route-915-114/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/fundy-trail-parkway/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/green-gables-shore-route-6-20/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/highway-209-parrsboro-advocate/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ns-highway-8-kejimkujik/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/lighthouse-route-mahone-bay-lunenburg/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/north-cape-coastal-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/peggys-cove-road-highway-333/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/points-east-route-16/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/pei-route-11-lady-slipper/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/nb-route-127-passamaquoddy/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ns-route-217-digby-neck/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/baccalieu-trail-route-70/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/cape-spear-drive/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/irish-loop-southern-shore-highway/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/nl-route-230-bonavista/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-431-tablelands-trout-river/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/route-450-bay-of-islands/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/viking-trail-deer-lake-rocky-harbour/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://carve.run/drives/viking-trail-rocky-harbour-cow-head/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/bayou-teche-la-31/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/creole-nature-trail/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/highway-10-st-francisville-clinton/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/natchez-trace-mississippi/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/river-road-la-18/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/us-90-mississippi-coast/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/alaska-highway-kluane-lake/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/haines-road-yukon/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/ingraham-trail/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://carve.run/drives/klondike-highway-dawson/</loc><lastmod>2026-10-23</lastmod></url>
 </urlset>
