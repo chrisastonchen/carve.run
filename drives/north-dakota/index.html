@@ -67,6 +67,30 @@
     document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://groups.google.com/g/carve-beta"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
+  // The drive's button opens it in the app, or the store: the share link it
+  // used to go to now comes back to this page (web/r/index.html).
+  (function () {
+    var ua = navigator.userAgent || "", android = /android/i.test(ua);
+    var apple = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+    document.querySelectorAll("[data-open]").forEach(function (a) {
+      var t = encodeURIComponent(a.getAttribute("data-open"));
+      if (!android && !apple) return;
+      a.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (android) {
+          location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
+            + "S.browser_fallback_url=" + encodeURIComponent("https://groups.google.com/g/carve-beta") + ";end";
+          return;
+        }
+        var left = false;
+        var leaving = function () { left = true; };
+        window.addEventListener("pagehide", leaving, { once: true });
+        document.addEventListener("visibilitychange", function () { if (document.hidden) leaving(); }, { once: true });
+        setTimeout(function () { if (!left) location.href = "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
+        location.href = "carve://route?t=" + t;
+      });
+    });
+  })();
 </script>
 </body>
 </html>

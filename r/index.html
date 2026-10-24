@@ -829,7 +829,24 @@
     return null;
   }
 
+  // A drive with its own page (the Drives In Your Area and the famous
+  // drives) goes to that page, so a drive looks one way on the web, its
+  // guide and all (the user, 2026-10-24). The page's button opens the app.
+  async function drivePage() {
+    if (!token) return null;
+    try {
+      const response = await fetch("/drives/tokens.json", { cache: "default" });
+      if (!response.ok) return null;
+      const slug = (await response.json())[token];
+      return typeof slug === "string" && /^[a-z0-9-]+$/.test(slug) ? "/drives/" + slug + "/" : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   (async function () {
+    const page = await drivePage();
+    if (page) { location.replace(page); return; }
     const info = fromPage() || (payload ? await fromBackend() : await fromBackendWaiting()) || fromPayload();
     if (info) {
       render(info);
