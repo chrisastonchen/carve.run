@@ -1,5 +1,26 @@
 {
- "flagged": {},
+ "flagged": {
+  "glendora-mountain-ridge-roads": {
+   "coverage": 0.04,
+   "since": "2026-10-24"
+  },
+  "lake-hughes-road": {
+   "coverage": 0.51,
+   "since": "2026-10-24"
+  },
+  "nc-12-hatteras-island": {
+   "coverage": 0.01,
+   "since": "2026-10-24"
+  },
+  "storm-king-highway": {
+   "coverage": 0.57,
+   "since": "2026-10-24"
+  },
+  "trail-ridge-road": {
+   "coverage": 0.01,
+   "since": "2026-10-24"
+  }
+ },
  "format": 1,
- "updated": "2026-10-24T07:57:41Z"
+ "updated": "2026-10-24T16:22:16Z"
 }
