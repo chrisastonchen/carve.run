@@ -79,6 +79,13 @@ h1 { font-size: 44px; line-height: 1.05; font-weight: 800; letter-spacing: -.02e
 .go a { display: flex; align-items: center; justify-content: center; gap: 9px; height: 54px; border-radius: 999px; background: var(--blue); color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
 .go a svg { width: 20px; height: 20px; fill: #fff; }
 .go p { text-align: center; color: var(--ink-3); font-size: 13px; margin-top: 8px; }
+.platforms { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; color: var(--ink-3); }
+.platforms a { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 10px; color: inherit; }
+.platforms a:hover { color: var(--ink); background: var(--fill); }
+.platforms svg { width: 22px; height: 22px; display: block; }
+.platforms .psep { width: 1px; height: 20px; background: currentColor; opacity: .4; }
+.go .platforms a { height: auto; padding: 6px 10px; background: none; color: inherit; font-size: inherit; font-weight: inherit; }
+.go .platforms svg { width: 22px; height: 22px; fill: currentColor; }
 @media (max-width: 760px), (pointer: coarse) {
   .scan { display: none; }
   .go { display: block; margin-top: 18px; }

@@ -18,180 +18,55 @@
 <meta name="twitter:title" content="A Carve route">
 <meta name="twitter:description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
 <meta name="twitter:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
-<meta name="theme-color" content="#FBF8EF">
+<meta name="theme-color" content="#FFFFFF">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
-<link rel="stylesheet" href="/styles.css?v=3e6d22f7f9">
-<!-- The route itself arrives as JSON in #route-data, written into this page
-     by the Worker (cloudflare/map-worker.js) from the shared route: name,
-     numbers, photo, blurb, stops, maker and roughly where it is. A
-     link to someone who has never heard of Carve, so the page sells the
-     drive first and the app second. Safari's own "Open in the app" bar
-     comes from APP_STORE_ID below. -->
+<link rel="stylesheet" href="/drives.css?v=a92e6230db">
+<!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
+     route_profile.js or page_parts.py, not this file. -->
 <style>
-  nav.top .bar { border: none; background: transparent; padding-left: 0; }
-  .route { max-width: 680px; margin: 0 auto; padding: 0 20px 120px; }
-  .route h1, .route h2 { font-family: var(--sans); font-weight: 700; letter-spacing: -0.02em; }
-
-  /* The top: the route's photo with its name over it, or, with no photo,
-     its map with the name underneath. */
-  .hero { position: relative; border-radius: 22px; overflow: hidden; background: #1D5B3A; }
-  .hero .picture { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; }
-  .hero.photo .picture { aspect-ratio: 16 / 10; }
-  .hero.photo::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(180deg, rgba(10,12,16,0) 38%, rgba(10,12,16,.8) 100%);
-  }
-  .heading { display: flex; flex-direction: column; gap: 6px; padding: 18px 2px 0; }
-  .hero.photo .heading { position: absolute; left: 20px; right: 20px; bottom: 18px; padding: 0; color: #fff; z-index: 1; }
-  .place { font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
-  .hero.photo .place { color: rgba(255,255,255,.9); }
-  .route h1 { margin: 0; font-size: clamp(34px, 8vw, 48px); line-height: 1.02; }
-  .byline { display: flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--ink-dim); }
-  .hero.photo .byline { color: #fff; }
-  .byline img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
-  .hero.photo .byline img { border: 1.5px solid #fff; }
-  .hero:not(.photo) { background: none; border-radius: 0; overflow: visible; }
-  .hero:not(.photo) .picture { border-radius: 22px; border: 1px solid var(--line); background: #E8EEF0; }
-
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-top: 20px; }
-  .stat {
-    display: flex; flex-direction: column; gap: 4px; padding: 12px 14px;
-    background: #fff; border: 1px solid var(--line); border-radius: 14px;
-  }
-  .stat .value { display: flex; align-items: center; gap: 7px; font-size: 21px; font-weight: 700; }
-  .stat svg { width: 19px; height: 19px; flex: none; color: var(--route); }
-  .stat .label { font-size: 12.5px; color: var(--ink-dim); }
-  /* How twisty, as the app's route overview has it: the words on the left,
-     the four levels on the right with the road's own at full. */
-  .intensity {
-    display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 8px;
-    padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-radius: 14px;
-  }
-  .intensity .words { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .intensity .level { display: flex; align-items: center; gap: 8px; font-size: 21px; font-weight: 700; }
-  .intensity .line { font-size: 12.5px; color: var(--ink-dim); }
-  .intensity .scale { display: flex; gap: 6px; flex: none; }
-  .intensity .scale .off { opacity: .35; }
-  .blurb { font-size: 17px; line-height: 1.55; margin: 20px 0 0; }
-
-  /* One big button for the phone in hand; under it every platform's icons,
-     each pair a link to its store (the landing page's row). */
-  .get { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 24px; }
-  .cta {
-    align-self: stretch;
-    display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px;
-    border-radius: 999px; background: var(--route); color: #fff; text-decoration: none;
-    font-size: 17.5px; font-weight: 600; box-shadow: 0 8px 22px rgba(46,146,255,.3);
-  }
-  .cta svg { width: 21px; height: 21px; }
-  .platforms { display: flex; align-items: center; gap: 6px; color: var(--ink-dim); }
-  .platforms a {
-    display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 12px;
-    color: inherit; text-decoration: none;
-  }
-  .platforms a:hover { color: var(--ink); background: rgba(21,24,28,.05); }
-  .platforms svg { width: 22px; height: 22px; display: block; }
-  .platforms .sep { width: 1px; height: 20px; background: currentColor; opacity: .4; }
-  .open-hint { font-size: 13.5px; color: var(--ink-dim); text-align: center; margin: 2px 0 0; }
-  body.desktop .cta { display: none; }
-  /* On a computer: the link to scan, on Carve's green. */
-  .scan {
-    align-self: stretch; display: flex; align-items: center; gap: 28px; padding: 24px;
-    background: #1D5B3A; color: #fff; border-radius: 24px;
-    box-shadow: 0 14px 34px rgba(29,91,58,.22);
-  }
-  .scan .code { flex: none; padding: 6px; background: #fff; border-radius: 18px; }
-  .scan .code svg { width: 164px; height: 164px; display: block; }
-  .scan-words { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-  .scan .scan-words h2 { margin: 0; text-wrap: balance; font-size: 26px; line-height: 1.12; letter-spacing: -0.01em; }
-  .scan-words ul { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
-  .scan-words li { display: flex; align-items: center; gap: 9px; }
-  .scan-words li svg { width: 18px; height: 18px; flex: none; opacity: .9; }
-  .scan-words .how { font-size: 13.5px; opacity: .72; margin-top: 2px; }
-  @media (max-width: 560px) {
-    .scan { flex-direction: column; text-align: center; }
-    .scan-words li { justify-content: center; }
-  }
-
-  .route h2 { font-size: 26px; margin: 40px 0 12px; }
-  .stops { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
-  .stops li { display: flex; align-items: center; gap: 12px; padding: 13px 14px; font-weight: 600; }
-  .stops li + li { border-top: 1px solid #EEE8DA; }
+  .missing { text-align: center; padding: 48px 0; color: var(--ink-3); }
   .gmaps {
-    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; margin-top: 12px;
+    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 18px;
     border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink);
     font: inherit; font-size: 15.5px; font-weight: 600; cursor: pointer;
   }
-  .gmaps:hover { background: #FBF8EF; }
-  .gmaps svg { width: 18px; height: 18px; color: var(--ink-dim); }
+  .gmaps:hover { background: var(--fill); }
   .gmaps-warning {
     width: min(400px, calc(100vw - 32px)); box-sizing: border-box; padding: 24px; border: 0; border-radius: 20px;
     background: #fff; color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.25);
   }
-  .gmaps-warning::backdrop { background: rgba(21,24,28,.45); }
-  .gmaps-warning h2 { margin: 0 0 8px; font-family: var(--sans); font-size: 20px; font-weight: 700; }
-  .gmaps-warning p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--ink-dim); }
+  .gmaps-warning::backdrop { background: rgba(17,17,19,.45); }
+  .gmaps-warning h2 { margin: 0 0 8px; font-size: 20px; font-weight: 800; }
+  .gmaps-warning p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--ink-2); }
   .gmaps-warning .actions { display: flex; gap: 10px; margin-top: 20px; }
   .gmaps-warning .actions > * {
     flex: 1; min-height: 46px; padding: 0 12px; display: flex; align-items: center; justify-content: center; border-radius: 12px; white-space: nowrap;
     font: inherit; font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer;
   }
   #gmaps-cancel { flex: 0 0 auto; padding: 0 20px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
-  #gmaps-open { background: var(--route); color: #fff; }
-  .stops .pin {
-    flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--stop); color: #fff;
-    display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;
-  }
-  .why { display: flex; flex-direction: column; gap: 16px; }
-  .why .row { display: flex; gap: 14px; align-items: flex-start; }
-  .why .mark { flex: none; width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; }
-  .why .mark svg { width: 22px; height: 22px; }
-  .why strong { display: block; font-size: 16.5px; }
-  .why span { font-size: 15px; color: var(--ink-dim); line-height: 1.45; }
-  .credits { font-size: 12.5px; color: var(--ink-faint); line-height: 1.5; margin-top: 40px; }
-  .credits a { color: inherit; }
-  .missing { text-align: center; padding: 48px 0; color: var(--ink-dim); }
-
-  /* On a phone, the button follows once the one above has scrolled away. */
-  .dock {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; align-items: center; gap: 12px;
-    padding: 12px 20px calc(14px + env(safe-area-inset-bottom));
-    background: rgba(251,248,239,.96); border-top: 1px solid var(--line);
-    transform: translateY(110%); transition: transform .25s ease;
-  }
-  .dock.shown { transform: none; }
-  .dock .what { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-  .dock .what b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15px; }
-  .dock .what span { font-size: 13px; color: var(--ink-dim); }
-  .dock a { min-height: 44px; padding: 0 20px; border-radius: 12px; background: var(--route); color: #fff; font-weight: 600; text-decoration: none; display: flex; align-items: center; }
-  body.desktop .dock { display: none; }
-  @media (prefers-reduced-motion: reduce) { .dock { transition: none; } }
-  @media (max-width: 560px) {
-    .route { padding: 0 0 120px; }
-    .hero.photo { border-radius: 0; }
-    .hero:not(.photo) .picture { border-radius: 0; border-left: 0; border-right: 0; }
-    .route > :not(.hero), .hero:not(.photo) .heading { padding-left: 16px; padding-right: 16px; }
-    .stats, .get { margin-left: 16px; margin-right: 16px; padding: 0 !important; }
-    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
+  #gmaps-open { background: var(--blue); color: #fff; }
 </style>
 </head>
 <body>
-<div class="terrain" aria-hidden="true"></div>
-
-<nav class="top static">
-  <div class="wrap">
-    <div class="bar">
-      <a class="wordmark" href="/" aria-label="Carve">
-        <img class="appicon" src="/assets/icon-128.png?v=87d1534580" alt="" width="32" height="32">
-        <img class="mark" src="/assets/wordmark-light.png?v=87d7b93bbc" alt="Carve" width="300" height="45">
-      </a>
-    </div>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="apple" viewBox="0 0 24 24"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+  <symbol id="android" viewBox="0 0 24 24"><path fill="currentColor" d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/></symbol>
+  <symbol id="play" viewBox="0 0 22 24"><path d="M1 1.5l11.5 10.5L1 22.5c-.3-.2-.5-.6-.5-1.1V2.6c0-.5.2-.9.5-1.1z" fill="#34A853"/><path d="M16.4 8.4L12.5 12 1 1.5c.3-.2.8-.2 1.3.1z" fill="#4285F4"/><path d="M16.4 15.6L2.3 23.4c-.5.3-1 .3-1.3.1L12.5 12z" fill="#EA4335"/><path d="M20.5 10.7c.9.5.9 2.1 0 2.6l-4.1 2.3L12.5 12l3.9-3.6z" fill="#FBBC04"/></symbol>
+  <symbol id="flag" viewBox="0 0 24 24"><path d="M6 21V3" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M7 4h11l-2.6 4.5L18 13H7z" fill="#fff"/></symbol>
+  <symbol id="carplay" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/><path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/></symbol>
+  <symbol id="androidauto" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/></symbol>
+</svg>
+<nav class="nav">
+  <a class="brand" href="/" aria-label="Carve"><img src="/assets/icon-128.png?v=87d1534580" alt="" width="30" height="30"><img class="wordmark" src="/assets/wordmark-light.png?v=87d7b93bbc" alt="Carve" width="300" height="45"></a>
+  <div class="nav-links">
+    <a href="/drives/">Drives</a>
+    <a href="/#carousel">How it works</a>
+    <a class="cta" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716">Get Carve, free</a>
   </div>
 </nav>
-
-<main class="route" id="route">
+<figure class="cover" id="cover" style="margin:0" hidden></figure>
+<main class="col" id="route">
   <p class="missing" id="missing">Loading the route…</p>
 </main>
 
@@ -203,45 +78,192 @@
     <a id="gmaps-open" href="#" target="_blank" rel="noopener">Continue anyway</a>
   </div>
 </dialog>
-
-<div class="dock" id="dock" aria-hidden="true">
-  <div class="what"><b id="bar-name"></b><span id="bar-stats"></span></div>
-  <a id="bar-cta" href="#get" tabindex="-1">Drive it</a>
-</div>
-
-<svg style="display:none" aria-hidden="true">
-  <symbol id="apple" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
-  </symbol>
-  <!-- CarPlay's mark: a ring open on the right, round a play triangle. -->
-  <symbol id="carplay" viewBox="0 0 24 24">
-    <path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/>
-    <path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/>
-  </symbol>
-  <!-- Android and Android Auto, from Simple Icons (CC0). -->
-  <symbol id="android" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/>
-  </symbol>
-  <symbol id="androidauto" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/>
-  </symbol>
-  <!-- The stats' marks; the preview card draws the same (supabase/functions/og-card/card.ts). -->
-  <symbol id="stat-distance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c5 0 4-7 7-7s2-7 7-7"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/></symbol>
-  <symbol id="stat-time" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-  <symbol id="stat-climb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19 9.5 9l4 6 2.5-3.5L21 19z"/></symbol>
-  <symbol id="stat-stops" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
-  <symbol id="why-road" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19c5 0 4-7 8-7s3-7 8-7"/></symbol>
-  <symbol id="why-offline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0M3 3l18 18"/></symbol>
-  <symbol id="why-group" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 3-5 6-5s6 2 6 5M14 15c3 0 8 1 8 5"/></symbol>
-</svg>
-
 <script>
+// A route's elevation line and curves, as profiles.py measures them for the
+// drive pages (the apps' RoadCurvature: 20 m steps, classes A–F, a profile of
+// 120 pieces, its twisty stretches). One copy for the browser and the Worker:
+// build_share_page.py writes it into web/r/index.html, and
+// cloudflare/map-worker.js carries the same text between its
+// "route_profile.js" markers (check_route_profile in build_share_page.py
+// keeps them equal). `points` are [lat, lng]; `heights` the app's samples.
+const RouteProfile = (() => {
+  const CURVE_STEP = 20, CURVE_WINDOW = 2, CURVE_ARC = CURVE_STEP * CURVE_WINDOW;
+  const CURVE_BOUNDS = [3.5, 5.5, 8.5, 14.0, 28.0];
+  const MAX_BEND_DEGREES = 75, MAX_GAP_METERS = 1000, MAX_CURVE_METERS = 3000000;
+  const PROFILE_TOP = 2.2, TWISTY_LEVEL = 0.6;
+  const rad = Math.PI / 180;
+
+  function distance(a, b) {
+    const lat1 = a[0] * rad, lat2 = b[0] * rad, dlat = lat2 - lat1, dlon = (b[1] - a[1]) * rad;
+    const h = Math.sin(dlat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon / 2) ** 2;
+    return 6371000 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+  }
+  function bearing(a, b) {
+    const lat1 = a[0] * rad, lat2 = b[0] * rad, dlon = (b[1] - a[1]) * rad;
+    const y = Math.sin(dlon) * Math.cos(lat2);
+    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dlon);
+    return (Math.atan2(y, x) / rad + 360) % 360;
+  }
+  function angleDelta(a, b) {
+    const d = Math.abs(a - b) % 360;
+    return d > 180 ? 360 - d : d;
+  }
+  function runs(path) {
+    const out = [];
+    let current = [];
+    for (const p of path) {
+      if (current.length && distance(current[current.length - 1], p) > MAX_GAP_METERS) {
+        if (current.length > 1) out.push(current);
+        current = [];
+      }
+      current.push(p);
+    }
+    if (current.length > 1) out.push(current);
+    return out;
+  }
+  function resampled(path, step) {
+    const out = [path[0]];
+    let carried = 0;
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1], b = path[i], segment = distance(a, b);
+      if (segment <= 0) continue;
+      let at = step - carried;
+      while (at <= segment) {
+        const t = at / segment;
+        out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+        at += step;
+      }
+      carried = segment - (at - step);
+    }
+    return out;
+  }
+  function cornerDistances(path) {
+    const out = [];
+    let travelled = 0, previous = null;
+    for (let i = 1; i < path.length; i++) {
+      const segment = distance(path[i - 1], path[i]);
+      if (segment <= 1) { travelled += segment; continue; }
+      const heading = bearing(path[i - 1], path[i]);
+      if (previous !== null && angleDelta(previous, heading) > MAX_BEND_DEGREES) out.push(travelled);
+      previous = heading;
+      travelled += segment;
+    }
+    return out;
+  }
+  function walk(path, steps) {
+    const points = resampled(path, CURVE_STEP);
+    if (points.length <= 2 * CURVE_WINDOW + 1) return;
+    const corners = cornerDistances(path);
+    let ci = 0;
+    for (let i = CURVE_WINDOW; i < points.length - CURVE_WINDOW; i++) {
+      const here = i * CURVE_STEP;
+      while (ci < corners.length && corners[ci] < here - CURVE_ARC) ci++;
+      if (ci < corners.length && corners[ci] <= here + CURVE_ARC) { steps.push(0); continue; }
+      const turn = angleDelta(bearing(points[i - CURVE_WINDOW], points[i]), bearing(points[i], points[i + CURVE_WINDOW]));
+      if (turn <= 0.01) { steps.push(0); continue; }
+      const radiusFeet = CURVE_ARC / (turn * rad) * 3.28084;
+      const degree = 5729.58 / radiusFeet;
+      steps.push(CURVE_BOUNDS.filter((bound) => degree >= bound).length);
+    }
+  }
+  function curveSteps(path) {
+    const pieces = runs(path);
+    let length = 0;
+    for (const piece of pieces) for (let i = 1; i < piece.length; i++) length += distance(piece[i - 1], piece[i]);
+    if (length < 1000 || length > MAX_CURVE_METERS) return null;
+    const steps = [];
+    for (const piece of pieces) walk(piece, steps);
+    return steps.length ? steps : null;
+  }
+  function shares(steps) {
+    const out = {};
+    "abcdef".split("").forEach((key, k) => {
+      out[key] = Math.round(100 * steps.filter((s) => s === k).length / steps.length);
+    });
+    return out;
+  }
+  function curveProfile(steps, pieces = 120) {
+    const size = Math.max(1, Math.ceil(steps.length / pieces));
+    const means = [];
+    for (let s = 0; s < steps.length; s += size) {
+      const chunk = steps.slice(s, s + size);
+      means.push(chunk.reduce((x, y) => x + y, 0) / chunk.length);
+    }
+    const sigma = 2, reach = 6, out = [];
+    for (let i = 0; i < means.length; i++) {
+      let total = 0, weights = 0;
+      for (let j = Math.max(0, i - reach); j <= Math.min(means.length - 1, i + reach); j++) {
+        const w = Math.exp(-(((j - i) / sigma) ** 2) / 2);
+        total += w * means[j];
+        weights += w;
+      }
+      out.push(Math.min(1, total / weights / PROFILE_TOP));
+    }
+    return out;
+  }
+  function twistyStretches(profile) {
+    const count = profile.length, found = [];
+    if (count < 2) return [];
+    let i = 0;
+    while (i < count) {
+      if (profile[i] < TWISTY_LEVEL) { i++; continue; }
+      let end = i;
+      while (end < count && profile[end] >= TWISTY_LEVEL) end++;
+      if ((end - i) / count >= 0.05) found.push([i / count, end / count]);
+      i = end;
+    }
+    const longest = found.slice().sort((x, y) => (y[1] - y[0]) - (x[1] - x[0])).slice(0, 3);
+    return found.filter((s) => longest.includes(s));
+  }
+  /** Up to `count` heights evenly along the drive, each the highest of its stretch so the peaks survive. */
+  function thinned(values, count = 100) {
+    if (values.length <= count) return values;
+    const size = values.length / count, out = [];
+    for (let i = 0; i < count; i++) {
+      const from = Math.floor(i * size), to = Math.max(from + 1, Math.floor((i + 1) * size));
+      out.push(Math.max(...values.slice(from, to)));
+    }
+    return out;
+  }
+  const round = (v, places) => Math.round(v * 10 ** places) / 10 ** places;
+
+  /** { meters, elevation?, curves?, profile?, stretches? } for a route; `onRoad` false for a recording not yet matched. */
+  function measure(points, heights, meters, onRoad) {
+    const out = { meters: meters || null };
+    const h = (heights || []).filter((x) => typeof x === "number" && Number.isFinite(x));
+    if (h.length >= 2) out.elevation = thinned(h).map((x) => Math.round(x));
+    if (onRoad && points && points.length >= 2) {
+      const steps = curveSteps(points);
+      if (steps) {
+        const profile = curveProfile(steps);
+        out.curves = shares(steps);
+        out.profile = profile.map((v) => round(v, 3));
+        out.stretches = twistyStretches(profile).map(([a, b]) => [round(a, 4), round(b, 4)]);
+      }
+    }
+    return out;
+  }
+  return { measure };
+})();
+</script>
+<script>
+  const PLATFORMS = `<div class="platforms"><a href="https://apps.apple.com/app/carve-route-planner/id6808087716" title="iPhone and CarPlay" aria-label="Carve for iPhone and CarPlay on the App Store"><svg aria-hidden="true"><use href="#apple"/></svg><svg aria-hidden="true"><use href="#carplay"/></svg></a><span class="psep" aria-hidden="true"></span><a href="https://groups.google.com/g/carve-beta" title="Android and Android Auto" aria-label="Carve for Android and Android Auto"><svg aria-hidden="true"><use href="#android"/></svg><svg aria-hidden="true"><use href="#androidauto"/></svg></a></div>`;
+  const APP_SECTION = `  <section class="sect">
+    <h2>What you get in the app</h2>
+    <div class="feats"><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 19c4 0 3-7 7-7s3-7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5" cy="19" r="2.2" fill="currentColor"/><circle cx="19" cy="5" r="2.2" fill="currentColor"/></svg></span><div><b>Turn by turn, on this road</b><span class="d">Spoken directions along the exact route. Carve never reroutes you onto a faster one.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><div><b>Preview it in 3D</b><span class="d">Fly the whole drive over satellite and terrain before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 9a13 13 0 0 1 18 0M6.5 12.5a8 8 0 0 1 11 0M10 16a3 3 0 0 1 4 0M3 3l18 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Drive it with no signal<span class=apex>APEX</span></b><span class="d">Download the map and every turn before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 18.5c.6-2.2 2-3.3 3.5-3.3s2.9 1.1 3.5 3.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Live Group Tracking<span class=apex>APEX</span></b><span class="d">Everyone on the route, on the map, by name.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 17a4.5 4.5 0 0 1-.6-9 5.5 5.5 0 0 1 10.6 1.6A3.7 3.7 0 0 1 17 17z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><path d="M9 20l1-1.6M13 20l1-1.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg></span><div><b>Road conditions<span class=apex>APEX</span></b><span class="d">Wet or dry, ice, fog and wind along the road before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.1"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg></span><div><b>Record your drives<span class=apex>APEX</span></b><span class="d">Record a drive and turn it into a route to drive again or share.</span></div></div></div>
+    <div class="get"><p>Free on iPhone and Android. CarPlay and Android Auto come with <a href="/#pricing" style="color:inherit">Apex</a>.</p><div class="stores"><a class="store" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a><a class="store" href="https://groups.google.com/g/carve-beta"><svg viewBox="0 0 22 24"><use href="#play"/></svg><span><small>Early access on</small><b>Google Play</b></span></a></div></div>
+  </section>`;
+  // The share page: a route someone shared, laid out as a drive's page
+  // (page_parts.py), so every route reads the same on the web (the user,
+  // 2026-10-24). The route arrives as JSON in #route-data, written in by the
+  // Worker (cloudflare/map-worker.js); without it, the page asks the
+  // backend itself. A drive with its own page goes to that page instead.
+
   // The stores. Android goes to the beta's Google Group until the app is
-  // public on Google Play (as on the landing page); then PLAY_URL.
+  // public on Google Play (as on the landing page).
   const APP_STORE_URL = "https://apps.apple.com/app/carve-route-planner/id6808087716";
   const APP_STORE_ID = "6808087716";
   const ANDROID_URL = "https://groups.google.com/g/carve-beta";
-  // const PLAY_URL = "https://play.google.com/store/apps/details?id=run.carve.app";
 
   // Publishable by design — the same key the app ships. Only used when the
   // Worker didn't hand the page its route (an old ?d= link, or the Worker
@@ -260,7 +282,6 @@
   const ua = navigator.userAgent || "";
   const isAndroid = /android/i.test(ua);
   const isApple = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
-  if (!isAndroid && !isApple) document.body.classList.add("desktop");
 
   // The token sits in a different place in each link form: the whole path
   // of a short link, the second segment of an /r/<token> one, or ?t= when
@@ -277,10 +298,9 @@
     document.head.appendChild(meta);
   }
 
-  // MARK: - Building the page
+  // MARK: - Building blocks
 
-  /// A stop's letter, as the apps mark it (the user, 2026-10-16): 1 is A,
-  /// 26 is Z, then AA, AB… (the apps' RoutePointOrder).
+  /// A stop's letter, as the apps mark it: 1 is A, 26 is Z, then AA, AB….
   function stopLetter(n) {
     let letters = "";
     for (let rest = n; rest > 0; rest = Math.floor(rest / 26)) {
@@ -303,43 +323,40 @@
     }
     return node;
   }
-  function icon(id) {
+  function icon(id, viewBox) {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("aria-hidden", "true");
+    if (viewBox) svg.setAttribute("viewBox", viewBox);
     const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
     use.setAttribute("href", "#" + id);
     svg.append(use);
     return svg;
   }
-
-  const LABELS = { distance: "distance", time: "drive time", climb: "climbing", stops: "on the way" };
-
-  // How twisty the road is — the apps' RoadIntensity and its mark: the
-  // road's bend as one white line (TwistLine, on a 24-point square) in a
-  // coloured disc edged in white (2026-10-14). The Worker works it out; the
-  // page does too when it reads the route itself.
-  const INTENSITY = [
-    { level: "leisurely", title: "Leisurely", line: "Gentle curves, open road", below: 90, colour: "#3B8A3E", weight: 2.0, path: "M9 21L15 3" },
-    { level: "sweeping", title: "Sweeping", line: "Long, flowing bends", below: 180, colour: "#C0860A", weight: 2.4, path: "M6 21C14 21 18 17 12 12C6 7 10 3 18 3" },
-    { level: "twisty", title: "Twisty", line: "Bend after bend", below: 300, colour: "#D2591F", weight: 2.8, path: "M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" },
-    { level: "intense", title: "Intense", line: "Hairpins and switchbacks", below: Infinity, colour: "#9B1C1C", weight: 3.0, path: "M7 21L17 17.5L7 14L17 10.5L7 7L17 3.5" },
-  ];
-  function disc(band, size, off) {
-    const ns = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(ns, "svg");
-    svg.setAttribute("width", size); svg.setAttribute("height", size);
-    svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("aria-hidden", "true");
-    if (off) svg.setAttribute("class", "off");
-    const circle = document.createElementNS(ns, "circle");
-    for (const [k, v] of [["cx", 12], ["cy", 12], ["r", 11.15], ["fill", band.colour], ["stroke", "#fff"], ["stroke-width", 1.7]]) circle.setAttribute(k, v);
-    const line = document.createElementNS(ns, "path");
-    for (const [k, v] of [["d", band.path], ["transform", "translate(12 12) scale(.58) translate(-12 -12)"], ["fill", "none"],
-      ["stroke", "#fff"], ["stroke-width", band.weight], ["stroke-linecap", "round"], ["stroke-linejoin", "round"]]) line.setAttribute(k, v);
-    svg.append(circle, line);
-    return svg;
+  /// Markup the page writes itself (numbers and colours, never the route's words).
+  function markup(html) {
+    const box = document.createElement("div");
+    box.innerHTML = html.trim();
+    return Array.from(box.childNodes);
   }
-  /// RoadCurvature.bendsPerKm: degrees of bend a kilometre; a turn of more
-  /// than 75° at one point is a junction, not a bend. `points` are [lat, lng].
+  function escapeHTML(text) {
+    return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  }
+
+  // How twisty the road is — the apps' RoadIntensity and its mark, the
+  // drive pages' chip (page_parts.chip).
+  const INTENSITY = [
+    { level: "leisurely", title: "Leisurely", below: 90, colour: "#3B8A3E", weight: 2.0, path: "M9 21L15 3" },
+    { level: "sweeping", title: "Sweeping", below: 180, colour: "#C0860A", weight: 2.4, path: "M6 21C14 21 18 17 12 12C6 7 10 3 18 3" },
+    { level: "twisty", title: "Twisty", below: 300, colour: "#D2591F", weight: 2.8, path: "M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" },
+    { level: "intense", title: "Intense", below: Infinity, colour: "#9B1C1C", weight: 3.0, path: "M7 21L17 17.5L7 14L17 10.5L7 7L17 3.5" },
+  ];
+  function chip(level) {
+    const band = INTENSITY.find((b) => b.level === level);
+    if (!band) return null;
+    return markup(`<span class="chip" style="background:${band.colour}"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">`
+      + `<path d="${band.path}" fill="none" stroke="#fff" stroke-width="${band.weight + 0.6}" stroke-linecap="round" stroke-linejoin="round"/></svg>${band.title}</span>`)[0];
+  }
+  /// RoadCurvature.bendsPerKm, for a route the page reads itself.
   function intensityOf(points) {
     if (!points || points.length < 3) return null;
     const r = Math.PI / 180;
@@ -366,33 +383,82 @@
       previous = heading;
     }
     const bends = Math.round(length > 1 ? turning / (length / 1000) : 0);
-    const band = INTENSITY.find(b => bends < b.below);
-    return { level: band.level, title: band.title, line: band.line };
+    const band = INTENSITY.find((b) => bends < b.below);
+    return { level: band.level, title: band.title };
   }
 
-  // Kilometers and meters for a viewer outside the US and the UK, as the
-  // apps' Automatic units have it (2026-10-12). The numbers arrive worded
-  // in miles and feet, the way link previews show them.
-  const METRIC = (() => {
-    try {
-      const region = new Intl.Locale(navigator.language || "en-US").maximize().region || "US";
-      return !["US", "GB", "LR", "MM"].includes(region);
-    } catch (e) { return false; }
-  })();
-
-  function inViewersUnits(stat, info) {
-    if (!METRIC) return stat.text;
-    const number = parseFloat(String(stat.text).replace(/,/g, ""));
-    if (stat.kind === "distance") {
-      const meters = info.distanceMeters || (Number.isFinite(number) ? number * 1609.344 : null);
-      if (meters) return Math.round(meters / 1000).toLocaleString("en-US") + " km";
-    }
-    if (stat.kind === "climb") {
-      const feet = info.climbFeet || number;
-      if (Number.isFinite(feet)) return Math.round(feet / 3.28084).toLocaleString("en-US") + " m";
-    }
-    return stat.text;
+  const FEET_PER_METER = 3.28084;
+  function feet(meters, step = 100) {
+    return (Math.round(meters * FEET_PER_METER / step) * step).toLocaleString("en-US");
   }
+
+  // MARK: - Elevation and curves (page_parts.elevation_unit and curves_unit)
+
+  function elevationUnit(heights, climbFeet, start, end) {
+    const lo = Math.min(...heights), hi = Math.max(...heights);
+    const span = Math.max(hi - lo, 30);
+    const n = heights.length;
+    const y = (h) => 8 + 92 * (1 - (h - lo) / span);
+    const pts = heights.map((h, i) => [i / (n - 1) * 1000, y(h)]);
+    const line = "M" + pts.map(([x, yy]) => `${x.toFixed(1)} ${yy.toFixed(1)}`).join(" L");
+    const area = line + " L1000 100 L0 100 Z";
+    let peak = 0;
+    heights.forEach((h, i) => { if (h > heights[peak]) peak = i; });
+    const px = peak / (n - 1) * 100, py = pts[peak][1];
+    const climb = climbFeet ? `${(Math.round(climbFeet / 100) * 100).toLocaleString("en-US")} ft of climbing · ` : "";
+    return `<div class="unit"><div class="ut">Elevation</div><div class="us">${climb}high point ≈ ${feet(hi)} ft</div>
+      <div class="elev" role="img" aria-label="Elevation along the drive, highest about ${feet(hi)} feet">
+        <svg viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="ef" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0A84FF" stop-opacity=".28"/><stop offset="1" stop-color="#0A84FF" stop-opacity="0"/></linearGradient></defs>
+        <path d="${area}" fill="url(#ef)"/><path d="${line}" fill="none" stroke="#0A84FF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+        <span class="stem" style="left:${px.toFixed(2)}%;top:${py.toFixed(1)}%"></span><span class="peak" style="left:${px.toFixed(2)}%;top:${py.toFixed(1)}%"></span>
+      </div>
+      <div class="ends"><span>${escapeHTML(start)}</span><span>${escapeHTML(end)}</span></div></div>`;
+  }
+
+  const DUSK = [[0x8F, 0xD8, 0xFF], [0x5B, 0x7C, 0xFA], [0x9B, 0x4D, 0xEB], [0xFF, 0x3D, 0x8B]];
+  function dusk(t) {
+    const along = Math.min(1, Math.max(0, t)) * (DUSK.length - 1);
+    const i = Math.min(Math.floor(along), DUSK.length - 2), f = along - i;
+    return "#" + DUSK[i].map((a, k) => Math.round(a + (DUSK[i + 1][k] - a) * f).toString(16).padStart(2, "0").toUpperCase()).join("");
+  }
+  function curvesSummary(curves, stretches) {
+    const sharp = Math.min(100, (curves.e || 0) + (curves.f || 0));
+    const gentle = (curves.a || 0) + (curves.b || 0);
+    if (!stretches.length) {
+      if (sharp >= 10) return `Sharp curves on ${sharp}% of it`;
+      return gentle >= 70 ? "Mostly gentle curves" : "Mostly moderate curves";
+    }
+    if (stretches.reduce((s, [a, b]) => s + b - a, 0) >= 0.6) return "<em>Twisty</em> most of the way";
+    const mostly = gentle >= 70 ? "Mostly gentle" : "Mostly moderate";
+    const count = ["one", "two", "three"][Math.min(stretches.length, 3) - 1];
+    return `${mostly}, with ${count} <em>twisty</em> stretch${stretches.length === 1 ? "" : "es"}`;
+  }
+  function curvesUnit(profile, start, end) {
+    const values = profile.profile, n = values.length;
+    const stops = n > 1 ? values.map((v, i) => `${dusk(v)} ${(i / (n - 1) * 100).toFixed(1)}%`).join(", ") : dusk(values[0]);
+    const miles = (profile.meters || 0) / 1609.344;
+    const stretches = profile.stretches || [];
+    const marks = stretches.map(([a, b]) => {
+      const lo = Math.floor(a * miles), hi = Math.max(lo + 1, Math.ceil(b * miles));
+      return `<span class="twisty" style="left:${(a * 100).toFixed(2)}%;width:${((b - a) * 100).toFixed(2)}%"><span>mi ${lo}–${hi}</span></span>`;
+    }).join("");
+    const words = curvesSummary(profile.curves || {}, stretches);
+    const plain = words.replace(/<\/?em>/g, "");
+    return `<div class="unit"><div class="ut">Curves</div><div class="us">${words}</div>
+      <div class="bar" role="img" aria-label="Curves along the drive: ${escapeHTML(plain)}" style="background:linear-gradient(90deg, ${stops})">${marks}</div>
+      <div class="ends"><span>${escapeHTML(start)}</span><span>${escapeHTML(end)}</span></div>
+      <div class="key"><span>Gentle</span><i></i><span>Hairpins</span></div></div>`;
+  }
+  function units(info, start, end) {
+    const p = info.profile || {};
+    const parts = [];
+    if ((p.elevation || []).length >= 2) parts.push(elevationUnit(p.elevation, info.climbFeet, start, end));
+    if ((p.profile || []).length) parts.push(curvesUnit(p, start, end));
+    if (!parts.length) return [];
+    return markup(`<div class="units"${parts.length === 1 ? ' style="grid-template-columns:1fr"' : ""}>${parts.join("")}</div>`);
+  }
+
+  // MARK: - The page
 
   function render(info) {
     const main = document.getElementById("route");
@@ -400,130 +466,88 @@
     const name = info.name || "A Carve route";
     document.title = name + " — a drive on Carve";
 
-    // The top.
+    // The top: its photo across the page, as a drive's page has it.
     const hasPhoto = !!(info.photo && /^https:\/\//.test(info.photo.url || ""));
-    const picture = el("img", {
-      class: "picture",
-      src: hasPhoto ? info.photo.url : (token ? "/map/" + encodeURIComponent(token) : null),
-      alt: hasPhoto ? "" : name + " on a map",
-      fetchpriority: "high",
+    const cover = document.getElementById("cover");
+    if (hasPhoto) {
+      const img = el("img", { src: info.photo.url, alt: name, fetchpriority: "high" });
+      img.addEventListener("error", () => cover.remove());
+      const credit = info.photo.credit
+        ? el("figcaption", {}, "Photo: ", /^https:\/\//.test(info.photo.creditURL || "")
+            ? el("a", { href: info.photo.creditURL, rel: "noopener" }, info.photo.credit) : info.photo.credit)
+        : null;
+      cover.append(img, credit);
+      cover.hidden = false;
+    }
+
+    const place = info.place ? (info.place.long || info.place.short) : null;
+    main.append(el("p", { class: "crumbs" }, el("a", { href: "/drives/" }, "Drives"),
+      place ? [" ", el("span", { "aria-hidden": "true" }, "›"), " ", place] : null));
+    main.append(el("h1", {}, name));
+    const roads = (info.roads || []).slice(0, 3).join(", ");
+    const by = info.author ? "A drive by @" + info.author : null;
+    if (roads || by) main.append(el("p", { class: "sub" }, [roads, by].filter(Boolean).join(" · ")));
+
+    // The facts in one line, as on a drive's page.
+    const stat = (kind) => (info.stats || []).find((s) => s && s.kind === kind);
+    const p = info.profile || {};
+    const high = (p.elevation || []).length ? Math.max(...p.elevation) : null;
+    const facts = [];
+    const distance = stat("distance"), time = stat("time"), climb = stat("climb"), stops = stat("stops");
+    if (distance) facts.push(markup(`<span><b>${escapeHTML(distance.text.replace(/ mi$/, ""))}</b> mi</span>`)[0]);
+    if (time) facts.push(markup(`<span><b>${escapeHTML(time.text)}</b></span>`)[0]);
+    if (climb) facts.push(markup(`<span><b>${escapeHTML(climb.text)}</b> climb</span>`)[0]);
+    if (high !== null) facts.push(markup(`<span>High point <b>≈ ${feet(high)} ft</b></span>`)[0]);
+    if (stops) facts.push(el("span", {}, stops.text));
+    facts.push(el("span", {}, info.roundTrip ? "Round trip" : "One way"));
+    const row = el("div", { class: "facts" });
+    const level = info.intensity ? chip(info.intensity.level) : null;
+    if (level) row.append(level);
+    facts.forEach((f, i) => {
+      if (i) row.append(el("span", { class: "sep", "aria-hidden": "true" }));
+      row.append(f);
     });
-    picture.addEventListener("error", () => picture.remove());
-    const heading = el("div", { class: "heading" },
-      info.place ? el("span", { class: "place" }, info.place.long || info.place.short) : null,
-      el("h1", {}, name),
-      info.author ? el("div", { class: "byline" }, "A drive by ", el("strong", {}, "@" + info.author)) : null,
-    );
-    main.append(el("div", { class: "hero" + (hasPhoto ? " photo" : "") }, picture.getAttribute("src") ? picture : null, heading));
+    main.append(row);
 
-    // The numbers.
-    const stats = (info.stats || []).filter(s => s && s.text).map(s => ({ ...s, text: inViewersUnits(s, info) }));
-    if (stats.length) {
-      main.append(el("div", { class: "stats" }, stats.map(s =>
-        el("div", { class: "stat" },
-          el("span", { class: "value" }, LABELS[s.kind] ? icon("stat-" + s.kind) : null, s.text),
-          el("span", { class: "label" }, LABELS[s.kind] || ""),
-        ),
-      )));
-    }
-    const level = INTENSITY.find(band => info.intensity && band.level === info.intensity.level);
-    if (level) {
-      main.append(el("div", { class: "intensity", role: "img", "aria-label": "Intensity: " + level.title + ", " + level.line.toLowerCase() },
-        el("div", { class: "words" },
-          el("span", { class: "level" }, disc(level, 22), level.title),
-          el("span", { class: "line" }, level.line)),
-        el("div", { class: "scale" }, INTENSITY.map(band => disc(band, 24, band !== level)))));
-    }
-    if (info.blurb) main.append(el("p", { class: "blurb" }, info.blurb));
-
-    // The way in.
-    const cta = el("a", { class: "cta", id: "get", href: isAndroid ? ANDROID_URL : APP_STORE_URL },
-      icon(isAndroid ? "android" : "apple"),
-      isAndroid ? "Drive it on Android" : "Drive it on iPhone",
-    );
-    cta.addEventListener("click", openInApp);
-    // On a computer, the link as a QR code where the phone's button goes.
-    const desktop = document.body.classList.contains("desktop");
-    const code = desktop ? qrSVG(location.origin + location.pathname + location.search) : null;
-    main.append(el("div", { class: "get" },
-      cta,
-      code ? el("div", { class: "scan" },
-        el("div", { class: "code" }, code),
-        el("div", { class: "scan-words" },
-          el("h2", {}, "Scan to drive with Carve"),
-          el("ul", {},
-            el("li", {}, icon("why-road"), "Turn by turn on these exact roads"),
-            el("li", {}, icon("why-offline"), "Keeps going when the signal drops"),
-            el("li", {}, icon("carplay"), "On CarPlay and Android Auto too")),
-          el("span", { class: "how" }, "Point your phone’s camera at the code."))) : null,
-      el("div", { class: "platforms" },
-        el("a", { href: APP_STORE_URL, title: "iPhone and CarPlay", "aria-label": "Carve for iPhone and CarPlay on the App Store" },
-          icon("apple"), icon("carplay")),
-        el("span", { class: "sep", "aria-hidden": "true" }),
-        el("a", { href: ANDROID_URL, title: "Android and Android Auto", "aria-label": "Carve for Android and Android Auto" },
-          icon("android"), icon("androidauto")),
-      ),
-      desktop
-        ? (code ? null : el("p", { class: "open-hint" }, "Open this link on your phone to drive it."))
-        : el("p", { class: "open-hint" }, "Already have Carve? The button opens the route in the app."),
-    ));
-
-    // The stops.
-    const stops = info.stops || [];
-    if (stops.length) {
-      main.append(el("section", {},
-        el("h2", {}, "Stops along the way"),
-        el("ol", { class: "stops" }, stops.map((stop, i) =>
-          el("li", {}, el("span", { class: "pin", "aria-hidden": "true" }, stopLetter(i + 1)), stop.name))),
-        googleMapsButton(info.googleMaps),
-      ));
-    } else if (info.googleMaps) {
-      main.append(googleMapsButton(info.googleMaps));
+    if (token) {
+      main.append(el("div", { class: "route-map" },
+        el("img", { src: "/map/" + encodeURIComponent(token), width: 1200, height: 630, alt: "Map of " + name })));
     }
 
-    // Why Carve.
-    main.append(el("section", {},
-      el("h2", {}, "Why drive it in Carve"),
-      el("div", { class: "why" },
-        why("why-road", "#D4E7FF", "#1A5FB4", "These exact roads",
-          "Turn by turn, without rerouting you onto the freeway. Miss a turn and Carve leads you back to this road."),
-        why("why-offline", "#DCF1E2", "#2E7D46", "No signal, no problem",
-          "Download the route and its map before you go. Ridges and canyons drop service; Carve keeps going."),
-        why("why-group", "#FFE4D3", "#B4561A", "Bring the group",
-          "Everyone driving the route sees each other on the map and the car's screen, by name."),
-        el("span", {}, "On iPhone and Android, with CarPlay and Android Auto."),
-      ),
-    ));
-
-    // Where the photo came from, and the small print.
-    const credit = hasPhoto && info.photo.credit
-      ? el("span", {}, "Photo: ", /^https:\/\//.test(info.photo.creditURL || "")
-          ? el("a", { href: info.photo.creditURL, rel: "noopener" }, info.photo.credit)
-          : info.photo.credit, ". ")
-      : null;
-    main.append(el("p", { class: "credits" }, credit,
-      "Distance, time, climbing and intensity are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
-
-    // The bar that follows on a phone.
-    document.getElementById("bar-name").textContent = name;
-    document.getElementById("bar-stats").textContent = stats.slice(0, 2).map(s => s.text).join(" · ");
-    const barCta = document.getElementById("bar-cta");
-    barCta.href = cta.href;
-    barCta.addEventListener("click", openInApp);
-    if ("IntersectionObserver" in window) {
-      const dock = document.getElementById("dock");
-      new IntersectionObserver(([entry]) => {
-        const show = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-        dock.classList.toggle("shown", show);
-        dock.setAttribute("aria-hidden", show ? "false" : "true");
-        barCta.tabIndex = show ? 0 : -1;
-      }).observe(cta);
+    // One way into the app: a code to scan on a computer, a button on a phone.
+    const link = location.origin + location.pathname + location.search;
+    const code = qrSVG(link);
+    if (code) {
+      main.append(el("div", { class: "scan" }, code, el("div", {},
+        el("b", {}, "Scan to drive it in Carve"),
+        el("p", {}, "Point your phone's camera here to open " + name + " in the app, ready to drive turn by turn. Free on iPhone and Android."),
+        el("p", { class: "on" }, "iPhone · Android · CarPlay · Android Auto"))));
     }
-  }
+    const button = el("a", { href: isAndroid ? ANDROID_URL : APP_STORE_URL }, icon(isAndroid ? "android" : "apple"), "Drive it in Carve, free");
+    button.addEventListener("click", openInApp);
+    main.append(el("div", { class: "go" }, button,
+      el("p", {}, "Opens this route in the app, or where to get it."),
+      markup(PLATFORMS)));
 
-  function why(symbol, fill, ink, title, text) {
-    const mark = el("span", { class: "mark", style: "background:" + fill + ";color:" + ink }, icon(symbol));
-    return el("div", { class: "row" }, mark, el("div", {}, el("strong", {}, title), el("span", {}, text)));
+    if (info.blurb) {
+      main.append(el("section", { class: "sect" }, el("h2", {}, "The drive"),
+        el("div", { class: "prose" }, String(info.blurb).split(/\n\s*\n/).map((t) => el("p", {}, t)))));
+    }
+
+    // Along the way: the start, its stops, the end; then its elevation and curves.
+    const start = "Start", end = info.roundTrip ? "Back to the start" : "End";
+    const points = [[start, "start"]].concat((info.stops || []).map((s, i) => [s.name, String(i + 1)])).concat([[end, "end"]]);
+    const along = el("ol", { class: "along" }, points.map(([what, kind]) => el("li", {},
+      kind === "start" || kind === "end"
+        ? markup(`<span class="dot ${kind}"><svg><use href="#flag"/></svg></span>`)[0]
+        : el("span", { class: "dot" }, kind),
+      el("div", { class: "what" }, el("strong", {}, what)))));
+    main.append(el("section", { class: "sect" }, el("h2", {}, "Along the way"), along,
+      units(info, start, info.roundTrip ? "Start" : end), googleMapsButton(info.googleMaps)));
+
+    main.append(markup(APP_SECTION)[0]);
+    main.append(el("p", { class: "sources" },
+      "Distance, time, elevation, curves and intensity are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
   }
 
   // MARK: - Opening the app
@@ -535,7 +559,7 @@
   // fallback.
   function openInApp(event) {
     if (!token && !payload) return;   // nothing to open: let the store link work
-    if (document.body.classList.contains("desktop")) return;
+    if (!isAndroid && !isApple) return;
     event.preventDefault();
     const query = (payload ? "d=" + encodeURIComponent(payload) : "")
       + (payload && token ? "&" : "")
@@ -559,7 +583,7 @@
   // drives its own fastest way between the points, as the apps say it.
   function googleMapsButton(url) {
     if (!url) return null;
-    const button = el("button", { type: "button", class: "gmaps" }, icon("stat-stops"), "Open in Google Maps");
+    const button = el("button", { type: "button", class: "gmaps" }, "Open in Google Maps");
     button.addEventListener("click", () => {
       const dialog = document.getElementById("gmaps-warning");
       document.getElementById("gmaps-open").href = url;
@@ -751,6 +775,7 @@
     if (hole % 2 !== n % 2) hole++;
     const at = quiet + (n - hole) / 2;
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "qr");
     svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
     svg.setAttribute("role", "img");
     svg.setAttribute("aria-label", "QR code for this route's link");
@@ -776,13 +801,22 @@
     const total = Math.round(seconds / 60), h = Math.floor(total / 60), m = total % 60;
     return h ? (m ? h + " hr " + m + " min" : h + " hr") : m + " min";
   }
+  /// The apps' climbing: rises counted once they're past 3 m of jitter.
+  function climbMeters(heights) {
+    let total = 0, low = null;
+    for (const h of heights) {
+      if (low === null || h < low) low = h;
+      else if (h - low >= 3) { total += h - low; low = h; }
+    }
+    return total;
+  }
 
   /// The old self-contained link: just a name and how many stops.
   function fromPayload() {
     if (!payload) return null;
     try {
       const wire = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
-      const stops = (wire.w || []).filter(w => w.t === "stop").length;
+      const stops = (wire.w || []).filter((w) => w.t === "stop").length;
       return { name: wire.n, stats: stops ? [{ kind: "stops", text: stops + (stops === 1 ? " stop" : " stops") }] : [] };
     } catch (e) { return null; }
   }
@@ -800,16 +834,22 @@
       const row = (await response.json())[0];
       if (!row) return null;
       const p = row.payload || {};
+      const points = Array.isArray(p.pathGeometry) ? p.pathGeometry.map((q) => [q.latitude, q.longitude]) : [];
+      const heights = ((p.elevationProfile || {}).metersAboveSea || []).filter((h) => typeof h === "number");
+      const onRoad = points.length >= 2 && p.pathNeedsMatching !== true;
+      const climbFeet = heights.length ? Math.round(climbMeters(heights) * FEET_PER_METER) : null;
       const stats = [];
       if (row.distance_meters) stats.push({ kind: "distance", text: miles(row.distance_meters) + " mi" });
       if (row.duration_seconds) stats.push({ kind: "time", text: duration(row.duration_seconds) });
+      if (climbFeet) stats.push({ kind: "climb", text: climbFeet.toLocaleString("en-US") + " ft" });
       if (row.stop_count) stats.push({ kind: "stops", text: row.stop_count + (row.stop_count === 1 ? " stop" : " stops") });
       return {
-        name: row.name, stats, distanceMeters: row.distance_meters || null, blurb: p.blurb || null,
-        intensity: p.pathNeedsMatching === true || !Array.isArray(p.pathGeometry) ? null
-          : intensityOf(p.pathGeometry.map(q => [q.latitude, q.longitude])),
+        name: row.name, stats, climbFeet, blurb: p.blurb || null,
+        intensity: onRoad ? intensityOf(points) : null,
+        profile: RouteProfile.measure(points, heights, row.distance_meters, onRoad),
         photo: p.photo && /^https:\/\//.test(p.photo.url || "") ? p.photo : null,
-        stops: (p.waypoints || []).filter(w => w.type === "stop")
+        roundTrip: p.tripType === "roundtrip",
+        stops: (p.waypoints || []).filter((w) => w.type === "stop")
           .sort((a, b) => (a.order || 0) - (b.order || 0))
           .map((w, i) => ({ name: (w.label || "").trim() || "Stop " + stopLetter(i + 1) })),
       };
@@ -822,7 +862,7 @@
   /// saying it's missing.
   async function fromBackendWaiting() {
     for (let attempt = 0; attempt < 5; attempt++) {
-      if (attempt) await new Promise(resolve => setTimeout(resolve, 1500));
+      if (attempt) await new Promise((resolve) => setTimeout(resolve, 1500));
       const info = await fromBackend();
       if (info) return info;
     }
@@ -832,6 +872,7 @@
   // A drive with its own page (the Drives In Your Area and the famous
   // drives) goes to that page, so a drive looks one way on the web, its
   // guide and all (the user, 2026-10-24). The page's button opens the app.
+  // The Worker sends these on itself; this is for when it can't.
   async function drivePage() {
     if (!token) return null;
     try {
@@ -847,13 +888,61 @@
   (async function () {
     const page = await drivePage();
     if (page) { location.replace(page); return; }
-    const info = fromPage() || (payload ? await fromBackend() : await fromBackendWaiting()) || fromPayload();
+    // The Worker's route has no elevation line or curves before it's
+    // redeployed (2026-10-24): then the backend's, measured here.
+    let info = fromPage();
+    if (info && (!info.profile || !info.intensity) && token) {
+      const own = await fromBackend();
+      if (own) info = { ...info, profile: own.profile, climbFeet: info.climbFeet || own.climbFeet, intensity: info.intensity || own.intensity, roundTrip: info.roundTrip || own.roundTrip };
+    }
+    info = info || (payload ? await fromBackend() : await fromBackendWaiting()) || fromPayload();
     if (info) {
       render(info);
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";
     }
+  })();
+</script>
+<footer>
+  <span>Carve · for the drives you take for their own sake</span>
+  <div class="links">
+    <a href="/drives/">Drives</a>
+    <a href="/about/">About</a>
+    <a href="/privacy/">Privacy</a>
+    <a href="/terms/">Terms</a>
+    <a href="/support/">Support</a>
+  </div>
+</footer>
+<script>
+  (function () {
+    if (!/android/i.test(navigator.userAgent || "")) return;
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://groups.google.com/g/carve-beta"; });
+    document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
+  })();
+  // The drive's button opens it in the app, or the store: the share link it
+  // used to go to now comes back to this page (web/r/index.html).
+  (function () {
+    var ua = navigator.userAgent || "", android = /android/i.test(ua);
+    var apple = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+    document.querySelectorAll("[data-open]").forEach(function (a) {
+      var t = encodeURIComponent(a.getAttribute("data-open"));
+      if (!android && !apple) return;
+      a.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (android) {
+          location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
+            + "S.browser_fallback_url=" + encodeURIComponent("https://groups.google.com/g/carve-beta") + ";end";
+          return;
+        }
+        var left = false;
+        var leaving = function () { left = true; };
+        window.addEventListener("pagehide", leaving, { once: true });
+        document.addEventListener("visibilitychange", function () { if (document.hidden) leaving(); }, { once: true });
+        setTimeout(function () { if (!left) location.href = "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
+        location.href = "carve://route?t=" + t;
+      });
+    });
   })();
 </script>
 </body>
