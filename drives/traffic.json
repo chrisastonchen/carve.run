@@ -1,7 +1,31 @@
 {
  "flagged": {
+  "beartooth-highway": {
+   "coverage": 0.55,
+   "since": "2026-10-24"
+  },
+  "delaware-river-road-new-hope-easton": {
+   "coverage": 0.61,
+   "since": "2026-10-24"
+  },
+  "emigration-canyon-sr-65": {
+   "coverage": 0.6,
+   "since": "2026-10-24"
+  },
   "glendora-mountain-ridge-roads": {
    "coverage": 0.04,
+   "since": "2026-10-24"
+  },
+  "going-to-the-sun-road": {
+   "coverage": 0.02,
+   "since": "2026-10-24"
+  },
+  "hatcher-pass-road": {
+   "coverage": 0.53,
+   "since": "2026-10-24"
+  },
+  "highway-74-whitewater-minnesota": {
+   "coverage": 0.6,
    "since": "2026-10-24"
   },
   "lake-hughes-road": {
@@ -9,7 +33,11 @@
    "since": "2026-10-24"
   },
   "nc-12-hatteras-island": {
-   "coverage": 0.01,
+   "coverage": 0.58,
+   "since": "2026-10-24"
+  },
+  "old-kings-highway-6a": {
+   "coverage": 0.11,
    "since": "2026-10-24"
   },
   "storm-king-highway": {
@@ -19,8 +47,12 @@
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
+  },
+  "tunnel-of-trees-m-119": {
+   "coverage": 0.21,
+   "since": "2026-10-24"
   }
  },
  "format": 1,
- "updated": "2026-10-24T16:22:16Z"
+ "updated": "2026-10-25T13:08:47Z"
 }
