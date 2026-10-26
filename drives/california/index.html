@@ -140,11 +140,12 @@
         var leaving = function () { left = true; };
         window.addEventListener("pagehide", leaving, { once: true });
         document.addEventListener("visibilitychange", function () { if (document.hidden) leaving(); }, { once: true });
-        setTimeout(function () { if (!left) location.href = "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
+        setTimeout(function () { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl("https://apps.apple.com/app/carve-route-planner/id6808087716") : "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
         location.href = "carve://route?t=" + t;
       });
     });
   })();
 </script>
+<script src="/assets/carve-site.js?v=f75260fe98" defer></script>
 </body>
 </html>

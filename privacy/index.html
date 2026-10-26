@@ -74,9 +74,14 @@
   <p>Your name in a group is the display name you set under Me, or your username. Deleting your account deletes your position, hidden drivers and reports with it.</p>
 
   <h2>How you use the app</h2>
-  <p>So we can see whether Carve is working for the people using it, the app records <strong>usage events</strong> and sends them to Carve's server: when it's opened and how long it stays open; signing in and out, and whether the account is new; routes opened, created, imported, edited, renamed, deleted, shared and downloaded, and which route each is about; drives started, finished or ended early, with how long they took, how much of the route they covered and whether they used CarPlay or Android Auto; leaving and rejoining a route; recordings; Group turned on and off; and Carve Apex offers, purchases and restores.</p>
+  <p>So we can see whether Carve is working for the people using it, the app records <strong>usage events</strong> and sends them to Carve's server: when it's opened and how long it stays open; signing in and out, and whether the account is new; routes opened, created, imported, edited, renamed, deleted, shared and downloaded, and which route each is about; drives started, finished or ended early, with how long they took, how much of the route they covered and whether they used CarPlay or Android Auto; leaving and rejoining a route; recordings; Group turned on and off; and Carve Apex offers, purchases and restores, and whether a subscription is in its free trial, paid or ended.</p>
   <p>Each event carries your account (when you're signed in), a random identifier made for the app on your phone, the app's version, and whether it's an iPhone or Android phone. It never includes your coordinates, what you search for or a route's name. But events about a route say which route, so events about drives show which route you drove and when. Events wait on your phone until there's a connection.</p>
   <p>They're used only to understand and improve Carve — never for advertising, and never sold or shared. They're kept for 90 days, then deleted, and deleting your account deletes yours. To stop them, turn off <strong>Share Usage with Carve</strong> under Me; anything not yet sent is discarded.</p>
+  <p>The first time you open Carve, it also asks Apple, through Apple's own AdServices, whether you installed it after tapping one of Carve's Apple Ads. If you did, one usage event records the numbers Apple gives for the campaign, ad group and keyword, and your country or region; if not, it records that no ad was involved. Apple doesn't tell Carve who you are, and Carve doesn't use your phone's advertising identifier or ask to track you. It's used only to see which of Carve's own ads work, and it's skipped when <strong>Share Usage with Carve</strong> is off. Unlike other usage events, this one is kept with your account until you delete it, together with when you started a free trial of Carve Apex, first paid for it and whether it has ended, so we can see over a year which ads bring people who stay.</p>
+
+  <h2>This website</h2>
+  <p>carve.run counts visits with <strong>Plausible Analytics</strong>, so we can see where Carve's visitors come from: each page viewed, and each tap on an App Store or Android beta button, with the page, the website you came from, any campaign tags on the link you followed (such as <code>utm_source</code>), your browser, device type and country. Plausible doesn't use cookies or keep your IP address: it tells one visitor from another on the same day with a code made from your IP address and browser that changes every day and can't be traced back to you. A shared route's link never goes to Plausible; its page is counted as a share page, without the route. Visits aren't counted from browsers that send Do Not Track or Global Privacy Control.</p>
+  <p>The App Store links on this site carry a campaign tag, so Apple's App Store Connect can tell us which link led to an install. Apple reports that to us in totals, not about you.</p>
 
   <h2>Location</h2>
   <p>Carve asks for location access to centre the map, to plan from where you are, and to guide a drive or record one. During a drive or a recording it tracks your position continuously — on Android with a notification showing while it does, on iPhone in the background while the drive is active — so it can announce turns, clear stops, and tell when you've left the route. Carve doesn't ask for location access at other times in the background.</p>
@@ -141,6 +146,11 @@
       <td>Visits to carve.run, including opened route links.</td>
       <td>Hosting carve.run and its link previews, and protecting it from abuse.</td>
     </tr>
+    <tr>
+      <td><strong>Plausible Analytics</strong> (EU)</td>
+      <td>Page views and store-button taps on carve.run, as described under This website. No cookies, no IP addresses kept.</td>
+      <td>Counting the website's visitors and where they come from.</td>
+    </tr>
   </table>
   <p>Mapbox, Apple Weather, Anthropic, Amazon and Wikimedia don't receive your name or contact details from Carve. To keep usage fair, the services that write route descriptions, choose route pictures and fetch weather for Android count requests by IP address, describing drives is counted by account (or IP address without one), and photo checks and a road's live traffic and usual slowdowns (Popular times, for Carve Apex) are counted by account; those counts are deleted after a week. For Popular times, Carve's server asks Mapbox how long one of Carve's own roads takes at different times of day; it sends Mapbox that road, never your position or your routes.</p>
 
@@ -150,7 +160,7 @@
   <h2>What Carve does not do</h2>
   <ul>
     <li>No advertising, and no advertising or cross-app tracking identifiers.</li>
-    <li>No third-party analytics or crash-reporting services: usage events, described above, go only to Carve's own server. If you've chosen to share analytics with developers in your phone's settings, Apple or Google may share aggregated crash reports with us.</li>
+    <li>No third-party analytics or crash-reporting services in the app: usage events, described above, go only to Carve's own server. The website uses Plausible, as described above. If you've chosen to share analytics with developers in your phone's settings, Apple or Google may share aggregated crash reports with us.</li>
     <li>No selling, renting, or trading of personal information.</li>
   </ul>
 
@@ -184,5 +194,6 @@
     <span>© 2026 Carve</span>
   </div>
 </footer>
+<script src="/assets/carve-site.js?v=f75260fe98" defer></script>
 </body>
 </html>

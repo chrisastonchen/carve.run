@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
+<!-- The address is the route: pages it links to (and the site's counting)
+     get carve.run, never the token (docs/Attribution.md). -->
+<meta name="referrer" content="strict-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A Carve route</title>
 <meta name="description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
@@ -573,7 +576,7 @@ const RouteProfile = (() => {
     const leaving = () => { left = true; };
     window.addEventListener("pagehide", leaving, { once: true });
     document.addEventListener("visibilitychange", () => { if (document.hidden) leaving(); }, { once: true });
-    setTimeout(() => { if (!left) location.href = APP_STORE_URL; }, 1500);
+    setTimeout(() => { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl(APP_STORE_URL) : APP_STORE_URL; }, 1500);
     location.href = "carve://route?" + query;
   }
 
@@ -939,11 +942,12 @@ const RouteProfile = (() => {
         var leaving = function () { left = true; };
         window.addEventListener("pagehide", leaving, { once: true });
         document.addEventListener("visibilitychange", function () { if (document.hidden) leaving(); }, { once: true });
-        setTimeout(function () { if (!left) location.href = "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
+        setTimeout(function () { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl("https://apps.apple.com/app/carve-route-planner/id6808087716") : "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
         location.href = "carve://route?t=" + t;
       });
     });
   })();
 </script>
+<script src="/assets/carve-site.js?v=f75260fe98" defer></script>
 </body>
 </html>
