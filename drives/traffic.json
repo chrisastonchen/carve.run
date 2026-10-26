@@ -4,14 +4,6 @@
    "coverage": 0.55,
    "since": "2026-10-24"
   },
-  "delaware-river-road-new-hope-easton": {
-   "coverage": 0.61,
-   "since": "2026-10-24"
-  },
-  "emigration-canyon-sr-65": {
-   "coverage": 0.6,
-   "since": "2026-10-24"
-  },
   "glendora-mountain-ridge-roads": {
    "coverage": 0.04,
    "since": "2026-10-24"
@@ -25,7 +17,7 @@
    "since": "2026-10-24"
   },
   "highway-74-whitewater-minnesota": {
-   "coverage": 0.6,
+   "coverage": 0.72,
    "since": "2026-10-24"
   },
   "lake-hughes-road": {
@@ -34,10 +26,6 @@
   },
   "nc-12-hatteras-island": {
    "coverage": 0.58,
-   "since": "2026-10-24"
-  },
-  "old-kings-highway-6a": {
-   "coverage": 0.11,
    "since": "2026-10-24"
   },
   "storm-king-highway": {
@@ -49,10 +37,10 @@
    "since": "2026-10-24"
   },
   "tunnel-of-trees-m-119": {
-   "coverage": 0.21,
+   "coverage": 0.56,
    "since": "2026-10-24"
   }
  },
  "format": 1,
- "updated": "2026-10-25T13:08:47Z"
+ "updated": "2026-10-26T13:16:12Z"
 }
