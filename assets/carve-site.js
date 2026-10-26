@@ -19,8 +19,8 @@
  *     ct) go to Plausible Analytics: no cookies, no visitor id kept. Every
  *     event names its page itself, so a share link's token (a route's
  *     identity) never leaves the page: share pages count as /r/. Off for Do
- *     Not Track / Global Privacy Control, crawlers, and anywhere but
- *     carve.run. To leave your own visits out, run
+ *     Not Track / Global Privacy Control and anywhere but carve.run;
+ *     Plausible drops crawlers. To leave your own visits out, run
  *     localStorage.plausible_ignore = "true" in the browser's console.
  *
  * App Store Connect → Analytics → Sources → Campaigns → "Generate a campaign
@@ -31,17 +31,16 @@
   "use strict";
 
   var PROVIDER_TOKEN = "";
-  var PLAUSIBLE_DOMAIN = "carve.run";
-  // The manual build: pageviews are sent by this file, with the page it names.
-  var PLAUSIBLE_SRC = "https://plausible.io/js/script.manual.js";
+  // carve.run's own Plausible script (the site is named inside it). Its
+  // automatic pageviews and link, download and form tracking are turned off
+  // below: this file sends every event itself, with the page it names.
+  var PLAUSIBLE_SRC = "https://plausible.io/js/pa-icVqdnmcMI9NQpYz8Uneq.js";
   var APP_STORE_PREFIX = "https://apps.apple.com/app/";
   var ANDROID_BETA_HOST = "groups.google.com";
   var STORE_KEY = "carve.campaign";
   var UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 
   function safe(fn, fallback) { try { return fn(); } catch (e) { return fallback; } }
-
-  var ua = navigator.userAgent || "";
 
   // The page, as the site counts it: a share link's token is a route's
   // identity, so every share page counts as /r/.
@@ -95,19 +94,9 @@
 
   // MARK: - Counting
 
+  // Crawlers are left to Plausible, which drops them on its side.
   var counting = !(navigator.doNotTrack === "1" || window.doNotTrack === "1" || navigator.globalPrivacyControl === true)
-    && !/bot|crawl|spider|slurp|headless|preview|lighthouse|facebookexternalhit/i.test(ua)
     && /(^|\.)carve\.run$/.test(location.hostname);
-
-  // Plausible's queue: calls made before its script arrives are kept.
-  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };
-  if (counting) {
-    var script = document.createElement("script");
-    script.defer = true;
-    script.src = PLAUSIBLE_SRC;
-    script.setAttribute("data-domain", PLAUSIBLE_DOMAIN);
-    document.head.appendChild(script);
-  }
 
   // The page as Plausible is told it: the counted path, and this link's utm
   // tags (how Plausible knows the visit's source and campaign). Nothing else
@@ -117,6 +106,25 @@
     UTM.forEach(function (key) { var value = params.get(key); if (value) url.searchParams.set(key, value.slice(0, 100)); });
     return url.toString();
   }, location.origin + "/");
+
+  // Plausible's queue: calls made before its script arrives are kept, and
+  // run once it has read the settings. Every event goes out with pageUrl,
+  // whatever sent it, so the address bar never reaches Plausible.
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };
+  window.plausible.init = window.plausible.init || function (options) { window.plausible.o = options || {}; };
+  if (counting) {
+    window.plausible.init({
+      autoCapturePageviews: false,
+      outboundLinks: false,
+      fileDownloads: false,
+      formSubmissions: false,
+      transformRequest: function (event) { event.u = pageUrl; return event; }
+    });
+    var script = document.createElement("script");
+    script.async = true;
+    script.src = PLAUSIBLE_SRC;
+    document.head.appendChild(script);
+  }
 
   function send(name, props) {
     if (!counting) return;
