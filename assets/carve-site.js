@@ -30,7 +30,7 @@
 (function () {
   "use strict";
 
-  var PROVIDER_TOKEN = "";
+  var PROVIDER_TOKEN = "129403100";
   // carve.run's own Plausible script (the site is named inside it). Its
   // automatic pageviews and link, download and form tracking are turned off
   // below: this file sends every event itself, with the page it names.
