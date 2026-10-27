@@ -310,6 +310,91 @@
     .band { padding-top: 64px; }
     .band-inner { padding: 56px 24px; border-radius: 24px; }
   }
+
+  /* ═══ The app's welcome scenes, each in its rounded card ═══ */
+  .show { color: var(--ink); --sw: clamp(320px, 34vw, 540px); --ph: calc(var(--sw) * 820 / 900); --pw: calc(var(--sw) / 1.18); }
+  @media (max-width: 899px) { .show { --sw: min(calc(100vw - 40px), 520px); padding-top: 28px; } }
+  .scene {
+    width: var(--sw); aspect-ratio: 900 / 820; position: relative; overflow: hidden;
+    border-radius: calc(var(--sw) * 26 / 408); background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
+  }
+  .scene .still, .scene video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scene video { opacity: 0; transition: opacity .2s; }
+  .scene video.on { opacity: 1; }
+  .slide figcaption { font-size: clamp(24px, 2.1vw, 30px); max-width: none; min-height: 0; }
+  .dots button::before { background: rgba(21,24,28,.22); }
+  .dots button[aria-current="true"]::before { background: var(--ink); }
+  .arrow { color: var(--ink); background: #F1F1EF; }
+  @media (max-width: 599px) { .arrow { display: none; } }
+  .arrow:hover { background: #E6E6E3; }
+
+
+  /* ═══ CLUBS ═════════════════════════════════════════════════════════ */
+  .clubs { padding: 100px 0 0; }
+  .clubs-card {
+    display: grid; gap: 28px; grid-template-areas: "head" "visual" "rest";
+    background: var(--mint); border-radius: 32px; padding: 56px 48px;
+  }
+  .clubs-head { grid-area: head; }
+  .clubs-visual { grid-area: visual; }
+  .clubs-rest { grid-area: rest; }
+  @media (min-width: 900px) {
+    .clubs-card { grid-template-columns: 1.15fr .85fr; grid-template-areas: "head visual" "rest visual"; column-gap: 40px; row-gap: 0; }
+    .clubs-visual { align-self: center; }
+  }
+  .clubs h2 { font-size: clamp(36px, 4.6vw, 58px); }
+  .clubs .note-from { margin-top: 16px; font-size: 17.5px; line-height: 1.55; color: var(--ink); max-width: 34em; }
+  .clubs .sig { margin-top: 10px; font-weight: 700; color: var(--ink-dim); }
+  .club-points { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  @media (min-width: 640px) { .club-points { grid-template-columns: 1fr 1fr; } }
+  .club-points li { display: flex; gap: 12px; align-items: flex-start; }
+  .club-points .ic { flex: none; width: 38px; height: 38px; border-radius: 11px; background: #fff; display: grid; place-items: center; }
+  .club-points .ic svg { width: 20px; height: 20px; }
+  .club-points b { display: block; font-size: 16px; }
+  .club-points div > span { display: block; color: var(--ink-dim); font-size: 14.5px; line-height: 1.45; margin-top: 2px; }
+  .club-points .apex { font-size: 10px; font-weight: 800; letter-spacing: .08em; color: var(--marker); margin-left: 6px; vertical-align: 2px; }
+  .clubs .cta { align-items: flex-start; margin-top: 26px; gap: 8px; }
+  .clubs .cta p { font-size: 15px; color: var(--ink-dim); }
+  .clubs .fine { margin-top: 18px; font-size: 13px; color: var(--ink-faint); }
+  .clubs-visual { display: flex; justify-content: center; }
+  /* The paywall's header card: one drive showing Apex, a 40 s loop. */
+  .apex-card {
+    width: min(460px, calc(100vw - 88px)); aspect-ratio: 300 / 190; position: relative; overflow: hidden;
+    border-radius: min(28px, calc((100vw - 88px) * 18 / 300)); background: #fff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.14), 0 1px 3px rgba(0,0,0,.06);
+  }
+  .apex-card img, .apex-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .apex-card video { opacity: 0; transition: opacity .2s; }
+  .apex-card video.on { opacity: 1; }
+  @media (max-width: 720px) { .clubs-card { padding: 32px 20px; border-radius: 26px; gap: 24px; } .clubs .note-from { font-size: 17px; } }
+  @media (min-width: 900px) { .clubs-rest { margin-top: 28px; } }
+
+  /* ═══ ROADS ═════════════════════════════════════════════════════════ */
+  .roads { padding: 100px 0 0; }
+  .roads-head { text-align: center; max-width: 680px; margin: 0 auto 30px; padding: 0 20px; }
+  .roads-head h2 { font-size: clamp(36px, 4.6vw, 58px); }
+  .roads-head p { color: var(--ink-dim); font-size: 18px; margin-top: 14px; }
+  .road-strip {
+    list-style: none; margin: 0; padding: 4px max(30px, calc((100vw - var(--max)) / 2 + 30px)) 18px;
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 300px); gap: 18px;
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    scroll-padding-inline: max(30px, calc((100vw - var(--max)) / 2 + 30px));
+  }
+  .road-strip::-webkit-scrollbar { display: none; }
+  .road-strip li { scroll-snap-align: start; padding-bottom: 14px; }
+  .road-strip a { display: block; height: 100%; text-decoration: none; color: var(--ink); background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06); transition: transform .18s, box-shadow .18s; }
+  .road-strip a:hover { box-shadow: 0 16px 36px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); }
+  .road-strip a:hover { transform: translateY(-3px); }
+  .road-strip img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .road-strip .body { padding: 14px 16px 16px; }
+  .road-strip .n { font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
+  .road-strip .m { display: flex; align-items: center; gap: 8px; margin-top: 8px; color: var(--ink-dim); font-size: 14px; }
+  .road-strip .chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px 3px 7px; border-radius: 8px; color: #fff; font-size: 12.5px; font-weight: 700; }
+  .road-strip .chip svg { width: 12px; height: 12px; }
+  .roads .browse { text-align: center; margin-top: 26px; font-weight: 600; color: var(--ink-dim); }
+  @media (max-width: 720px) { .road-strip { padding-left: 20px; padding-right: 20px; scroll-padding-inline: 20px; } }
+  .road-strip .m span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
 </head>
@@ -365,91 +450,29 @@
   <div class="show">
     <div class="carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="What Carve does">
       <div class="slides" id="slides">
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 9" data-bg="#E6E0FE">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="auto" poster="/assets/area-first.jpg?v=9832ee6f96" data-end="/assets/area-last.jpg?v=aece3f821a"
-                   aria-label="Carve's home in San Francisco: tapping Drives In Your Area opens every great road nearby, nearest first — Highway 1 to Bodega Bay, Mount Tamalpais, Redwood Road">
-              <source src="/assets/area.mp4?v=c06ada0bc7" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Great drives near you, ready to go.</figcaption>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 6" data-bg="#FFFFFF">
+          <div class="scene"><img class="still" src="/assets/welcome/find-first.jpg?v=df717e2acd" data-first="/assets/welcome/find-first.jpg?v=df717e2acd" data-last="/assets/welcome/find-last.jpg?v=97fdee3277" alt="The Legendary Drives, and Tail of the Dragon opening on its map: 11.3 miles, Intense"><video muted playsinline preload="none" data-src="/assets/welcome/find.mp4?v=88d90a9db6" aria-hidden="true"></video></div>
+          <figcaption>Find the good roads.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 9" data-bg="#D4E6FD">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="none" poster="/assets/plan-first.jpg?v=c0defa000e" data-end="/assets/plan-last.jpg?v=e75010c524"
-                   aria-label="Opening Big Sur from the Legendary Drives: its road draws down the coast, with its photo, drive time, miles, stops, climb and the weather along the way">
-              <source src="/assets/plan.mp4?v=22cf0a64ad" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Plan routes. Drive the exact roads you want.</figcaption>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 6" data-bg="#FFFFFF">
+          <div class="scene"><img class="still" src="/assets/welcome/anywhere-first.jpg?v=c37ab7b103" data-first="/assets/welcome/anywhere-first.jpg?v=c37ab7b103" data-last="/assets/welcome/anywhere-last.jpg?v=acc935fd68" alt="Driving with no signal, turn by turn, and the same drive on a CarPlay screen"><video muted playsinline preload="none" data-src="/assets/welcome/anywhere.mp4?v=772b573040" aria-hidden="true"></video></div>
+          <figcaption>Offline guidance & CarPlay.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 9" data-bg="#DCEBF7">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="none" poster="/assets/flyover-first.jpg?v=b5ea003ab2" data-end="/assets/flyover-last.jpg?v=50aaf77a77"
-                   aria-label="Flying over Skyline Boulevard in 3D from Highway 92: the road ahead dashed in violet across the forested ridge, the miles and height in a card at the top">
-              <source src="/assets/flyover.mp4?v=7f2f509e45" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Fly the whole route in 3D first.</figcaption>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 6" data-bg="#FFFFFF">
+          <div class="scene"><img class="still" src="/assets/welcome/together-first.jpg?v=1593737eb1" data-first="/assets/welcome/together-first.jpg?v=1593737eb1" data-last="/assets/welcome/together-last.jpg?v=a55590460c" alt="Going-to-the-Sun Road with three friends on the map, each by name"><video muted playsinline preload="none" data-src="/assets/welcome/together.mp4?v=7c6f037c16" aria-hidden="true"></video></div>
+          <figcaption>Drive as a group.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 9" data-bg="#EDE7FB">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="none" poster="/assets/popular-first.jpg?v=00c25c7e2a" data-end="/assets/popular-last.jpg?v=d5c2206342"
-                   aria-label="Skyline Boulevard's Popular times: tapping Sunday and Saturday shows how busy the road usually is, hour by hour, from public traffic counts">
-              <source src="/assets/popular.mp4?v=0209ccb36e" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Know when it’s busy, and when it’s not.</figcaption>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 6" data-bg="#FFFFFF">
+          <div class="scene"><img class="still" src="/assets/welcome/describe-first.jpg?v=675b9dad79" data-first="/assets/welcome/describe-first.jpg?v=675b9dad79" data-last="/assets/welcome/describe-last.jpg?v=3484bc5a5b" alt="Typing “Twisty roads near Asheville, about two hours” and getting a drive back: the Parkway west to Waterrock Knob"><video muted playsinline preload="none" data-src="/assets/welcome/describe.mp4?v=e9910b7fdd" aria-hidden="true"></video></div>
+          <figcaption>Just say where you want to go.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 9" data-bg="#DBF0E1">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="none" poster="/assets/offline-first.jpg?v=9254af6f99" data-end="/assets/offline-last.jpg?v=1dcf4b63b3"
-                   aria-label="Driving Highway 1 toward Bixby Creek Bridge with no signal, turn by turn">
-              <source src="/assets/offline.mp4?v=d1ede7a114" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Never lose your way, even without signal.</figcaption>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 6" data-bg="#FFFFFF">
+          <div class="scene"><img class="still" src="/assets/welcome/plan-first.jpg?v=daa677bae4" data-first="/assets/welcome/plan-first.jpg?v=daa677bae4" data-last="/assets/welcome/plan-last.jpg?v=803e60215e" alt="A route built stop by stop on the map, or imported from Google Maps"><video muted playsinline preload="none" data-src="/assets/welcome/plan.mp4?v=48e2b5d76e" aria-hidden="true"></video></div>
+          <figcaption>Plan it your way.</figcaption>
         </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 9" data-bg="#D8EEF0">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="none" poster="/assets/group-first.jpg?v=eac1894582" data-end="/assets/group-last.jpg?v=db2a953dd6"
-                   aria-label="Driving Big Sur with Group on: friends shown by name on the road ahead and behind, and a pill counting six drivers">
-              <source src="/assets/group.mp4?v=bc660d1d12" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Driving with friends? See everyone on the map.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="7 of 9" data-bg="#FEE3D2">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="none" poster="/assets/return-first.jpg?v=34ee0af122" data-end="/assets/return-last.jpg?v=a5dc7ec52b"
-                   aria-label="A wrong turn in Carmel: the banner turns orange and an orange line leads back to the planned route">
-              <source src="/assets/return.mp4?v=6f99ee788d" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Wrong turn? Get guided back without re-routing.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="8 of 9" data-bg="#F1E3C0">
-          <div class="dashboard">
-            <img src="/assets/shot-carplay-dash.jpg?v=b6e7eccb0f" width="760" height="1350" loading="lazy" alt="A car's dashboard with Carve on its CarPlay screen, a route to Mammoth Lakes ready to go">
-          </div>
-          <figcaption>Put your drive on the dash with CarPlay &amp; Android Auto.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="9 of 9" data-bg="#FAF7EE">
-          <div class="phone"><div class="screen">
-            <video muted playsinline preload="none" poster="/assets/import-first.jpg?v=93343f2ecf" data-end="/assets/import-last.jpg?v=b82a6018ad"
-                   aria-label="Importing a Google Maps link: Half Moon Bay to Santa Cruz opens as a route, with its stops, miles and climb">
-              <source src="/assets/import.mp4?v=dce10fe553" type="video/mp4">
-            </video>
-            <span class="island" aria-hidden="true"></span>
-          </div></div>
-          <figcaption>Import existing routes from Google Maps.</figcaption>
+        <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 6" data-bg="#FFFFFF">
+          <div class="scene"><img class="still" src="/assets/welcome/know-first.jpg?v=c7ce8834d7" data-first="/assets/welcome/know-first.jpg?v=c7ce8834d7" data-last="/assets/welcome/know-last.jpg?v=5b6394ee07" alt="A 3D flyover of Beartooth Highway, with the weather on the way and when the road is usually quiet"><video muted playsinline preload="none" data-src="/assets/welcome/know.mp4?v=6c9f8ccaf6" aria-hidden="true"></video></div>
+          <figcaption>Know before you go.</figcaption>
         </figure>
       </div>
       <button class="arrow prev" type="button" id="prev" aria-controls="slides" aria-label="Previous">
@@ -461,6 +484,58 @@
       <div class="dots" id="dots" aria-label="Choose a screen"></div>
     </div>
   </div>
+</section>
+
+
+<!-- ═══ CLUBS ═══════════════════════════════════════════════════════ -->
+<section class="clubs" id="clubs">
+  <div class="wrap">
+    <div class="clubs-card rise">
+      <div class="clubs-head">
+        <h2>Made for the group drive.</h2>
+        <p class="note-from">I've been a member of the Porsche Club of America's Golden Gate Region since 2023, and we drive together every month. If you've planned a drive, you know the problem: you spend hours finding the best roads and building the route, and regular map apps undo it. They reroute you onto the fastest way, and when the signal drops, the route goes with it. I built Carve for drivers with a specific road in mind, who are out for the drive, not the commute.</p>
+        <p class="sig">Chris, founder of Carve</p>
+      </div>
+      <div class="clubs-visual" aria-hidden="true"><div class="apex-card"><picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/welcome/apex-still.jpg?v=1ed8626af8"><img src="/assets/welcome/apex-first.jpg?v=e4e88689db" alt="A drive on Going-to-the-Sun Road in Carve: offline, three in the group, weather along the way, when it's usually quiet, and the way back after a wrong turn"></picture><video muted loop playsinline preload="none" data-src="/assets/welcome/apex.mp4?v=f5d0077d07" aria-hidden="true"></video></div></div>
+      <div class="clubs-rest">
+        <ul class="club-points"><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Plan once, share one link</b><span>Everyone gets the same route, on iPhone or Android.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Pick the right day<span class=apex>APEX</span></b><span>Road conditions and popular times show when it's dry and quiet.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 19l6-10 4 6 2.5-3.5L21.5 19z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="17" cy="6" r="2" fill="currentColor"/></svg></span><div><b>Preview it together<span class=apex>APEX</span></b><span>Fly the whole route in 3D before anyone leaves.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 18.5c.6-2.2 2-3.3 3.5-3.3s2.9 1.1 3.5 3.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Drive as one group<span class=apex>APEX</span></b><span>Everyone on the map by name, and turns that work with no signal.</span></div></li></ul>
+        <div class="cta">
+          <a class="btn btn-primary" href="mailto:support@carve.run?subject=Our%20club%27s%20drives">Set up your club's next drive</a>
+          <p>Organizing a drive? I'll build your route in Carve with you, free.</p>
+        </div>
+        <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROADS ═══════════════════════════════════════════════════════ -->
+<section class="roads" id="roads">
+  <div class="roads-head rise">
+    <h2>Roads worth <em>the drive</em>.</h2>
+    <p>1,100+ drives, each planned as a Carve route: how far, how long, and how twisty.</p>
+  </div>
+  <ul class="road-strip rise"><li><a href="/drives/tail-of-the-dragon/"><img src="https://carve.run/assets/drives/tail-of-the-dragon.jpg?v=d14c49e611" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Tail of the Dragon</div>
+      <div class="m"><span class="chip" style="background:#9B1C1C"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21L17 17.5L7 14L17 10.5L7 7L17 3.5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Intense</span><span>11.3 mi · North Carolina</span></div></div></a></li><li><a href="/drives/angeles-crest-highway/"><img src="https://carve.run/assets/drives/angeles-crest-highway.jpg?v=1141f0482d" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Angeles Crest Highway</div>
+      <div class="m"><span class="chip" style="background:#D2591F"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Twisty</span><span>26 mi · California</span></div></div></a></li><li><a href="/drives/beartooth-highway/"><img src="https://carve.run/assets/drives/beartooth-highway.jpg?v=c3e7e7aff7" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Beartooth Highway</div>
+      <div class="m"><span class="chip" style="background:#C0860A"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21C14 21 18 17 12 12C6 7 10 3 18 3" fill="none" stroke="#fff" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>Sweeping</span><span>65 mi · Montana</span></div></div></a></li><li><a href="/drives/big-sur-highway-1/"><img src="https://carve.run/assets/drives/big-sur-highway-1.jpg?v=fc80cef300" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Big Sur, Highway 1</div>
+      <div class="m"><span class="chip" style="background:#C0860A"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21C14 21 18 17 12 12C6 7 10 3 18 3" fill="none" stroke="#fff" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>Sweeping</span><span>89 mi · California</span></div></div></a></li><li><a href="/drives/blue-ridge-parkway/"><img src="https://carve.run/assets/drives/blue-ridge-parkway.jpg?v=a102c87ede" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Blue Ridge Parkway</div>
+      <div class="m"><span class="chip" style="background:#D2591F"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Twisty</span><span>68 mi · North Carolina</span></div></div></a></li><li><a href="/drives/million-dollar-highway/"><img src="https://carve.run/assets/drives/million-dollar-highway.jpg?v=077329fcb6" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Million Dollar Highway</div>
+      <div class="m"><span class="chip" style="background:#D2591F"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Twisty</span><span>24 mi · Colorado</span></div></div></a></li><li><a href="/drives/cherohala-skyway/"><img src="https://carve.run/assets/drives/cherohala-skyway.jpg?v=28d37cd457" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Cherohala Skyway</div>
+      <div class="m"><span class="chip" style="background:#D2591F"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Twisty</span><span>51 mi · Tennessee</span></div></div></a></li><li><a href="/drives/pikes-peak-highway/"><img src="https://carve.run/assets/drives/area/photos/pikes-peak-highway.jpg?v=378fc53590" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">Pikes Peak Highway</div>
+      <div class="m"><span class="chip" style="background:#9B1C1C"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21L17 17.5L7 14L17 10.5L7 7L17 3.5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Intense</span><span>18.6 mi · Colorado</span></div></div></a></li><li><a href="/drives/ranch-road-337-medina-leakey/"><img src="https://carve.run/assets/drives/area/photos/ranch-road-337-medina-leakey.jpg?v=e9d5526206" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">RM 337: Medina to Leakey</div>
+      <div class="m"><span class="chip" style="background:#C0860A"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21C14 21 18 17 12 12C6 7 10 3 18 3" fill="none" stroke="#fff" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>Sweeping</span><span>36 mi · Texas</span></div></div></a></li><li><a href="/drives/pig-trail/"><img src="https://carve.run/assets/drives/area/photos/pig-trail.jpg?v=350d766884" width="1200" height="900" loading="lazy" alt="">
+      <div class="body"><div class="n">The Pig Trail</div>
+      <div class="m"><span class="chip" style="background:#C0860A"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21C14 21 18 17 12 12C6 7 10 3 18 3" fill="none" stroke="#fff" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>Sweeping</span><span>75 mi · Arkansas</span></div></div></a></li></ul>
 </section>
 
 <!-- ═══ 2 · PRICING ════════════════════════════════════════════════════ -->
@@ -517,7 +592,7 @@
 <!-- drives-home -->
 <section class="home-drives" id="drives">
   <div class="wrap">
-    <h2 class="rise">Scenic drives <em>by state</em></h2>
+    <h2 class="rise">Or browse <em>by state</em></h2>
     <p class="lede rise">1129 drives across the US, Canada, Australia, New Zealand, the UAE and Baja California, each ready to open in Carve: the road, how far, how twisty, and what's nearby.</p>
     <ul class="rise">
       <li><a href="/drives/california/">California <span>102</span></a></li>
@@ -648,6 +723,12 @@
   // with a recording waits for it to finish; the rest hold five seconds. A
   // swipe, an arrow or a dot takes over the timing, and a hover holds it. With reduced
   // motion nothing moves by itself, and the recordings show their last frame.
+  // The carousel: the app's welcome scenes, one at a time. Each scene's
+  // clip plays from the start whenever its slide comes round; only this
+  // clip and the next are loaded. The still under a clip shows until the
+  // clip is playing, and its last frame once it's done or let go. A swipe,
+  // an arrow or a dot takes over the timing, and a hover holds it. With
+  // reduced motion nothing moves by itself and every scene shows its end.
   (function () {
     var track = document.getElementById("slides");
     var dotsBox = document.getElementById("dots");
@@ -656,11 +737,13 @@
     if (!track) return;
     var slides = Array.prototype.slice.call(track.children);
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var HOLD = 5000, AFTER_VIDEO = 2500;
-    // `index` is the slide on screen; `target` the one being scrolled to, so
-    // a second click before the first slide lands still counts.
-    var index = 0, target = 0, timer = null, visible = false, hovering = false;
+    var HOLD = 5000, AFTER_VIDEO = 2500, STALL = 6000;
+    // `index` is the slide on screen; `target` the one being scrolled to.
+    var index = -1, target = 0, timer = null, stall = null, visible = false, hovering = false;
 
+    var scenes = slides.map(function (slide) {
+      return { still: slide.querySelector(".still"), video: slide.querySelector("video"), done: false };
+    });
     var dots = slides.map(function (slide, i) {
       var b = document.createElement("button");
       b.type = "button";
@@ -670,25 +753,53 @@
       return b;
     });
 
-    // Each slide's recording, if it has one, and whether it has had its play.
-    var videos = slides.map(function (slide) { return slide.querySelector("video"); });
-    var done = videos.map(function (v) { return !v; });
-    function finish(i) {
-      done[i] = true;
-      videos[i].poster = videos[i].dataset.end;
+    function load(k) {
+      var v = scenes[k].video;
+      if (v && !reduce && !v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; }
     }
-    videos.forEach(function (v, i) {
+    function unload(k) {
+      var v = scenes[k].video;
+      if (!v || !v.getAttribute("src")) return;
+      v.pause();
+      v.classList.remove("on");
+      v.removeAttribute("src");
+      v.load();
+    }
+    function finished(k) {
+      var sc = scenes[k];
+      if (sc.done) return;
+      sc.done = true;
+      sc.still.src = sc.still.dataset.last;
+      if (k === index) schedule(AFTER_VIDEO);
+    }
+    function giveUp(k) {
+      unload(k);
+      finished(k);
+    }
+    function play(k) {
+      var sc = scenes[k], v = sc.video;
+      if (!v || reduce || sc.done || !visible) return;
+      load(k);
+      clearTimeout(stall);
+      stall = setTimeout(function () { if (k === index && !v.classList.contains("on")) giveUp(k); }, STALL);
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { if (k === index && !v.classList.contains("on")) giveUp(k); });
+    }
+
+    scenes.forEach(function (sc, k) {
+      var v = sc.video;
+      if (reduce) { sc.done = true; sc.still.src = sc.still.dataset.last; return; }
       if (!v) return;
-      v.addEventListener("ended", function () { done[i] = true; schedule(AFTER_VIDEO); });
-      if (reduce) { finish(i); v.setAttribute("preload", "none"); }
+      v.muted = true;
+      v.addEventListener("playing", function () { if (k === index) { clearTimeout(stall); v.classList.add("on"); } });
+      v.addEventListener("ended", function () { finished(k); });
+      v.addEventListener("timeupdate", function () { if (v.duration && v.currentTime >= v.duration - 0.1) finished(k); });
+      v.addEventListener("error", function () { if (k === index && v.getAttribute("src")) giveUp(k); });
     });
 
-    // The arrows step one either way, round from the last to the first.
     document.getElementById("prev").addEventListener("click", function () { go((target - 1 + slides.length) % slides.length); });
     document.getElementById("next").addEventListener("click", function () { go((target + 1) % slides.length); });
 
-    // To slide i: the dots, the recordings and the timer move with the click,
-    // not when the scroll lands; the scroll's own settle then just agrees.
     function go(i) {
       target = i;
       track.scrollTo({ left: i * track.clientWidth, behavior: reduce ? "auto" : "smooth" });
@@ -696,32 +807,36 @@
     }
     function settle(i) {
       target = i;
-      if (i === index && dots[i].getAttribute("aria-current")) return;
+      if (i === index) return;
+      // The slide left behind lets its clip go and keeps its last frame.
+      if (index >= 0 && scenes[index].video) {
+        unload(index);
+        scenes[index].still.src = scenes[index].still.dataset.last;
+      }
       index = i;
+      var sc = scenes[i];
       panel.style.backgroundColor = slides[i].dataset.bg;
       dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); });
       slides.forEach(function (s, j) { s.setAttribute("aria-hidden", j === i ? "false" : "true"); });
-      playOrPause();
+      var next = (i + 1) % slides.length;
+      scenes.forEach(function (_, k) { if (k !== i && k !== next) unload(k); });
+      if (sc.video && !reduce) {
+        // From the start, as a fresh play.
+        sc.done = false;
+        sc.still.src = sc.still.dataset.first;
+        sc.video.classList.remove("on");
+        if (sc.video.getAttribute("src")) { try { sc.video.currentTime = 0; } catch (e) {} }
+        else load(i);
+      }
+      load(next);
+      play(i);
       schedule();
     }
-    function playOrPause() {
-      videos.forEach(function (v, i) {
-        if (!v || done[i]) return;
-        if (i === index && visible) {
-          var p = v.play();
-          // Blocked (Low Power Mode, a data saver): show the finished frame instead.
-          if (p && p.catch) p.catch(function () { finish(i); schedule(); });
-        } else {
-          v.pause();
-        }
-      });
-    }
-    // Next slide after `wait` — a short beat after a recording ends, else the usual hold.
     function schedule(wait) {
       clearTimeout(timer);
-      if (reduce || !visible || hovering) return;
-      // A recording runs its course first.
-      if (!done[index]) return;
+      if (reduce || !visible || hovering || index < 0) return;
+      var sc = scenes[index];
+      if (sc.video && !sc.done) return;   // a clip runs its course first
       timer = setTimeout(function () { go((index + 1) % slides.length); }, wait || HOLD);
     }
 
@@ -732,29 +847,53 @@
         settle(Math.round(track.scrollLeft / track.clientWidth));
       }, 90);
     }, { passive: true });
-    window.addEventListener("resize", function () { go(index); });
+    window.addEventListener("resize", function () { go(Math.max(index, 0)); });
 
     carousel.addEventListener("mouseenter", function () { hovering = true; schedule(); });
     carousel.addEventListener("mouseleave", function () { hovering = false; schedule(); });
-    document.addEventListener("visibilitychange", function () {
-      visible = !document.hidden && visible;
-      if (document.hidden) { clearTimeout(timer); videos.forEach(function (v) { if (v) v.pause(); }); }
-      else { observeAgain(); }
-    });
 
+    function setVisible(on) {
+      visible = on;
+      var sc = index >= 0 ? scenes[index] : null;
+      if (!on) {
+        clearTimeout(timer);
+        clearTimeout(stall);
+        if (sc && sc.video) sc.video.pause();
+        return;
+      }
+      if (sc && sc.video && !sc.done) play(index);
+      schedule();
+    }
     var io = null;
-    function observeAgain() { if (io) { io.unobserve(carousel); io.observe(carousel); } }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) setVisible(false);
+      else if (io) { io.unobserve(carousel); io.observe(carousel); }
+      else setVisible(true);
+    });
     if ("IntersectionObserver" in window) {
-      io = new IntersectionObserver(function (entries) {
-        visible = entries[0].isIntersecting;
-        playOrPause();
-        schedule();
-      }, { threshold: .5 });
+      io = new IntersectionObserver(function (entries) { setVisible(entries[0].isIntersecting); }, { threshold: .4 });
       io.observe(carousel);
     } else {
       visible = true;
     }
     settle(0);
+  })();
+  // The club card's clip: loaded the first time the card comes into view,
+  // playing only while it's on screen, faded in once it really plays.
+  (function () {
+    var v = document.querySelector(".apex-card video");
+    if (!v || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    v.addEventListener("playing", function () { v.classList.add("on"); });
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        if (!v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; }
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      } else {
+        v.pause();
+      }
+    }, { threshold: .25 }).observe(v);
   })();
 
   (function () {
