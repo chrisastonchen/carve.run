@@ -328,7 +328,7 @@
   .clubs { padding: 100px 0 0; }
   .clubs-card {
     display: grid; gap: 40px; align-items: center;
-    background: var(--mint); border: 2px solid var(--ink); border-radius: 32px; padding: 56px 48px;
+    background: var(--mint); border-radius: 32px; padding: 56px 48px;
   }
   @media (min-width: 900px) { .clubs-card { grid-template-columns: 1.15fr .85fr; } }
   .clubs h2 { font-size: clamp(36px, 4.6vw, 58px); }
@@ -337,7 +337,7 @@
   .club-points { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 16px; }
   @media (min-width: 640px) { .club-points { grid-template-columns: 1fr 1fr; } }
   .club-points li { display: flex; gap: 12px; align-items: flex-start; }
-  .club-points .ic { flex: none; width: 38px; height: 38px; border-radius: 11px; background: var(--paper); border: 2px solid var(--ink); display: grid; place-items: center; }
+  .club-points .ic { flex: none; width: 38px; height: 38px; border-radius: 11px; background: #fff; display: grid; place-items: center; }
   .club-points .ic svg { width: 20px; height: 20px; }
   .club-points b { display: block; font-size: 16.5px; }
   .club-points div > span { display: block; color: var(--ink-dim); font-size: 15px; line-height: 1.45; margin-top: 2px; }
@@ -361,10 +361,11 @@
     scroll-padding-inline: max(30px, calc((100vw - var(--max)) / 2 + 30px));
   }
   .road-strip::-webkit-scrollbar { display: none; }
-  .road-strip li { scroll-snap-align: start; }
-  .road-strip a { display: block; height: 100%; text-decoration: none; color: var(--ink); background: var(--paper); border: 2px solid var(--ink); border-radius: 22px; overflow: hidden; transition: transform .18s; }
+  .road-strip li { scroll-snap-align: start; padding-bottom: 14px; }
+  .road-strip a { display: block; height: 100%; text-decoration: none; color: var(--ink); background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06); transition: transform .18s, box-shadow .18s; }
+  .road-strip a:hover { box-shadow: 0 16px 36px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); }
   .road-strip a:hover { transform: translateY(-3px); }
-  .road-strip img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-bottom: 2px solid var(--ink); }
+  .road-strip img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
   .road-strip .body { padding: 14px 16px 16px; }
   .road-strip .n { font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
   .road-strip .m { display: flex; align-items: center; gap: 8px; margin-top: 8px; color: var(--ink-dim); font-size: 14px; }
