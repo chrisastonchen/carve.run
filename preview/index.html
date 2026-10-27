@@ -249,7 +249,8 @@
   .price-alt { font-weight: 700; font-size: 22px; letter-spacing: -0.01em; margin-top: 10px; }
   .price-alt small { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--ink-dim); margin-left: 5px; }
   .price-sub { font-size: 14px; font-weight: 600; color: var(--ink-dim); margin-top: 12px; }
-  .price-beta { font-weight: 700; font-size: 23px; letter-spacing: -0.01em; color: var(--car); margin-top: 10px; }
+  .price-beta { font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: var(--car); margin-top: 6px; }
+  .price-beta + .price-alt { margin-top: 16px; }
   .price-after { color: var(--ink-dim); font-size: 14px; margin-top: 8px; line-height: 1.45; }
   .plan-list { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 11px; }
   .plan-list li { position: relative; padding-left: 26px; color: var(--ink-dim); font-size: 16px; }
@@ -348,7 +349,15 @@
   .clubs .cta p { font-size: 15px; color: var(--ink-dim); }
   .clubs .fine { margin-top: 18px; font-size: 13px; color: var(--ink-faint); }
   .clubs-visual { display: flex; justify-content: center; }
-  .clubs-visual .scene { --sw: min(420px, calc(100vw - 88px)); }
+  /* The paywall's header card: one drive showing Apex, a 40 s loop. */
+  .apex-card {
+    width: min(460px, calc(100vw - 88px)); aspect-ratio: 300 / 190; position: relative; overflow: hidden;
+    border-radius: min(28px, calc((100vw - 88px) * 18 / 300)); background: #fff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.14), 0 1px 3px rgba(0,0,0,.06);
+  }
+  .apex-card img, .apex-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .apex-card video { opacity: 0; transition: opacity .2s; }
+  .apex-card video.on { opacity: 1; }
   @media (max-width: 720px) { .clubs-card { padding: 36px 22px; border-radius: 26px; } }
 
   /* ═══ ROADS ═════════════════════════════════════════════════════════ */
@@ -484,7 +493,7 @@
         </div>
         <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
       </div>
-      <div class="clubs-visual" aria-hidden="true"><div class="scene"><img class="still" src="/assets/welcome/together-last.jpg?v=a55590460c" alt="Going-to-the-Sun Road with three friends on the map, each by name"><video autoplay loop muted playsinline preload="auto" src="/assets/welcome/together.mp4?v=7c6f037c16" aria-hidden="true" onplaying="this.classList.add(&quot;on&quot;)"></video></div></div>
+      <div class="clubs-visual" aria-hidden="true"><div class="apex-card"><picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/welcome/apex-still.jpg?v=1ed8626af8"><img src="/assets/welcome/apex-first.jpg?v=e4e88689db" alt="A drive on Going-to-the-Sun Road in Carve: offline, three in the group, weather along the way, when it's usually quiet, and the way back after a wrong turn"></picture><video muted loop playsinline preload="none" data-src="/assets/welcome/apex.mp4?v=f5d0077d07" aria-hidden="true"></video></div></div>
     </div>
   </div>
 </section>
@@ -546,9 +555,9 @@
         <img class="appicon" src="/assets/icon-128.png?v=87d1534580" alt="" width="52" height="52">
         <div class="plan-name">Carve Apex</div>
         <div class="price-num">$29.99<small>/ year</small></div>
+        <div class="price-beta">7-day free trial</div>
         <div class="price-alt">or $4.99<small>/ month</small></div>
-        <div class="price-beta">Try yearly free for 7 days</div>
-        <div class="price-after">New yearly subscribers start with a 7-day free trial. Cancel any time.</div>
+        <div class="price-after">The free trial is for new yearly subscribers. Cancel any time.</div>
         <ul class="plan-list">
           <li><strong>Drive without a signal</strong> — the map and every turn, downloaded</li>
           <li><strong>Group</strong> — drive with friends and see everyone on the map</li>
@@ -857,6 +866,23 @@
       visible = true;
     }
     settle(0);
+  })();
+  // The club card's clip: loaded the first time the card comes into view,
+  // playing only while it's on screen, faded in once it really plays.
+  (function () {
+    var v = document.querySelector(".apex-card video");
+    if (!v || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    v.addEventListener("playing", function () { v.classList.add("on"); });
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        if (!v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; }
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      } else {
+        v.pause();
+      }
+    }, { threshold: .25 }).observe(v);
   })();
 
   (function () {
