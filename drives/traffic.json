@@ -4,9 +4,9 @@
    "coverage": 0.55,
    "since": "2026-10-24"
   },
-  "glendora-mountain-ridge-roads": {
-   "coverage": 0.04,
-   "since": "2026-10-24"
+  "gates-pass-road": {
+   "coverage": 0.71,
+   "since": "2026-10-26"
   },
   "going-to-the-sun-road": {
    "coverage": 0.02,
@@ -20,6 +20,10 @@
    "coverage": 0.72,
    "since": "2026-10-24"
   },
+  "jackson-to-moran-us-191": {
+   "coverage": 0.53,
+   "since": "2026-10-26"
+  },
   "lake-hughes-road": {
    "coverage": 0.51,
    "since": "2026-10-24"
@@ -27,6 +31,10 @@
   "nc-12-hatteras-island": {
    "coverage": 0.58,
    "since": "2026-10-24"
+  },
+  "stevens-canyon-road": {
+   "coverage": 0.21,
+   "since": "2026-10-26"
   },
   "storm-king-highway": {
    "coverage": 0.57,
@@ -42,5 +50,5 @@
   }
  },
  "format": 1,
- "updated": "2026-10-26T13:16:12Z"
+ "updated": "2026-10-27T13:25:04Z"
 }
