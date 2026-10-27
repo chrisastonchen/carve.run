@@ -330,22 +330,28 @@
   /* ═══ CLUBS ═════════════════════════════════════════════════════════ */
   .clubs { padding: 100px 0 0; }
   .clubs-card {
-    display: grid; gap: 40px; align-items: center;
+    display: grid; gap: 28px; grid-template-areas: "head" "visual" "rest";
     background: var(--mint); border-radius: 32px; padding: 56px 48px;
   }
-  @media (min-width: 900px) { .clubs-card { grid-template-columns: 1.15fr .85fr; } }
+  .clubs-head { grid-area: head; }
+  .clubs-visual { grid-area: visual; }
+  .clubs-rest { grid-area: rest; }
+  @media (min-width: 900px) {
+    .clubs-card { grid-template-columns: 1.15fr .85fr; grid-template-areas: "head visual" "rest visual"; column-gap: 40px; row-gap: 0; }
+    .clubs-visual { align-self: center; }
+  }
   .clubs h2 { font-size: clamp(36px, 4.6vw, 58px); }
-  .clubs .note-from { margin-top: 18px; font-size: 18px; line-height: 1.55; color: var(--ink); max-width: 34em; }
+  .clubs .note-from { margin-top: 16px; font-size: 17.5px; line-height: 1.55; color: var(--ink); max-width: 34em; }
   .clubs .sig { margin-top: 10px; font-weight: 700; color: var(--ink-dim); }
-  .club-points { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 16px; }
+  .club-points { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
   @media (min-width: 640px) { .club-points { grid-template-columns: 1fr 1fr; } }
   .club-points li { display: flex; gap: 12px; align-items: flex-start; }
   .club-points .ic { flex: none; width: 38px; height: 38px; border-radius: 11px; background: #fff; display: grid; place-items: center; }
   .club-points .ic svg { width: 20px; height: 20px; }
-  .club-points b { display: block; font-size: 16.5px; }
-  .club-points div > span { display: block; color: var(--ink-dim); font-size: 15px; line-height: 1.45; margin-top: 2px; }
+  .club-points b { display: block; font-size: 16px; }
+  .club-points div > span { display: block; color: var(--ink-dim); font-size: 14.5px; line-height: 1.45; margin-top: 2px; }
   .club-points .apex { font-size: 10px; font-weight: 800; letter-spacing: .08em; color: var(--marker); margin-left: 6px; vertical-align: 2px; }
-  .clubs .cta { align-items: flex-start; margin-top: 30px; gap: 8px; }
+  .clubs .cta { align-items: flex-start; margin-top: 26px; gap: 8px; }
   .clubs .cta p { font-size: 15px; color: var(--ink-dim); }
   .clubs .fine { margin-top: 18px; font-size: 13px; color: var(--ink-faint); }
   .clubs-visual { display: flex; justify-content: center; }
@@ -358,7 +364,8 @@
   .apex-card img, .apex-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .apex-card video { opacity: 0; transition: opacity .2s; }
   .apex-card video.on { opacity: 1; }
-  @media (max-width: 720px) { .clubs-card { padding: 36px 22px; border-radius: 26px; } }
+  @media (max-width: 720px) { .clubs-card { padding: 32px 20px; border-radius: 26px; gap: 24px; } .clubs .note-from { font-size: 17px; } }
+  @media (min-width: 900px) { .clubs-rest { margin-top: 28px; } }
 
   /* ═══ ROADS ═════════════════════════════════════════════════════════ */
   .roads { padding: 100px 0 0; }
@@ -482,18 +489,20 @@
 <section class="clubs" id="clubs">
   <div class="wrap">
     <div class="clubs-card rise">
-      <div>
+      <div class="clubs-head">
         <h2>Made for the group drive.</h2>
-        <p class="note-from">I've been a member of the Porsche Club of America's Golden Gate Region since 2023. We drive together every month, near and far, and finding the best roads, timing them and building the routes used to take hours of research. I built Carve so the planning is the easy part, and everyone in the group drives the same great roads.</p>
+        <p class="note-from">I've been a member of the Porsche Club of America's Golden Gate Region since 2023, and we drive together every month. Finding the best roads, timing them and building the routes used to take hours. I built Carve so the planning is the easy part.</p>
         <p class="sig">Chris, founder of Carve</p>
-        <ul class="club-points"><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Plan once, share one link</b><span>Everyone opens the same route on iPhone or Android, and your changes reach them too.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c4 0 3-7 7-7s3-7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5" cy="19" r="2.2" fill="currentColor"/><circle cx="19" cy="5" r="2.2" fill="currentColor"/></svg></span><div><b>Everyone on the same roads</b><span>Carve never swaps your route for a faster one, and leads anyone who misses a turn back to it.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 18.5c.6-2.2 2-3.3 3.5-3.3s2.9 1.1 3.5 3.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>See the whole group<span class=apex>APEX</span></b><span>Everyone on the route, on the map by name, with how far ahead or behind they are.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9a13 13 0 0 1 18 0M6.5 12.5a8 8 0 0 1 11 0M10 16a3 3 0 0 1 4 0M3 3l18 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>No signal, no problem<span class=apex>APEX</span></b><span>Download the route and drive the canyons and passes with no bars.</span></div></li></ul>
+      </div>
+      <div class="clubs-visual" aria-hidden="true"><div class="apex-card"><picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/welcome/apex-still.jpg?v=1ed8626af8"><img src="/assets/welcome/apex-first.jpg?v=e4e88689db" alt="A drive on Going-to-the-Sun Road in Carve: offline, three in the group, weather along the way, when it's usually quiet, and the way back after a wrong turn"></picture><video muted loop playsinline preload="none" data-src="/assets/welcome/apex.mp4?v=f5d0077d07" aria-hidden="true"></video></div></div>
+      <div class="clubs-rest">
+        <ul class="club-points"><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Plan once, share one link</b><span>Everyone gets the same route, on iPhone or Android.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Pick the right day<span class=apex>APEX</span></b><span>Road conditions and popular times show when it's dry and quiet.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 19l6-10 4 6 2.5-3.5L21.5 19z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="17" cy="6" r="2" fill="currentColor"/></svg></span><div><b>Preview it together<span class=apex>APEX</span></b><span>Fly the whole route in 3D before anyone leaves.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 18.5c.6-2.2 2-3.3 3.5-3.3s2.9 1.1 3.5 3.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Drive as one group<span class=apex>APEX</span></b><span>Everyone on the map by name, and turns that work with no signal.</span></div></li></ul>
         <div class="cta">
           <a class="btn btn-primary" href="mailto:support@carve.run?subject=Our%20club%27s%20drives">Set up your club's next drive</a>
           <p>Organizing a drive? I'll build your route in Carve with you, free.</p>
         </div>
         <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
       </div>
-      <div class="clubs-visual" aria-hidden="true"><div class="apex-card"><picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/welcome/apex-still.jpg?v=1ed8626af8"><img src="/assets/welcome/apex-first.jpg?v=e4e88689db" alt="A drive on Going-to-the-Sun Road in Carve: offline, three in the group, weather along the way, when it's usually quiet, and the way back after a wrong turn"></picture><video muted loop playsinline preload="none" data-src="/assets/welcome/apex.mp4?v=f5d0077d07" aria-hidden="true"></video></div></div>
     </div>
   </div>
 </section>
