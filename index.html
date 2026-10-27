@@ -111,6 +111,12 @@
   .get:hover { background: #EAF4EE; }
   .get:active { transform: translateY(1px); }
   .get svg { width: 19px; height: 19px; flex: 0 0 auto; margin-top: -2px; }
+  /* On a computer, iPhone and Android side by side; on a phone, only that phone's. */
+  .gets { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .gets .get { margin-top: 0; }
+  .get[hidden], .btn[hidden] { display: none; }
+  .get-android { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.85); }
+  .get-android:hover { background: rgba(255,255,255,.12); }
 
   /* Where it runs: Apple and CarPlay, then Android and Android Auto. */
   .platforms {
@@ -136,6 +142,8 @@
       padding: 20px 26px; font-size: 19px; margin-top: 30px;
     }
     .get svg { width: 21px; height: 21px; }
+    .gets { flex-direction: column; align-items: center; width: 100%; margin-top: 30px; }
+    .gets .get { margin-top: 0; }
     .platforms { margin-top: 20px; }
   }
 
@@ -296,6 +304,10 @@
   .band p { color: rgba(251,248,239,.72); font-size: 18px; margin-top: 18px; max-width: 480px; }
   .band .cta { margin-top: 32px; }
   .band .btn-primary { border-color: transparent; }
+  .cta-pair { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .band .btn-ghost { background: transparent; color: var(--paper); border-color: rgba(251,248,239,.7); }
+  .band .btn-ghost:hover { background: rgba(251,248,239,.1); }
+  @media (max-width: 720px) { .cta-pair { flex-direction: column; align-items: center; width: 100%; } }
   .band .platforms { margin-top: 4px; color: rgba(251,248,239,.78); }
 
   @media (max-width: 720px) {
@@ -436,7 +448,10 @@
       <h1 class="logo"><svg viewBox="0 0 300 45" aria-hidden="true"><use href="#wordmark"/></svg><span class="visually-hidden">Carve: Scenic Drive Planner</span></h1>
       <p class="tagline">For the love of driving.</p>
       <p class="pitch">Find great roads, plan the twisty way and drive it turn by turn. Carve never reroutes you onto the fastest one.</p>
-      <a class="get" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+      <div class="gets">
+        <a class="get" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+        <a class="get get-android" data-get-twin href="/android/" hidden><svg aria-hidden="true"><use href="#android"/></svg><span>Join the Android beta</span></a>
+      </div>
       <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
         <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
         <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
@@ -665,7 +680,10 @@
       <h2>Your way,<br><em>not the highway.</em></h2>
       <p>Plan the roads you love, drive them without a signal, and bring your friends along.</p>
       <div class="cta">
-        <a class="btn btn-primary btn-lg" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+        <div class="cta-pair">
+          <a class="btn btn-primary btn-lg" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
+          <a class="btn btn-lg btn-ghost" data-get-twin href="/android/" hidden><svg aria-hidden="true"><use href="#android"/></svg><span>Join the Android beta</span></a>
+        </div>
         <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
           <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
           <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
@@ -708,7 +726,11 @@
   (function () {
     var ua = navigator.userAgent || "";
     var android = /android/i.test(ua);
+    // iPadOS asks for the desktop site, so a "Mac" with a touch screen is an iPad.
+    var ios = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
     var url = android ? LINKS.androidBeta : LINKS.appStore;
+    // Neither phone (a computer): the Android beta beside iPhone wherever there's room for two.
+    if (!android && !ios) document.querySelectorAll("[data-get-twin]").forEach(function (a) { a.hidden = false; });
     var label = android ? "Join the Android beta" : "Get started on iPhone";
     document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = url; });
     document.querySelectorAll("[data-get-label]").forEach(function (s) { s.textContent = label; });
