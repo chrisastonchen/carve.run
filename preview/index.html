@@ -315,7 +315,9 @@
     border-radius: calc(var(--sw) * 26 / 408); background: #fff;
     box-shadow: 0 10px 30px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
   }
-  .scene video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scene .still, .scene video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scene video { opacity: 0; transition: opacity .2s; }
+  .scene video.on { opacity: 1; }
   .slide figcaption { font-size: clamp(24px, 2.1vw, 30px); max-width: none; min-height: 0; }
   .dots button::before { background: rgba(21,24,28,.22); }
   .dots button[aria-current="true"]::before { background: var(--ink); }
@@ -431,27 +433,27 @@
     <div class="carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="What Carve does">
       <div class="slides" id="slides">
         <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 6" data-bg="#FFFFFF">
-          <div class="scene"><video muted playsinline preload="auto" poster="/assets/welcome/find-first.jpg?v=df717e2acd" data-end="/assets/welcome/find-last.jpg?v=97fdee3277" aria-label="The Legendary Drives, and Tail of the Dragon opening on its map: 11.3 miles, Intense"><source src="/assets/welcome/find.mp4?v=88d90a9db6" type="video/mp4"></video></div>
+          <div class="scene"><img class="still" src="/assets/welcome/find-first.jpg?v=df717e2acd" data-first="/assets/welcome/find-first.jpg?v=df717e2acd" data-last="/assets/welcome/find-last.jpg?v=97fdee3277" alt="The Legendary Drives, and Tail of the Dragon opening on its map: 11.3 miles, Intense"><video muted playsinline preload="none" data-src="/assets/welcome/find.mp4?v=88d90a9db6" aria-hidden="true"></video></div>
           <figcaption>Find the good roads.</figcaption>
         </figure>
         <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 6" data-bg="#FFFFFF">
-          <div class="scene"><video muted playsinline preload="none" poster="/assets/welcome/anywhere-first.jpg?v=c37ab7b103" data-end="/assets/welcome/anywhere-last.jpg?v=acc935fd68" aria-label="Driving with no signal, turn by turn, and the same drive on a CarPlay screen"><source src="/assets/welcome/anywhere.mp4?v=772b573040" type="video/mp4"></video></div>
+          <div class="scene"><img class="still" src="/assets/welcome/anywhere-first.jpg?v=c37ab7b103" data-first="/assets/welcome/anywhere-first.jpg?v=c37ab7b103" data-last="/assets/welcome/anywhere-last.jpg?v=acc935fd68" alt="Driving with no signal, turn by turn, and the same drive on a CarPlay screen"><video muted playsinline preload="none" data-src="/assets/welcome/anywhere.mp4?v=772b573040" aria-hidden="true"></video></div>
           <figcaption>Offline guidance & CarPlay.</figcaption>
         </figure>
         <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 6" data-bg="#FFFFFF">
-          <div class="scene"><video muted playsinline preload="none" poster="/assets/welcome/together-first.jpg?v=1593737eb1" data-end="/assets/welcome/together-last.jpg?v=a55590460c" aria-label="Going-to-the-Sun Road with three friends on the map, each by name"><source src="/assets/welcome/together.mp4?v=7c6f037c16" type="video/mp4"></video></div>
+          <div class="scene"><img class="still" src="/assets/welcome/together-first.jpg?v=1593737eb1" data-first="/assets/welcome/together-first.jpg?v=1593737eb1" data-last="/assets/welcome/together-last.jpg?v=a55590460c" alt="Going-to-the-Sun Road with three friends on the map, each by name"><video muted playsinline preload="none" data-src="/assets/welcome/together.mp4?v=7c6f037c16" aria-hidden="true"></video></div>
           <figcaption>Drive as a group.</figcaption>
         </figure>
         <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 6" data-bg="#FFFFFF">
-          <div class="scene"><video muted playsinline preload="none" poster="/assets/welcome/describe-first.jpg?v=675b9dad79" data-end="/assets/welcome/describe-last.jpg?v=3484bc5a5b" aria-label="Typing “Twisty roads near Asheville, about two hours” and getting a drive back: the Parkway west to Waterrock Knob"><source src="/assets/welcome/describe.mp4?v=e9910b7fdd" type="video/mp4"></video></div>
+          <div class="scene"><img class="still" src="/assets/welcome/describe-first.jpg?v=675b9dad79" data-first="/assets/welcome/describe-first.jpg?v=675b9dad79" data-last="/assets/welcome/describe-last.jpg?v=3484bc5a5b" alt="Typing “Twisty roads near Asheville, about two hours” and getting a drive back: the Parkway west to Waterrock Knob"><video muted playsinline preload="none" data-src="/assets/welcome/describe.mp4?v=e9910b7fdd" aria-hidden="true"></video></div>
           <figcaption>Just say where you want to go.</figcaption>
         </figure>
         <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 6" data-bg="#FFFFFF">
-          <div class="scene"><video muted playsinline preload="none" poster="/assets/welcome/plan-first.jpg?v=daa677bae4" data-end="/assets/welcome/plan-last.jpg?v=803e60215e" aria-label="A route built stop by stop on the map, or imported from Google Maps"><source src="/assets/welcome/plan.mp4?v=48e2b5d76e" type="video/mp4"></video></div>
+          <div class="scene"><img class="still" src="/assets/welcome/plan-first.jpg?v=daa677bae4" data-first="/assets/welcome/plan-first.jpg?v=daa677bae4" data-last="/assets/welcome/plan-last.jpg?v=803e60215e" alt="A route built stop by stop on the map, or imported from Google Maps"><video muted playsinline preload="none" data-src="/assets/welcome/plan.mp4?v=48e2b5d76e" aria-hidden="true"></video></div>
           <figcaption>Plan it your way.</figcaption>
         </figure>
         <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 6" data-bg="#FFFFFF">
-          <div class="scene"><video muted playsinline preload="none" poster="/assets/welcome/know-first.jpg?v=c7ce8834d7" data-end="/assets/welcome/know-last.jpg?v=5b6394ee07" aria-label="A 3D flyover of Beartooth Highway, with the weather on the way and when the road is usually quiet"><source src="/assets/welcome/know.mp4?v=6c9f8ccaf6" type="video/mp4"></video></div>
+          <div class="scene"><img class="still" src="/assets/welcome/know-first.jpg?v=c7ce8834d7" data-first="/assets/welcome/know-first.jpg?v=c7ce8834d7" data-last="/assets/welcome/know-last.jpg?v=5b6394ee07" alt="A 3D flyover of Beartooth Highway, with the weather on the way and when the road is usually quiet"><video muted playsinline preload="none" data-src="/assets/welcome/know.mp4?v=6c9f8ccaf6" aria-hidden="true"></video></div>
           <figcaption>Know before you go.</figcaption>
         </figure>
       </div>
@@ -482,7 +484,7 @@
         </div>
         <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
       </div>
-      <div class="clubs-visual" aria-hidden="true"><div class="scene"><video autoplay loop muted playsinline preload="metadata" poster="/assets/welcome/together-first.jpg?v=1593737eb1" data-end="/assets/welcome/together-last.jpg?v=a55590460c" aria-label="Going-to-the-Sun Road with three friends on the map, each by name"><source src="/assets/welcome/together.mp4?v=7c6f037c16" type="video/mp4"></video></div></div>
+      <div class="clubs-visual" aria-hidden="true"><div class="scene"><img class="still" src="/assets/welcome/together-last.jpg?v=a55590460c" alt="Going-to-the-Sun Road with three friends on the map, each by name"><video autoplay loop muted playsinline preload="auto" src="/assets/welcome/together.mp4?v=7c6f037c16" aria-hidden="true" onplaying="this.classList.add(&quot;on&quot;)"></video></div></div>
     </div>
   </div>
 </section>
@@ -701,6 +703,12 @@
   // with a recording waits for it to finish; the rest hold five seconds. A
   // swipe, an arrow or a dot takes over the timing, and a hover holds it. With reduced
   // motion nothing moves by itself, and the recordings show their last frame.
+  // The carousel: the app's welcome scenes, one at a time. Each scene's
+  // clip plays from the start whenever its slide comes round; only this
+  // clip and the next are loaded. The still under a clip shows until the
+  // clip is playing, and its last frame once it's done or let go. A swipe,
+  // an arrow or a dot takes over the timing, and a hover holds it. With
+  // reduced motion nothing moves by itself and every scene shows its end.
   (function () {
     var track = document.getElementById("slides");
     var dotsBox = document.getElementById("dots");
@@ -709,11 +717,13 @@
     if (!track) return;
     var slides = Array.prototype.slice.call(track.children);
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var HOLD = 5000, AFTER_VIDEO = 2500;
-    // `index` is the slide on screen; `target` the one being scrolled to, so
-    // a second click before the first slide lands still counts.
-    var index = 0, target = 0, timer = null, visible = false, hovering = false, stall = null;
+    var HOLD = 5000, AFTER_VIDEO = 2500, STALL = 6000;
+    // `index` is the slide on screen; `target` the one being scrolled to.
+    var index = -1, target = 0, timer = null, stall = null, visible = false, hovering = false;
 
+    var scenes = slides.map(function (slide) {
+      return { still: slide.querySelector(".still"), video: slide.querySelector("video"), done: false };
+    });
     var dots = slides.map(function (slide, i) {
       var b = document.createElement("button");
       b.type = "button";
@@ -723,31 +733,53 @@
       return b;
     });
 
-    // Each slide's recording, if it has one, and whether it has had its play.
-    var videos = slides.map(function (slide) { return slide.querySelector("video"); });
-    var done = videos.map(function (v) { return !v; });
-    function finish(i) {
-      done[i] = true;
-      videos[i].poster = videos[i].dataset.end;
+    function load(k) {
+      var v = scenes[k].video;
+      if (v && !reduce && !v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; }
     }
-    videos.forEach(function (v, i) {
+    function unload(k) {
+      var v = scenes[k].video;
+      if (!v || !v.getAttribute("src")) return;
+      v.pause();
+      v.classList.remove("on");
+      v.removeAttribute("src");
+      v.load();
+    }
+    function finished(k) {
+      var sc = scenes[k];
+      if (sc.done) return;
+      sc.done = true;
+      sc.still.src = sc.still.dataset.last;
+      if (k === index) schedule(AFTER_VIDEO);
+    }
+    function giveUp(k) {
+      unload(k);
+      finished(k);
+    }
+    function play(k) {
+      var sc = scenes[k], v = sc.video;
+      if (!v || reduce || sc.done || !visible) return;
+      load(k);
+      clearTimeout(stall);
+      stall = setTimeout(function () { if (k === index && !v.classList.contains("on")) giveUp(k); }, STALL);
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { if (k === index && !v.classList.contains("on")) giveUp(k); });
+    }
+
+    scenes.forEach(function (sc, k) {
+      var v = sc.video;
+      if (reduce) { sc.done = true; sc.still.src = sc.still.dataset.last; return; }
       if (!v) return;
       v.muted = true;
-      v.addEventListener("ended", function () { done[i] = true; schedule(AFTER_VIDEO); });
-      v.addEventListener("error", function () { finish(i); schedule(); });
-      // At its last frame counts as ended, whether or not "ended" comes.
-      v.addEventListener("timeupdate", function () {
-        if (!done[i] && v.duration && v.currentTime >= v.duration - 0.1) { done[i] = true; schedule(AFTER_VIDEO); }
-      });
-      if (reduce) { finish(i); v.setAttribute("preload", "none"); }
+      v.addEventListener("playing", function () { if (k === index) { clearTimeout(stall); v.classList.add("on"); } });
+      v.addEventListener("ended", function () { finished(k); });
+      v.addEventListener("timeupdate", function () { if (v.duration && v.currentTime >= v.duration - 0.1) finished(k); });
+      v.addEventListener("error", function () { if (k === index && v.getAttribute("src")) giveUp(k); });
     });
 
-    // The arrows step one either way, round from the last to the first.
     document.getElementById("prev").addEventListener("click", function () { go((target - 1 + slides.length) % slides.length); });
     document.getElementById("next").addEventListener("click", function () { go((target + 1) % slides.length); });
 
-    // To slide i: the dots, the recordings and the timer move with the click,
-    // not when the scroll lands; the scroll's own settle then just agrees.
     function go(i) {
       target = i;
       track.scrollTo({ left: i * track.clientWidth, behavior: reduce ? "auto" : "smooth" });
@@ -755,42 +787,36 @@
     }
     function settle(i) {
       target = i;
-      if (i === index && dots[i].getAttribute("aria-current")) return;
-      index = i;
-      if (videos[i] && !reduce) {
-        done[i] = false;
-        try { videos[i].currentTime = 0; } catch (e) {}
+      if (i === index) return;
+      // The slide left behind lets its clip go and keeps its last frame.
+      if (index >= 0 && scenes[index].video) {
+        unload(index);
+        scenes[index].still.src = scenes[index].still.dataset.last;
       }
-      var next = videos[(i + 1) % slides.length];
-      if (next && !reduce) next.preload = "auto";
+      index = i;
+      var sc = scenes[i];
       panel.style.backgroundColor = slides[i].dataset.bg;
       dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); });
       slides.forEach(function (s, j) { s.setAttribute("aria-hidden", j === i ? "false" : "true"); });
-      playOrPause();
+      var next = (i + 1) % slides.length;
+      scenes.forEach(function (_, k) { if (k !== i && k !== next) unload(k); });
+      if (sc.video && !reduce) {
+        // From the start, as a fresh play.
+        sc.done = false;
+        sc.still.src = sc.still.dataset.first;
+        sc.video.classList.remove("on");
+        if (sc.video.getAttribute("src")) { try { sc.video.currentTime = 0; } catch (e) {} }
+        else load(i);
+      }
+      load(next);
+      play(i);
       schedule();
     }
-    function playOrPause() {
-      videos.forEach(function (v, i) {
-        if (!v || done[i]) return;
-        if (i === index && visible) {
-          clearTimeout(stall);
-          stall = setTimeout(function () {
-            if (visible && i === index && !done[i] && v.currentTime < 0.1) { finish(i); schedule(); }
-          }, 4000);
-          var p = v.play();
-          // Blocked (Low Power Mode, a data saver): show the finished frame instead.
-          if (p && p.catch) p.catch(function () { finish(i); schedule(); });
-        } else {
-          v.pause();
-        }
-      });
-    }
-    // Next slide after `wait` — a short beat after a recording ends, else the usual hold.
     function schedule(wait) {
       clearTimeout(timer);
-      if (reduce || !visible || hovering) return;
-      // A recording runs its course first.
-      if (!done[index]) return;
+      if (reduce || !visible || hovering || index < 0) return;
+      var sc = scenes[index];
+      if (sc.video && !sc.done) return;   // a clip runs its course first
       timer = setTimeout(function () { go((index + 1) % slides.length); }, wait || HOLD);
     }
 
@@ -801,24 +827,31 @@
         settle(Math.round(track.scrollLeft / track.clientWidth));
       }, 90);
     }, { passive: true });
-    window.addEventListener("resize", function () { go(index); });
+    window.addEventListener("resize", function () { go(Math.max(index, 0)); });
 
     carousel.addEventListener("mouseenter", function () { hovering = true; schedule(); });
     carousel.addEventListener("mouseleave", function () { hovering = false; schedule(); });
-    document.addEventListener("visibilitychange", function () {
-      visible = !document.hidden && visible;
-      if (document.hidden) { clearTimeout(timer); videos.forEach(function (v) { if (v) v.pause(); }); }
-      else { observeAgain(); }
-    });
 
+    function setVisible(on) {
+      visible = on;
+      var sc = index >= 0 ? scenes[index] : null;
+      if (!on) {
+        clearTimeout(timer);
+        clearTimeout(stall);
+        if (sc && sc.video) sc.video.pause();
+        return;
+      }
+      if (sc && sc.video && !sc.done) play(index);
+      schedule();
+    }
     var io = null;
-    function observeAgain() { if (io) { io.unobserve(carousel); io.observe(carousel); } }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) setVisible(false);
+      else if (io) { io.unobserve(carousel); io.observe(carousel); }
+      else setVisible(true);
+    });
     if ("IntersectionObserver" in window) {
-      io = new IntersectionObserver(function (entries) {
-        visible = entries[0].isIntersecting;
-        playOrPause();
-        schedule();
-      }, { threshold: .5 });
+      io = new IntersectionObserver(function (entries) { setVisible(entries[0].isIntersecting); }, { threshold: .4 });
       io.observe(carousel);
     } else {
       visible = true;
