@@ -58,11 +58,13 @@ body {
   -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 30px; position: relative; z-index: 2; }
+/* Figtree throughout, as on the home page and the drive pages (the user,
+   2026-10-27: no serif). Figtree has no italic, so emphasis keeps its weight. */
 h1, h2, h3 {
-  margin: 0; font-family: var(--serif); font-weight: 400;
-  letter-spacing: -0.02em; line-height: 1.02; font-optical-sizing: auto;
+  margin: 0; font-family: var(--sans); font-weight: 700;
+  letter-spacing: -0.025em; line-height: 1.08;
 }
-h1 em, h2 em, h3 em { font-style: italic; }
+h1 em, h2 em, h3 em { font-style: normal; }
 a { color: inherit; } p { margin: 0; }
 img { display: block; max-width: 100%; }
 
