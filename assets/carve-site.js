@@ -36,7 +36,8 @@
   // below: this file sends every event itself, with the page it names.
   var PLAUSIBLE_SRC = "https://plausible.io/js/pa-icVqdnmcMI9NQpYz8Uneq.js";
   var APP_STORE_PREFIX = "https://apps.apple.com/app/";
-  var ANDROID_BETA_HOST = "groups.google.com";
+  // Android buttons go to carve.run/android/: the three steps into the Play test.
+  var ANDROID_PAGE = "/android/";
   var STORE_KEY = "carve.campaign";
   var UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 
@@ -143,7 +144,7 @@
   }
 
   function isAppStore(a) { return a && a.href && a.href.indexOf(APP_STORE_PREFIX) === 0; }
-  function isAndroidBeta(a) { return a && a.hostname === ANDROID_BETA_HOST && /\/g\/carve-beta/.test(a.pathname); }
+  function isAndroidBeta(a) { return a && a.hostname === location.hostname && a.pathname === ANDROID_PAGE; }
 
   function tagLinks() {
     document.querySelectorAll('a[href^="' + APP_STORE_PREFIX + '"]').forEach(function (a) { a.href = storeUrl(a.href); });
@@ -171,6 +172,8 @@
     var a = event.target && event.target.closest ? event.target.closest("a") : null;
     if (isAppStore(a)) { a.href = storeUrl(a.href); send("Store Tap", { store: "app_store", ct: ct }); }
     else if (isAndroidBeta(a)) send("Store Tap", { store: "play_beta", ct: ct });
+    // The Android page's steps: the group, the test's opt-in, the Play listing.
+    else if (a && a.getAttribute("data-beta-step")) send("Beta Step", { step: a.getAttribute("data-beta-step"), ct: ct });
   }, true);
 
   function ready() { tagLinks(); tagBanner(); }

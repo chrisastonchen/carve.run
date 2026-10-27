@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carve for Android — Early Access on Google Play</title>
+<meta name="description" content="Carve for Android and Android Auto is in early access on Google Play. Three steps and about two minutes to join.">
+<link rel="canonical" href="https://carve.run/android/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Carve">
+<meta property="og:title" content="Carve for Android — early access">
+<meta property="og:description" content="Carve for Android and Android Auto, in early access on Google Play. Three steps and about two minutes to join.">
+<meta property="og:image" content="https://carve.run/assets/og-home.jpg?v=804e0fcbfc">
+<meta property="og:url" content="https://carve.run/android/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Carve", "item": "https://carve.run/"}, {"@type": "ListItem", "position": 2, "name": "Android", "item": "https://carve.run/android/"}]}</script>
+<meta name="theme-color" content="#FBF8EF">
+<link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
+<link rel="stylesheet" href="/styles.css?v=3e6d22f7f9">
+<style>
+  .doc .lede { font-size: 19px; line-height: 1.55; margin-top: 16px; }
+  .steps { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 16px; counter-reset: step; }
+  .steps li {
+    counter-increment: step; position: relative; background: #fff; border-radius: 20px;
+    padding: 24px 24px 24px 78px; box-shadow: 0 6px 22px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
+  }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 24px; top: 22px; width: 38px; height: 38px; border-radius: 50%;
+    background: var(--ink); color: #fff; font-weight: 800; font-size: 18px; display: grid; place-items: center;
+  }
+  .steps h2 { font-size: 22px; margin: 4px 0 6px; }
+  .steps p { margin: 0; color: var(--ink-dim); font-size: 16px; line-height: 1.5; }
+  .steps .btn { margin-top: 16px; }
+  .after { margin-top: 36px; }
+  .after p { font-size: 16px; line-height: 1.55; }
+  @media (max-width: 520px) {
+    .steps li { padding: 70px 20px 22px; }
+    .steps li::before { left: 20px; top: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="terrain" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<nav class="top static">
+  <div class="wrap">
+    <div class="bar">
+      <a class="wordmark" href="/" aria-label="Carve">
+        <img class="appicon" src="/assets/icon-128.png?v=87d1534580" alt="" width="32" height="32">
+        <img class="mark" src="/assets/wordmark-light.png?v=87d7b93bbc" alt="Carve" width="300" height="45">
+      </a>
+      <a class="nav-cta" href="/#pricing">Get Carve</a>
+    </div>
+  </div>
+</nav>
+
+<main class="doc">
+  <h1>Carve for Android</h1>
+  <p class="lede">Carve for Android and Android Auto is in early access on Google Play. Joining takes about two minutes. Do it on your phone, or on a computer signed in to the Google account your phone's Play Store uses.</p>
+
+  <ol class="steps">
+    <li>
+      <h2>Join the Carve beta group</h2>
+      <p>It's open to anyone, and it's what lets Google Play offer you the app. Choose <b>Join group</b>; there's nothing to post.</p>
+      <a class="btn btn-primary" href="https://groups.google.com/g/carve-beta" data-beta-step="group" target="_blank" rel="noopener">Join the group</a>
+    </li>
+    <li>
+      <h2>Become a tester</h2>
+      <p>Open the test and tap <b>Become a tester</b>. If it says you can't join yet, give it a minute after joining the group and reload.</p>
+      <a class="btn btn-primary" href="https://play.google.com/apps/testing/run.carve.app" data-beta-step="optin" target="_blank" rel="noopener">Open the test</a>
+    </li>
+    <li>
+      <h2>Install Carve</h2>
+      <p>Get it from Google Play like any other app. Updates come the same way.</p>
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=run.carve.app" data-beta-step="install" target="_blank" rel="noopener">Get Carve on Google Play</a>
+    </li>
+  </ol>
+
+  <div class="after">
+    <p><strong>Please stay in the test for at least two weeks.</strong> Google asks for a group of early testers over 14 days before an app can go public on Play, so every tester who stays helps Carve get there.</p>
+    <p>Carve runs on Android 10 or later. Android Auto comes with <a href="/#pricing">Carve Apex</a>. Questions, or stuck on a step? Write to <a href="mailto:support@carve.run">support@carve.run</a>.</p>
+    <p>On an iPhone? Carve is on the <a href="https://apps.apple.com/app/carve-route-planner/id6808087716" rel="noopener">App Store</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Carve — for the roads worth driving.</span>
+    <div class="links">
+      <a href="/drives/">Drives</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/support/">Support</a>
+    </div>
+    <span>© 2026 Carve</span>
+  </div>
+</footer>
+<script src="/assets/carve-site.js?v=796a097cd1" defer></script>
+</body>
+</html>
