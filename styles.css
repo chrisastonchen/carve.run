@@ -206,3 +206,9 @@ details p { padding: 0 0 14px; }
 .doc .cmp-sources li { font-size: 15px; }
 .doc .cmp-more { margin-top: 30px; font-size: 15px; }
 .doc .cmp-fine { margin-top: 14px; font-size: 13px; color: var(--ink-faint); }
+.cmp-callout {
+  margin: 26px 0 8px; padding: 20px 22px; border: 2px solid var(--ink); border-radius: 18px;
+  background: var(--mint);
+}
+.doc .cmp-callout h2 { font-size: 24px; margin: 0 0 8px; }
+.doc .cmp-callout p { color: var(--ink); }
