@@ -44,6 +44,11 @@ Guides to famous drives, each with a route that opens in Carve: https://carve.ru
 - [Overseas Highway](https://carve.run/drives/overseas-highway/): US-1, Key Largo to Key West, Florida Keys. Drive the Overseas Highway (US-1) from Key Largo to Key West across 42 bridges, including the Seven Mile Bridge. Map, stops, best time to go and tips.
 <!-- /drives -->
 
+## Guides
+
+- [How to plan a scenic drive](https://carve.run/plan-a-scenic-drive/): Step by step: start from a great road or describe the drive, build the route stop by stop on Scenic roads, check weather, conditions and a 3D Flyover, download it for no signal, and drive it without rerouting.
+- [How to plan and lead a group drive](https://carve.run/group-drives/): Step by step for car clubs, group drives and road rallies: plan once, share one link (iPhone, Android or browser), download for no signal, turn on Group to see everyone on the map by name, brief the group, and keep it together with lead and sweep cars.
+
 ## Comparisons
 
 How Carve compares with other apps for scenic drives, group drives, car clubs and rallies (feature charts with sources, checked October 2026): https://carve.run/compare/

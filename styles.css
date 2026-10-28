@@ -212,3 +212,12 @@ details p { padding: 0 0 14px; }
 }
 .doc .cmp-callout h2 { font-size: 24px; margin: 0 0 8px; }
 .doc .cmp-callout p { color: var(--ink); }
+.doc .cmp-lead { font-size: 18px; color: var(--ink); margin: 0 0 8px; }
+.doc ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 14px 0; }
+.doc ol.steps li { counter-increment: step; position: relative; padding: 0 0 6px 52px; margin: 0 0 18px; }
+.doc ol.steps li::before {
+  content: counter(step); position: absolute; left: 0; top: -2px; width: 36px; height: 36px;
+  display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%;
+  background: var(--sky); color: var(--ink); font-weight: 700; font-size: 16px;
+}
+.doc ol.steps h3 { margin: 4px 0 6px; }
