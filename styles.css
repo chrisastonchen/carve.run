@@ -173,3 +173,36 @@ details p { padding: 0 0 14px; }
   nav.top .bar { padding: 8px 8px 8px 12px; border-radius: 14px; }
   .wrap, .doc { padding-left: 20px; padding-right: 20px; }
 }
+
+/* ── compare pages (scripts/compare/build_pages.py) ── */
+.doc.cmp { max-width: 880px; }
+.cmp .eyebrow { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.cmp-scroll { overflow-x: auto; margin: 14px -4px; padding: 0 4px; }
+.doc .cmp-table { min-width: 560px; margin: 0; background: var(--paper); border: 2px solid var(--ink); border-radius: 16px; border-collapse: separate; border-spacing: 0; overflow: hidden; }
+.cmp-table thead th { background: var(--paper-2); color: var(--ink); font-size: 14px; border-bottom: 2px solid var(--ink); }
+.cmp-table thead th:nth-child(2) { background: var(--sky); }
+.cmp-table tbody th { color: var(--ink); font-weight: 600; width: 30%; }
+.cmp-table td { width: 35%; }
+.cmp-table tr:last-child th, .cmp-table tr:last-child td { border-bottom: 0; }
+.cmp-table .mk {
+  display: inline-grid; place-items: center; width: 20px; height: 20px; margin-right: 7px;
+  border-radius: 50%; font-size: 12px; font-weight: 700; vertical-align: 1px; color: var(--ink);
+}
+.cmp-table .c-yes .mk { background: var(--mint); }
+.cmp-table .c-part .mk { background: var(--peach); }
+.cmp-table .c-no .mk { background: #F6D6D3; }
+.cmp-table .c-unk .mk { background: var(--paper-2); color: var(--ink-faint); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.doc .cmp-key { font-size: 14px; color: var(--ink-faint); }
+.cmp-cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
+.doc .cmp-cta a.btn { color: var(--ink); text-decoration: none; }
+.cmp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 26px 0 10px; }
+.doc a.cmp-card {
+  display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border: 2px solid var(--ink);
+  border-radius: 16px; background: var(--paper); color: var(--ink); text-decoration: none; transition: background .18s;
+}
+.doc a.cmp-card:hover { background: var(--sky); text-decoration: none; }
+.cmp-card span { color: var(--ink-dim); font-size: 15px; line-height: 1.4; }
+.doc .cmp-sources li { font-size: 15px; }
+.doc .cmp-more { margin-top: 30px; font-size: 15px; }
+.doc .cmp-fine { margin-top: 14px; font-size: 13px; color: var(--ink-faint); }
