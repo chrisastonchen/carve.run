@@ -582,14 +582,20 @@ function placeChips() {
 let menuAt = null;
 function onMapClick(event) {
   if (saved) return;
+  // A click away from an open menu only closes it.
+  if (!$("click-menu").hidden) return closeClickMenu();
   const { lng, lat } = event.lngLat;
   menuAt = { lat: round(lat), lon: round(lng) };
+  // The marks the rows use: flags for the ends, the next letter or number.
+  const stops = stopCount();
+  const nextStop = markerLabels([...plan.waypoints.filter((w) => w.type === "stop"), { type: "stop" }]).pop();
+  const nextWaypoint = String(plan.waypoints.length - stops + 1);
   const choices = [
-    { key: "start", label: "Start here", icon: '<i class="k-start" style="width:14px;height:14px;border-radius:50%;background:var(--start)"></i>' },
-    { key: "stop", label: "Add a stop", icon: '<i style="width:14px;height:14px;border-radius:50%;background:var(--stop)"></i>' },
-    { key: "wp", label: "Add a waypoint", icon: '<i style="width:12px;height:12px;border-radius:50%;background:var(--wp);margin:0 1px"></i>' },
+    { key: "start", label: "Start here", icon: `<span class="badge start">${MARKS.start}</span>` },
+    { key: "stop", label: "Add a stop", icon: `<span class="badge stop">${nextStop}</span>` },
+    { key: "wp", label: "Add a waypoint", icon: `<span class="badge wp">${nextWaypoint}</span>` },
   ];
-  if (!loops()) choices.push({ key: "end", label: "End here", icon: '<i style="width:14px;height:14px;border-radius:4px;background:var(--ink)"></i>' });
+  if (!loops()) choices.push({ key: "end", label: "End here", icon: `<span class="badge dest">${MARKS.dest}</span>` });
   const likeliest = !plan.start ? "start" : !plan.end && !loops() ? "end" : "wp";
   choices.sort((a, b) => (a.key === likeliest ? -1 : b.key === likeliest ? 1 : 0));
   const menu = $("click-menu");
@@ -606,10 +612,17 @@ function onMapClick(event) {
     });
     menu.append(button);
   });
+  const cancel = document.createElement("button");
+  cancel.type = "button";
+  cancel.className = "cancel";
+  cancel.setAttribute("role", "menuitem");
+  cancel.textContent = "Cancel";
+  cancel.addEventListener("click", closeClickMenu);
+  menu.append(cancel);
   const point = event.point;
   const box = map.getContainer().getBoundingClientRect();
   menu.style.left = `${Math.min(point.x + 18, box.width - 240)}px`;
-  menu.style.top = `${Math.max(12, Math.min(point.y - 110, box.height - 230))}px`;
+  menu.style.top = `${Math.max(12, Math.min(point.y - 110, box.height - 290))}px`;
   menu.hidden = false;
   tempPin?.remove();
   tempPin = new maplibregl.Marker({ element: pinElement("temp", "") }).setLngLat([lng, lat]).addTo(map);
@@ -1742,6 +1755,12 @@ function osAwareGetApp() {
 
 function wire() {
   $("undo").addEventListener("click", undo);
+  // A click anywhere off the map menu closes it (the map's own clicks do
+  // that in onMapClick, so they don't also open a new one).
+  document.addEventListener("pointerdown", (event) => {
+    if ($("click-menu").hidden || $("click-menu").contains(event.target) || $("map").contains(event.target)) return;
+    closeClickMenu();
+  });
   $("redo").addEventListener("click", redo);
   $("start-over").addEventListener("click", () => $("start-over-dialog").showModal());
   $("start-over-dialog").addEventListener("close", () => {
