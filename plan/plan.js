@@ -2502,6 +2502,11 @@ async function takeHandoff() {
   const missed = [];
   for (const [role, query] of [["start", handoff.from], ["end", handoff.to]]) {
     if (!query) continue;
+    // Already a place (the home page's start, from where the visitor is): placed as it is.
+    if (typeof query === "object") {
+      if (Number.isFinite(query.lat) && Number.isFinite(query.lon)) choosePlace(role, undefined, { name: query.name || "Start", lat: query.lat, lon: query.lon });
+      continue;
+    }
     try {
       // One search session per place, as the rows' typeahead has (attachSearch).
       const searchSession = crypto.randomUUID();

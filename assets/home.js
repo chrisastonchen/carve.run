@@ -65,6 +65,13 @@ function renderNear() {
     <span class="t"><span class="away">${escapeHTML(awayText(r))}</span><span class="n">${escapeHTML(r.n)}</span>
     <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a></li>`).join("");
   $("near-title").textContent = place ? `Great drives near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
+  // The front door's start, from where we think they are: most people only type where to.
+  const field = $("door-from");
+  if (place && (!field.value || field.value === field.dataset.label)) {
+    const label = place.label === "you" ? "My location" : place.label;
+    Object.assign(field.dataset, { label, lat: String(place.lat), lon: String(place.lon) });
+    field.value = label;
+  }
   const chip = $("near-chip");
   chip.hidden = !place;
   if (place) $("near-name").textContent = place.label === "you" ? "you" : place.label;
@@ -231,8 +238,12 @@ function wireDoor() {
   }));
   $("pane-plan").addEventListener("submit", (event) => {
     event.preventDefault();
-    const from = $("door-from").value.trim(), to = $("door-to").value.trim();
-    if (!from && !to) { location.href = "/plan/"; return; }
+    const fromText = $("door-from").value.trim(), to = $("door-to").value.trim();
+    // The start filled in from where we think they are goes as the place itself, no search.
+    const field = $("door-from");
+    const from = field.dataset.lat && fromText === field.dataset.label
+      ? { name: fromText, lat: Number(field.dataset.lat), lon: Number(field.dataset.lon) } : fromText;
+    if (!fromText && !to) { location.href = "/plan/"; return; }
     handOff({ kind: "stops", from, to });
   });
   const err = (text) => { $("door-err").textContent = text; $("door-err").hidden = !text; };
