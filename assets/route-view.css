@@ -40,8 +40,12 @@
 
 /* On a phone, the store's button instead of a code to scan. */
 .rv .go { display: none; }
-.rv .go a { display: flex; align-items: center; justify-content: center; gap: 9px; height: 56px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
-.rv .go a svg { width: 20px; height: 20px; fill: #fff; }
+.rv .go a { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: var(--green); color: #fff; text-decoration: none; }
+.rv .go img { flex: none; width: 44px; height: 44px; border-radius: 10px; }
+.rv .go .why { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.rv .go .why b { font-size: 16px; font-weight: 800; }
+.rv .go .why span { font-size: 14px; opacity: .85; }
+.rv .go .open { flex: none; display: flex; align-items: center; height: 40px; padding: 0 22px; border-radius: 999px; background: #fff; color: var(--green); font-size: 16px; font-weight: 800; }
 .rv .go p { text-align: center; color: var(--ink-3); font-size: 13px; margin-top: 8px; }
 .rv .platforms { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; color: var(--ink-3); }
 .rv .platforms a { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 10px; color: inherit; background: none; height: auto; }
@@ -156,9 +160,9 @@
   .rv .facts .sep { display: none; }
   /* The app's button stays in reach (the user, 2026-10-29): a bar locked
      to the bottom of the screen while the page scrolls under it. */
-  .rv { padding-bottom: 78px; }
-  .rv .go { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; padding: 10px 16px max(10px, env(safe-area-inset-bottom)); background: rgba(255,255,255,.97); border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(0,0,0,.06); }
-  .rv .go a { height: 52px; }
+  .rv { padding-bottom: 76px; }
+  .rv .go { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; box-shadow: 0 -6px 20px rgba(0,0,0,.12); }
+  .rv .go a { border-radius: 0; padding: 12px 16px max(12px, env(safe-area-inset-bottom)); }
   .rv .go p, .rv .go .platforms { display: none; }
 }
 

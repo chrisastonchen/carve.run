@@ -27,7 +27,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=16">
-<link rel="stylesheet" href="/assets/route-view.css?v=d3dd6f11ac">
+<link rel="stylesheet" href="/assets/route-view.css?v=cc3728f118">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
      route_profile.js or page_parts.py, not this file. -->
 <style>
@@ -579,7 +579,11 @@ const RouteProfile = (() => {
     add(el("div", { class: "paste link" },
       el("input", { id: "rv-link", readonly: "", "aria-label": "The route's link", value: link.replace("https://", "") }),
       el("button", { type: "button", class: "pill green", id: "rv-copy" }, "Copy link")));
-    const button = el("a", { href: isAndroid ? ANDROID_URL : APP_STORE_URL }, icon(isAndroid ? "android" : "apple"), "Drive it in Carve, free");
+    // The banner, as page_parts.py's GO_INSIDE: icon, why, Open.
+    const button = el("a", { href: isAndroid ? ANDROID_URL : APP_STORE_URL },
+      el("img", { src: "/assets/icon-128.png?v=87d1534580", alt: "", width: "44", height: "44" }),
+      el("span", { class: "why" }, el("b", {}, "Drive this in Carve"), el("span", {}, "Free turn-by-turn directions")),
+      el("span", { class: "open" }, "Open"));
     button.addEventListener("click", openInApp);
     add(el("div", { class: "go" }, button,
       el("p", {}, "Opens this route in the app, or where to get it."),
