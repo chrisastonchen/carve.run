@@ -79,6 +79,7 @@ const store = {
 const DRAFT_KEY = "carve.plan.draft";
 const SESSION_KEY = "carve.plan.session";
 const PENDING_SAVE_KEY = "carve.plan.pending-save";
+const VIEW_KEY = "carve.plan.view";
 
 // ── state ────────────────────────────────────────────────────────────
 
@@ -317,17 +318,28 @@ function setUpMap() {
     $("no-map").hidden = false;
     return;
   }
+  // Where this browser left the map, or the whole country until the
+  // visitor's town comes back.
+  const view = store.get(VIEW_KEY);
+  const remembered = Array.isArray(view?.center) && view.center.length === 2 && view.center.every(Number.isFinite) && Number.isFinite(view.zoom);
   map = new maplibregl.Map({
     container: "map",
     style: MAP_STYLE,
-    center: [-98.5, 39.5],
-    zoom: 3.6,
+    center: remembered ? view.center : [-98.5, 39.5],
+    zoom: remembered ? view.zoom : 3.6,
     attributionControl: { compact: false },
     dragRotate: false,
     pitchWithRotate: false,
   });
   map.touchZoomRotate.disableRotation();
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+  // The browser asks for the visitor's location only when this is clicked.
+  map.addControl(new maplibregl.GeolocateControl({
+    positionOptions: { enableHighAccuracy: false, timeout: 10000 },
+    fitBoundsOptions: { maxZoom: 11 },
+    trackUserLocation: false,
+  }), "top-right");
+  if (!remembered && !plan.start && !plan.end) startNearVisitor();
   map.on("load", () => {
     const firstLabel = map.getStyle().layers.find((layer) => layer.type === "symbol")?.id;
     map.addSource("route", { type: "geojson", data: emptyLine() });
@@ -340,7 +352,27 @@ function setUpMap() {
   });
   map.on("click", onMapClick);
   map.on("moveend", placeChips);
+  map.on("moveend", () => {
+    const center = map.getCenter();
+    store.set(VIEW_KEY, { center: [Number(center.lng.toFixed(4)), Number(center.lat.toFixed(4))], zoom: Number(map.getZoom().toFixed(2)) });
+  });
   map.on("movestart", closeClickMenu);
+}
+
+/// The visitor's town, roughly, from carve.run's own edge (no prompt, no
+/// third party): the map starts there unless they've already moved it.
+async function startNearVisitor() {
+  if (LOCAL) return;
+  try {
+    const response = await fetch("/where", { cache: "no-store", signal: AbortSignal.timeout(4000) });
+    if (!response.ok) return;
+    const { lat, lon } = await response.json();
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+    if (map.getZoom() > 4 || plan.start || plan.end) return;
+    map.jumpTo({ center: [lon, lat], zoom: 9 });
+  } catch {
+    // The whole country, then.
+  }
 }
 
 const emptyLine = () => ({ type: "FeatureCollection", features: [] });
@@ -835,13 +867,27 @@ function choosePlace(role, index, place) {
   }
 }
 
-// typeahead: three letters and a pause, then up to six places near the map
+// typeahead: three letters and a pause, then up to six places near the map.
+// Suggestions say where they are only once picked: the pair is one Search
+// Box session, which a pick ends.
 function attachSearch(li, input, onPick, onLeave) {
   let timer = 0;
   let results = [];
   let active = 0;
   let list = null;
+  let session = crypto.randomUUID();
   const original = input.value;
+  const pick = async (suggestion) => {
+    // Already placed (an answer from before suggestions): nothing to look up.
+    if (Number.isFinite(suggestion.lat) && Number.isFinite(suggestion.lon)) return onPick(suggestion);
+    try {
+      const data = await planner("place", { id: suggestion.id, session });
+      session = crypto.randomUUID();
+      onPick({ ...data.place, name: suggestion.name });
+    } catch (failure) {
+      toast(failure.message, true);
+    }
+  };
   const close = () => {
     list?.remove();
     list = null;
@@ -876,7 +922,7 @@ function attachSearch(li, input, onPick, onLeave) {
       item.addEventListener("mousedown", (event) => {
         event.preventDefault();
         close();
-        onPick(place);
+        pick(place);
       });
       list.append(item);
     });
@@ -889,7 +935,7 @@ function attachSearch(li, input, onPick, onLeave) {
     timer = setTimeout(async () => {
       try {
         const near = mapReady ? map.getCenter() : null;
-        const data = await planner("search", { query, ...(near ? { near: { lat: near.lat, lon: near.lng } } : {}) });
+        const data = await planner("search", { query, session, ...(near ? { near: { lat: near.lat, lon: near.lng } } : {}) });
         if (input.value.trim() !== query) return;
         results = data.places || [];
         active = 0;
@@ -915,7 +961,7 @@ function attachSearch(li, input, onPick, onLeave) {
       event.preventDefault();
       const place = results[active];
       close();
-      onPick(place);
+      pick(place);
     }
   });
   input.addEventListener("focus", () => input.select());
