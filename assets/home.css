@@ -496,3 +496,5 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .app-sheet .choice b { font-size: 17px; }
 .app-sheet .choice small { font-size: 13px; color: var(--ink-3); }
 .app-sheet .choice > svg { width: 20px; height: 20px; flex: none; color: var(--ink-4); }
+/* The phone clips' captions as plain words, not pills (the user, 2026-10-29). */
+.seq .cap { padding: 0; border-radius: 0; background: none; color: var(--ink); font-size: 16px; font-weight: 700; text-align: center; }
