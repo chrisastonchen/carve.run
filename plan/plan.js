@@ -680,6 +680,13 @@ function chainPoints() {
 
 const routePace = () => (plan.path?.durationSeconds > 0 ? plan.path.distanceMeters / plan.path.durationSeconds : NaN);
 
+/// What a plan is, for telling whether it's still the drive it came from:
+/// its ends, its points and their kinds, its trip and its name.
+function roadShape() {
+  const at = (p) => (p ? [p.lat, p.lon] : null);
+  return JSON.stringify([at(plan.start), at(plan.end), plan.waypoints.map((w) => [w.lat, w.lon, w.type, w.stayMinutes || 0]), plan.trip, plan.name || ""]);
+}
+
 /// "Drive the whole road": in where it adds least, from the nearer end;
 /// its first end named for the road, points along it to keep the router
 /// on it, its far end by the catalog's name (the app's PlanRoads.points).
@@ -701,6 +708,9 @@ function driveWholeRoad(road) {
     const at = fresh || !plan.start ? plan.waypoints.length : Math.min(placed.index, plan.waypoints.length);
     plan.waypoints.splice(at, 0, ...added.map((p) => ({ ...spot(p), type: "marker" })));
   });
+  // The whole plan is this drive: Save opens its page while it stays so.
+  plan.fromRoad = fresh ? { slug: road.s, shape: roadShape() } : null;
+  saveDraft();
   const length = Number.isFinite(road.m) ? formatDistance(road.m * 1609.344, miles) : null;
   toast(`Added ${road.n}${length ? `: +${length.value} ${length.unit}, about ${formatDuration(fresh ? placed.roadSeconds : placed.seconds)}` : ""}.`);
 }
@@ -1734,6 +1744,13 @@ async function importFile(file) {
 
 async function save() {
   if (!plan.path) return;
+  // One of Carve's drives, whole and untouched: its own page, with more
+  // than a copy would have (the user, 2026-10-29). Changed at all, it's
+  // the planner's own route.
+  if (plan.fromRoad && plan.fromRoad.shape === roadShape()) {
+    location.href = `/drives/${encodeURIComponent(plan.fromRoad.slug)}/`;
+    return;
+  }
   // A name the planner made follows the route ("From El Granada" moved to
   // Belmont is "From Belmont"); one they typed is theirs.
   const typed = clip($("route-name").value, MOST_NAME_CHARACTERS);
