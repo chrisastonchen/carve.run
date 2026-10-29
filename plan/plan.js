@@ -246,6 +246,7 @@ async function turnstileToken() {
     const options = {
       sitekey: TURNSTILE_SITE_KEY,
       appearance: "interaction-only",
+      theme: "light",
       callback: (token) => done(token),
       "error-callback": () => done(null),
       "expired-callback": () => done(null),
