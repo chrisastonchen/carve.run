@@ -114,20 +114,22 @@ function choose(r) {
   light(r.k);
   const line = lineOf(r);
   const b = line.reduce((acc, [x, y]) => [Math.min(acc[0], x), Math.min(acc[1], y), Math.max(acc[2], x), Math.max(acc[3], y)], [180, 90, -180, -90]);
-  // Room on the right for the card.
+  // The road in the open space between the hero's card and the road's card.
+  const panel = $("road-panel");
+  panel.innerHTML = `<button type="button" class="x" aria-label="Close">×</button>${bigCard(r)}`;
+  panel.hidden = false;
   const pad = heroPadding();
-  map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: { ...pad, top: 70, bottom: 50, right: 340 }, maxZoom: 13, duration: 900 });
-  map.once("moveend", () => {
-    if (chosen !== r.k) return;
-    const east = line.reduce((best, p) => (p[0] > best[0] ? p : best), line[0]);
-    popup = new maplibregl.Popup({ closeButton: true, closeOnClick: true, offset: 18, anchor: "left", className: "road-pop", maxWidth: "320px" })
-      .setLngLat(east).setHTML(bigCard(r)).addTo(map);
-    popup._sticky = true;
-    popup.on("close", () => { if (chosen === r.k) { chosen = null; light(null); } });
-  });
+  map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: { ...pad, top: 70, bottom: 50, right: panel.offsetWidth + 48 }, maxZoom: 13, duration: 900 });
+}
+
+function unchoose() {
+  chosen = null;
+  $("road-panel").hidden = true;
+  light(null);
 }
 
 function light(k) {
+  if (k == null && chosen != null) k = chosen;
   if (pointed === k) return;
   for (const source of ["home-roads", "home-mids"]) {
     if (pointed != null) map.setFeatureState({ source, id: pointed }, { on: false });
@@ -159,6 +161,7 @@ async function buildMap() {
   });
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
   // A road's card opens it in the planner: its Carve link, handed over like a pasted one.
+  $("road-panel").addEventListener("click", (event) => { if (event.target.closest(".x")) unchoose(); });
   $("hero-map").addEventListener("click", (event) => {
     const link = event.target.closest("[data-plan]");
     if (!link) return;
@@ -192,15 +195,14 @@ async function buildMap() {
       map.on("mousemove", layer, (event) => {
         map.getCanvas().style.cursor = "pointer";
         const k = event.features[0].properties.k;
-        if (pointed === k || popup?._sticky) return light(k);
+        if (pointed === k) return;
         light(k);
-        show(roads[k], smallCard(roads[k]), false);
+        if (k !== chosen) show(roads[k], smallCard(roads[k]), false);
       });
       map.on("mouseleave", layer, () => {
         map.getCanvas().style.cursor = "";
-        if (popup?._sticky) return light(chosen);
         popup?.remove(); popup = null;
-        light(null);
+        light(chosen);
       });
       // Clicking a road zooms to the whole of it and shows its card beside it,
       // its photo first; the planner is a click on the card away.
@@ -305,6 +307,76 @@ function wireClips(box) {
   dots[0].setAttribute("aria-current", "true");
 }
 
+
+// ── the three steps, played in turn ──────────────────────────────────
+// Each scene rests as a picture; while the section is on screen they play
+// one after another, 1, 2, 3, then rest a moment and go again. A scene is
+// classes added on a timeline (home.css); the drive's cars move along its road.
+
+const SCENES = {
+  1: { length: 6800, cues: [[0, "run"], [500, "a"], [1300, "b"], [2900, "imp"], [3300, "o1"], [3550, "o2"], [3800, "o3"], [4500, "pick"]] },
+  2: { length: 5600, cues: [[0, "run"], [500, "tap"], [700, "copied"], [1500, "send"], [2200, "m1"], [2550, "m2"], [2900, "m3"], [3800, "print"]] },
+  3: { length: 8000, cues: [[0, "run"], [1400, "hz"], [4300, "ns"]] },
+};
+
+function placeCars(box, shift = 0) {
+  const road = box.querySelector(".drive-route");
+  if (!road) return;
+  const length = road.getTotalLength();
+  box.querySelectorAll(".car").forEach((car) => {
+    const at = Math.min(0.97, Number(car.dataset.at) + shift);
+    const p = road.getPointAtLength(at * length);
+    car.setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+  });
+}
+
+function playScene(box, scene) {
+  return new Promise((done) => {
+    const timers = scene.cues.map(([at, cls]) => setTimeout(() => box.classList.add(cls), at));
+    let frame = 0;
+    if (box.classList.contains("vis-drive")) {
+      const start = performance.now();
+      const tick = (now) => {
+        const f = Math.min(1, (now - start) / scene.length);
+        placeCars(box, 0.22 * Math.sin(f * Math.PI / 2));
+        if (f < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    }
+    setTimeout(() => {
+      timers.forEach(clearTimeout);
+      cancelAnimationFrame(frame);
+      box.classList.remove(...scene.cues.map(([, cls]) => cls));
+      placeCars(box);
+      done();
+    }, scene.length);
+  });
+}
+
+function wireSteps() {
+  const boxes = [...document.querySelectorAll(".vis[data-step]")];
+  boxes.forEach((box) => placeCars(box));
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  let visible = false, running = false;
+  const loop = async () => {
+    if (running) return;
+    running = true;
+    while (visible) {
+      for (const box of boxes) {
+        if (!visible || box.offsetParent === null) continue;
+        await playScene(box, SCENES[box.dataset.step]);
+        await new Promise((r) => setTimeout(r, 500));
+      }
+      await new Promise((r) => setTimeout(r, 2500));
+    }
+    running = false;
+  };
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (visible) loop();
+  }, { threshold: 0.35 }).observe(document.querySelector(".steps"));
+}
+
 // ── start ────────────────────────────────────────────────────────────
 
 function riseIn() {
@@ -322,6 +394,7 @@ function riseIn() {
 async function main() {
   riseIn();
   wireDoor();
+  wireSteps();
   $("near-change").addEventListener("click", locate);
   $("hero-locate").addEventListener("click", locate);
   if (!wide()) document.querySelectorAll(".seq").forEach(wireClips);

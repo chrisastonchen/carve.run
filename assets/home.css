@@ -137,30 +137,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .step p { font-size: 16px; line-height: 1.5; color: var(--ink-3); }
 .vis { height: 280px; border-radius: 22px; position: relative; overflow: hidden; }
 .vis svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.vis-plan { background: #EEF0E3; }
-.vis-plan .mini { position: absolute; left: 18px; top: 18px; bottom: 18px; width: 170px; background: #fff; border-radius: 14px; box-shadow: 0 8px 22px rgba(21,24,28,.12); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.vis-plan .seg { display: grid; grid-template-columns: 1fr 1fr; padding: 2px; border-radius: 999px; background: var(--sand-2); font-size: 11px; font-weight: 700; text-align: center; }
-.vis-plan .seg span { padding: 4px; border-radius: 999px; color: var(--ink-3); }
-.vis-plan .seg span:first-child { background: #fff; color: var(--ink); }
-.vis-plan .field { font-size: 12px; padding: 7px 8px; border-radius: 8px; background: var(--sand); }
-.vis-plan .tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 4px; }
-.vis-plan .tags span { font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 999px; background: var(--mint); color: var(--green); }
-.vis-share { background: var(--green); display: flex; align-items: center; justify-content: center; gap: 18px; padding: 24px; }
-.vis-share .card { width: 200px; background: #fff; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
-.vis-share .card b { font-size: 15px; }
-.vis-share .card .sub { font-size: 12px; color: var(--ink-3); }
-.vis-share .card .link { padding: 8px 10px; border-radius: 10px; background: var(--sand); font-size: 12px; font-weight: 700; color: var(--green); }
-.vis-share .card .two { display: flex; gap: 6px; font-size: 11px; font-weight: 700; }
-.vis-share .card .two span { flex: 1; text-align: center; padding: 6px; border-radius: 999px; background: var(--sand-2); }
-.vis-share .card .two span:first-child { background: var(--green); color: #fff; }
-.vis-share > .qr { width: 96px; height: 96px; padding: 8px; border-radius: 12px; background: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
-.vis-share > .qr svg { width: 100%; height: 100%; display: block; }
-.vis-drive { background: #23282E; }
-.vis-drive .alert { position: absolute; left: 18px; top: 18px; padding: 9px 12px; border-radius: 12px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,.3); }
-.vis-drive .alert b { display: block; font-size: 13px; }
-.vis-drive .alert span { font-size: 11px; color: var(--ink-3); }
-.vis-drive .tags { position: absolute; right: 18px; bottom: 18px; left: 18px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-.vis-drive .tags span { font-size: 11px; font-weight: 700; color: #fff; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.14); }
 
 /* On a phone the steps show the app itself: a phone playing its clips. */
 .seq { display: none; flex-direction: column; align-items: center; gap: 14px; }
@@ -338,3 +314,113 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 /* The start's flag and the destination's checkered flag, as the planner marks them. */
 .door .stops .pin { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #fff; }
 .door .stops .pin svg { width: 14px; height: 14px; }
+/* A clicked road's card, docked at the map's top right; the map fits the road beside it. */
+.road-panel { position: absolute; z-index: 4; right: 18px; top: 70px; padding: 12px; border-radius: 18px; background: #fff; box-shadow: 0 14px 40px rgba(21,24,28,.22); max-height: calc(100% - 88px); overflow-y: auto; }
+.road-panel .x { position: absolute; right: 18px; top: 18px; z-index: 1; width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(255,255,255,.92); box-shadow: 0 2px 8px rgba(0,0,0,.2); font-size: 20px; line-height: 1; cursor: pointer; color: var(--ink); }
+.road-panel .road-card { width: 268px; }
+.road-panel .road-card img { height: 140px; }
+
+/* ═══ The three steps, as small scenes (the user, 2026-10-29): each rests as
+   a picture, and when the section is in view they play in turn, 1, 2, 3
+   (home.js playSteps adds the classes on a timeline; .run starts a scene). ═══ */
+.vis * { box-sizing: border-box; }
+.vis .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* 1 · Plan or import */
+.vis-plan { background: #EEF0E3; }
+.vis-plan .route, .vis-plan .route-casing { stroke-dasharray: 1 1; stroke-dashoffset: 0; transition: stroke-dashoffset .9s ease; }
+.vis-plan .pin { transition: opacity .3s, transform .35s cubic-bezier(.3,1.6,.5,1); transform-box: fill-box; transform-origin: center; }
+.vis-plan .mini { position: absolute; left: 14px; top: 14px; bottom: 14px; width: 176px; padding: 10px; border-radius: 16px; background: #fff; box-shadow: 0 8px 22px rgba(21,24,28,.14); display: flex; flex-direction: column; gap: 8px; }
+.vis-plan .seg { position: relative; display: grid; grid-template-columns: 1fr 1fr; padding: 2px; border-radius: 999px; background: var(--sand-2); font-size: 11px; font-weight: 700; text-align: center; }
+.vis-plan .seg .o { position: relative; z-index: 1; padding: 5px 0; color: var(--ink-3); transition: color .3s; }
+.vis-plan .seg .o:nth-of-type(2) { color: var(--ink); }
+.vis-plan .seg .knob { position: absolute; left: 2px; top: 2px; bottom: 2px; width: calc(50% - 2px); border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.14); transition: transform .4s cubic-bezier(.4,0,.2,1); }
+.vis-plan .panes { position: relative; flex: 1; }
+.vis-plan .pane { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 6px; transition: opacity .3s; }
+.vis-plan .pane-i { opacity: 0; }
+.vis-plan .row { display: flex; align-items: center; gap: 7px; padding: 6px 7px; border-radius: 8px; background: var(--sand); font-size: 11.5px; font-weight: 600; transition: opacity .3s, transform .35s; }
+.vis-plan .b { width: 15px; height: 15px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-style: normal; font-weight: 800; color: #fff; }
+.vis-plan .b-start { background: #2E9E52; } .vis-plan .b-stop { background: #E4731C; } .vis-plan .b-dest { background: #15181C; }
+.vis-plan .sum { margin-top: auto; font-size: 11px; color: var(--ink-3); transition: opacity .3s; }
+.vis-plan .sum b { color: var(--ink); }
+.vis-plan .opt { display: flex; align-items: center; gap: 7px; padding: 7px 8px; border-radius: 9px; border: 1.5px solid var(--rule); font-size: 11.5px; font-weight: 700; opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .3s, border-color .3s, background .3s; }
+.vis-plan .opt svg { width: 15px; height: 15px; flex: none; color: var(--ink-3); }
+.vis-plan .paste { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 6px 6px 6px 9px; border-radius: 999px; background: var(--sand); font-size: 10px; color: var(--ink-2); opacity: 0; transition: opacity .3s; }
+.vis-plan .paste span { padding: 3px 8px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; }
+/* the scene: stops added one by one, pins drop, the route draws; then Import */
+.vis-plan.run .r2, .vis-plan.run .r3, .vis-plan.run .sum { opacity: 0; transform: translateX(-8px); }
+.vis-plan.run .pin-2, .vis-plan.run .pin-3 { opacity: 0; transform: translateY(-14px); }
+.vis-plan.run .route, .vis-plan.run .route-casing { stroke-dashoffset: 1; transition-duration: 0s; }
+.vis-plan.run.a .r2 { opacity: 1; transform: none; }
+.vis-plan.run.a .pin-2 { opacity: 1; transform: none; }
+.vis-plan.run.a .route, .vis-plan.run.a .route-casing { stroke-dashoffset: .5; transition-duration: .9s; }
+.vis-plan.run.b .r3, .vis-plan.run.b .sum { opacity: 1; transform: none; }
+.vis-plan.run.b .pin-3 { opacity: 1; transform: none; }
+.vis-plan.run.b .route, .vis-plan.run.b .route-casing { stroke-dashoffset: 0; }
+.vis-plan.imp .knob { transform: translateX(100%); }
+.vis-plan.imp .seg .o:nth-of-type(2) { color: var(--ink-3); }
+.vis-plan.imp .seg .o:nth-of-type(3) { color: var(--ink); }
+.vis-plan.imp .pane-p { opacity: 0; }
+.vis-plan.imp .pane-i { opacity: 1; }
+.vis-plan.o1 .o1, .vis-plan.o2 .o2, .vis-plan.o3 .o3 { opacity: 1; transform: none; }
+.vis-plan.pick .o2 { border-color: var(--green); background: var(--mint); }
+.vis-plan.pick .paste { opacity: 1; }
+
+/* 2 · Share */
+.vis-share { background: var(--green); }
+.vis-share .card { position: absolute; left: 16px; top: 22px; width: 192px; padding: 11px; border-radius: 16px; background: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.28); display: flex; flex-direction: column; gap: 8px; z-index: 2; }
+.vis-share .top { display: flex; gap: 8px; align-items: center; }
+.vis-share .top img { width: 40px; height: 40px; border-radius: 9px; object-fit: cover; }
+.vis-share .top b { display: block; font-size: 12.5px; line-height: 1.2; }
+.vis-share .sub { font-size: 10.5px; color: var(--ink-3); }
+.vis-share .link { padding: 7px 9px; border-radius: 9px; background: var(--sand); font-size: 11px; font-weight: 700; color: var(--green); }
+.vis-share .two { display: flex; gap: 5px; font-size: 10.5px; font-weight: 700; }
+.vis-share .two span { flex: 1; text-align: center; padding: 6px; border-radius: 999px; background: var(--sand-2); transition: transform .15s; }
+.vis-share .two .btn-share { background: var(--green); color: #fff; }
+.vis-share .toast { position: absolute; left: 50%; bottom: -12px; transform: translate(-50%, 6px); padding: 4px 10px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 10px; font-weight: 700; white-space: nowrap; opacity: 0; transition: opacity .25s, transform .25s; }
+.vis-share .paper { position: absolute; left: 30px; top: 40px; width: 160px; height: 150px; padding: 10px; border-radius: 6px; background: #FDFCF8; box-shadow: 0 8px 20px rgba(0,0,0,.25); transform: translate(0, 0) rotate(0); transition: transform .5s cubic-bezier(.3,1.2,.5,1); display: flex; flex-direction: column; gap: 6px; }
+.vis-share .paper b { font-size: 10px; }
+.vis-share .paper i { height: 5px; border-radius: 3px; background: #E5E1D6; }
+.vis-share .paper i:nth-child(odd) { width: 70%; }
+.vis-share .bubble { position: absolute; right: 16px; top: 22px; max-width: 150px; padding: 8px 11px; border-radius: 14px 14px 4px 14px; background: #34C759; color: #fff; font-size: 10.5px; font-weight: 600; line-height: 1.3; box-shadow: 0 6px 16px rgba(0,0,0,.2); }
+.vis-share .crew { list-style: none; margin: 0; padding: 0; position: absolute; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 5px; }
+.vis-share .crew li { display: flex; align-items: center; gap: 6px; padding: 4px 9px 4px 4px; border-radius: 999px; background: #fff; font-size: 11px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,.18); transition: opacity .3s, transform .35s cubic-bezier(.3,1.5,.5,1); }
+.vis-share .crew i { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-style: normal; font-size: 10px; }
+.vis-share .crew span { margin-left: 4px; font-size: 9.5px; font-weight: 700; color: var(--green); }
+.vis-share .crew span::before { content: "✓ "; }
+.vis-share .bubble { transition: opacity .3s, transform .45s cubic-bezier(.3,1.3,.5,1); }
+/* the scene: Share link tapped, the link copied, sent to the group, each opens it, the turns print */
+.vis-share.run .bubble { opacity: 0; transform: translate(-60px, 20px) scale(.6); }
+.vis-share.run .crew li { opacity: 0; transform: translateX(16px); }
+.vis-share.run .paper { transform: none; }
+.vis-share.tap .btn-share { transform: scale(.92); }
+.vis-share.copied .toast { opacity: 1; transform: translate(-50%, 0); }
+.vis-share.send .bubble { opacity: 1; transform: none; }
+.vis-share.m1 .crew .m1, .vis-share.m2 .crew .m2, .vis-share.m3 .crew .m3 { opacity: 1; transform: none; }
+.vis-share.print .btn-print { transform: scale(.92); }
+.vis-share .paper, .vis-share.print .paper { transform: translate(-8px, 58px) rotate(-6deg); }
+.vis-share.run:not(.print) .paper { transform: none; }
+
+/* 3 · Drive together */
+.vis-drive { background: #1F2429; }
+.vis-drive .car { transition: transform .08s linear; }
+.vis-drive .hazard { transform-box: fill-box; transform-origin: center; transition: opacity .3s, transform .4s cubic-bezier(.3,1.6,.5,1); }
+.vis-drive .turn { position: absolute; left: 12px; top: 12px; display: flex; align-items: center; gap: 8px; padding: 7px 11px 7px 9px; border-radius: 12px; background: #1D7A4A; color: #fff; box-shadow: 0 6px 16px rgba(0,0,0,.3); }
+.vis-drive .turn svg { width: 20px; height: 20px; }
+.vis-drive .turn span { font-size: 10.5px; line-height: 1.25; }
+.vis-drive .turn b { display: block; font-size: 14px; }
+.vis-drive .alert { position: absolute; right: 12px; top: 12px; display: flex; align-items: center; gap: 8px; padding: 7px 11px 7px 8px; border-radius: 12px; background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,.35); font-size: 10.5px; color: var(--ink-3); opacity: 0; transform: translateY(-8px); transition: opacity .3s, transform .35s; }
+.vis-drive .alert .ic { width: 22px; height: 22px; flex: none; border-radius: 50%; background: #D64C3B; color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+.vis-drive .alert b { display: block; font-size: 12px; color: var(--ink); }
+.vis-drive .who { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.12); color: #fff; font-size: 11px; font-weight: 700; }
+.vis-drive .who .dot { width: 9px; height: 9px; border-radius: 50%; }
+.vis-drive .who em { font-style: normal; font-weight: 500; opacity: .75; }
+.vis-drive .sig { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.12); color: #fff; font-size: 11px; font-weight: 700; opacity: 0; transition: opacity .3s; }
+.vis-drive .sig svg { width: 15px; height: 15px; }
+/* the scene: the group moves along, a hazard is reported ahead, the signal goes and the turns keep coming */
+.vis-drive.run .hazard { opacity: 0; transform: scale(.3); }
+.vis-drive.hz .hazard { opacity: 1; transform: none; }
+.vis-drive.hz .alert { opacity: 1; transform: none; }
+.vis-drive.ns .sig { opacity: 1; }
+.vis-drive.ns .who { opacity: 0; transition: opacity .3s; }
+@media (prefers-reduced-motion: reduce) { .vis * { transition: none !important; } }

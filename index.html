@@ -30,7 +30,7 @@
 <link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=9bb6ad869e">
 <link rel="stylesheet" href="/assets/site-bar.css?v=1b5bcab43d">
-<link rel="stylesheet" href="/assets/home.css?v=1f8c6c8066">
+<link rel="stylesheet" href="/assets/home.css?v=3d74b2dd14">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -140,6 +140,7 @@
   </div>
   <div class="hero-map" id="hero-map" role="region" aria-label="Map of great driving roads near you">
     <span class="label"><i aria-hidden="true"></i>Great driving roads</span>
+    <div class="road-panel" id="road-panel" hidden></div>
     <button type="button" class="locate" id="hero-locate"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8z" fill="currentColor"/></svg>Use my location</button>
   </div>
 </section>
@@ -157,25 +158,76 @@
   <h2 id="steps-title">The easiest way <span class="em">to organize a drive.</span></h2>
   <ol class="steps">
     <li class="step">
-      <div class="vis vis-plan" aria-hidden="true">
-        <svg class="bg" viewBox="0 0 420 280" preserveAspectRatio="xMidYMid slice"><rect width="420" height="280" fill="#EEF0E3"/><path d="M0 220 C 90 190, 180 250, 280 225 C 340 210, 390 240, 420 235 L 420 280 L 0 280 Z" fill="#C8DFF2"/><path d="M190 50 C 230 40, 250 90, 290 80 C 330 70, 320 120, 360 130 C 390 138, 395 170, 380 190" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><path d="M190 50 C 230 40, 250 90, 290 80 C 330 70, 320 120, 360 130 C 390 138, 395 170, 380 190" fill="none" stroke="#2E92FF" stroke-width="5" stroke-linecap="round"/><circle cx="190" cy="50" r="9" fill="#2E9E52" stroke="#fff" stroke-width="2.5"/><circle cx="380" cy="190" r="9" fill="#15181C" stroke="#fff" stroke-width="2.5"/></svg>
-        <div class="mini"><div class="seg"><span>Plan</span><span>Import</span></div><div class="field">Carmel</div><div class="field">Ragged Point</div><div class="tags"><span>GPX</span><span>Ride with GPS</span><span>Google Maps link</span></div></div>
+      <div class="vis vis-plan" data-step="1" aria-hidden="true">
+        <svg class="bg" viewBox="0 0 400 230" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="230" fill="#EEF0E3"/>
+          <path d="M240 0 C 230 40, 250 70, 238 110 C 226 150, 252 190, 246 230 L 400 230 L 400 0 Z" fill="#E3EBD6"/>
+          <path d="M0 175 C 70 160, 140 205, 230 188 C 300 175, 350 200, 400 196 L 400 230 L 0 230 Z" fill="#C8DFF2"/>
+          <path d="M210 0 C 250 60, 330 70, 400 60" fill="none" stroke="#fff" stroke-width="4"/>
+          <path d="M300 230 C 320 180, 360 160, 400 150" fill="none" stroke="#fff" stroke-width="4"/>
+          <path class="route-casing" d="M226 34 C 262 52, 250 86, 290 98 C 334 112, 318 140, 356 158" pathLength="1" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path class="route" d="M226 34 C 262 52, 250 86, 290 98 C 334 112, 318 140, 356 158" pathLength="1" fill="none" stroke="#2E92FF" stroke-width="5" stroke-linecap="round"/>
+          <g class="pin pin-1" transform="translate(226 34)"><circle r="10" fill="#2E9E52" stroke="#fff" stroke-width="2.5"/><path d="M-3 -5v10M-3 -5h6l-1.4 2.2 1.4 2.2h-6" fill="#fff" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></g>
+          <g class="pin pin-2" transform="translate(290 98)"><circle r="10" fill="#E4731C" stroke="#fff" stroke-width="2.5"/><text y="4" text-anchor="middle" font-family="Figtree, sans-serif" font-size="11" font-weight="800" fill="#fff">A</text></g>
+          <g class="pin pin-3" transform="translate(356 158)"><circle r="10" fill="#15181C" stroke="#fff" stroke-width="2.5"/><path d="M-3 -5v10M-3 -5h6v4.4h-6" fill="none" stroke="#fff" stroke-width="1.4"/><path d="M0 -5h1.5v2.2h-1.5zM-1.5 -2.8h1.5v2.2h-1.5zM1.5 -2.8h1.5v2.2h-1.5z" fill="#fff"/></g>
+        </svg>
+        <div class="mini">
+          <div class="seg"><span class="knob"></span><span class="o">Plan</span><span class="o">Import</span></div>
+          <div class="panes">
+            <div class="pane pane-p">
+              <div class="row r1"><i class="b b-start"></i>Carmel</div>
+              <div class="row r2"><i class="b b-stop">A</i>Bixby Bridge</div>
+              <div class="row r3"><i class="b b-dest"></i>Ragged Point</div>
+              <div class="sum"><b>42</b> mi · <b>1 hr 10</b></div>
+            </div>
+            <div class="pane pane-i">
+              <div class="opt o1"><svg viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6zM14 3v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>GPX file</div>
+              <div class="opt o2"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="#EA4335"/><circle cx="12" cy="9.5" r="2.6" fill="#fff"/></svg>Google Maps link</div>
+              <div class="opt o3"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#FA6400"/><path d="M8 15.5l3-7 2.5 5 1.5-2.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ride with GPS</div>
+              <div class="paste">maps.app.goo.gl/x7Qa…<span>Open</span></div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="seq" data-clips="plan:Pick a great road|import:Or paste a Google Maps link"></div>
       <div class="words"><span class="num">1</span><div><h3>Plan or import</h3><p>Start from a great road, plan it on the big screen at carve.run, or paste a Google Maps link and Carve keeps its exact roads. GPX and Ride with GPS routes work too.</p></div></div>
     </li>
     <li class="step step-share">
-      <div class="vis vis-share" aria-hidden="true">
-        <div class="card"><b>Big Sur Saturday run</b><span class="sub">73 mi · 2 stops</span><span class="link">carve.run/k7Qm2Xa</span><div class="two"><span>Share link</span><span>Print turns</span></div></div>
-        <div class="qr"><svg class="qr" viewBox="0 0 37 37" shape-rendering="crispEdges" role="img" aria-label="QR code: get Carve on your phone"><rect width="37" height="37" fill="#fff"/><path d="M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM16 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM23 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM29 2h1v1h-1zM30 2h1v1h-1zM31 2h1v1h-1zM32 2h1v1h-1zM33 2h1v1h-1zM34 2h1v1h-1zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM14 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM25 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM34 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM30 4h1v1h-1zM31 4h1v1h-1zM32 4h1v1h-1zM34 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM18 5h1v1h-1zM20 5h1v1h-1zM23 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM31 5h1v1h-1zM32 5h1v1h-1zM34 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM11 6h1v1h-1zM13 6h1v1h-1zM15 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM31 6h1v1h-1zM32 6h1v1h-1zM34 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM19 7h1v1h-1zM20 7h1v1h-1zM23 7h1v1h-1zM25 7h1v1h-1zM28 7h1v1h-1zM34 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM26 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM30 8h1v1h-1zM31 8h1v1h-1zM32 8h1v1h-1zM33 8h1v1h-1zM34 8h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM21 9h1v1h-1zM26 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM19 10h1v1h-1zM22 10h1v1h-1zM23 10h1v1h-1zM25 10h1v1h-1zM32 10h1v1h-1zM33 10h1v1h-1zM3 11h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM9 11h1v1h-1zM12 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM25 11h1v1h-1zM28 11h1v1h-1zM29 11h1v1h-1zM31 11h1v1h-1zM32 11h1v1h-1zM33 11h1v1h-1zM34 11h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM20 12h1v1h-1zM23 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM27 12h1v1h-1zM29 12h1v1h-1zM30 12h1v1h-1zM31 12h1v1h-1zM34 12h1v1h-1zM3 13h1v1h-1zM4 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM17 13h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM21 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM25 13h1v1h-1zM26 13h1v1h-1zM29 13h1v1h-1zM31 13h1v1h-1zM33 13h1v1h-1zM3 14h1v1h-1zM5 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM22 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM27 14h1v1h-1zM29 14h1v1h-1zM30 14h1v1h-1zM31 14h1v1h-1zM33 14h1v1h-1zM3 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM19 15h1v1h-1zM22 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM32 15h1v1h-1zM33 15h1v1h-1zM2 16h1v1h-1zM8 16h1v1h-1zM11 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM17 16h1v1h-1zM19 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM26 16h1v1h-1zM28 16h1v1h-1zM29 16h1v1h-1zM30 16h1v1h-1zM31 16h1v1h-1zM2 17h1v1h-1zM3 17h1v1h-1zM4 17h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM12 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM28 17h1v1h-1zM31 17h1v1h-1zM32 17h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM19 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM23 18h1v1h-1zM24 18h1v1h-1zM25 18h1v1h-1zM26 18h1v1h-1zM27 18h1v1h-1zM28 18h1v1h-1zM30 18h1v1h-1zM31 18h1v1h-1zM32 18h1v1h-1zM2 19h1v1h-1zM6 19h1v1h-1zM7 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM22 19h1v1h-1zM25 19h1v1h-1zM26 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM30 19h1v1h-1zM31 19h1v1h-1zM34 19h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM11 20h1v1h-1zM14 20h1v1h-1zM20 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM26 20h1v1h-1zM29 20h1v1h-1zM30 20h1v1h-1zM32 20h1v1h-1zM33 20h1v1h-1zM3 21h1v1h-1zM6 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM10 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM21 21h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM28 21h1v1h-1zM30 21h1v1h-1zM33 21h1v1h-1zM2 22h1v1h-1zM4 22h1v1h-1zM7 22h1v1h-1zM8 22h1v1h-1zM9 22h1v1h-1zM13 22h1v1h-1zM16 22h1v1h-1zM17 22h1v1h-1zM18 22h1v1h-1zM21 22h1v1h-1zM24 22h1v1h-1zM31 22h1v1h-1zM32 22h1v1h-1zM33 22h1v1h-1zM2 23h1v1h-1zM3 23h1v1h-1zM4 23h1v1h-1zM6 23h1v1h-1zM7 23h1v1h-1zM10 23h1v1h-1zM11 23h1v1h-1zM13 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM23 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM28 23h1v1h-1zM34 23h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM14 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM24 24h1v1h-1zM28 24h1v1h-1zM29 24h1v1h-1zM31 24h1v1h-1zM33 24h1v1h-1zM34 24h1v1h-1zM3 25h1v1h-1zM4 25h1v1h-1zM5 25h1v1h-1zM6 25h1v1h-1zM10 25h1v1h-1zM11 25h1v1h-1zM12 25h1v1h-1zM13 25h1v1h-1zM16 25h1v1h-1zM18 25h1v1h-1zM19 25h1v1h-1zM20 25h1v1h-1zM22 25h1v1h-1zM25 25h1v1h-1zM26 25h1v1h-1zM28 25h1v1h-1zM29 25h1v1h-1zM31 25h1v1h-1zM2 26h1v1h-1zM5 26h1v1h-1zM7 26h1v1h-1zM8 26h1v1h-1zM9 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM14 26h1v1h-1zM15 26h1v1h-1zM16 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM20 26h1v1h-1zM21 26h1v1h-1zM24 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM27 26h1v1h-1zM28 26h1v1h-1zM29 26h1v1h-1zM30 26h1v1h-1zM10 27h1v1h-1zM11 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM18 27h1v1h-1zM20 27h1v1h-1zM21 27h1v1h-1zM23 27h1v1h-1zM26 27h1v1h-1zM30 27h1v1h-1zM31 27h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM7 28h1v1h-1zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM18 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM22 28h1v1h-1zM23 28h1v1h-1zM25 28h1v1h-1zM26 28h1v1h-1zM28 28h1v1h-1zM30 28h1v1h-1zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM11 29h1v1h-1zM12 29h1v1h-1zM13 29h1v1h-1zM14 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM20 29h1v1h-1zM21 29h1v1h-1zM22 29h1v1h-1zM25 29h1v1h-1zM26 29h1v1h-1zM30 29h1v1h-1zM31 29h1v1h-1zM32 29h1v1h-1zM33 29h1v1h-1zM34 29h1v1h-1zM2 30h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM8 30h1v1h-1zM11 30h1v1h-1zM12 30h1v1h-1zM14 30h1v1h-1zM16 30h1v1h-1zM17 30h1v1h-1zM21 30h1v1h-1zM24 30h1v1h-1zM25 30h1v1h-1zM26 30h1v1h-1zM27 30h1v1h-1zM28 30h1v1h-1zM29 30h1v1h-1zM30 30h1v1h-1zM32 30h1v1h-1zM33 30h1v1h-1zM2 31h1v1h-1zM4 31h1v1h-1zM5 31h1v1h-1zM6 31h1v1h-1zM8 31h1v1h-1zM10 31h1v1h-1zM11 31h1v1h-1zM13 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM16 31h1v1h-1zM17 31h1v1h-1zM21 31h1v1h-1zM23 31h1v1h-1zM24 31h1v1h-1zM25 31h1v1h-1zM29 31h1v1h-1zM31 31h1v1h-1zM32 31h1v1h-1zM33 31h1v1h-1zM34 31h1v1h-1zM2 32h1v1h-1zM4 32h1v1h-1zM5 32h1v1h-1zM6 32h1v1h-1zM8 32h1v1h-1zM10 32h1v1h-1zM11 32h1v1h-1zM18 32h1v1h-1zM19 32h1v1h-1zM20 32h1v1h-1zM22 32h1v1h-1zM24 32h1v1h-1zM26 32h1v1h-1zM28 32h1v1h-1zM29 32h1v1h-1zM31 32h1v1h-1zM2 33h1v1h-1zM8 33h1v1h-1zM10 33h1v1h-1zM11 33h1v1h-1zM14 33h1v1h-1zM15 33h1v1h-1zM16 33h1v1h-1zM17 33h1v1h-1zM22 33h1v1h-1zM25 33h1v1h-1zM28 33h1v1h-1zM29 33h1v1h-1zM30 33h1v1h-1zM34 33h1v1h-1zM2 34h1v1h-1zM3 34h1v1h-1zM4 34h1v1h-1zM5 34h1v1h-1zM6 34h1v1h-1zM7 34h1v1h-1zM8 34h1v1h-1zM11 34h1v1h-1zM13 34h1v1h-1zM14 34h1v1h-1zM15 34h1v1h-1zM17 34h1v1h-1zM18 34h1v1h-1zM19 34h1v1h-1zM21 34h1v1h-1zM23 34h1v1h-1zM24 34h1v1h-1zM27 34h1v1h-1zM28 34h1v1h-1zM30 34h1v1h-1zM32 34h1v1h-1z" fill="#111113"/><rect x="13.54" y="13.54" width="9.91" height="9.91" rx="2.64" fill="#fff"/><clipPath id="qri"><rect x="14.54" y="14.54" width="7.93" height="7.93" rx="1.98"/></clipPath><image href="/assets/icon-128.png?v=87d1534580" x="14.54" y="14.54" width="7.93" height="7.93" clip-path="url(#qri)"/></svg></div>
+      <div class="vis vis-share" data-step="2" aria-hidden="true">
+        <div class="paper"><b>Turns</b><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="card">
+          <div class="top"><img src="/assets/drives/big-sur-highway-1.jpg?v=fc80cef300" alt=""><div><b>Big Sur Saturday run</b><span class="sub">73 mi · 2 stops</span></div></div>
+          <span class="link">carve.run/k7Qm2Xa</span>
+          <div class="two"><span class="btn-share">Share link</span><span class="btn-print">Print turns</span></div>
+          <span class="toast">Link copied</span>
+        </div>
+        <div class="bubble">Saturday's drive 👉 carve.run/k7Qm2Xa</div>
+        <ul class="crew">
+          <li class="m1"><i style="background:#E4731C">M</i>Maya<span>Opened</span></li>
+          <li class="m2"><i style="background:#6A5FE8">J</i>Jess<span>Opened</span></li>
+          <li class="m3"><i style="background:#2E92FF">S</i>Sam<span>Opened</span></li>
+        </ul>
       </div>
       <div class="words"><span class="num">2</span><div><h3>Share with your club or group</h3><p>One link and a QR code for the newsletter or the group text, and printed turns for the paper crowd. Change the route and the link stays the same.</p></div></div>
     </li>
     <li class="step">
-      <div class="vis vis-drive" aria-hidden="true">
-        <svg class="bg" viewBox="0 0 420 280" preserveAspectRatio="xMidYMid slice"><rect width="420" height="280" fill="#23282E"/><path d="M-10 250 C 60 220, 90 160, 160 150 C 230 140, 250 80, 320 70 C 370 62, 400 30, 430 20" fill="none" stroke="#3A4048" stroke-width="16" stroke-linecap="round"/><path d="M-10 250 C 60 220, 90 160, 160 150 C 230 140, 250 80, 320 70 C 370 62, 400 30, 430 20" fill="none" stroke="#2E92FF" stroke-width="7" stroke-linecap="round"/><circle cx="70" cy="214" r="13" fill="#2E92FF" stroke="#fff" stroke-width="3"/><circle cx="150" cy="152" r="13" fill="#E4731C" stroke="#fff" stroke-width="3"/><circle cx="300" cy="74" r="13" fill="#6A5FE8" stroke="#fff" stroke-width="3"/></svg>
-        <div class="alert"><b>Hazard ahead, reported by the group</b><span>0.4 mi</span></div>
-        <div class="tags"><span>No signal needed</span><span>Back on route if you miss a turn</span></div>
+      <div class="vis vis-drive" data-step="3" aria-hidden="true">
+        <svg class="bg" viewBox="0 0 400 230" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="230" fill="#1F2429"/>
+          <path d="M0 40 C 80 60, 120 20, 200 30 S 330 10, 400 30" fill="none" stroke="#2C3238" stroke-width="3"/>
+          <path d="M60 230 C 90 180, 70 140, 120 110" fill="none" stroke="#2C3238" stroke-width="3"/>
+          <path d="M260 230 C 280 190, 330 170, 400 175" fill="none" stroke="#2C3238" stroke-width="3"/>
+          <path d="M-10 205 C 50 185, 90 150, 150 140 C 220 128, 240 82, 300 72 C 350 64, 380 42, 420 22" fill="none" stroke="#3A4048" stroke-width="15" stroke-linecap="round"/>
+          <path class="drive-route" d="M-10 205 C 50 185, 90 150, 150 140 C 220 128, 240 82, 300 72 C 350 64, 380 42, 420 22" fill="none" stroke="#2E92FF" stroke-width="6" stroke-linecap="round"/>
+          <g class="hazard" transform="translate(326 63)"><circle r="12" fill="#D64C3B" stroke="#fff" stroke-width="2.5"/><path d="M0 -6L6 5H-6Z" fill="#fff"/><path d="M0 -2v3" stroke="#D64C3B" stroke-width="1.6" stroke-linecap="round"/><circle cy="3.2" r=".9" fill="#D64C3B"/></g>
+          <g class="car" data-at=".52" data-ahead="1"><circle r="11" fill="#E4731C" stroke="#fff" stroke-width="2.5"/><text y="4" text-anchor="middle" font-family="Figtree, sans-serif" font-size="11" font-weight="800" fill="#fff">M</text></g>
+          <g class="car" data-at=".38"><circle r="11" fill="#6A5FE8" stroke="#fff" stroke-width="2.5"/><text y="4" text-anchor="middle" font-family="Figtree, sans-serif" font-size="11" font-weight="800" fill="#fff">J</text></g>
+          <g class="car me" data-at=".26"><circle r="13" fill="#2E92FF" opacity=".25"/><circle r="8" fill="#2E92FF" stroke="#fff" stroke-width="2.5"/></g>
+        </svg>
+        <div class="turn"><svg viewBox="0 0 24 24"><path d="M7 20V11a4 4 0 0 1 4-4h7M14 3l4 4-4 4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>0.4 mi</b>Keep right on CA-1</span></div>
+        <div class="alert"><span class="ic">!</span><span><b>Debris in the lane</b>Reported by Maya · 0.6 mi ahead</span></div>
+        <div class="who"><span class="dot" style="background:#E4731C"></span>Maya <em>0.9 mi ahead</em></div>
+        <div class="sig"><svg viewBox="0 0 24 24"><path d="M4 20v-3M9 20v-6M14 20V10M19 20V5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M3 4l18 17" stroke="#FF8A7A" stroke-width="2.4" stroke-linecap="round"/></svg>No signal · turns keep coming</div>
       </div>
       <div class="seq" data-clips="group:Your group, live on the map|offline:No signal? Turns keep coming|return:Missed a turn? Right back on route"></div>
       <div class="words"><span class="num">3</span><div><h3>Drive together</h3><p>See the whole group on the map, and get warned about hazards the cars ahead report. Lose signal and the turns keep coming. Miss one and Carve leads you back on.</p></div></div>
@@ -351,6 +403,6 @@
   if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
 <script src="/assets/carve-site.js?v=81545ecfbc" defer></script>
-<script type="module" src="/assets/home.js?v=4052e0547e"></script>
+<script type="module" src="/assets/home.js?v=a066e70b0a"></script>
 </body>
 </html>
