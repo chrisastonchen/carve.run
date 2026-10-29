@@ -106,11 +106,34 @@ function show(r, html, sticky) {
   popup._sticky = sticky;
 }
 
+let chosen = null;
+
+function choose(r) {
+  chosen = r.k;
+  popup?.remove(); popup = null;
+  light(r.k);
+  const line = lineOf(r);
+  const b = line.reduce((acc, [x, y]) => [Math.min(acc[0], x), Math.min(acc[1], y), Math.max(acc[2], x), Math.max(acc[3], y)], [180, 90, -180, -90]);
+  // Room on the right for the card.
+  const pad = heroPadding();
+  map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: { ...pad, top: 70, bottom: 50, right: 340 }, maxZoom: 13, duration: 900 });
+  map.once("moveend", () => {
+    if (chosen !== r.k) return;
+    const east = line.reduce((best, p) => (p[0] > best[0] ? p : best), line[0]);
+    popup = new maplibregl.Popup({ closeButton: true, closeOnClick: true, offset: 18, anchor: "left", className: "road-pop", maxWidth: "320px" })
+      .setLngLat(east).setHTML(bigCard(r)).addTo(map);
+    popup._sticky = true;
+    popup.on("close", () => { if (chosen === r.k) { chosen = null; light(null); } });
+  });
+}
+
 function light(k) {
   if (pointed === k) return;
-  if (pointed != null) map.setFeatureState({ source: "home-roads", id: pointed }, { on: false });
+  for (const source of ["home-roads", "home-mids"]) {
+    if (pointed != null) map.setFeatureState({ source, id: pointed }, { on: false });
+    if (k != null) map.setFeatureState({ source, id: k }, { on: true });
+  }
   pointed = k;
-  if (k != null) map.setFeatureState({ source: "home-roads", id: k }, { on: true });
 }
 
 /// The map shows its roads beside the card that floats over its left side.
@@ -122,10 +145,10 @@ function heroPadding() {
 
 function fitNear() {
   if (!place && map) { map.fitBounds([[-125, 25], [-67, 49]], { padding: heroPadding(), duration: 0 }); return; }
-  const near = nearest(10);
+  const near = nearest(25);
   if (!near.length || !map) return;
   const b = near.map((r) => lineOf(r)).flat().reduce((acc, [x, y]) => [Math.min(acc[0], x), Math.min(acc[1], y), Math.max(acc[2], x), Math.max(acc[3], y)], [180, 90, -180, -90]);
-  map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: heroPadding(), maxZoom: 9, duration: 0 });
+  map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: heroPadding(), maxZoom: 7.5, duration: 0 });
 }
 
 async function buildMap() {
@@ -147,32 +170,42 @@ async function buildMap() {
       type: "FeatureCollection",
       features: roads.map((r) => ({ type: "Feature", id: r.k, properties: { k: r.k }, geometry: { type: "LineString", coordinates: lineOf(r) } })),
     } });
+    // Zoomed out, a dot for each drive, as Explore shows them; zoomed in, its road.
+    map.addSource("home-mids", { type: "geojson", data: {
+      type: "FeatureCollection",
+      features: roads.map((r) => ({ type: "Feature", id: r.k, properties: { k: r.k }, geometry: { type: "Point", coordinates: lineOf(r)[Math.floor(lineOf(r).length / 2)] } })),
+    } });
     const on = (a, b) => ["case", ["boolean", ["feature-state", "on"], false], a, b];
-    map.addLayer({ id: "home-glow", type: "line", source: "home-roads", layout: { "line-cap": "round", "line-join": "round" },
+    map.addLayer({ id: "home-glow", type: "line", source: "home-roads", minzoom: 7, layout: { "line-cap": "round", "line-join": "round" },
       paint: { "line-color": "#6A4CFF", "line-width": on(16, 0), "line-blur": 6, "line-opacity": on(0.45, 0) } });
-    map.addLayer({ id: "home-casing", type: "line", source: "home-roads", minzoom: 6, layout: { "line-cap": "round", "line-join": "round" },
+    map.addLayer({ id: "home-casing", type: "line", source: "home-roads", minzoom: 7, layout: { "line-cap": "round", "line-join": "round" },
       paint: { "line-color": "#fff", "line-width": on(9, 6), "line-opacity": 0.85 } });
-    map.addLayer({ id: "home-line", type: "line", source: "home-roads", layout: { "line-join": "round" },
+    map.addLayer({ id: "home-line", type: "line", source: "home-roads", minzoom: 7, layout: { "line-join": "round" },
       paint: { "line-color": "#6A4CFF", "line-width": on(5, 3), "line-dasharray": ["literal", [2, 1.6]], "line-opacity": on(1, 0.8) } });
-    map.addLayer({ id: "home-hit", type: "line", source: "home-roads", paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
+    map.addLayer({ id: "home-dots", type: "circle", source: "home-mids", maxzoom: 7,
+      paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 3, on(6, 3.5), 7, on(8, 5.5)], "circle-color": "#6A4CFF",
+        "circle-stroke-color": "#fff", "circle-stroke-width": on(2, 1.2) } });
+    map.addLayer({ id: "home-hit", type: "line", source: "home-roads", minzoom: 7, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
+    map.addLayer({ id: "home-dot-hit", type: "circle", source: "home-mids", maxzoom: 7, paint: { "circle-radius": 12, "circle-opacity": 0.01 } });
     fitNear();
-    map.on("mousemove", "home-hit", (event) => {
-      map.getCanvas().style.cursor = "pointer";
-      const k = event.features[0].properties.k;
-      if (pointed === k || popup?._sticky) return light(k);
-      light(k);
-      show(roads[k], smallCard(roads[k]), false);
-    });
-    map.on("mouseleave", "home-hit", () => {
-      map.getCanvas().style.cursor = "";
-      if (!popup?._sticky) { popup?.remove(); popup = null; }
-      light(null);
-    });
-    // Clicking a road shows its card, its photo first; the planner is a click on the card away.
-    map.on("click", "home-hit", (event) => {
-      const r = roads[event.features[0].properties.k];
-      show(r, bigCard(r), true);
-    });
+    for (const layer of ["home-hit", "home-dot-hit"]) {
+      map.on("mousemove", layer, (event) => {
+        map.getCanvas().style.cursor = "pointer";
+        const k = event.features[0].properties.k;
+        if (pointed === k || popup?._sticky) return light(k);
+        light(k);
+        show(roads[k], smallCard(roads[k]), false);
+      });
+      map.on("mouseleave", layer, () => {
+        map.getCanvas().style.cursor = "";
+        if (popup?._sticky) return light(chosen);
+        popup?.remove(); popup = null;
+        light(null);
+      });
+      // Clicking a road zooms to the whole of it and shows its card beside it,
+      // its photo first; the planner is a click on the card away.
+      map.on("click", layer, (event) => choose(roads[event.features[0].properties.k]));
+    }
   });
 }
 
