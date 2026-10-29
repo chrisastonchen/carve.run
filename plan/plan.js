@@ -93,6 +93,7 @@ function blankPlan() {
     name: "", start: null, end: null, waypoints: [],
     trip: "oneWay", style: "balanced",
     path: null, roads: [], frozen: false, imported: null,
+    turnaroundId: null, oneWayEnd: null,
     elevationProfile: null, blurb: null, profile: null,
   };
 }
@@ -103,8 +104,46 @@ let saved = false;
 const history = { back: [], forward: [] };
 
 function snapshot() {
-  const { start, end, waypoints, trip, path, roads, frozen } = plan;
-  return JSON.stringify({ start, end, waypoints, trip, path, roads, frozen });
+  const { start, end, waypoints, trip, path, roads, frozen, turnaroundId, oneWayEnd } = plan;
+  return JSON.stringify({ start, end, waypoints, trip, path, roads, frozen, turnaroundId, oneWayEnd });
+}
+
+/// One way, round trip or out and back, as the app does it
+/// (RouteAuthoringModel.setTripType): a one-way drive made a loop keeps
+/// its destination as the last stop, so it still runs the whole road
+/// before turning for home; made one-way again, that stop is the
+/// destination once more.
+function setTrip(next) {
+  if (next === plan.trip) return;
+  const wasLoop = loops();
+  edit(() => {
+    plan.trip = next;
+    const isLoop = loops();
+    if (!wasLoop && isLoop) {
+      plan.oneWayEnd = plan.end;
+      plan.turnaroundId = null;
+      const end = plan.end;
+      const same = end && plan.start && end.lat === plan.start.lat && end.lon === plan.start.lon;
+      if (end && plan.start && !same && plan.waypoints.length < MAX_WAYPOINTS) {
+        const type = stopCount() < MAX_STOPS ? "stop" : "marker";
+        const kept = { ...end, id: newUUID(() => crypto.randomUUID()), type };
+        plan.waypoints.push(kept);
+        plan.turnaroundId = kept.id;
+      }
+      plan.end = null;
+    } else if (wasLoop && !isLoop) {
+      const last = plan.waypoints[plan.waypoints.length - 1];
+      if (plan.turnaroundId && last?.id === plan.turnaroundId) {
+        plan.waypoints.pop();
+        const { stayMinutes, type, road, ...place } = last;
+        plan.end = place;
+      } else if (plan.oneWayEnd) {
+        plan.end = plan.oneWayEnd;
+      }
+      plan.turnaroundId = null;
+      plan.oneWayEnd = null;
+    }
+  });
 }
 function remember() {
   history.back.push(snapshot());
@@ -1783,7 +1822,7 @@ function wire() {
       event.preventDefault();
     }
   });
-  $("trip").addEventListener("change", () => edit(() => (plan.trip = $("trip").value)));
+  $("trip").addEventListener("change", () => setTrip($("trip").value));
   $("route-name").addEventListener("input", () => {
     plan.name = $("route-name").value;
     saveDraft();
