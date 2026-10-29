@@ -124,7 +124,13 @@ function placesOf(payload) {
     .filter((w) => w && w.location && Number.isFinite(w.location.latitude) && Number.isFinite(w.location.longitude))
     .slice()
     .sort((a, b) => (a.order || 0) - (b.order || 0))
-    .map((w) => ({ lat: w.location.latitude, lon: w.location.longitude, type: w.type === "stop" ? "stop" : "marker", label: (w.label || "").trim(), stayMinutes: w.stayMinutes }));
+    .map((w) => ({
+      lat: w.location.latitude, lon: w.location.longitude, type: w.type === "stop" ? "stop" : "marker",
+      label: String(w.label || "").trim(),
+      // Whatever the stored route says, a stay is a whole number of minutes
+      // (a string here was markup on carve.run: the QA pass, 2026-10-29).
+      stayMinutes: Number.isInteger(w.stayMinutes) && w.stayMinutes > 0 && w.stayMinutes <= 1440 ? w.stayMinutes : undefined,
+    }));
 }
 
 const loops = (payload) => payload.tripType === "roundtrip";
@@ -316,7 +322,7 @@ function printDirections(token, payload, row) {
     const kind = k === 0 ? "start" : turnKind(t.text);
     rows += `<tr><td class="n">${k + 1}</td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS[kind] || ARROWS.straight}</svg></td><td>${escapeHTML(t.text)}</td><td class="d">${t.arrives ? "" : `${(t.distanceMeters / unitMeters).toFixed(1)} ${unit}`}</td><td class="m">${(mile / unitMeters).toFixed(1)}</td></tr>`;
     for (const stop of stopsAfter.get(k) || []) {
-      rows += `<tr class="stoprow"><td class="n"></td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS.stop}</svg></td><td>Stop ${stop.label} · ${escapeHTML(stop.name)}${stop.stay ? ` · stay ${stop.stay} min` : ""}</td><td class="d"></td><td class="m">${((mile + t.distanceMeters) / unitMeters).toFixed(1)}</td></tr>`;
+      rows += `<tr class="stoprow"><td class="n"></td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS.stop}</svg></td><td>Stop ${stop.label} · ${escapeHTML(stop.name)}${stop.stay ? ` · stay ${Number(stop.stay)} min` : ""}</td><td class="d"></td><td class="m">${((mile + t.distanceMeters) / unitMeters).toFixed(1)}</td></tr>`;
     }
     mile += t.distanceMeters;
   });
@@ -366,8 +372,24 @@ function markAlong(payload) {
 
 // ── the owner's Edit, and the app's pitch for those without it ───────
 
-function wireOwner(token, row) {
-  const mine = signedIn && row.owner_id && String(row.owner_id).toLowerCase() === String(session.user.id).toLowerCase();
+/// The share link keeps its owner private, so ask the routes table as the
+/// visitor: row-level security answers only the route's owner.
+async function ownsRoute(row) {
+  if (!signedIn || !row.id || !(session.expires_at > Date.now() / 1000)) return false;
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/routes?id=eq.${encodeURIComponent(String(row.id).toLowerCase())}&select=owner_id`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${session.access_token}` },
+    });
+    if (!response.ok) return false;
+    const found = (await response.json())[0];
+    return !!found && String(found.owner_id).toLowerCase() === String(session.user.id).toLowerCase();
+  } catch {
+    return false;
+  }
+}
+
+async function wireOwner(token, row) {
+  const mine = await ownsRoute(row);
   const edit = $("rv-edit");
   if (edit && mine && !phone()) {
     edit.href = `/plan/?edit=${encodeURIComponent(token)}`;
@@ -396,7 +418,7 @@ async function start() {
 }
 
 // share_page.js may already hold the row; it says when it's ready.
-if (document.documentElement.dataset.routeWait === "page") {
+if (document.documentElement.dataset.routeWait === "page" && !window.carveRouteReady) {
   window.addEventListener("carve:route", start, { once: true });
 } else {
   start();

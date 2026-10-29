@@ -903,6 +903,11 @@ const RouteProfile = (() => {
     return total;
   }
 
+  function carvePhoto(url) {
+    const text = String(url || "");
+    return text.startsWith(SUPABASE_URL + "/storage/v1/object/public/route-photos/") || text.startsWith("https://carve.run/assets/");
+  }
+
   /// The old self-contained link: just a name and how many stops.
   function fromPayload() {
     if (!payload) return null;
@@ -940,7 +945,8 @@ const RouteProfile = (() => {
         name: row.name, stats, climbFeet, blurb: p.blurb || null,
         intensity: onRoad ? intensityOf(points) : null,
         profile: RouteProfile.measure(points, heights, row.distance_meters, onRoad),
-        photo: p.photo && /^https:\/\//.test(p.photo.url || "") ? p.photo : null,
+        // Only photos Carve put there, as the Worker allows them.
+        photo: p.photo && carvePhoto(p.photo.url) ? p.photo : null,
         roundTrip: p.tripType === "roundtrip",
         stops: (p.waypoints || []).filter((w) => w.type === "stop")
           .sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -990,6 +996,8 @@ const RouteProfile = (() => {
   }
   function ready() {
     if (fetchedRow) window.carveRouteRow = fetchedRow;
+    // route-view.js may load after this: it checks the flag as well.
+    window.carveRouteReady = true;
     window.dispatchEvent(new Event("carve:route"));
   }
 
@@ -1020,7 +1028,7 @@ const RouteProfile = (() => {
 </script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
-<script type="module" src="/assets/route-view.js?v=d09b638aec"></script>
+<script type="module" src="/assets/route-view.js?v=c9ecd2b839"></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;

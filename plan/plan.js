@@ -83,6 +83,7 @@ const DRAFT_KEY = "carve.plan.draft";
 const SESSION_KEY = "carve.plan.session";
 const PENDING_SAVE_KEY = "carve.plan.pending-save";
 const PENDING_EDIT_KEY = "carve.plan.pending-edit";
+const OAUTH_STATE_KEY = "carve.plan.oauth-state";
 const VIEW_KEY = "carve.plan.view";
 
 // ── state ────────────────────────────────────────────────────────────
@@ -401,7 +402,10 @@ function signedOut() {
 async function readOAuthReturn() {
   if (!location.hash.includes("access_token=")) return false;
   const params = new URLSearchParams(location.hash.slice(1));
+  const began = store.get(OAUTH_STATE_KEY);
+  store.remove(OAUTH_STATE_KEY);
   history_replace();
+  if (!(typeof began === "number" && Date.now() - began < 15 * 60_000)) return false;
   const access = params.get("access_token");
   const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${access}` } });
   if (!response.ok) return false;
@@ -1351,7 +1355,12 @@ async function importCarve(token) {
     name: payload.name || "",
     start: spotFrom(payload.start),
     end: payload.tripType === "roundtrip" ? null : spotFrom(payload.end),
-    waypoints: all.map((w) => ({ ...spotFrom({ ...w.location, label: w.label }), type: w.type === "stop" ? "stop" : "marker", ...(w.stayMinutes ? { stayMinutes: w.stayMinutes } : {}) })),
+    waypoints: all.map((w) => ({
+      ...spotFrom({ ...w.location, label: typeof w.label === "string" ? w.label : "" }),
+      type: w.type === "stop" ? "stop" : "marker",
+      // A stay is a whole number of minutes, whatever the link's route says.
+      ...(Number.isInteger(w.stayMinutes) && w.stayMinutes > 0 && w.stayMinutes <= 1440 ? { stayMinutes: w.stayMinutes } : {}),
+    })),
     trip: payload.tripType === "roundtrip" ? (payload.returnsSameWay ? "outAndBack" : "roundTrip") : "oneWay",
     style: payload.balancesRoads ? "balanced" : payload.routingPreference || "scenic",
     path: payload.pathGeometry?.length ? {
@@ -1376,7 +1385,9 @@ async function editShared(token) {
     const rows = await rest("/rest/v1/rpc/redeem_share_token", { method: "POST", body: { share_token: token } });
     const row = rows?.[0];
     if (!row) throw new Failure("That route couldn't be found.");
-    const mine = session && String(row.owner_id).toLowerCase() === String(session.user.id).toLowerCase();
+    // The share keeps its owner private: the routes table answers its owner.
+    const owned = session ? await rest(`/rest/v1/routes?id=eq.${encodeURIComponent(String(row.id).toLowerCase())}&select=owner_id`).catch(() => null) : null;
+    const mine = !!owned?.[0] && String(owned[0].owner_id).toLowerCase() === String(session.user.id).toLowerCase();
     await importCarve(token);
     if (mine) {
       const payload = row.payload || {};
@@ -1744,7 +1755,7 @@ function printDirections() {
     const kind = k === 0 ? "start" : turnKind(t.text);
     rows += `<tr><td class="n">${k + 1}</td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS[kind] || ARROWS.straight}</svg></td><td>${escapeHTML(t.text)}</td><td class="d">${t.arrives ? "" : `${(t.distanceMeters / unitMeters).toFixed(1)} ${unit}`}</td><td class="m">${(mile / unitMeters).toFixed(1)}</td></tr>`;
     for (const stop of stopsAfter.get(k) || []) {
-      rows += `<tr class="stoprow"><td class="n"></td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS.stop}</svg></td><td>Stop ${stop.label} · ${escapeHTML(stop.name)}${stop.stay ? ` · stay ${stop.stay} min` : ""}</td><td class="d"></td><td class="m">${((mile + t.distanceMeters) / unitMeters).toFixed(1)}</td></tr>`;
+      rows += `<tr class="stoprow"><td class="n"></td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS.stop}</svg></td><td>Stop ${stop.label} · ${escapeHTML(stop.name)}${stop.stay ? ` · stay ${Number(stop.stay)} min` : ""}</td><td class="d"></td><td class="m">${((mile + t.distanceMeters) / unitMeters).toFixed(1)}</td></tr>`;
     }
     mile += t.distanceMeters;
   });
@@ -1802,6 +1813,11 @@ function oauth(provider) {
     accountError("This browser isn't keeping data, so signing in with " + (provider === "apple" ? "Apple" : "Google") + " would lose your route. Use email instead.");
     return;
   }
+  // A return is only taken in the browser that set off this sign-in, within
+  // a quarter hour (a link carrying someone else's tokens would sign the
+  // visitor in as them: the QA pass, 2026-10-29). The return address stays
+  // exactly the one allowed in Supabase.
+  store.set(OAUTH_STATE_KEY, Date.now());
   const back = `${location.origin}/plan/`;
   location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(back)}`;
 }
