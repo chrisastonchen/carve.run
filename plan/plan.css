@@ -211,16 +211,18 @@ a { color: var(--green); }
 }
 .clear:hover { background: #E4E3DE; color: var(--ink); }
 .add-row {
-  flex: 1 1 auto; height: 46px; border: none; border-radius: 12px; background: transparent;
+  flex: 1 1 auto; min-width: 0; height: 46px; border: none; border-radius: 12px; background: transparent;
   box-shadow: inset 0 0 0 1.5px #CFCBC0; color: var(--ink-3); font-weight: 600; font-size: 16px; text-align: left; padding: 0 14px;
 }
 .add-row:hover { background: #fff; }
 .grip { width: 32px; height: 44px; border: none; background: none; color: #B5B8BD; cursor: grab; display: flex; align-items: center; justify-content: center; flex: none; }
 .grip svg { width: 20px; height: 20px; }
 .grip.off { visibility: hidden; }
-.seg { flex: none; display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--line); }
-.seg button { height: 30px; padding: 0 11px; border: none; border-radius: 999px; background: none; font-size: 13.5px; font-weight: 700; color: var(--ink-3); }
-.seg button[aria-checked="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.14); }
+.kind { flex: none; position: relative; display: inline-flex; align-items: center; }
+.kind select { appearance: none; -webkit-appearance: none; height: 36px; padding: 0 24px 0 8px; border: none; border-radius: 10px; background: none; font-size: 14px; font-weight: 700; color: var(--ink-3); cursor: pointer; }
+.kind select:hover { background: #fff; color: var(--ink); }
+.kind select:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--green); }
+.kind svg { position: absolute; right: 8px; width: 11px; height: 11px; pointer-events: none; color: var(--ink-3); }
 /* A stop's stay: a timer in a circle inside the field, left of the ×. The
    select sits invisibly over it, so picking is the browser's own list. */
 .stay { position: absolute; right: 43px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 999px; background: var(--fill); color: var(--ink-3); display: flex; align-items: center; justify-content: center; }

@@ -893,27 +893,33 @@ function placeRow({ role, point, index, label, placeholder }) {
   return li;
 }
 
+/// Stop or waypoint: a quiet dropdown beside the field.
 function kindSwitch(point) {
-  const seg = el("div", "seg");
-  seg.setAttribute("role", "radiogroup");
-  seg.setAttribute("aria-label", "Stop or waypoint");
-  for (const [type, text] of [["stop", "Stop"], ["marker", "Waypoint"]]) {
-    const button = el("button", "", text);
-    button.type = "button";
-    button.setAttribute("role", "radio");
-    button.setAttribute("aria-checked", String(point.type === type));
-    button.addEventListener("click", () => {
-      if (point.type === type) return;
-      if (type === "stop" && stopCount() >= MAX_STOPS) return toast(`A route has up to ${MAX_STOPS} stops.`, true);
-      edit(() => {
-        point.type = type;
-        if (type !== "stop") delete point.stayMinutes;
-      }, { geometry: false });
-      if (type === "stop" && !point.label) nameSpot(point);
-    });
-    seg.append(button);
-  }
-  return seg;
+  return kindSelect(point.type === "stop" ? "stop" : "marker", (type) => {
+    edit(() => {
+      point.type = type;
+      if (type !== "stop") delete point.stayMinutes;
+    }, { geometry: false });
+    if (type === "stop" && !point.label) nameSpot(point);
+  });
+}
+
+function kindSelect(value, onChange) {
+  const wrap = el("span", "kind");
+  const select = el("select");
+  select.setAttribute("aria-label", "Stop or waypoint");
+  select.append(new Option("Waypoint", "marker"), new Option("Stop", "stop"));
+  select.value = value;
+  select.addEventListener("change", () => {
+    if (select.value === "stop" && stopCount() >= MAX_STOPS) {
+      select.value = "marker";
+      return toast(`A route has up to ${MAX_STOPS} stops.`, true);
+    }
+    onChange(select.value);
+  });
+  wrap.append(select);
+  wrap.insertAdjacentHTML("beforeend", '<svg aria-hidden="true"><use href="#i-chev"/></svg>');
+  return wrap;
 }
 
 /// How long a stop's stay is: a timer button, filled once there's a time.
@@ -936,10 +942,17 @@ function stayControl(point) {
   return stay;
 }
 
+/// What the next added place becomes; waypoint unless chosen otherwise.
+let addType = "marker";
+
 function addRow() {
   const li = el("li", "row");
   li.dataset.role = "add";
   li.append(el("span", "badge new", "+"));
+  const cell = el("div", "cell");
+  const line = el("div", "field-line");
+  cell.append(line);
+  li.append(cell);
   if (!adding) {
     const button = el("button", "add-row", "Add a stop or waypoint");
     button.type = "button";
@@ -950,18 +963,27 @@ function addRow() {
       focusAfterRender = '[data-focus="add"]';
       renderRows();
     });
-    li.append(button);
+    line.append(button, kindSelect(addType, (type) => (addType = type)));
+    li.append(el("span", "grip off"));
     return li;
   }
-  const cell = el("div", "cell");
   const wrap = el("span", "input-wrap");
   const input = el("input", "row-input empty");
-  input.placeholder = "Search for a stop";
-  input.setAttribute("aria-label", "New stop");
+  const describe = () => {
+    input.placeholder = addType === "stop" ? "Search for a stop" : "Search for a waypoint";
+    input.setAttribute("aria-label", addType === "stop" ? "New stop" : "New waypoint");
+  };
+  describe();
   input.dataset.focus = "add";
   wrap.append(input);
-  cell.append(wrap);
-  li.append(cell);
+  line.append(wrap, kindSelect(addType, (type) => {
+    addType = type;
+    describe();
+    // Back to typing where they were, not with the text selected.
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  }));
+  li.append(el("span", "grip off"));
   attachSearch(li, input, (place) => {
     adding = false;
     choosePlace("add", undefined, place);
@@ -987,7 +1009,8 @@ function choosePlace(role, index, place) {
     else if (role === "end") plan.end = spot;
     else if (role === "waypoint") Object.assign(plan.waypoints[index], { lat: spot.lat, lon: spot.lon, label: spot.label, road: null });
     else {
-      const type = stopCount() < MAX_STOPS ? "stop" : "marker";
+      const type = addType === "stop" && stopCount() < MAX_STOPS ? "stop" : "marker";
+      addType = "marker";
       plan.waypoints.splice(bestSlot(spot), 0, { ...spot, type });
     }
   });
@@ -1100,6 +1123,8 @@ function attachSearch(li, input, onPick, onLeave) {
   input.addEventListener("blur", () => {
     setTimeout(() => {
       if (document.activeElement === input) return;
+      // Choosing stop or waypoint for a new row keeps the row open.
+      if (document.activeElement?.closest?.(".kind") && li.contains(document.activeElement)) return;
       close();
       if (input.value !== original) input.value = original;
       onLeave?.();
