@@ -900,8 +900,9 @@ function renderRows() {
   const labels = markerLabels(plan.waypoints);
   list.append(placeRow({ role: "start", point: plan.start, placeholder: "Choose a start" }));
   plan.waypoints.forEach((w, i) => list.append(placeRow({ role: "waypoint", point: w, index: i, label: labels[i] })));
-  // Nothing to add between until there's an end to add it to.
-  if (plan.start || plan.end || plan.waypoints.length) list.append(addRow());
+  // Always there, even empty, so the list reads start, stops, destination
+  // (the user, 2026-10-29).
+  list.append(addRow());
   if (loops()) {
     const li = el("li", "row dest");
     li.append(markBadge("dest"), textCell(plan.trip === "outAndBack" ? "Back the same way to the start" : "Back to the start"));
@@ -1060,9 +1061,12 @@ function addRow() {
   if (!adding) {
     const button = el("button", "add-row", "Add a stop or waypoint");
     button.type = "button";
-    button.disabled = !plan.start;
-    button.title = plan.start ? "" : "Choose a start first";
     button.addEventListener("click", () => {
+      // Stops go after a start: without one, the start comes first.
+      if (!plan.start) {
+        document.querySelector('[data-focus="start"]')?.focus();
+        return;
+      }
       adding = true;
       focusAfterRender = '[data-focus="add"]';
       renderRows();
