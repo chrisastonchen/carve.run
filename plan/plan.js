@@ -105,9 +105,20 @@ let profile = null;
 let saved = false;
 const history = { back: [], forward: [] };
 
+/// Everything an undo puts back (not the route's identity: undoing an
+/// edit of a saved route still saves over that route).
 function snapshot() {
-  const { start, end, waypoints, trip, path, roads, frozen, turnaroundId, oneWayEnd } = plan;
-  return JSON.stringify({ start, end, waypoints, trip, path, roads, frozen, turnaroundId, oneWayEnd });
+  const { name, nameMade, madeName, start, end, waypoints, trip, style, path, roads, frozen, imported, turnaroundId, oneWayEnd } = plan;
+  return JSON.stringify({ name, nameMade, madeName, start, end, waypoints, trip, style, path, roads, frozen, imported, turnaroundId, oneWayEnd });
+}
+
+/// Bumped whenever the plan is replaced or put back: an answer that set
+/// off for an earlier plan (a road, an import, a profile) is dropped.
+let planEpoch = 0;
+function settle() {
+  planEpoch++;
+  clearTimeout(routeTimer);
+  routeAsk++;
 }
 
 /// One way, round trip or out and back, as the app does it
@@ -153,11 +164,13 @@ function remember() {
   history.forward.length = 0;
 }
 function restore(json) {
+  settle();
   Object.assign(plan, JSON.parse(json));
   plan.elevationProfile = null;
   plan.profile = null;
   plan.blurb = null;
-  changed({ reroute: !plan.frozen, record: false });
+  // The road came back with the snapshot; ask again only if it didn't.
+  changed({ reroute: !plan.path });
 }
 function undo() {
   if (!history.back.length) return;
@@ -188,10 +201,21 @@ function edit(fn, { geometry = true } = {}) {
   }
   changed({ reroute: geometry });
 }
-function changed({ reroute = false, record = true } = {}) {
+function changed({ reroute = false, record = true, keepTyping = false } = {}) {
   if (record) saveDraft();
-  render();
+  render({ keepTyping });
   if (reroute) scheduleRoute();
+}
+
+/// Someone is typing in a row: an answer arriving (a road, a place's name)
+/// waits to redraw the rows until they leave it, or the field, its text and
+/// its suggestions would vanish under them (the QA pass, 2026-10-29).
+let rowsWaiting = false;
+const typingInRows = () => document.activeElement?.tagName === "INPUT" && !!document.activeElement.closest("#rows");
+function rowsAfterTyping() {
+  if (!rowsWaiting || typingInRows()) return;
+  rowsWaiting = false;
+  renderRows();
 }
 
 let draftTimer = 0;
@@ -562,7 +586,7 @@ function drawPins() {
     pins.push(marker);
   };
   if (plan.start) add(plan.start, "start", "", (lat, lon) => Object.assign(plan.start, { lat, lon, label: plan.start.label }), "Start: drag to move");
-  plan.waypoints.forEach((w, i) => add(w, w.type === "stop" ? "stop" : "wp", labels[i], (lat, lon) => Object.assign(w, { lat, lon, road: null }), w.type === "stop" ? "Stop: drag to move" : "Waypoint: drag to move"));
+  plan.waypoints.forEach((w, i) => add(w, w.type === "stop" ? "stop" : "wp", labels[i], (lat, lon) => Object.assign(w, { lat, lon, road: null, ...(w.type === "stop" ? {} : { label: null }) }), w.type === "stop" ? "Stop: drag to move" : "Waypoint: drag to move"));
   if (plan.end && !loops()) add(plan.end, "dest", "", (lat, lon) => Object.assign(plan.end, { lat, lon }), "Destination: drag to move");
 }
 
@@ -732,7 +756,7 @@ async function nameSpot(spot) {
       target.label = clip(name, MOST_LABEL_CHARACTERS);
       if (town) target.town = town;
       else delete target.town;
-      changed();
+      changed({ keepTyping: true });
     }
   } catch {
     // Unnamed is fine: the row says what it is.
@@ -749,7 +773,7 @@ function findTowns() {
       .then(({ town }) => {
         if (!town) return;
         end.town = town;
-        changed();
+        changed({ keepTyping: true });
       })
       .catch(() => {});
   }
@@ -786,7 +810,7 @@ async function route() {
     plan.roads = result.roads || [];
     nameWaypointsByRoad();
     saveDraft();
-    render();
+    render({ keepTyping: true });
     if (!routeInView()) fitRoute();
   } catch (failure) {
     if (ask !== routeAsk) return;
@@ -819,7 +843,7 @@ function nameWaypointsByRoad() {
 let adding = false;
 let focusAfterRender = null;
 
-function render() {
+function render({ keepTyping = false } = {}) {
   const hasAny = !!(plan.start || plan.end || plan.waypoints.length);
   $("intro").hidden = hasAny;
   $("bring").hidden = hasAny;
@@ -835,7 +859,11 @@ function render() {
   $("trip").value = plan.trip;
   if (document.activeElement !== $("route-name")) $("route-name").value = plan.name || "";
   renderNotice();
-  renderRows();
+  if (keepTyping && typingInRows()) rowsWaiting = true;
+  else {
+    rowsWaiting = false;
+    renderRows();
+  }
   renderFigures();
   drawRoute();
   drawPins();
@@ -1078,6 +1106,9 @@ function removePoint(role, index) {
 }
 
 function choosePlace(role, index, place) {
+  if (role === "add" && plan.waypoints.length >= MAX_WAYPOINTS) {
+    return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
+  }
   const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS), ...(place.town ? { town: place.town } : {}) };
   edit(() => {
     if (role === "start") plan.start = spot;
@@ -1085,6 +1116,7 @@ function choosePlace(role, index, place) {
     else if (role === "waypoint") Object.assign(plan.waypoints[index], { lat: spot.lat, lon: spot.lon, label: spot.label, road: null });
     else {
       const type = addType === "stop" && stopCount() < MAX_STOPS ? "stop" : "marker";
+      if (addType === "stop" && type !== "stop") toast(`A route has up to ${MAX_STOPS} stops, so this one is a waypoint.`);
       addType = "marker";
       plan.waypoints.splice(bestSlot(spot), 0, { ...spot, type });
     }
@@ -1203,6 +1235,7 @@ function attachSearch(li, input, onPick, onLeave) {
       close();
       if (input.value !== original) input.value = original;
       onLeave?.();
+      rowsAfterTyping();
     }, 120);
   });
 }
@@ -1302,8 +1335,11 @@ async function importLink(text) {
 }
 
 async function importTrack(track, source) {
+  const epoch = planEpoch;
   const { route } = await planner("import", { track: track.track, places: track.places, name: track.name });
+  if (epoch !== planEpoch) return;
   remember();
+  settle();
   plan = {
     ...blankPlan(),
     name: route.name || track.name || "",
@@ -1327,6 +1363,7 @@ async function importTrack(track, source) {
 
 function loadStops(route, source) {
   remember();
+  settle();
   plan = {
     ...blankPlan(),
     name: route.name || "",
@@ -1345,9 +1382,12 @@ const spotFrom = (p) => (p ? { id: newUUID(() => crypto.randomUUID()), lat: p.la
 
 /// Someone's Carve link: its current version, as a copy to plan from.
 async function importCarve(token) {
+  const epoch = planEpoch;
   const rows = await rest("/rest/v1/rpc/redeem_share_token", { method: "POST", body: { share_token: token } });
+  if (epoch !== planEpoch) return;
   const payload = rows?.[0]?.payload;
   if (!payload) throw new Failure("That Carve link couldn't be found.");
+  settle();
   const all = payload.allWaypoints?.length > (payload.waypoints?.length || 0) ? payload.allWaypoints : payload.waypoints || [];
   remember();
   plan = {
@@ -1438,9 +1478,11 @@ async function save() {
   // A name the planner made follows the route ("From El Granada" moved to
   // Belmont is "From Belmont"); one they typed is theirs.
   const typed = clip($("route-name").value, MOST_NAME_CHARACTERS);
-  const madeHere = !typed || (plan.nameMade && typed === plan.name);
+  // The field holds the made name until someone changes it.
+  const madeHere = !typed || (plan.nameMade && typed === plan.madeName);
   plan.name = madeHere ? suggestedName() : typed;
   plan.nameMade = madeHere;
+  plan.madeName = madeHere ? plan.name : null;
   if (!session || !(await accessToken())) {
     store.set(DRAFT_KEY, { plan, saved });
     openAccount();
@@ -1504,14 +1546,23 @@ function suggestedName() {
 /// the app shows, written by the same `describe` function and saved onto
 /// the route so the phone has them too.
 async function enrich() {
-  const path = plan.path.geometry;
+  // All of this is for the road just saved: an edit since (Edit, then a
+  // change) or a new plan drops what arrives for the old one.
+  const road = plan.path;
+  const same = () => saved && plan.path === road;
+  const path = road.geometry;
   try {
-    if (!plan.profile) plan.profile = await planner("profile", { path });
+    if (!plan.profile) {
+      const profiled = await planner("profile", { path });
+      if (!same()) return;
+      plan.profile = profiled;
+    }
     plan.elevationProfile = plan.profile.elevationProfile || null;
     renderSavedFacts();
   } catch {
     // The card reads fine without them.
   }
+  if (!same()) return;
   if (plan.blurb) return renderBlurb();
   try {
     const { facts } = await planner("facts", {
@@ -1534,13 +1585,16 @@ async function enrich() {
       body: JSON.stringify(facts),
     });
     const data = await response.json().catch(() => ({}));
+    if (!same()) return;
     plan.blurb = clip(data.description, 600);
   } catch {
+    if (!same()) return;
     plan.blurb = null;
   }
   renderBlurb();
   if (plan.blurb || plan.elevationProfile) {
     try {
+      if (!same()) return;
       await writeRoute();
       saveDraft();
     } catch {
@@ -1590,7 +1644,9 @@ function renderAlong() {
 
 /// Up to four of Carve's drives within about 250 km of the start
 /// (drives/near.json, as a shared route's page lists them).
+let nearbyAsk = 0;
 async function renderNearby() {
+  const ask = ++nearbyAsk;
   const box = $("near-cards");
   box.innerHTML = "";
   $("near-unit").hidden = true;
@@ -1599,6 +1655,7 @@ async function renderNearby() {
     const response = await fetch("/drives/near.json", { cache: "default" });
     if (!response.ok) return;
     const all = await response.json();
+    if (ask !== nearbyAsk) return;
     const near = all
       .map((d) => [meters({ lat: d.a, lon: d.o }, plan.start), d])
       .filter(([m]) => m < 250000)
@@ -1611,7 +1668,8 @@ async function renderNearby() {
       img.src = d.c;
       img.alt = "";
       img.loading = "lazy";
-      a.append(img, el("span", "n", d.n), el("span", "m", `${d.m} mi`));
+      const length = miles ? `${d.m} mi` : `${Math.round(d.m * 1.609344)} km`;
+      a.append(img, el("span", "n", d.n), el("span", "m", length));
       const li = el("li");
       li.append(a);
       box.append(li);
@@ -1625,6 +1683,8 @@ async function renderNearby() {
 function renderSavedFacts() {
   const facts = $("s-facts");
   facts.innerHTML = "";
+  $("elev-unit").hidden = true;
+  $("curve-unit").hidden = true;
   const p = plan.profile;
   const label = p?.intensity?.title;
   if (label) {
@@ -1728,6 +1788,9 @@ const ARROWS = {
 };
 const escapeHTML = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
+/// "30 min", "2 hr", "1 hr 30": as the stop's timer lists it.
+const stayWords = (minutes) => (minutes < 60 ? `${minutes} min` : formatDuration(minutes * 60).replace(" h", " hr"));
+
 function printDirections() {
   const unitMeters = miles ? 1609.344 : 1000;
   const unit = miles ? "mi" : "km";
@@ -1755,7 +1818,7 @@ function printDirections() {
     const kind = k === 0 ? "start" : turnKind(t.text);
     rows += `<tr><td class="n">${k + 1}</td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS[kind] || ARROWS.straight}</svg></td><td>${escapeHTML(t.text)}</td><td class="d">${t.arrives ? "" : `${(t.distanceMeters / unitMeters).toFixed(1)} ${unit}`}</td><td class="m">${(mile / unitMeters).toFixed(1)}</td></tr>`;
     for (const stop of stopsAfter.get(k) || []) {
-      rows += `<tr class="stoprow"><td class="n"></td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS.stop}</svg></td><td>Stop ${stop.label} · ${escapeHTML(stop.name)}${stop.stay ? ` · stay ${Number(stop.stay)} min` : ""}</td><td class="d"></td><td class="m">${((mile + t.distanceMeters) / unitMeters).toFixed(1)}</td></tr>`;
+      rows += `<tr class="stoprow"><td class="n"></td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS.stop}</svg></td><td>Stop ${stop.label} · ${escapeHTML(stop.name)}${stop.stay ? ` · stay ${stayWords(Number(stop.stay))}` : ""}</td><td class="d"></td><td class="m">${((mile + t.distanceMeters) / unitMeters).toFixed(1)}</td></tr>`;
     }
     mile += t.distanceMeters;
   });
@@ -1888,9 +1951,8 @@ function showPlan() {
 }
 
 function planAnother() {
-  // A road still on its way belongs to the plan being cleared.
-  clearTimeout(routeTimer);
-  routeAsk++;
+  // Anything still on its way belongs to the plan being cleared.
+  settle();
   plan = blankPlan();
   saved = false;
   history.back.length = 0;
@@ -2003,6 +2065,8 @@ function wire() {
   });
 
   $("acc-close").addEventListener("click", () => $("account").close());
+  // Closing the sign-in without signing in forgets the route it was for.
+  $("account").addEventListener("close", () => { if (!session) store.remove(PENDING_EDIT_KEY); });
   $("with-apple").addEventListener("click", () => oauth("apple"));
   $("with-google").addEventListener("click", () => oauth("google"));
   $("with-email").addEventListener("click", () => setStep("email"));
@@ -2057,8 +2121,11 @@ function wire() {
 
 async function start() {
   osAwareGetApp();
-  if (window.matchMedia("(max-width: 699px)").matches) {
+  const narrow = window.matchMedia("(max-width: 699px)");
+  if (narrow.matches) {
     wire();
+    // A window opened narrow and then widened gets the planner.
+    narrow.addEventListener("change", (event) => { if (!event.matches) location.reload(); }, { once: true });
     return;
   }
   const draft = store.get(DRAFT_KEY);
@@ -2096,7 +2163,8 @@ async function start() {
   const editing = new URLSearchParams(location.search).get("edit");
   if (editing) {
     try { window.history.replaceState(null, "", "/plan/"); } catch {}
-    if (session) await editShared(editing);
+    if (!/^[A-Za-z0-9]{10}$/.test(editing)) toast("That edit link isn't a Carve route.", true);
+    else if (session) await editShared(editing);
     else {
       store.set(PENDING_EDIT_KEY, editing);
       openAccount("choose", { saving: false, title: "Sign in to edit" });

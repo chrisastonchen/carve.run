@@ -43,6 +43,8 @@ h1, h2, p { margin: 0; }
 h1, h2 { font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
 a { color: var(--green); }
 :focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+/* On the green bar a green ring can't be seen. */
+.bar :focus-visible, .sheet :focus-visible { outline-color: #fff; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dim { color: var(--ink-3); }
 .center { text-align: center; }
@@ -129,6 +131,8 @@ a { color: var(--green); }
 
 /* ── computers and tablets vs phones ── */
 @media (max-width: 699px) { .wide-only { display: none !important; } .bar .links { display: none; } .bar { padding: 0 12px 0 16px; } .bar .wordmark { width: 100px; height: 15px; } }
+/* The smallest phones: Get the App without its logo, so the menu fits. */
+@media (max-width: 360px) { .bar .pill { padding: 0 12px; font-size: 14.5px; } .bar .pill svg { display: none; } .bar .wordmark { width: 88px; height: 13px; } }
 @media (min-width: 700px) { .narrow-only { display: none !important; } .sheet { display: none !important; } }
 
 /* ── phone gate ── */
@@ -277,7 +281,7 @@ a { color: var(--green); }
 .saved-head { position: relative; padding-right: 84px; }
 .ok { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #1D7A3E; }
 .ok svg { width: 14px; height: 14px; color: #1D7A3E; }
-.saved-head h1 { margin-top: 6px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+.saved-head h1 { overflow-wrap: anywhere; margin-top: 6px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
 .saved-head p { margin-top: 5px; font-size: 15px; }
 .facts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 15px; color: #6E6E73; }
 .facts b { color: #111113; }

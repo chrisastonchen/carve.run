@@ -25,9 +25,9 @@
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=13">
-<link rel="stylesheet" href="/assets/route-view.css?v=71e49f00d9">
+<link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="/plan/plan.css?v=16">
+<link rel="stylesheet" href="/assets/route-view.css?v=30b1bd413f">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
      route_profile.js or page_parts.py, not this file. -->
 <style>
@@ -107,8 +107,7 @@
   <a href="/support/">Support</a>
 </nav>
 <div class="rv">
-<div class="rv-map" id="rv-map" role="region" aria-label="Map of the route"><div class="rv-still"></div></div>
-<aside class="panel" aria-label="The route">
+<main class="panel" aria-label="The route">
 <div class="scroll">
 <p class="missing" id="missing">Loading the route…</p>
 <nav class="rv-links" aria-label="More">
@@ -116,7 +115,8 @@
 </nav>
 </div>
 <div class="foot quiet"><a class="linkish grey" href="/plan/">+ Plan a new route</a></div>
-</aside>
+</main>
+<div class="rv-map" id="rv-map" role="region" aria-label="Map of the route"><div class="rv-still"></div></div>
 <div class="legend" id="rv-legend" hidden aria-label="Map key">
   <span><i class="k-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp">1</i>Waypoint</span><span><i class="k-end"><svg aria-hidden="true"><use href="#i-flag-checkered"/></svg></i>Destination</span>
 </div>
@@ -575,7 +575,7 @@ const RouteProfile = (() => {
         el("div", {}, el("b", {}, "Scan to drive it in Carve"), el("span", { class: "dim" }, "Point a phone's camera here. It opens ready to drive."))),
       el("div", { class: "two" },
         el("button", { type: "button", class: "pill white", id: "rv-download" }, icon("i-download"), "Download"),
-        el("button", { type: "button", class: "pill white", id: "rv-print" }, icon("i-print"), "Print directions"))));
+        el("button", { type: "button", class: "pill white", id: "rv-print", hidden: "" }, icon("i-print"), "Print directions"))));
     add(el("div", { class: "paste link" },
       el("input", { id: "rv-link", readonly: "", "aria-label": "The route's link", value: link.replace("https://", "") }),
       el("button", { type: "button", class: "pill green", id: "rv-copy" }, "Copy link")));
@@ -592,9 +592,9 @@ const RouteProfile = (() => {
 
     // Along the way: the start, its stops, the end, in the map's marks;
     // then its elevation and curves.
-    const start = "Start", end = info.roundTrip ? "Back to the start" : "End";
+    const start = "Start", end = info.roundTrip ? "Back to the start" : "Destination";
     const flag = (kind) => markup(`<span class="badge ${kind}"><svg aria-hidden="true"><use href="#${kind === "start" ? "i-flag" : "i-flag-checkered"}"/></svg></span>`)[0];
-    const along = el("ol", { class: "along" },
+    const along = el("ol", { class: "along", "data-from-route": "" },
       el("li", {}, flag("start"), el("div", { class: "what" }, el("strong", {}, start))),
       (info.stops || []).map((s, i) => el("li", { "data-place": s.name }, el("span", { class: "badge stop" }, stopLetter(i + 1)),
         el("div", { class: "what" }, el("strong", {}, s.name)))),
@@ -918,6 +918,8 @@ const RouteProfile = (() => {
     } catch (e) { return null; }
   }
 
+  const BROKEN = { broken: true };
+
   /// Straight from the backend, when the Worker didn't write the route in.
   async function fromBackend() {
     if (!token) return null;
@@ -927,7 +929,7 @@ const RouteProfile = (() => {
         headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY, "content-type": "application/json" },
         body: JSON.stringify({ share_token: token }),
       });
-      if (!response.ok) return null;
+      if (!response.ok) return response.status >= 500 ? BROKEN : null;
       const row = (await response.json())[0];
       if (!row) return null;
       fetchedRow = row;
@@ -963,6 +965,8 @@ const RouteProfile = (() => {
     for (let attempt = 0; attempt < 5; attempt++) {
       if (attempt) await new Promise((resolve) => setTimeout(resolve, 1500));
       const info = await fromBackend();
+      // A server error isn't a route on its way: no point waiting for it.
+      if (info === BROKEN) return null;
       if (info) return info;
     }
     return null;
@@ -1009,9 +1013,10 @@ const RouteProfile = (() => {
     let info = fromPage();
     if (info && (!info.profile || !info.intensity) && token) {
       const own = await fromBackend();
-      if (own) info = { ...info, profile: own.profile, climbFeet: info.climbFeet || own.climbFeet, intensity: info.intensity || own.intensity, roundTrip: info.roundTrip || own.roundTrip };
+      if (own && own !== BROKEN) info = { ...info, profile: own.profile, climbFeet: info.climbFeet || own.climbFeet, intensity: info.intensity || own.intensity, roundTrip: info.roundTrip || own.roundTrip };
     }
-    info = info || (payload ? await fromBackend() : await fromBackendWaiting()) || fromPayload();
+    const fetched = info ? null : (payload ? await fromBackend() : await fromBackendWaiting());
+    info = info || (fetched && fetched !== BROKEN ? fetched : null) || fromPayload();
     if (info) {
       const nearby = render(info);
       // Where it starts comes with the row route-view.js fetches.
@@ -1026,9 +1031,9 @@ const RouteProfile = (() => {
     }
   })();
 </script>
+<script type="module" src="/assets/route-view.js?v=096dc03abf"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
-<script type="module" src="/assets/route-view.js?v=c9ecd2b839"></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;

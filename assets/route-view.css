@@ -33,7 +33,7 @@
 .rv .crumbs { font-size: 12.5px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
 .rv .crumbs a { color: inherit; text-decoration: none; }
 .rv .crumbs a:hover { color: var(--ink); }
-.rv-head h1 { margin-top: 6px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+.rv-head h1 { overflow-wrap: anywhere; margin-top: 6px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
 .rv-head .sub { margin-top: 5px; font-size: 15px; color: var(--ink-3); }
 .rv .facts .chip { font-size: 13px; }
 .rv .scan .qr svg { width: 100%; height: 100%; display: block; }
@@ -75,7 +75,7 @@
 .rv .unit .ut { font-size: 15px; font-weight: 700; }
 .rv .unit .us { font-size: 13.5px; color: var(--ink-3); margin-top: 2px; }
 .rv .unit .us em { font-style: normal; color: #C2185B; font-weight: 700; }
-.rv .unit .ends { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: #8E8E93; margin-top: 6px; }
+.rv .unit .ends { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 6px; }
 .rv .elev { position: relative; height: 72px; margin-top: 10px; }
 .rv .elev svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .rv .elev .peak { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #0A84FF; box-shadow: 0 0 0 2px #fff; }
@@ -113,14 +113,14 @@
 .rv .apex { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; color: #13623F; background: #E2F4EA; border-radius: 6px; padding: 2px 6px; vertical-align: 2px; letter-spacing: .02em; }
 .rv .get { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
 .rv .get p { color: var(--ink-3); font-size: 14px; }
-.rv .get a { color: inherit; }
+.rv .get p a { color: inherit; }
 .rv .stores { display: flex; gap: 10px; flex-wrap: wrap; }
 .rv .store { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 18px 0 14px; border-radius: 14px; background: #000; color: #fff; text-decoration: none; }
 .rv .store svg { width: 24px; height: 26px; flex: none; fill: #fff; }
 .rv .store small { display: block; font-size: 11px; font-weight: 500; opacity: .85; line-height: 1; }
 .rv .store b { display: block; font-size: 18px; font-weight: 700; letter-spacing: -.01em; line-height: 1.15; }
 
-.rv .rv-sources { font-size: 12.5px; color: #8E8E93; line-height: 1.45; }
+.rv .rv-sources { font-size: 12.5px; color: var(--ink-3); line-height: 1.45; }
 .rv-links { display: flex; flex-wrap: wrap; gap: 4px 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 13px; }
 .rv-links a { color: var(--ink-3); text-decoration: none; }
 .rv-links a:hover { color: var(--ink); }
@@ -130,11 +130,16 @@
 .gmaps { display: flex; align-items: center; justify-content: center; width: 100%; height: 48px; margin-top: 14px; border: none; border-radius: 999px; background: var(--fill); color: var(--ink); font-weight: 700; font-size: 15.5px; }
 .gmaps:hover { background: #E8E7E3; }
 
-/* ── phones: a frame of map, then the card as the page ── */
-@media (max-width: 699px) {
+/* The key needs room beside the card; below that the pins speak for themselves. */
+@media (max-width: 1100px) { .rv .legend { display: none !important; } }
+
+/* ── phones (and phones held sideways): a frame of map, then the card as
+   the page; the map comes first on screen though the card leads the page ── */
+@media (max-width: 699px), (max-height: 560px) {
   html, body { height: auto; }
   body { background: #fff; }
-  .rv { position: static; padding-top: var(--bar); }
+  .rv { position: static; padding-top: var(--bar); display: flex; flex-direction: column; }
+  .rv-map { order: -1; }
   .rv-map { position: relative; inset: auto; height: 46vh; min-height: 260px; max-height: 420px; }
   .rv-still img { width: 100%; }
   .rv .panel { position: static; width: auto; border-radius: 0; box-shadow: none; overflow: visible; }
@@ -149,4 +154,17 @@
   .rv .scroll > .rv-photo { order: 2; margin: 0; height: 190px; border-radius: 16px; }
   .rv-head h1 { font-size: 28px; }
   .rv .facts .sep { display: none; }
+}
+
+/* ── the browser's own Print: the guide itself (Print directions fills
+   #printout instead, and plan.css prints only that) ── */
+@media print {
+  body:has(#printout:empty) > .rv { display: block !important; position: static; }
+  body:has(#printout:empty) .rv-map, body:has(#printout:empty) .legend, body:has(#printout:empty) .foot,
+  body:has(#printout:empty) .scan .two, body:has(#printout:empty) .paste.link, body:has(#printout:empty) .go,
+  body:has(#printout:empty) #rv-edit, body:has(#printout:empty) #rv-app, body:has(#printout:empty) .rv-links { display: none !important; }
+  body:has(#printout:empty) .rv .panel { position: static; width: auto; box-shadow: none; border-radius: 0; overflow: visible; }
+  body:has(#printout:empty) .rv .scroll { overflow: visible; padding: 0; }
+  body:has(#printout:empty) .rv-photo { margin: 0; break-inside: avoid; }
+  .rv .sect, .rv .unit { break-inside: avoid; }
 }

@@ -18,7 +18,9 @@ const PANEL_GAP = 30;
 
 const $ = (id) => document.getElementById(id);
 const miles = usesMiles(navigator.language || "en-US");
-const phone = () => window.matchMedia("(max-width: 699px)").matches;
+// The one-column layout: a phone, or one held sideways (route-view.css).
+const PHONE = "(max-width: 699px), (max-height: 560px)";
+const phone = () => window.matchMedia(PHONE).matches;
 const escapeHTML = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 function readStore(key) {
@@ -43,6 +45,13 @@ function wireBar() {
       const open = sheet.hidden;
       sheet.hidden = !open;
       button.setAttribute("aria-expanded", String(open));
+      if (open) sheet.querySelector("a")?.focus();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || sheet.hidden) return;
+      sheet.hidden = true;
+      button.setAttribute("aria-expanded", "false");
+      button.focus();
     });
   }
   if (/android/i.test(navigator.userAgent || "")) {
@@ -108,6 +117,8 @@ async function routeRow(token, attempts = 1) {
       if (response.ok) {
         const row = (await response.json())[0];
         if (row) return row;
+      } else if (response.status >= 500) {
+        return null;
       }
     } catch {
       // Offline: try again, then keep the picture.
@@ -133,7 +144,16 @@ function placesOf(payload) {
     }));
 }
 
-const loops = (payload) => payload.tripType === "roundtrip";
+/// A round trip, or a drive that ends where it began (within ~150 m).
+function loops(payload) {
+  if (payload.tripType === "roundtrip") return true;
+  const a = payload.start, b = payload.end;
+  if (!a || !b) return false;
+  const rad = Math.PI / 180;
+  const dy = (b.latitude - a.latitude) * 111000;
+  const dx = (b.longitude - a.longitude) * 111000 * Math.cos(a.latitude * rad);
+  return Math.hypot(dx, dy) < 150;
+}
 
 // ── the map ──────────────────────────────────────────────────────────
 
@@ -168,8 +188,19 @@ function padding() {
   return { top: 70, bottom: 80, right: 80, left: Math.round(right) + PANEL_GAP };
 }
 
-function drawMap(host, payload) {
-  if (!window.maplibregl || !webglWorks()) return;
+/// MapLibre loads after this module (it's big, and nothing else waits for it).
+function mapLibre() {
+  if (window.maplibregl) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    const script = document.querySelector('script[src*="maplibre-gl.js"]');
+    script?.addEventListener("load", () => resolve(!!window.maplibregl), { once: true });
+    script?.addEventListener("error", () => resolve(false), { once: true });
+    window.addEventListener("load", () => resolve(!!window.maplibregl), { once: true });
+  });
+}
+
+async function drawMap(host, payload) {
+  if (!(await mapLibre()) || !webglWorks()) return;
   const line = (payload.pathGeometry || [])
     .filter((c) => Number.isFinite(c.latitude) && Number.isFinite(c.longitude))
     .map((c) => [c.longitude, c.latitude]);
@@ -182,7 +213,7 @@ function drawMap(host, payload) {
     container: box,
     style: MAP_STYLE,
     bounds,
-    fitBoundsOptions: { padding: padding(), maxZoom: 13 },
+    fitBoundsOptions: { padding: padding(), maxZoom: 14 },
     attributionControl: { compact: false },
     dragRotate: false,
     pitchWithRotate: false,
@@ -198,7 +229,12 @@ function drawMap(host, payload) {
     map.addLayer({ id: "route-line", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#2E92FF", "line-width": 6 } }, firstLabel);
     const places = placesOf(payload);
     const labels = markerLabels(places);
-    const add = (lon, lat, el) => new maplibregl.Marker({ element: el }).setLngLat([lon, lat]).addTo(map);
+    const add = (lon, lat, el) => {
+      const marker = new maplibregl.Marker({ element: el }).setLngLat([lon, lat]).addTo(map);
+      // MapLibre calls every marker "Map marker"; this one says what it is.
+      el.setAttribute("aria-label", el.title);
+      return marker;
+    };
     places.forEach((p, i) => {
       const stop = p.type === "stop";
       add(p.lon, p.lat, pin(stop ? "stop" : "wp", labels[i], `${stop ? "Stop" : "Waypoint"} ${labels[i]}${p.label ? `: ${p.label}` : ""}`));
@@ -210,9 +246,14 @@ function drawMap(host, payload) {
     host.classList.add("live");
     const legend = $("rv-legend");
     if (legend && !phone()) legend.hidden = false;
-    map.fitBounds(bounds, { padding: padding(), maxZoom: 13, duration: 0 });
+    map.fitBounds(bounds, { padding: padding(), maxZoom: 14, duration: 0 });
   });
-  window.addEventListener("resize", () => map.fitBounds(bounds, { padding: padding(), maxZoom: 13, duration: 0 }));
+  // Refit to a new window size once the map has taken it, unless the
+  // reader has moved the map themselves.
+  let moved = false;
+  map.on("dragstart", () => (moved = true));
+  map.on("zoomstart", (event) => { if (event.originalEvent) moved = true; });
+  map.on("resize", () => { if (!moved) map.fitBounds(bounds, { padding: padding(), maxZoom: 14, duration: 0 }); });
 }
 
 // ── into the app: the code, the link, the printed turns ─────────────
@@ -223,17 +264,24 @@ function shareLink(token) {
   return `https://carve.run/${token}`;
 }
 
-function wireScan(token, payload, row) {
-  const link = shareLink(token);
-  if (window.qrcode) {
+/// The code's model, from the vendored library once it has loaded.
+function codeFor(link) {
+  if (!qrModel && window.qrcode) {
     qrModel = qrcode(0, "M");
     qrModel.addData(link);
     qrModel.make();
-    const box = $("rv-qr");
-    if (box && !box.querySelector("svg")) {
-      box.innerHTML = qrModel.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
-      box.setAttribute("aria-label", `QR code for ${link}`);
-    }
+  }
+  return qrModel;
+}
+
+/// The link, its code and Download need only the token: they work before,
+/// and without, the route (a slow phone, the backend down).
+function wireLink(token, name) {
+  const link = shareLink(token);
+  const box = $("rv-qr");
+  if (box && !box.querySelector("svg") && codeFor(link)) {
+    box.innerHTML = qrModel.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+    box.setAttribute("aria-label", `QR code for ${link}`);
   }
   const out = $("rv-link");
   if (out) out.value = link.replace("https://", "");
@@ -246,13 +294,23 @@ function wireScan(token, payload, row) {
       out?.select();
     }
   });
-  $("rv-download")?.addEventListener("click", () => downloadQR(row.name || payload.name));
+  $("rv-download")?.addEventListener("click", () => {
+    codeFor(link);
+    downloadQR(document.querySelector("h1")?.textContent || name);
+  });
+}
+
+/// Print directions, once the route's turns are here.
+function wirePrint(token, payload, row) {
   const print = $("rv-print");
-  if (print) {
-    const turns = payload.turnInstructions || [];
-    if (turns.length) print.addEventListener("click", () => printDirections(token, payload, row));
-    else print.hidden = true;
-  }
+  if (!print) return;
+  const turns = payload.turnInstructions || [];
+  if (!turns.length) return;
+  print.addEventListener("click", () => {
+    codeFor(shareLink(token));
+    printDirections(token, payload, row);
+  });
+  print.hidden = false;
 }
 
 function downloadQR(name) {
@@ -348,7 +406,40 @@ function printDirections(token, payload, row) {
       <table><thead><tr><th></th><th></th><th>Direction</th><th style="text-align:right">Then</th><th style="text-align:right">${miles ? "Mile" : "Km"}</th></tr></thead><tbody>${rows}</tbody></table>
       <p class="foot-note">Directions are the route as planned in Carve. Watch for road signs and closures.</p>
     </section>`;
+  // Afterwards the browser's own Print gives the page again.
+  window.addEventListener("afterprint", () => ($("printout").innerHTML = ""), { once: true });
   window.print();
+}
+
+/// A shared route's Along the way, from the route itself: every stop and
+/// waypoint in the map's marks (the share link's own list has stops only).
+function listAlong(payload) {
+  const list = document.querySelector(".along[data-from-route]");
+  if (!list) return;
+  const places = placesOf(payload);
+  const labels = markerLabels(places);
+  const mark = (kind, text) => {
+    const span = document.createElement("span");
+    span.className = `badge ${kind}`;
+    if (kind === "start" || kind === "dest") span.innerHTML = MARKS[kind];
+    else span.textContent = text;
+    return span;
+  };
+  const row = (badge, name) => {
+    const li = document.createElement("li");
+    const what = document.createElement("div");
+    what.className = "what";
+    const strong = document.createElement("strong");
+    strong.textContent = name;
+    what.append(strong);
+    li.append(badge, what);
+    return li;
+  };
+  const rows = [row(mark("start"), "Start")];
+  places.forEach((p, i) => rows.push(row(mark(p.type === "stop" ? "stop" : "wp", labels[i]),
+    p.label || (p.type === "stop" ? `Stop ${labels[i]}` : `Waypoint ${labels[i]}`))));
+  rows.push(loops(payload) ? row(mark("start"), "Back to the start") : row(mark("dest"), "Destination"));
+  list.replaceChildren(...rows);
 }
 
 /// Along the way, marked as the map marks it: a place the route has by name
@@ -400,20 +491,24 @@ async function wireOwner(token, row) {
 
 // ── start ────────────────────────────────────────────────────────────
 
+// The bar doesn't wait for the route (a bad link still has its menu).
+wireBar();
+
 async function start() {
-  wireBar();
   // Someone signed in to Carve has the app's pitch already.
   if (signedIn) $("rv-app")?.setAttribute("hidden", "");
   const host = $("rv-map");
   const token = host?.dataset.token;
   if (!token) return;
+  wireLink(token, "carve-route");
   const row = window.carveRouteRow || (await routeRow(token, host.dataset.wait ? 5 : 1));
   if (!row) return;
   window.dispatchEvent(new CustomEvent("carve:row", { detail: row }));
   const payload = row.payload || {};
   drawMap(host, payload);
   markAlong(payload);
-  wireScan(token, payload, row);
+  listAlong(payload);
+  wirePrint(token, payload, row);
   wireOwner(token, row);
 }
 

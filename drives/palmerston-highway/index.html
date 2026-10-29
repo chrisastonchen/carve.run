@@ -20,9 +20,9 @@
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=13">
-<link rel="stylesheet" href="/assets/route-view.css?v=71e49f00d9">
+<link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="/plan/plan.css?v=16">
+<link rel="stylesheet" href="/assets/route-view.css?v=30b1bd413f">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -85,8 +85,7 @@
 </nav>
 
 <div class="rv">
-<div class="rv-map" id="rv-map" data-token="5kVB4xkVpx" role="region" aria-label="Map of Palmerston Highway, from Goondi to Millaa Millaa"><div class="rv-still"><img src="https://carve.run/map/5kVB4xkVpx" width="1200" height="630" alt="Map of Palmerston Highway, from Goondi to Millaa Millaa"></div></div>
-<aside class="panel" aria-label="The route">
+<main class="panel" aria-label="The route">
 <div class="scroll">
 <figure class="rv-photo"><img src="https://carve.run/assets/drives/area/photos/palmerston-highway.jpg?v=63aa35f75e" alt="Palmerston Highway, Wooroonooran National Park, Queensland" fetchpriority="high"><figcaption>Photo: <a href="https://commons.wikimedia.org/wiki/File:Wooroonoon_Park_(Mamu_Skywalk)_promenade_%C3%A0_hauteur_de_la_canop%C3%A9e_de_la_Rain_Forest_et_vue_sur_la_Johnstone_River.jpg" rel="noopener">BMR &amp; MAM · CC BY-SA 2.0 · cropped</a></figcaption></figure>
 <div class="rv-head">
@@ -103,7 +102,7 @@
     </div>
     <div class="two">
       <button type="button" class="pill white" id="rv-download"><svg aria-hidden="true"><use href="#i-download"/></svg>Download</button>
-      <button type="button" class="pill white" id="rv-print"><svg aria-hidden="true"><use href="#i-print"/></svg>Print directions</button>
+      <button type="button" class="pill white" id="rv-print" hidden><svg aria-hidden="true"><use href="#i-print"/></svg>Print directions</button>
     </div>
   </div>
   <div class="paste link">
@@ -152,15 +151,16 @@
 </nav>
 </div>
 <div class="foot quiet"><a class="linkish grey" href="/plan/">+ Plan a new route</a></div>
-</aside>
+</main>
+<div class="rv-map" id="rv-map" data-token="5kVB4xkVpx" role="region" aria-label="Map of Palmerston Highway, from Goondi to Millaa Millaa"><div class="rv-still"><img src="https://carve.run/map/5kVB4xkVpx" width="1200" height="630" alt="Map of Palmerston Highway, from Goondi to Millaa Millaa" loading="lazy"></div></div>
 <div class="legend" id="rv-legend" hidden aria-label="Map key">
   <span><i class="k-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp">1</i>Waypoint</span><span><i class="k-end"><svg aria-hidden="true"><use href="#i-flag-checkered"/></svg></i>Destination</span>
 </div>
 </div>
 <div class="printout" id="printout" aria-hidden="true"></div>
+<script type="module" src="/assets/route-view.js?v=096dc03abf"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
-<script type="module" src="/assets/route-view.js?v=c9ecd2b839"></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
