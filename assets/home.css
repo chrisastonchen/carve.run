@@ -335,3 +335,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .hero { isolation: isolate; z-index: 0; }
 /* The map's own layers stay on the map, never over the card. */
 .hero > .hero-map { z-index: 0; }
+/* The start's flag and the destination's checkered flag, as the planner marks them. */
+.door .stops .pin { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #fff; }
+.door .stops .pin svg { width: 14px; height: 14px; }
