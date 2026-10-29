@@ -30,7 +30,7 @@
 <link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=9bb6ad869e">
 <link rel="stylesheet" href="/assets/site-bar.css?v=1b5bcab43d">
-<link rel="stylesheet" href="/assets/home.css?v=3d74b2dd14">
+<link rel="stylesheet" href="/assets/home.css?v=9491b474f9">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -112,7 +112,8 @@
     <div class="lead">
       <div class="near-chip" id="near-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></svg><span>Near <strong id="near-name">you</strong></span><span aria-hidden="true">·</span><button type="button" id="near-change">Change</button></div>
       <h1>Great roads near you.<br><span class="em">Drive them together.</span></h1>
-      <p class="pitch">Pick a road and plan the drive in a minute. Send your group one link, and everyone drives the same roads, even with no signal.</p>
+      <p class="pitch">Pick a road and plan the drive in a few minutes. Send your group one link, and everyone drives the same roads.</p>
+      <ul class="proof"><li>Never reroutes you off your roads</li><li>Works with no signal</li><li>Members join free</li></ul>
     </div>
     <div class="door" id="door">
       <div class="tabs" role="tablist" aria-label="How to start">
@@ -136,6 +137,7 @@
         <p class="err" id="door-err" hidden></p>
       </div>
     </div>
+    <a class="for-org" href="#clubs">Organizing a club drive? Import your route, share one link, see everyone on the day<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     <a class="for-app" href="#get">Here for the app? Get Carve on iPhone or Android<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
   <div class="hero-map" id="hero-map" role="region" aria-label="Map of great driving roads near you">
@@ -207,7 +209,7 @@
           <li class="m3"><i style="background:#2E92FF">S</i>Sam<span>Opened</span></li>
         </ul>
       </div>
-      <div class="words"><span class="num">2</span><div><h3>Share with your club or group</h3><p>One link and a QR code for the newsletter or the group text, and printed turns for the paper crowd. Change the route and the link stays the same.</p></div></div>
+      <div class="words"><span class="num">2</span><div><h3>Share with your club or group</h3><p>One link and a QR code for the newsletter or the group text, and printed turns for the paper crowd. Change the route and the link stays the same.</p><a class="example" href="https://carve.run/VMMZK7TQRb" target="_blank" rel="noopener">See what your members get</a></div></div>
     </li>
     <li class="step">
       <div class="vis vis-drive" data-step="3" aria-hidden="true">
@@ -246,6 +248,28 @@
 </section>
 
 <div class="wrapx">
+<!-- ═══ CLUBS: for the organizer, right after the steps ═══ -->
+<section class="clubs2" id="clubs" aria-labelledby="clubs-title">
+  <h2 id="clubs-title">Running a club drive?</h2>
+  <div>
+    <p class="problem">You spend hours picking the roads. Then regular map apps undo it: they reroute members onto the fastest way, and the route goes when the signal drops. Carve keeps everyone on the roads you picked.</p>
+    <ul>
+      <li><b>Plan it on a computer</b>, or import the GPX or Ride with GPS route you already have.</li>
+      <li><b>Send members one link.</b> It opens the same route on iPhone or Android, free, and edits keep the same link.</li>
+      <li><b>Print the turns</b> for anyone who likes paper.</li>
+      <li><b>See everyone on the map</b> on the day, with hazard warnings from the cars ahead. The group map comes with Apex.</li>
+    </ul>
+  </div>
+  <div class="founder">
+    <p class="note">“I've been a member of the Porsche Club of America's Golden Gate Region since 2023, and we drive together every month. I built Carve for drivers and riders who are out for the drive, not the commute.”</p>
+    <p class="sig">Chris, founder of Carve</p>
+  </div>
+  <div class="cta"><a class="hb green" href="mailto:support@carve.run?subject=Our%20club%27s%20drives">Set up your club's next drive</a><p>Organizing a drive? I'll build your route in Carve with you, free. Or read <a href="/group-drives/">how to plan and lead a group drive</a>.</p></div>
+  <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
+</section>
+</div>
+
+<div class="wrapx">
 <!-- ═══ LEGENDARY DRIVES ═══ -->
 <section class="legends" aria-labelledby="legends-title">
   <h2 id="legends-title">Legendary drives</h2>
@@ -273,21 +297,7 @@
 </section>
 
 <!-- ═══ CLUBS ═══ -->
-<section class="clubs2" aria-labelledby="clubs-title">
-  <h2 id="clubs-title">Running a club drive?</h2>
-  <div>
-    <p class="note">I've been a member of the Porsche Club of America's Golden Gate Region since 2023, and we drive together every month. If you've planned a drive, you know the problem: you spend hours finding the best roads and building the route, and regular map apps undo it. They reroute you onto the fastest way, and when the signal drops, the route goes with it. I built Carve for drivers and riders who are out for the drive, not the commute.</p>
-    <p class="sig">Chris, founder of Carve</p>
-  </div>
-  <ul>
-    <li><b>Plan it on a computer</b>, or bring the GPX you already have.</li>
-    <li><b>Send members one link.</b> It opens the same route on iPhone or Android, and edits keep the same link.</li>
-    <li><b>Print the turns</b> for anyone who likes paper.</li>
-    <li><b>See everyone on the map</b> on the day, with hazard warnings from the cars ahead.</li>
-  </ul>
-  <div class="cta"><a class="hb green" href="mailto:support@carve.run?subject=Our%20club%27s%20drives">Set up your club's next drive</a><p>Organizing a drive? I'll build your route in Carve with you, free. Or read <a href="/group-drives/">how to plan and lead a group drive</a>.</p></div>
-  <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
-</section>
+
 
 <!-- ═══ DRIVES ANYWHERE: every state's drives, two links from here (build_area_pages.py) ═══ -->
 <!-- drives-home -->
