@@ -1368,10 +1368,17 @@ async function importTrack(track, source) {
     frozen: true,
     imported: { source, matched: route.matched !== false, turns: route.path.instructions.length },
   };
+  // A place the track's maker named at an end names it ("BJ's Restaurants",
+  // not the street it's on), as the importer's stops are named (the user,
+  // 2026-10-29); the same 200 m as the importer's end reach.
+  for (const spot of [plan.start, plan.end]) {
+    const place = spot && (track.places || []).find((p) => p.name && meters(p, spot) <= 200);
+    if (place) spot.label = clip(place.name, MOST_LABEL_CHARACTERS);
+  }
   nameWaypointsByRoad();
   changed();
   fitRoute();
-  // A track's ends come with no names: look them up for the list.
+  // Ends with no name of their own: look them up for the list.
   if (!plan.start.label) nameSpot(plan.start);
   if (plan.end && !plan.end.label) nameSpot(plan.end);
 }
