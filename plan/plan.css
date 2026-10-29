@@ -165,7 +165,7 @@ a { color: var(--green); }
 .seg { display: grid; grid-template-columns: 1fr 1fr; margin-top: 16px; padding: 3px; border-radius: 999px; background: var(--fill); }
 .seg button { height: 38px; border: none; border-radius: 999px; background: none; font: inherit; font-size: 15.5px; font-weight: 700; color: var(--ink-3); cursor: pointer; }
 .seg button:hover { color: var(--ink); }
-.mode-note { margin-top: 12px; font-size: 16px; line-height: 1.4; }
+.mode-note { margin-top: 14px; font-size: 16px; line-height: 1.55; }
 .seg button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 
 .notice {
@@ -271,7 +271,7 @@ a { color: var(--green); }
 .select { position: relative; display: inline-flex; align-items: center; }
 .select select { appearance: none; -webkit-appearance: none; height: 44px; padding: 0 40px 0 16px; border: none; border-radius: 999px; background: var(--fill); font-weight: 700; font-size: 16px; }
 .select svg { position: absolute; right: 16px; width: 14px; height: 14px; pointer-events: none; color: var(--ink-2); }
-.bring { display: flex; flex-direction: column; gap: 14px; }
+.bring { display: flex; flex-direction: column; gap: 22px; padding-top: 4px; }
 .bring .paste input { background: var(--fill); }
 .paste { display: flex; gap: 8px; }
 .paste input { flex: 1 1 auto; min-width: 0; height: 52px; border: none; border-radius: 14px; background: #fff; padding: 0 14px; font-size: 17px; font-weight: 600; }
@@ -280,7 +280,7 @@ a { color: var(--green); }
 .sources span { display: inline-flex; align-items: center; gap: 6px; }
 .sources img { width: 18px; height: 18px; border-radius: 5px; }
 .sources img.pin { border-radius: 0; }
-.bring .linkish { align-self: flex-start; margin-top: -4px; }
+.bring .linkish { align-self: flex-start; }
 .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 4px; }
 .figures b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
 .figures span { font-size: 14.5px; color: var(--ink-3); }
