@@ -1671,6 +1671,8 @@ function renderWho() {
   const signedIn = !!session;
   $("sign-in").hidden = signedIn;
   $("who").hidden = !signedIn;
+  // "No account until you save" is for guests.
+  $("save-note").hidden = signedIn;
   if (!signedIn) return;
   $("who-name").textContent = profile?.username || session.user.email?.split("@")[0] || "Account";
   const avatar = $("avatar");
