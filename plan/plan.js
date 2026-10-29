@@ -86,6 +86,9 @@ const PENDING_SAVE_KEY = "carve.plan.pending-save";
 const PENDING_EDIT_KEY = "carve.plan.pending-edit";
 const OAUTH_STATE_KEY = "carve.plan.oauth-state";
 const VIEW_KEY = "carve.plan.view";
+/// The guest's hour-long pass, kept so a reload doesn't run the bot check
+/// again (the user, 2026-10-29: Safari showed it on every refresh).
+const PASS_KEY = "carve.plan.pass";
 
 // ── state ────────────────────────────────────────────────────────────
 
@@ -248,6 +251,7 @@ async function planner(action, body = {}, retried = false) {
   if (response.ok) return data;
   if (data.needsPass && !retried) {
     guestPass = null;
+    store.remove(PASS_KEY);
     if (await fetchPass()) return planner(action, body, true);
     openAccount("choose", { saving: false });
     throw new Failure("Couldn't check this browser. Sign in to keep planning. It's free.");
@@ -258,7 +262,10 @@ async function planner(action, body = {}, retried = false) {
 
 // ── the guest's pass ─────────────────────────────────────────────────
 
-let guestPass = null;
+let guestPass = (() => {
+  const kept = store.get(PASS_KEY);
+  return kept && typeof kept.pass === "string" && Number.isFinite(kept.expires) ? kept : null;
+})();
 let passOnItsWay = null;
 let turnstileWidget = null;
 
@@ -282,6 +289,7 @@ function fetchPass() {
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.pass) return false;
       guestPass = { pass: data.pass, expires: data.expires };
+      store.set(PASS_KEY, guestPass);
       return true;
     } catch {
       return false;
@@ -524,12 +532,14 @@ function setUpMap() {
     map.on("mouseleave", "good-roads-hit", () => hoverRoad(null));
     showGoodRoads();
     mapReady = true;
+    syncRoadsKey();
     drawRoute();
     drawPins();
     if (routable()) fitRoute();
   });
   map.on("click", onMapClick);
   map.on("moveend", placeChips);
+  map.on("zoomend", syncRoadsKey);
   map.on("moveend", () => {
     const center = map.getCenter();
     store.set(VIEW_KEY, { center: [Number(center.lng.toFixed(4)), Number(center.lat.toFixed(4))], zoom: Number(map.getZoom().toFixed(2)) });
@@ -573,6 +583,11 @@ function drawRoute() {
 // card beside the menu. No adding a whole road: from a start to a
 // destination it pulled the route miles the wrong way and back (the user,
 // 2026-10-29).
+
+/// The map's key: what the dashed lines are, while they're on the map.
+function syncRoadsKey() {
+  $("legend").hidden = !mapReady || saved || map.getZoom() < GOOD_ROADS_ZOOM;
+}
 
 /// Below this zoom, a country of dashed lines is a tangle, not roads.
 const GOOD_ROADS_ZOOM = 6;
@@ -702,13 +717,18 @@ const MARKS = {
   dest: '<svg aria-hidden="true"><use href="#i-flag-checkered"/></svg>',
 };
 
+/// A pin: the map moves the wrapper, so the mark inside can grow on hover
+/// without its scale carrying the pin's position off with it.
 function pinElement(kind, label) {
+  const wrap = document.createElement("div");
+  wrap.className = "pin-wrap";
   const el = document.createElement("div");
   el.className = `pin ${kind}`;
   if (kind === "start" || kind === "dest") el.innerHTML = MARKS[kind];
   else if (label) el.textContent = label;
-  el.addEventListener("click", (event) => event.stopPropagation());
-  return el;
+  wrap.append(el);
+  wrap.addEventListener("click", (event) => event.stopPropagation());
+  return wrap;
 }
 
 function drawPins() {
@@ -718,8 +738,11 @@ function drawPins() {
   const labels = markerLabels(plan.waypoints);
   const add = (point, kind, label, onMove, title) => {
     const el = pinElement(kind, label);
-    el.title = title;
+    el.setAttribute("aria-label", title);
     const marker = new maplibregl.Marker({ element: el, draggable: true }).setLngLat([point.lon, point.lat]).addTo(map);
+    el.addEventListener("mouseenter", () => showPinTip(point, kind, label, marker));
+    el.addEventListener("mouseleave", hidePinTip);
+    marker.on("dragstart", hidePinTip);
     marker.on("dragend", () => {
       const { lng, lat } = marker.getLngLat();
       edit(() => onMove(round(lat), round(lng)));
@@ -733,6 +756,23 @@ function drawPins() {
 }
 
 const round = (n) => Math.round(n * 1e6) / 1e6;
+
+/// Over a pin: what it is, its place, a stop's stay, and that it moves.
+function showPinTip(point, kind, label, marker) {
+  const what = { start: "Start", dest: "Destination", stop: `Stop ${label}`, wp: `Waypoint ${label}` }[kind];
+  const name = point.label || (point.road ? `On ${point.road}` : kind === "start" || kind === "dest" ? "" : "On the route");
+  const stay = kind === "stop" && point.stayMinutes ? `Stay ${stayWords(point.stayMinutes)}` : "";
+  const tip = $("pin-tip");
+  tip.innerHTML = `<b class="pt-${kind}">${what}</b>${name ? `<span>${escapeHTML(name)}</span>` : ""}${stay ? `<span class="dim">${stay}</span>` : ""}<span class="dim small">Drag to move</span>`;
+  const at = map.project(marker.getLngLat());
+  tip.hidden = false;
+  tip.style.transform = `translate(${Math.round(at.x - tip.offsetWidth / 2)}px, ${Math.round(at.y - tip.offsetHeight - 30)}px)`;
+  marker.getElement().style.zIndex = "5";
+}
+function hidePinTip() {
+  $("pin-tip").hidden = true;
+  for (const marker of pins) marker.getElement().style.zIndex = "";
+}
 
 function markBadge(kind) {
   const badge = el("span", `badge ${kind}`);
@@ -1026,7 +1066,7 @@ function render({ keepTyping = false } = {}) {
   $("bring").hidden = !importing;
   $("rows").hidden = importing;
   $("map-hint").hidden = hasAny || saved || !map;
-  $("legend").hidden = !hasAny || !map;
+  syncRoadsKey();
   $("undo").disabled = !history.back.length;
   $("redo").disabled = !history.forward.length;
   $("start-over").disabled = !hasAny && !plan.name;
@@ -1786,6 +1826,7 @@ const shareLink = () => `${SITE}/${plan.token}`;
 
 function showSaved() {
   $("plan-view").hidden = true;
+  $("legend").hidden = true;
   $("saved-view").hidden = false;
   $("map-hint").hidden = true;
   closeClickMenu();

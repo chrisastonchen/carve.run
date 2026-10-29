@@ -365,6 +365,34 @@ a { color: var(--green); }
 .pin.dest { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); }
 .pin.stop { width: 30px; height: 30px; border-radius: 50%; background: var(--stop); font-size: 14px; }
 .pin.wp { width: 24px; height: 24px; border-radius: 50%; background: var(--wp); font-size: 12px; }
+/* Pointed at: a little bigger, with what it is above it (the user,
+   2026-10-29). The mark grows inside its wrapper: the map positions the
+   wrapper with a transform, which a scale on it would multiply. */
+.pin-wrap { display: flex; }
+.pin { transition: transform .15s ease; }
+.pin-wrap:hover .pin { transform: scale(1.3); }
+.pin-tip {
+  position: absolute; left: 0; top: 0; z-index: 7; pointer-events: none; max-width: 260px;
+  display: flex; flex-direction: column; gap: 1px; padding: 9px 13px; border-radius: 14px;
+  background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.18); font-size: 15px; line-height: 1.3;
+}
+.pin-tip b { font-size: 12.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.pin-tip .pt-start { color: var(--start); } .pin-tip .pt-dest { color: var(--ink); }
+.pin-tip .pt-stop { color: var(--stop); } .pin-tip .pt-wp { color: var(--wp); }
+.pin-tip span { font-weight: 600; overflow-wrap: anywhere; }
+.pin-tip .dim { font-weight: 500; }
+.pin-tip .small { font-size: 12.5px; margin-top: 2px; }
+/* The map's key: the dashed violet roads, explained on hover. */
+.roads-key { cursor: help; }
+.roads-key:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.k-road { width: 30px; height: 0; border-top: 3px dashed #6A4CFF; }
+.key-tip {
+  display: none; position: absolute; left: 0; bottom: calc(100% + 10px); width: 300px; padding: 12px 14px;
+  border-radius: 14px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  font-size: 14.5px; font-weight: 500; line-height: 1.45; color: var(--ink-2);
+}
+.key-tip b { display: block; margin-bottom: 3px; font-size: 15px; font-weight: 800; color: var(--ink); }
+.roads-key:hover .key-tip, .roads-key:focus .key-tip { display: block; }
 .pin.temp { width: 16px; height: 16px; border-radius: 50%; background: var(--ink); border-width: 4px; cursor: default; }
 .road-chip { padding: 4px 10px; border-radius: 999px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); font-size: 13px; font-weight: 800; color: #1660B8; white-space: nowrap; pointer-events: none; }
 .maplibregl-ctrl-group { border-radius: 16px !important; box-shadow: 0 6px 18px rgba(0,0,0,.14) !important; overflow: hidden; }

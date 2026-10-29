@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=25">
+<link rel="stylesheet" href="/plan/plan.css?v=26">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -202,9 +202,13 @@
   </aside>
 
   <div class="map-hint" id="map-hint" hidden><span class="dot-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></span>Click the map or search</div>
-  <div class="legend" id="legend" hidden aria-label="Map key">
-    <span><i class="k-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp">1</i>Waypoint</span><span><i class="k-end"><svg aria-hidden="true"><use href="#i-flag-checkered"/></svg></i>Destination</span>
+  <!-- The map's key: the dashed violet lines (the pins match the list, and
+       say what they are on hover; the user, 2026-10-29). -->
+  <div class="legend roads-key" id="legend" hidden tabindex="0" aria-describedby="roads-key-tip">
+    <span><i class="k-road" aria-hidden="true"></i>Great driving roads</span>
+    <div class="key-tip" id="roads-key-tip" role="tooltip"><b>Great driving roads</b>Roads Carve recommends for driving: twisty, scenic, worth the detour. Point at one to see its name; click it to see the road and add it to your route.</div>
   </div>
+  <div class="pin-tip" id="pin-tip" aria-hidden="true" hidden></div>
   <div class="click-menu" id="click-menu" role="menu" aria-label="Add this spot" hidden></div>
   <div class="road-hover" id="road-hover" aria-hidden="true" hidden></div>
   <div class="drop" id="drop" hidden><span>Drop the GPX file to bring it in</span></div>
@@ -263,6 +267,6 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=31"></script>
+<script type="module" src="/plan/plan.js?v=32"></script>
 </body>
 </html>
