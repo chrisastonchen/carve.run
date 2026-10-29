@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=28">
 <link rel="stylesheet" href="/assets/route-view.css?v=b3f7eca099">
+<link rel="stylesheet" href="/assets/explore.css?v=8b3c595597">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -60,7 +61,7 @@
   <nav class="links" aria-label="Site">
     <a href="/drives/" aria-current="page">Explore</a>
     <a href="/plan/" class="wide-only">Plan a Route</a>
-    <a href="/#pricing">Pricing</a>
+    <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
   <span class="grow"></span>
@@ -80,12 +81,13 @@
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
   <a href="/drives/">Explore</a>
-  <a href="/#pricing">Pricing</a>
+  <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
 </nav>
 
 <div class="rv">
 <main class="panel" aria-label="The route">
+<a class="rv-back" href="/drives/" onclick="return carveBack()"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
 <div class="scroll">
 <figure class="rv-photo"><img src="https://carve.run/assets/drives/area/photos/st-marks-lighthouse-road.jpg?v=05559d9b1d" alt="Lighthouse Road: St. Marks Refuge, Big Bend, Florida" fetchpriority="high"><figcaption>Photo: <a href="https://commons.wikimedia.org/wiki/File:St._Marks_NWR_panoramic_1_by_Caitlin_Murphy.JPG" rel="noopener">Cmurphy2891 · CC BY-SA 4.0</a></figcaption></figure>
 <div class="rv-head">
@@ -140,7 +142,7 @@
   <section class="sect" id="rv-app">
     <h2>What you get in the app</h2>
     <div class="feats"><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 19c4 0 3-7 7-7s3-7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5" cy="19" r="2.2" fill="currentColor"/><circle cx="19" cy="5" r="2.2" fill="currentColor"/></svg></span><div><b>Turn by turn, on this road</b><span class="d">Spoken directions along the exact route. Carve never reroutes you onto a faster one.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><div><b>Preview it in 3D</b><span class="d">Fly the whole drive over satellite and terrain before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 9a13 13 0 0 1 18 0M6.5 12.5a8 8 0 0 1 11 0M10 16a3 3 0 0 1 4 0M3 3l18 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Drive it with no signal<span class=apex>APEX</span></b><span class="d">Download the map and every turn before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 18.5c.6-2.2 2-3.3 3.5-3.3s2.9 1.1 3.5 3.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Live Group Tracking<span class=apex>APEX</span></b><span class="d">Everyone on the route, on the map, by name.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 17a4.5 4.5 0 0 1-.6-9 5.5 5.5 0 0 1 10.6 1.6A3.7 3.7 0 0 1 17 17z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><path d="M9 20l1-1.6M13 20l1-1.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg></span><div><b>Road conditions<span class=apex>APEX</span></b><span class="d">Wet or dry, ice, fog and wind along the road before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.1"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg></span><div><b>Record your drives<span class=apex>APEX</span></b><span class="d">Record a drive and turn it into a route to drive again or share.</span></div></div></div>
-    <div class="get"><p>Free on iPhone and Android. CarPlay and Android Auto come with <a href="/#pricing" style="color:inherit">Apex</a>.</p><div class="stores"><a class="store" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a><a class="store" href="https://carve.run/android/"><svg viewBox="0 0 22 24"><use href="#play"/></svg><span><small>Early access on</small><b>Google Play</b></span></a></div></div>
+    <div class="get"><p>Free on iPhone and Android. CarPlay and Android Auto come with <a href="/pricing/" style="color:inherit">Apex</a>.</p><div class="stores"><a class="store" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a><a class="store" href="https://carve.run/android/"><svg viewBox="0 0 22 24"><use href="#play"/></svg><span><small>Early access on</small><b>Google Play</b></span></a></div></div>
   </section>
   <section class="sect">
     <h2>More drives near here</h2>
@@ -192,6 +194,13 @@
       });
     });
   })();
+  // A drive's Back: the page before it, when that was the site's (Explore's
+  // list keeps its place and map); otherwise Explore.
+  function carveBack() {
+    var from = document.referrer || "";
+    if (from.indexOf(location.origin + "/") === 0 && history.length > 1) { history.back(); return false; }
+    return true;
+  }
 </script>
 <script src="/assets/carve-site.js?v=81545ecfbc" defer></script>
 </body>

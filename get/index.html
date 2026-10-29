@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get Carve</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://carve.run/">
+<meta name="theme-color" content="#1D5B3A">
+<link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
+<style>
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #1D5B3A; color: #fff;
+         font-family: -apple-system, system-ui, sans-serif; text-align: center; padding: 24px; box-sizing: border-box; }
+  a { color: #fff; font-weight: 700; }
+  p { margin: 10px 0; }
+</style>
+</head>
+<body>
+<!-- The home page's QR code (the user, 2026-10-29): one code for every
+     phone, sent on to its own store. The campaign on the link (?ct=…)
+     rides along to the App Store through carve-site.js. -->
+<div>
+  <p>Opening the store…</p>
+  <p><a href="https://apps.apple.com/app/carve-route-planner/id6808087716">Carve for iPhone</a> · <a href="/android/">Carve for Android</a></p>
+</div>
+<script src="/assets/carve-site.js?v=81545ecfbc"></script>
+<script>
+  (function () {
+    var ua = navigator.userAgent || "";
+    var android = /android/i.test(ua);
+    var apple = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+    if (android) location.replace("/android/" + location.search);
+    else if (apple) location.replace(window.carveStoreUrl ? carveStoreUrl() : "https://apps.apple.com/app/carve-route-planner/id6808087716");
+    else location.replace("/");
+  })();
+</script>
+</body>
+</html>

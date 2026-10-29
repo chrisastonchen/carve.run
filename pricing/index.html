@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pricing: Carve Is Free, Apex From $4.99 | Carve</title>
+<meta name="description" content="Carve is free to plan, share and drive with a signal. Carve Apex adds offline maps, Group, CarPlay and Android Auto and more: $29.99 a year with a 7-day free trial, or $4.99 a month.">
+<link rel="canonical" href="https://carve.run/pricing/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Carve">
+<meta property="og:title" content="Carve pricing: free, or Apex for the whole drive">
+<meta property="og:description" content="Free to plan, share and drive with a signal. Apex adds offline maps, Group, CarPlay and Android Auto.">
+<meta property="og:image" content="https://carve.run/assets/og-home.jpg?v=804e0fcbfc">
+<meta property="og:url" content="https://carve.run/pricing/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Carve Apex", "brand": {"@type": "Brand", "name": "Carve"}, "description": "Carve's subscription: offline maps and turns, Group, 3D previews, unlimited AI route planning, CarPlay and Android Auto, recording drives, road conditions and popular times.", "url": "https://carve.run/pricing/", "offers": [{"@type": "Offer", "name": "Carve Apex (yearly)", "price": "29.99", "priceCurrency": "USD", "description": "Yearly, with a 7-day free trial for new subscribers."}, {"@type": "Offer", "name": "Carve Apex (monthly)", "price": "4.99", "priceCurrency": "USD"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I need Apex to plan on the web?", "acceptedAnswer": {"@type": "Answer", "text": "No. Planning at carve.run is free, and so are sharing the link, the QR code and the printed turns."}}, {"@type": "Question", "name": "How does the free trial work?", "acceptedAnswer": {"@type": "Answer", "text": "New yearly subscribers get 7 days free. Cancel before it ends and you aren't charged."}}, {"@type": "Question", "name": "Who in the group needs Apex?", "acceptedAnswer": {"@type": "Answer", "text": "Anyone can join a group drive for free, and the group sees them on the map. Seeing everyone else on your own map takes Apex."}}, {"@type": "Question", "name": "Can I cancel any time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Subscriptions renew automatically and you cancel in your Apple Account on iPhone or in Google Play on Android; Apex stays on until the period you paid for ends."}}, {"@type": "Question", "name": "Where do I manage my subscription?", "acceptedAnswer": {"@type": "Answer", "text": "In your Apple Account on iPhone, or in Google Play on Android."}}]}</script>
+<meta name="theme-color" content="#1D5B3A">
+<link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
+<link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=9bb6ad869e">
+<link rel="stylesheet" href="/assets/site-bar.css?v=1b5bcab43d">
+<link rel="stylesheet" href="/assets/home.css?v=0c3ee018b3">
+<meta name="apple-itunes-app" content="app-id=6808087716">
+<style>
+  /* carve.run/pricing/ (the user, 2026-10-29: pricing on its own page, not the home page's). */
+  .price { max-width: 980px; margin: 0 auto; padding: 56px 16px 72px; display: flex; flex-direction: column; gap: 32px; }
+  .price-top { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .price-top h1 { font-size: clamp(36px, 4.4vw, 52px); }
+  .price-top p { font-size: 18px; color: var(--ink-3); max-width: 34em; line-height: 1.5; }
+  .billing { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; width: 260px; padding: 4px; border-radius: 999px; background: var(--sand-2); }
+  .billing button { height: 40px; border: 0; border-radius: 999px; background: none; font: 600 15px "Figtree", system-ui, sans-serif; color: var(--ink-3); cursor: pointer; }
+  .billing button[aria-pressed="true"] { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .plans2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  .plan { border-radius: 24px; padding: 26px; display: flex; flex-direction: column; gap: 16px; background: #fff; border: 1px solid var(--rule); }
+  .plan.apex { background: var(--mint); border: 2px solid var(--green); }
+  .plan .name { font-weight: 800; font-size: 20px; }
+  .plan .num { font-weight: 800; font-size: 42px; letter-spacing: -0.02em; line-height: 1.1; }
+  .plan .num small { font-size: 17px; font-weight: 600; color: var(--ink-3); }
+  .plan .note { font-size: 14px; color: var(--ink-3); }
+  .plan.apex .note { color: var(--green); font-weight: 700; }
+  .plan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 15.5px; line-height: 1.45; color: var(--ink-2); }
+  .plan li { display: flex; gap: 10px; }
+  .plan li svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--green); }
+  .plan li b { color: var(--ink); }
+  .price-get { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .price-get .stores { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .price-get p { font-size: 14px; color: var(--ink-3); }
+  .price-faq h2 { font-size: 26px; margin-bottom: 6px; }
+  .price-faq details { background: #fff; border-color: var(--rule); }
+  .price-faq summary { font-weight: 700; }
+  .price-faq details p { color: var(--ink-2); line-height: 1.55; }
+  .fine { font-size: 12.5px; color: var(--ink-4); line-height: 1.5; }
+  @media (max-width: 760px) {
+    .price { padding-top: 32px; }
+    .plans2 { grid-template-columns: 1fr; }
+    .price-get .stores { flex-direction: column; width: 100%; }
+    .price-get .hb { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<!-- The site's bar, as on the planner and the route pages (page_parts.py
+     ROUTE_HEAD; the user, 2026-10-29), styled and wired by the site-bar
+     stylesheet and script in assets. -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-wordmark" viewBox="0 0 300 45"><path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+  <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M18.44 5.56c-.68 1.17-1.35 2.33-2.03 3.5l-.11-.04c-1.82-.7-3.48-.8-4.42-.79-1.86.02-3.35.46-4.26.82-.08-.15-1.75-3.02-2.02-3.49a1.15 1.15 0 0 0-.14-.19c-.33-.36-.91-.49-1.38-.2-.48.28-.71.94-.39 1.5 1.95 3.37-.1-.21 1.95 3.36.02.03-.5.26-1.39 1.02C2.9 12.18.45 14.77 0 18.99h24c-.12-1.11-.37-2.1-.75-3.07-.74-1.91-1.84-3.29-2.74-4.18a12.1 12.1 0 0 0-2.13-1.69c.66-1.12 1.31-2.26 1.96-3.38.21-.36.19-.8-.01-1.12a1.1 1.1 0 0 0-.85-.53c-.52-.05-.94.31-1.05.54zM18.4 14.02c.39.59.32 1.33-.16 1.65-.48.32-1.19.1-1.58-.49-.39-.59-.32-1.33.16-1.65.47-.32 1.18-.11 1.58.49zM7.21 13.53c.48.32.55 1.06.16 1.65-.4.59-1.1.81-1.59.49-.48-.32-.55-1.06-.16-1.65.4-.6 1.11-.81 1.59-.49z"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 15l1.6-4.2A2 2 0 0 1 7.5 9.5h9a2 2 0 0 1 1.9 1.3L20 15v3h-2.2M6.2 18H4v-3h16M8.5 18h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.3" cy="18" r="1.6" fill="currentColor"/><circle cx="16.7" cy="18" r="1.6" fill="currentColor"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+</svg>
+<header class="bar">
+  <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
+  <nav class="links" aria-label="Site">
+    <a href="/drives/">Explore</a>
+    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/pricing/" aria-current="page">Pricing</a>
+    <a href="/support/">Support</a>
+  </nav>
+  <span class="grow"></span>
+  <a class="pill white wide-only" id="sign-in" href="/plan/#sign-in" hidden>Sign in</a>
+  <div class="who wide-only" id="who" hidden>
+    <button type="button" class="who-btn" id="who-btn" aria-haspopup="menu" aria-expanded="false">
+      <span class="avatar" id="avatar"><svg aria-hidden="true"><use href="#i-car"/></svg></span>
+      <span id="who-name"></span>
+      <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+    </button>
+    <div class="who-menu" id="who-menu" role="menu" hidden>
+      <button type="button" role="menuitem" id="sign-out">Sign out</button>
+    </div>
+  </div>
+  <a class="pill white narrow-only" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#i-apple"/></svg>Get the App</a>
+  <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+</header>
+<nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/drives/">Explore</a>
+  <a href="/pricing/">Pricing</a>
+  <a href="/support/">Support</a>
+</nav>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="apple" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
+  </symbol>
+  <!-- CarPlay's mark: a ring open on the right, round a play triangle. -->
+  <symbol id="carplay" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/>
+    <path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/>
+  </symbol>
+  <!-- Android and Android Auto, from Simple Icons (CC0). -->
+  <symbol id="android" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/>
+  </symbol>
+  <symbol id="androidauto" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/>
+  </symbol>
+  <symbol id="wordmark" viewBox="0 0 300 45">
+    <path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z"/>
+    <path fill="currentColor" d="M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z"/>
+    <path fill="currentColor" d="M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z"/>
+    <path fill="currentColor" d="M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z"/>
+    <path fill="currentColor" d="M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/>
+  </symbol>
+</svg>
+
+<main class="home price">
+  <div class="price-top">
+    <h1>Ride along for free.<br><span class="em">Lead the way with Apex.</span></h1>
+    <p>Apex drives your routes offline, puts your whole group on your map, and brings it all to CarPlay and Android Auto.</p>
+    <div class="billing" role="group" aria-label="Billing">
+      <button type="button" id="bill-year" aria-pressed="true">Yearly</button>
+      <button type="button" id="bill-month" aria-pressed="false">Monthly</button>
+    </div>
+  </div>
+  <div class="plans2">
+    <section class="plan" aria-label="Carve, free">
+      <div><div class="name">Carve</div><div class="num">Free</div><div class="note">Free account, no card</div></div>
+      <ul>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>1,100+ hand-picked drives, and the best ones near you</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Plan your own routes in the app, or on your computer at carve.run</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Import from Google Maps, Ride with GPS or a GPX file, and share by link</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Turn-by-turn with voice, while you have a signal</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Weather along the way and the elevation profile</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Describe a drive in your own words, 5 a day</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Join a group drive: the group sees you on the map</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Wrong turn? Directions back to your route, never a reroute</span></li>
+      </ul>
+    </section>
+    <section class="plan apex" aria-label="Carve Apex">
+      <div><div class="name">Carve Apex</div><div class="num" id="apex-price">$29.99<small> / year</small></div><div class="note" id="apex-note">7-day free trial · about $2.50 a month</div></div>
+      <ul>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Drive without a signal</b> — the map and every turn, downloaded</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Group</b> — see everyone on your map, by name</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>3D previews</b> — preview any route before you drive it (your first one's free)</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Unlimited AI route planning</b> — describe as many drives as you like</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>CarPlay &amp; Android Auto</b></span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Record a drive</b> — and turn it into a route</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Road conditions</b> — wet or dry, ice, fog and wind, before you go</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Popular times</b> — when a road is usually quiet or busy</span></li>
+      </ul>
+    </section>
+  </div>
+  <div class="price-get">
+    <div class="stores">
+      <a class="hb dark" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use href="#apple"/></svg>Get it on iPhone</a>
+      <a class="hb dark" href="/android/"><svg aria-hidden="true"><use href="#android"/></svg>Get it on Android</a>
+    </div>
+    <p>You subscribe in the app. Start free, and try Apex when you're ready.</p>
+  </div>
+  <section class="price-faq" aria-labelledby="pq">
+    <h2 id="pq">Questions</h2>
+    <details><summary>Do I need Apex to plan on the web?</summary><p>No. Planning at carve.run is free, and so are sharing the link, the QR code and the printed turns.</p></details>
+    <details><summary>How does the free trial work?</summary><p>New yearly subscribers get 7 days free. Cancel before it ends and you aren't charged.</p></details>
+    <details><summary>Who in the group needs Apex?</summary><p>Anyone can join a group drive for free, and the group sees them on the map. Seeing everyone else on your own map takes Apex.</p></details>
+    <details><summary>Can I cancel any time?</summary><p>Yes. Subscriptions renew automatically and you cancel in your Apple Account on iPhone or in Google Play on Android; Apex stays on until the period you paid for ends.</p></details>
+    <details><summary>Where do I manage my subscription?</summary><p>In your Apple Account on iPhone, or in Google Play on Android.</p></details>
+  </section>
+  <p class="fine">Prices in US dollars; may vary by region. The free trial is for the yearly plan, and converts to a paid yearly subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account or Google Play account.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Carve — for the roads worth driving.</span>
+    <div class="links">
+      <a href="/drives/">Drives</a>
+      <a href="/compare/">Compare</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/support/">Support</a>
+    </div>
+    <span>iPhone · CarPlay · Android · Android Auto</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var year = document.getElementById("bill-year"), month = document.getElementById("bill-month");
+    function pick(monthly) {
+      year.setAttribute("aria-pressed", String(!monthly));
+      month.setAttribute("aria-pressed", String(monthly));
+      document.getElementById("apex-price").innerHTML = monthly ? "$4.99<small> / month</small>" : "$29.99<small> / year</small>";
+      document.getElementById("apex-note").textContent = monthly ? "Cancel any time" : "7-day free trial · about $2.50 a month";
+    }
+    year.addEventListener("click", function () { pick(false); });
+    month.addEventListener("click", function () { pick(true); });
+  })();
+</script>
+<script src="/assets/carve-site.js?v=81545ecfbc" defer></script>
+<script type="module" src="/assets/site-bar.js?v=4f25bc3543"></script>
+</body>
+</html>

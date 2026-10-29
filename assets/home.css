@@ -1,0 +1,337 @@
+/* carve.run's home page (the user, 2026-10-29): great roads near you, then
+   the easiest way to organize a drive in three steps, then the app. On a
+   computer the hero has a small front door to the planner and a map of the
+   roads near you; on a phone, no typing up top, just the roads. Figtree
+   only. Loaded after /styles.css (base, footer, .rise) and
+   /assets/site-bar.css (the green bar). */
+
+:root {
+  --green: #1D5B3A; --green-dark: #15432A; --mint: #DCF1E2; --mint-ink: #BFE5CB;
+  --ink: #15181C; --ink-2: #3D434B; --ink-3: #5D636C; --ink-4: #8B9098;
+  --cream: #FBF8EF; --sand: #F6F4EE; --sand-2: #F1EEE5; --rule: #E2DCCC;
+  --violet: #6A4CFF; --route: #2E92FF;
+}
+body { background: var(--cream); color: var(--ink); font-family: "Figtree", -apple-system, system-ui, sans-serif; }
+.home h1, .home h2, .home h3 { font-family: inherit; font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; margin: 0; }
+.home p { margin: 0; }
+.home a { color: var(--green); }
+.home .em { color: var(--green); }
+.wide-only-h { display: block; }
+.phone-only-h { display: none !important; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── buttons ── */
+.hb {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 24px;
+  border: 0; border-radius: 999px; font: 700 17px/1 "Figtree", system-ui, sans-serif; text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+.hb:active { transform: translateY(1px); }
+.hb svg { width: 18px; height: 18px; flex: none; }
+.hb.green { background: var(--green); color: #fff; }
+.hb.green:hover { background: var(--green-dark); }
+.hb.dark { background: var(--ink); color: #fff; }
+.hb.dark:hover { background: #2A2E33; }
+.hb.light { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--rule); }
+.hb.light:hover { background: var(--sand); }
+.home .hb.green, .home .hb.dark { color: #fff; }
+.home .hb.light { color: var(--ink); }
+
+/* ── the place chip ── */
+.near-chip {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px 7px 10px;
+  border: 1px solid var(--rule); border-radius: 999px; background: #fff; font-size: 14px; font-weight: 600; color: var(--ink-3);
+}
+.near-chip svg { width: 15px; height: 15px; color: var(--green); }
+.near-chip strong { color: var(--ink); }
+.near-chip button { border: 0; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--green); cursor: pointer; }
+.near-chip button:hover { text-decoration: underline; }
+
+/* ═══ HERO ═══ */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); min-height: min(760px, calc(100vh - 64px)); }
+.hero-copy { padding: clamp(40px, 6vh, 72px) 48px 56px clamp(24px, 5vw, 72px); display: flex; flex-direction: column; justify-content: center; gap: 26px; }
+.hero-copy .lead { display: flex; flex-direction: column; gap: 16px; max-width: 600px; }
+.hero h1 { font-size: clamp(44px, 4.4vw, 62px); line-height: 1.02; letter-spacing: -0.03em; }
+.hero .pitch { font-size: 19px; line-height: 1.5; color: var(--ink-3); max-width: 34em; }
+
+/* The planner's front door: a start and an end, or a route you have. */
+.door { max-width: 560px; background: #fff; border: 1px solid var(--rule); border-radius: 24px; box-shadow: 0 18px 50px rgba(21,24,28,.10); padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+.door .tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 999px; background: var(--sand-2); }
+.door .tabs button { height: 40px; border: 0; border-radius: 999px; background: none; font: 600 15px "Figtree", system-ui, sans-serif; color: var(--ink-3); cursor: pointer; }
+.door .tabs button[aria-selected="true"] { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.door .stops { display: flex; flex-direction: column; padding: 4px; border-radius: 16px; background: var(--sand); }
+.door .stops label { display: flex; align-items: center; gap: 12px; padding: 6px 8px; }
+.door .stops .pin { width: 20px; height: 20px; flex: none; border-radius: 50%; }
+.door input[type="text"], .door input[type="url"] {
+  flex: 1; min-width: 0; height: 50px; padding: 0 14px; border: 0; border-radius: 12px; background: #fff;
+  font: 500 17px "Figtree", system-ui, sans-serif; color: var(--ink); outline: none;
+}
+.door input:focus { box-shadow: 0 0 0 2px var(--green) inset; }
+.door .go { width: 100%; }
+.door .drop {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 22px 18px; text-align: center; cursor: pointer;
+  border: 2px dashed #CFC8B6; border-radius: 16px; background: var(--sand);
+}
+.door .drop.over { border-color: var(--green); background: var(--mint); }
+.door .drop svg { width: 26px; height: 26px; color: var(--green); }
+.door .drop b { font-size: 17px; }
+.door .drop span { font-size: 14px; color: var(--ink-3); }
+.door .paste { display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 16px; border-radius: 999px; background: var(--sand); }
+.door .paste input { height: 40px; padding: 0; background: none; font-size: 15px; }
+.door .paste input:focus { box-shadow: none; }
+.door .paste .hb { height: 42px; padding: 0 18px; font-size: 15px; }
+.door .err { font-size: 14px; color: #B0352B; }
+.for-app { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; text-underline-offset: 4px; }
+.for-app svg { width: 16px; height: 16px; }
+
+/* The map of the roads near you. */
+.hero-map { position: relative; background: #ECEFE2; overflow: hidden; }
+.hero-map .maplibregl-map { position: absolute; inset: 0; }
+.hero-map .label {
+  position: absolute; z-index: 2; left: 20px; top: 20px; display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px; border-radius: 999px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.12); font-weight: 700; font-size: 14px;
+}
+.hero-map .label i { width: 28px; height: 0; border-top: 3px dashed var(--violet); }
+.hero-map .locate {
+  position: absolute; z-index: 2; right: 20px; top: 20px; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px;
+  border: 0; border-radius: 999px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.12); font: 700 14px "Figtree", system-ui, sans-serif; color: var(--ink); cursor: pointer;
+}
+.hero-map .locate svg { width: 16px; height: 16px; color: var(--route); }
+.road-pop .maplibregl-popup-content { padding: 12px; border-radius: 18px; box-shadow: 0 14px 40px rgba(21,24,28,.22); font-family: "Figtree", system-ui, sans-serif; }
+.road-pop .maplibregl-popup-tip { display: none; }
+.road-card { width: 280px; display: flex; flex-direction: column; gap: 10px; }
+.road-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 12px; background: var(--sand-2); }
+.road-card .n { font-weight: 800; font-size: 18px; line-height: 1.15; color: var(--ink); }
+.road-card .m { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+.road-card .hb { height: 46px; font-size: 15px; }
+.road-card .guide { text-align: center; font-weight: 700; font-size: 14px; }
+.road-card.small { width: 250px; flex-direction: row; align-items: center; gap: 10px; }
+.road-card.small img { width: 64px; height: 64px; flex: none; }
+.road-card.small .n { font-size: 15px; }
+
+/* ═══ DRIVES NEAR YOU ═══ */
+.near { padding: 44px clamp(24px, 5vw, 72px) 64px; display: flex; flex-direction: column; gap: 20px; }
+.near-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.near-head h2 { font-size: 30px; }
+.near-head a { font-weight: 700; font-size: 16px; }
+.cards-near { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.cards-near a { display: flex; flex-direction: column; gap: 10px; color: var(--ink); text-decoration: none; }
+.cards-near .ph { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--sand-2); }
+.cards-near img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.cards-near a:hover img { transform: scale(1.03); }
+.cards-near .t { display: flex; flex-direction: column; gap: 3px; }
+.cards-near .n { font-weight: 800; font-size: 17px; line-height: 1.2; }
+.cards-near .m { font-size: 14px; color: var(--ink-3); }
+.cards-near .lv { font-weight: 700; }
+.cards-near .away { display: none; }
+.cards-near.loading li { height: 260px; border-radius: 18px; background: var(--sand-2); }
+
+/* ═══ THE THREE STEPS ═══ */
+.steps-sec { background: #fff; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 88px clamp(24px, 5vw, 72px) 80px; display: flex; flex-direction: column; gap: 52px; }
+.steps-sec > h2 { text-align: center; font-size: clamp(34px, 3.4vw, 46px); }
+.steps { list-style: none; margin: 0 auto; padding: 0; width: 100%; max-width: 1240px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.step { display: flex; flex-direction: column; gap: 20px; }
+.step .num { width: 40px; height: 40px; flex: none; border-radius: 50%; background: var(--green); color: #fff; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.step .words { display: flex; gap: 14px; align-items: flex-start; }
+.step h3 { font-size: 26px; letter-spacing: -0.01em; margin-bottom: 6px; }
+.step p { font-size: 16px; line-height: 1.5; color: var(--ink-3); }
+.vis { height: 280px; border-radius: 22px; position: relative; overflow: hidden; }
+.vis svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.vis-plan { background: #EEF0E3; }
+.vis-plan .mini { position: absolute; left: 18px; top: 18px; bottom: 18px; width: 170px; background: #fff; border-radius: 14px; box-shadow: 0 8px 22px rgba(21,24,28,.12); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.vis-plan .seg { display: grid; grid-template-columns: 1fr 1fr; padding: 2px; border-radius: 999px; background: var(--sand-2); font-size: 11px; font-weight: 700; text-align: center; }
+.vis-plan .seg span { padding: 4px; border-radius: 999px; color: var(--ink-3); }
+.vis-plan .seg span:first-child { background: #fff; color: var(--ink); }
+.vis-plan .field { font-size: 12px; padding: 7px 8px; border-radius: 8px; background: var(--sand); }
+.vis-plan .tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 4px; }
+.vis-plan .tags span { font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 999px; background: var(--mint); color: var(--green); }
+.vis-share { background: var(--green); display: flex; align-items: center; justify-content: center; gap: 18px; padding: 24px; }
+.vis-share .card { width: 200px; background: #fff; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+.vis-share .card b { font-size: 15px; }
+.vis-share .card .sub { font-size: 12px; color: var(--ink-3); }
+.vis-share .card .link { padding: 8px 10px; border-radius: 10px; background: var(--sand); font-size: 12px; font-weight: 700; color: var(--green); }
+.vis-share .card .two { display: flex; gap: 6px; font-size: 11px; font-weight: 700; }
+.vis-share .card .two span { flex: 1; text-align: center; padding: 6px; border-radius: 999px; background: var(--sand-2); }
+.vis-share .card .two span:first-child { background: var(--green); color: #fff; }
+.vis-share > .qr { width: 96px; height: 96px; padding: 8px; border-radius: 12px; background: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+.vis-share > .qr svg { width: 100%; height: 100%; display: block; }
+.vis-drive { background: #23282E; }
+.vis-drive .alert { position: absolute; left: 18px; top: 18px; padding: 9px 12px; border-radius: 12px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,.3); }
+.vis-drive .alert b { display: block; font-size: 13px; }
+.vis-drive .alert span { font-size: 11px; color: var(--ink-3); }
+.vis-drive .tags { position: absolute; right: 18px; bottom: 18px; left: 18px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.vis-drive .tags span { font-size: 11px; font-weight: 700; color: #fff; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.14); }
+
+/* On a phone the steps show the app itself: a phone playing its clips. */
+.seq { display: none; flex-direction: column; align-items: center; gap: 14px; }
+.seq .frame { width: 270px; height: 576px; border-radius: 46px; border: 9px solid #2A2E33; background: #0E1A24; box-sizing: border-box; overflow: hidden; position: relative; box-shadow: 0 24px 60px rgba(21,24,28,.3); }
+.seq video, .seq .still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.seq video { opacity: 0; transition: opacity .2s; }
+.seq video.on { opacity: 1; }
+.seq .cap { padding: 8px 16px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 700; font-size: 14px; }
+.seq .dots { display: flex; gap: 6px; }
+.seq .dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: #D9D4C6; cursor: pointer; transition: width .2s; }
+.seq .dots button[aria-current="true"] { width: 22px; background: var(--green); }
+
+/* ═══ GET THE APP ═══ */
+.get-app { scroll-margin-top: max(104px, calc(50vh - 60px)); align-self: center; display: flex; align-items: center; gap: 32px; padding: 28px 36px; border-radius: 28px; background: var(--sand); }
+.get-app > .qr { width: 112px; height: 112px; flex: none; padding: 10px; box-sizing: border-box; border-radius: 14px; background: #fff; border: 1px solid var(--rule); }
+.get-app > .qr svg { width: 100%; height: 100%; display: block; }
+.get-app .side { display: flex; flex-direction: column; gap: 14px; }
+.get-app h3 { font-size: 24px; letter-spacing: -0.01em; }
+.get-app .side > div > p { font-size: 15px; color: var(--ink-3); margin-top: 2px; }
+.get-app .stores { display: flex; gap: 10px; flex-wrap: wrap; }
+.get-app .apex { font-size: 14px; font-weight: 700; }
+
+/* ═══ LEGENDARY DRIVES ═══ */
+.wrapx { max-width: 1296px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 72px); }
+.legends { padding-top: 64px; display: flex; flex-direction: column; gap: 18px; }
+.legends h2, .clubs2 h2, .anywhere h2, .faq2 h2 { font-size: 34px; }
+.rail { list-style: none; margin: 0; padding: 0 0 6px; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+.rail li { flex: 0 0 300px; scroll-snap-align: start; }
+.rail a { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--rule); border-radius: 18px; overflow: hidden; background: #fff; color: var(--ink); text-decoration: none; }
+.rail img { width: 100%; height: 210px; object-fit: cover; }
+.rail .body { padding: 12px 14px 14px; }
+.rail .n { font-weight: 800; font-size: 17px; }
+.rail .m { font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+.rail .chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 6px; border-radius: 999px; color: #fff; font-size: 12px; font-weight: 700; }
+.rail .chip svg { width: 12px; height: 12px; }
+
+/* ═══ CLUBS ═══ */
+.clubs2 { margin-top: 56px; padding: 40px 44px; border-radius: 28px; background: var(--mint); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px 48px; color: #2B4A37; }
+.clubs2 h2 { color: var(--green-dark); grid-column: 1 / -1; }
+.clubs2 .note { font-size: 17px; line-height: 1.55; }
+.clubs2 .sig { margin-top: 10px; font-weight: 700; color: var(--green-dark); }
+.clubs2 ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 16px; line-height: 1.45; }
+.clubs2 li b { color: var(--green-dark); }
+.clubs2 .cta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.clubs2 .cta p { font-size: 15px; }
+.clubs2 .fine { grid-column: 1 / -1; font-size: 13px; opacity: .75; }
+
+/* ═══ DRIVES ANYWHERE (build_area_pages.py fills the states) ═══ */
+.anywhere { padding: 64px 0 24px; display: flex; flex-direction: column; gap: 20px; }
+.anywhere .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 48px; }
+.anywhere h3 { font-size: 18px; margin-bottom: 10px; }
+.anywhere ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; font-size: 15px; }
+.anywhere ul a { color: var(--ink-2); text-decoration: none; }
+.anywhere ul a:hover { color: var(--green); text-decoration: underline; }
+.anywhere ul span { color: var(--ink-4); font-size: 13px; }
+.anywhere .all { margin-top: 10px; font-size: 15px; font-weight: 700; }
+
+/* ═══ FAQ ═══ */
+.faq2 { padding: 48px 0 40px; display: flex; flex-direction: column; gap: 14px; max-width: 860px; }
+.faq2 details { background: #fff; border-color: var(--rule); }
+.faq2 summary { font-weight: 700; }
+.faq2 details p { color: var(--ink-2); line-height: 1.55; }
+
+/* ═══ A PHONE ═══ */
+@media (max-width: 899px) {
+  .wide-only-h { display: none !important; }
+  .phone-only-h { display: flex !important; }
+  .hero { display: block; min-height: 0; }
+  .hero-copy { padding: 28px 16px 8px; gap: 14px; }
+  .hero h1 { font-size: 38px; }
+  .hero .pitch { font-size: 17px; }
+  .door, .for-app { display: none; }
+  .hero-map { display: none; }
+  .near { padding: 14px 0 8px; gap: 14px; }
+  .near-head { padding: 0 16px; }
+  .near-head h2 { display: none; }
+  /* The roads as a deck you swipe, the next card peeking in. */
+  .cards-near { display: flex; gap: 12px; overflow-x: auto; padding: 0 16px 6px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .cards-near::-webkit-scrollbar { display: none; }
+  .cards-near li { flex: 0 0 82%; scroll-snap-align: start; }
+  .cards-near a { position: relative; color: #fff; }
+  .cards-near .ph { aspect-ratio: 4 / 5; border-radius: 24px; box-shadow: 0 14px 34px rgba(21,24,28,.18); }
+  .cards-near .t { position: absolute; left: 0; right: 0; bottom: 0; padding: 70px 18px 18px; border-radius: 0 0 24px 24px;
+    background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0)); display: flex; flex-direction: column; gap: 4px; }
+  .cards-near .n { font-size: 23px; }
+  .cards-near .m { color: #fff; font-weight: 600; }
+  .cards-near .lv { color: #fff !important; padding: 2px 9px; border-radius: 999px; background: rgba(255,255,255,.2); }
+  .cards-near .away { display: block; font-size: 13px; font-weight: 700; opacity: .85; order: -1; }
+  .near-all { margin: 0 16px; }
+  .steps-sec { margin-top: 30px; padding: 40px 16px 44px; gap: 30px; }
+  .steps-sec > h2 { text-align: left; font-size: 30px; }
+  .steps { grid-template-columns: 1fr; gap: 40px; }
+  .step { flex-direction: column-reverse; gap: 18px; }
+  .step .vis { display: none; }
+  .step .seq { display: flex; }
+  .step-share .vis { display: flex; height: 240px; }
+  .step h3 { font-size: 22px; }
+  .get-app { flex-direction: column; align-items: stretch; padding: 0; background: none; gap: 10px; }
+  .get-app > .qr, .get-app h3, .get-app .side > div > p { display: none; }
+  .get-app .stores { flex-direction: column; }
+  .get-app .stores .hb { width: 100%; }
+  .get-app .apex { text-align: center; }
+  .legends { padding-top: 44px; }
+  .legends h2, .clubs2 h2, .anywhere h2, .faq2 h2 { font-size: 26px; }
+  .rail li { flex-basis: 240px; }
+  .clubs2 { display: flex; flex-direction: column; padding: 26px 22px; margin-top: 36px; }
+  .anywhere { padding-top: 44px; }
+  .anywhere .cols { grid-template-columns: 1fr; }
+}
+.door .pane { display: flex; flex-direction: column; gap: 14px; }
+.door .pane[hidden] { display: none; }
+
+/* ═══ On a computer, the hero as the planner looks (the user, 2026-10-29):
+   the map across the whole width, the words and the front door on a card
+   floating over its left side. ═══ */
+@media (min-width: 900px) {
+  .hero { position: relative; display: block; height: min(800px, calc(100vh - 64px)); min-height: 660px; }
+  /* MapLibre's stylesheet, loaded after this one, makes its container relative. */
+  .hero > .hero-map, .hero > .hero-map.maplibregl-map { position: absolute; inset: 0; }
+  .hero-copy {
+    position: absolute; z-index: 3; left: 24px; top: 24px; bottom: 24px; width: min(540px, 44vw);
+    padding: 30px 32px; gap: 22px; justify-content: center; overflow-y: auto;
+    background: #fff; border-radius: 26px; box-shadow: 0 10px 30px rgba(0,0,0,.14), 0 1px 3px rgba(0,0,0,.06);
+  }
+  .hero h1 { font-size: clamp(36px, 3.3vw, 48px); }
+  .hero .pitch { font-size: 17px; }
+  .door { padding: 0; border: 0; box-shadow: none; background: none; max-width: none; }
+  .hero-map .label { left: calc(min(540px, 44vw) + 48px); }
+}
+
+/* ═══ One measure for the whole page (the user, 2026-10-29: full width was
+   imposing on big screens): every section's content, the hero's map
+   included, sits in the same column with the same side margins. ═══ */
+:root { --page: 1180px; --gutter: clamp(16px, 4vw, 40px); }
+.near, .steps-sec, .wrapx { padding-left: max(var(--gutter), calc((100% - var(--page)) / 2)); padding-right: max(var(--gutter), calc((100% - var(--page)) / 2)); }
+.wrapx { max-width: none; }
+.steps { max-width: none; }
+.cards-near .ph { aspect-ratio: 16 / 10; border-radius: 16px; }
+.cards-near .n { font-size: 16px; }
+.cards-near .m { font-size: 13.5px; }
+.vis { height: 230px; }
+.step h3 { font-size: 23px; }
+.step p { font-size: 15.5px; }
+.rail li { flex-basis: 250px; }
+.rail img { height: 160px; }
+.rail .n { font-size: 16px; }
+.legends h2, .clubs2 h2, .anywhere h2, .faq2 h2 { font-size: 30px; }
+.steps-sec > h2 { font-size: clamp(32px, 3vw, 42px); }
+.near-head h2 { font-size: 26px; }
+@media (min-width: 900px) {
+  .hero {
+    width: calc(100% - 2 * var(--gutter)); max-width: var(--page); margin: 24px auto 0;
+    height: min(660px, calc(100vh - 64px - 48px)); min-height: 600px; border-radius: 28px; overflow: hidden;
+    box-shadow: 0 1px 0 var(--rule), 0 0 0 1px var(--rule);
+  }
+  .hero-copy { left: 18px; top: 18px; bottom: 18px; width: min(460px, 42%); padding: 26px 28px; gap: 18px; }
+  .hero h1 { font-size: clamp(32px, 3vw, 42px); }
+  .hero .pitch { font-size: 16px; }
+  .door input[type="text"] { height: 46px; font-size: 16px; }
+  .door .tabs button { height: 36px; }
+  .hb { height: 48px; font-size: 16px; }
+  .hero-map .label { left: calc(min(460px, 42%) + 36px); top: 18px; }
+  .hero-map .locate { right: 18px; top: 18px; }
+  .near { padding-top: 40px; padding-bottom: 56px; }
+}
+@media (max-width: 899px) {
+  .near { padding-left: 0; padding-right: 0; }
+  .steps-sec { padding-left: 16px; padding-right: 16px; }
+}
+/* The map's layers stay under the sticky bar as the page scrolls. */
+.hero { isolation: isolate; z-index: 0; }
+/* The map's own layers stay on the map, never over the card. */
+.hero > .hero-map { z-index: 0; }

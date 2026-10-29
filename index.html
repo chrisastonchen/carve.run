@@ -30,384 +30,12 @@
 <link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=9bb6ad869e">
 <link rel="stylesheet" href="/assets/site-bar.css?v=1b5bcab43d">
+<link rel="stylesheet" href="/assets/home.css?v=0c3ee018b3">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
-<style>
-  /* The App Store listing, as a page (2026-10-04): the aerial road and
-     "For the love of driving." on one side, the app on a deep green on the
-     other, its six screens in the store's words; then pricing and the
-     closing band. Figtree throughout. Shared tokens, footer and motion live
-     in /styles.css?v=9bb6ad869e. */
-
-  :root { --green: #1D5B3A; --ink-green: #0F563B; }
-  /* One typeface on this page, like the store's images. Figtree has no
-     italic, so emphasis keeps its weight rather than a fake slant. */
-  .landing h1, .landing h2, .landing h3 {
-    font-family: var(--sans); font-weight: 700; letter-spacing: -0.025em; line-height: 1.08;
-  }
-  .landing em { font-style: normal; }
-
-  /* ═══ THE TWO PANELS ═════════════════════════════════════════════════ */
-  .split { display: grid; grid-template-columns: 1fr; background: var(--green); position: relative; z-index: 2; }
-  @media (min-width: 900px) {
-    .split { grid-template-columns: 1fr 1fr; min-height: 100vh; min-height: 100svh; }
-  }
-
-  /* ── left: the aerial road, the name, the way in ── */
-  .art { position: relative; overflow: hidden; background: var(--green); color: #fff; }
-  .aerial { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
-  /* The road fades into the green the words sit on, as the store's first
-     image does — low enough that both cars stay in the clear. */
-  .art::after {
-    content: ""; position: absolute; left: 0; right: 0; top: 0;
-    height: calc(100vw * 1.25); pointer-events: none;
-    background: linear-gradient(to bottom, rgba(29,91,58,0) 66%, rgba(29,91,58,.78) 86%, var(--green) 100%);
-  }
-  .art-copy {
-    position: relative; z-index: 1;
-    margin-top: -22vw; padding: 0 24px 52px;
-    display: flex; flex-direction: column; align-items: flex-start;
-  }
-  /* Side by side, the panel is wider than the art is tall enough to fill,
-     so the art sits at the panel's width and is lifted just enough that the
-     red car (64% down it) clears the words at the bottom — but never so far
-     that the blue car (18% down) leaves the top. The art fades into the green
-     at its foot; the words get their own green underneath. */
-  @media (min-width: 900px) {
-    .art { display: flex; align-items: flex-end; }
-    .aerial {
-      position: absolute; left: 0; width: 100%; height: auto; aspect-ratio: 4 / 5;
-      top: calc(-1 * clamp(0px, 40vw + 390px - 100vh, 11.25vw - 24px));
-      -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
-      mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
-    }
-    .art::after {
-      top: auto; bottom: 0; height: 400px;
-      background: linear-gradient(to top, var(--green) 0, var(--green) 110px, rgba(29,91,58,.74) 290px, rgba(29,91,58,0) 400px);
-    }
-    .art-copy { margin-top: 0; padding: 0 clamp(36px, 5vw, 80px) clamp(44px, 8vh, 88px); }
-    .art .tagline { max-width: none; font-size: clamp(30px, 2.9vw, 42px); }
-  }
-  /* What Carve is, in a sentence, under the feeling. */
-  .pitch {
-    margin-top: 12px; max-width: 25em; font-size: clamp(16px, 1.25vw, 19px); line-height: 1.45;
-    color: rgba(255,255,255,.9); text-shadow: 0 1px 12px rgba(10, 36, 22, .35);
-  }
-  .logo { margin: 0; line-height: 0; }
-  .logo svg { display: block; width: clamp(170px, 17vw, 250px); height: auto; color: #fff; }
-  .tagline {
-    margin-top: 16px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.12;
-    font-size: clamp(30px, 3vw, 42px); max-width: 9.6em;
-    text-shadow: 0 2px 18px rgba(10, 36, 22, .35);
-  }
-
-  /* The way in: white, like a store badge on the green. */
-  .get {
-    display: inline-flex; align-items: center; gap: 10px; margin-top: 28px;
-    padding: 16px 26px; border-radius: 999px; background: #fff; color: var(--green);
-    font-weight: 700; font-size: 17px; line-height: 1; text-decoration: none; white-space: nowrap;
-    box-shadow: 0 10px 28px -12px rgba(8, 30, 18, .55);
-    transition: background .18s, transform .18s;
-  }
-  .get:hover { background: #EAF4EE; }
-  .get:active { transform: translateY(1px); }
-  .get svg { width: 19px; height: 19px; flex: 0 0 auto; margin-top: -2px; }
-  /* On a computer, iPhone and Android as equals; on a phone, only that phone's. */
-  .gets { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-  .gets .get { margin-top: 0; }
-  .get[hidden], .btn[hidden] { display: none; }
-
-  /* Where it runs: Apple and CarPlay, then Android and Android Auto. */
-  .platforms {
-    list-style: none; margin: 18px 0 0; padding: 0;
-    display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,.86);
-  }
-  .platforms li { display: flex; }
-  .platforms svg { width: 21px; height: 21px; display: block; }
-  .platforms .sep { width: 1px; height: 18px; background: currentColor; opacity: .45; }
-
-  /* On a phone: everything centred on the page, the line on one line —
-     sized to the screen's width (it is about 10 of its own font sizes
-     wide), and Get started a full-width button — up to a tablet's
-     reasonable width. */
-  @media (max-width: 899px) {
-    .art-copy { align-items: center; text-align: center; }
-    .tagline {
-      max-width: none; white-space: nowrap;
-      font-size: clamp(22px, calc((100vw - 48px) / 10.3), 40px);
-    }
-    .get {
-      width: 100%; max-width: 480px; justify-content: center;
-      padding: 20px 26px; font-size: 19px; margin-top: 30px;
-    }
-    .get svg { width: 21px; height: 21px; }
-    .gets { flex-direction: column; align-items: center; width: 100%; margin-top: 30px; }
-    .gets .get { margin-top: 0; }
-    .platforms { margin-top: 20px; }
-  }
-
-  /* ── right: the app, on each store image's own colour ── */
-  /* The panel takes the colour of the store image the slide copies — sky
-     for planning, mint for offline, and so on — crossfading as it turns;
-     the words, arrows and dots are the images' headline green. */
-  .show {
-    background: #D4E6FD; color: var(--ink-green);
-    transition: background-color .6s ease;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 56px 0 60px; min-width: 0;
-    --ph: clamp(400px, 66vh, 640px);          /* the phone's height */
-    --pw: calc(var(--ph) / 2.0906);           /* and its width: screen 1320×2868, bezel 3.5% */
-  }
-  @media (max-width: 899px) { .show { --ph: clamp(380px, 62svh, 560px); padding: 8px 0 56px; } }
-
-  .carousel { width: 100%; position: relative; --arrow: 46px; --arrow-gap: 22px; }
-  @media (max-width: 899px) { .carousel { --arrow: 40px; --arrow-gap: 10px; } }
-  .slides {
-    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-    scrollbar-width: none; overscroll-behavior-x: contain;
-  }
-  .slides::-webkit-scrollbar { display: none; }
-  .slide {
-    flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always;
-    display: flex; flex-direction: column; align-items: center; margin: 0;
-    padding: 6px 24px 0;
-  }
-
-  /* A phone, drawn: a black bezel round the screen, the island over it. */
-  .phone {
-    width: var(--pw); padding: calc(var(--pw) * .035); border-radius: calc(var(--pw) * .165);
-    background: #0C0D0E;
-    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.14), 0 34px 60px -28px rgba(15, 40, 30, .5);
-  }
-  .screen {
-    position: relative; aspect-ratio: 1320 / 2868; overflow: hidden;
-    border-radius: calc(var(--pw) * .13); background: #000;
-  }
-  .screen img, .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  /* The island, drawn over every screen: the recordings had theirs (with the
-     recording's red dot and ring) painted out to exactly this pill. */
-  .island {
-    position: absolute; left: 32.12%; width: 34.09%; top: 1.05%; height: 4.67%;
-    border-radius: 999px; background: #000; z-index: 1;
-  }
-  /* The CarPlay picture is a dashboard, not a phone: shown as itself. */
-  .dashboard {
-    height: var(--ph); aspect-ratio: 941 / 1672; border-radius: calc(var(--pw) * .1);
-    overflow: hidden; box-shadow: 0 34px 60px -28px rgba(15, 40, 30, .5);
-  }
-  .dashboard img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  .slide figcaption {
-    margin-top: 30px; max-width: 17em; min-height: 2.4em; text-align: center;
-    font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
-    font-size: clamp(22px, 2vw, 29px); text-wrap: balance;
-  }
-
-  /* Previous and next, level with the middle of the screen and just clear
-     of it — and of the CarPlay picture, the widest thing they flank — but
-     never off the panel's edge. */
-  .arrow {
-    position: absolute; z-index: 2; top: calc(6px + var(--ph) / 2); transform: translateY(-50%);
-    width: var(--arrow); height: var(--arrow); border-radius: 999px; border: 0; padding: 0;
-    display: grid; place-items: center; cursor: pointer; color: var(--ink-green);
-    background: rgba(255,255,255,.55); box-shadow: 0 2px 10px -4px rgba(15, 40, 30, .3);
-    transition: background .18s;
-  }
-  .arrow:hover { background: rgba(255,255,255,.85); }
-  .arrow:active { transform: translateY(-50%) scale(.96); }
-  .arrow:focus-visible { outline: 2px solid var(--ink-green); outline-offset: 2px; }
-  .arrow svg { width: 20px; height: 20px; display: block; }
-  .arrow.prev { left: max(6px, calc(50% - var(--pw) * .59 - var(--arrow-gap) - var(--arrow))); }
-  .arrow.next { right: max(6px, calc(50% - var(--pw) * .59 - var(--arrow-gap) - var(--arrow))); }
-
-  .dots { display: flex; justify-content: center; gap: 4px; margin-top: 22px; }
-  .dots button {
-    width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer;
-    display: grid; place-items: center;
-  }
-  .dots button::before {
-    content: ""; width: 8px; height: 8px; border-radius: 999px; background: rgba(15, 86, 59, .28);
-    transition: width .3s ease, background .3s ease;
-  }
-  .dots button[aria-current="true"]::before { width: 24px; background: var(--ink-green); }
-  .dots button:focus-visible { outline: 2px solid var(--ink-green); outline-offset: -2px; border-radius: 999px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .show, .dots button::before { transition: none; }
-  }
-
-  /* ═══ PRICING ════════════════════════════════════════════════════════ */
-  .pricing { padding: 100px 0 0; }
-  .price-head { text-align: center; max-width: 680px; margin: 0 auto 40px; }
-  .price-head h2 { font-size: clamp(36px, 4.6vw, 58px); }
-  .price-head p { color: var(--ink-dim); font-size: 18px; margin-top: 16px; }
-  .plans { display: grid; gap: 18px; max-width: 900px; margin: 0 auto; }
-  @media (min-width: 760px) { .plans { grid-template-columns: 1fr 1fr; align-items: stretch; } }
-  .price-card {
-    border: 2px solid var(--ink); border-radius: 26px; padding: 36px 34px;
-    background: var(--paper); display: flex; flex-direction: column;
-  }
-  .price-card.pro { background: var(--lilac); }
-  .price-card .appicon {
-    width: 52px; height: 52px; border-radius: 12px; margin-bottom: 20px; display: block;
-    box-shadow: 0 4px 16px rgba(21,24,28,.2);
-  }
-  .plan-name { font-size: 13px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--ink-dim); }
-  .price-num { font-weight: 800; font-size: clamp(44px, 5vw, 58px); line-height: 1; letter-spacing: -0.03em; margin-top: 14px; }
-  .price-num small { font-size: 16px; font-weight: 500; letter-spacing: 0; color: var(--ink-dim); margin-left: 6px; }
-  .price-num s { color: var(--ink-faint); text-decoration-thickness: 3px; text-decoration-color: var(--car); }
-  .price-alt { font-weight: 700; font-size: 22px; letter-spacing: -0.01em; margin-top: 10px; }
-  .price-alt small { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--ink-dim); margin-left: 5px; }
-  .price-sub { font-size: 14px; font-weight: 600; color: var(--ink-dim); margin-top: 12px; }
-  .price-beta { font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: var(--car); margin-top: 6px; }
-  .price-beta + .price-alt { margin-top: 16px; }
-  .price-after { color: var(--ink-dim); font-size: 14px; margin-top: 8px; line-height: 1.45; }
-  .plan-list { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 11px; }
-  .plan-list li { position: relative; padding-left: 26px; color: var(--ink-dim); font-size: 16px; }
-  .plan-list li strong { color: var(--ink); font-weight: 600; }
-  .plan-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--ink); font-weight: 800; }
-  .price-card p.fine { color: var(--ink-faint); font-size: 13px; line-height: 1.5; margin-top: 22px; }
-  .cta { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .note { font-size: 14px; color: var(--ink-dim); }
-  /* Both cards end on a button, level with each other. */
-  .price-card .cta { margin-top: auto; padding-top: 24px; align-items: flex-start; gap: 10px; }
-  .btn svg { width: 17px; height: 17px; flex: 0 0 auto; margin-top: -2px; }
-
-  /* ═══ FAQ ═══════════════════════════════════════════════════════════ */
-  .home-drives { padding: 100px 0 0; text-align: center; }
-  .home-drives h2 { font-size: clamp(36px, 4.6vw, 58px); margin-bottom: 14px; }
-  .home-drives .lede { max-width: 620px; margin: 0 auto 28px; font-size: 18px; color: var(--ink-dim); }
-  .home-drives ul { list-style: none; padding: 0; margin: 0 auto; max-width: 900px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-  .home-drives li a { display: inline-flex; gap: 8px; align-items: baseline; padding: 10px 16px; border: 2px solid var(--ink); border-radius: 999px; background: var(--paper); color: var(--ink); font-weight: 700; text-decoration: none; }
-  .home-drives li a span { font-weight: 500; color: var(--ink-faint); font-size: 14px; }
-  .home-drives .all { margin-top: 22px; font-weight: 700; }
-  .faq { padding: 100px 0 0; }
-  .faq h2 { font-size: clamp(36px, 4.6vw, 58px); text-align: center; margin-bottom: 32px; }
-  .faq-list { max-width: 760px; margin: 0 auto; }
-  .faq details { background: var(--paper); border: 2px solid var(--ink); border-radius: 18px; padding: 4px 22px; margin: 12px 0; }
-  .faq summary { font-size: 18px; font-weight: 700; padding: 16px 0; color: var(--ink); }
-  .faq details p { color: var(--ink-dim); font-size: 16.5px; line-height: 1.55; padding: 0 0 18px; }
-  .visually-hidden {
-    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
-    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
-  }
-
-  /* ═══ CLOSING BAND ═══════════════════════════════════════════════════ */
-  .band { padding: 100px 0 0; }
-  .band-inner {
-    background: var(--asphalt); color: var(--paper); border-radius: 32px;
-    padding: 92px 40px; text-align: center;
-    display: flex; flex-direction: column; align-items: center;
-  }
-  .band h2 { font-size: clamp(40px, 6vw, 74px); }
-  .band p { color: rgba(251,248,239,.72); font-size: 18px; margin-top: 18px; max-width: 480px; }
-  .band .cta { margin-top: 32px; }
-  .band .btn-primary { border-color: transparent; }
-  .cta-pair { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-  @media (max-width: 720px) { .cta-pair { flex-direction: column; align-items: center; width: 100%; } }
-  .band .platforms { margin-top: 4px; color: rgba(251,248,239,.78); }
-
-  @media (max-width: 720px) {
-    .btn-lg { width: min(100%, 360px); }
-    .pricing { padding-top: 64px; }
-    .faq { padding-top: 64px; }
-    .faq summary { font-size: 17px; }
-    .price-head { margin-bottom: 24px; }
-    .price-head p { margin-top: 12px; font-size: 17px; }
-    .price-card { padding: 28px 22px 26px; border-radius: 22px; }
-    .plan-list { margin-top: 20px; gap: 9px; }
-    .band { padding-top: 64px; }
-    .band-inner { padding: 56px 24px; border-radius: 24px; }
-  }
-
-  /* ═══ The app's welcome scenes, each in its rounded card ═══ */
-  .show { color: var(--ink); --sw: clamp(320px, 34vw, 540px); --ph: calc(var(--sw) * 820 / 900); --pw: calc(var(--sw) / 1.18); }
-  @media (max-width: 899px) { .show { --sw: min(calc(100vw - 40px), 520px); padding-top: 28px; } }
-  .scene {
-    width: var(--sw); aspect-ratio: 900 / 820; position: relative; overflow: hidden;
-    border-radius: calc(var(--sw) * 26 / 408); background: #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
-  }
-  .scene .still, .scene video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .scene video { opacity: 0; transition: opacity .2s; }
-  .scene video.on { opacity: 1; }
-  .slide figcaption { font-size: clamp(24px, 2.1vw, 30px); max-width: none; min-height: 0; }
-  .dots button::before { background: rgba(21,24,28,.22); }
-  .dots button[aria-current="true"]::before { background: var(--ink); }
-  .arrow { color: var(--ink); background: #F1F1EF; }
-  @media (max-width: 599px) { .arrow { display: none; } }
-  .arrow:hover { background: #E6E6E3; }
-
-
-  /* ═══ CLUBS ═════════════════════════════════════════════════════════ */
-  .clubs { padding: 100px 0 0; }
-  .clubs-card {
-    display: grid; gap: 28px; grid-template-areas: "head" "visual" "rest";
-    background: var(--mint); border-radius: 32px; padding: 56px 48px;
-  }
-  .clubs-head { grid-area: head; }
-  .clubs-visual { grid-area: visual; }
-  .clubs-rest { grid-area: rest; }
-  @media (min-width: 900px) {
-    .clubs-card { grid-template-columns: 1.15fr .85fr; grid-template-areas: "head visual" "rest visual"; column-gap: 40px; row-gap: 0; }
-    .clubs-visual { align-self: center; }
-  }
-  .clubs h2 { font-size: clamp(36px, 4.6vw, 58px); }
-  .clubs .note-from { margin-top: 16px; font-size: 17.5px; line-height: 1.55; color: var(--ink); max-width: 34em; }
-  .clubs .sig { margin-top: 10px; font-weight: 700; color: var(--ink-dim); }
-  .club-points { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
-  @media (min-width: 640px) { .club-points { grid-template-columns: 1fr 1fr; } }
-  .club-points li { display: flex; gap: 12px; align-items: flex-start; }
-  .club-points .ic { flex: none; width: 38px; height: 38px; border-radius: 11px; background: #fff; display: grid; place-items: center; }
-  .club-points .ic svg { width: 20px; height: 20px; }
-  .club-points b { display: block; font-size: 16px; }
-  .club-points div > span { display: block; color: var(--ink-dim); font-size: 14.5px; line-height: 1.45; margin-top: 2px; }
-  .club-points .apex { font-size: 10px; font-weight: 800; letter-spacing: .08em; color: var(--marker); margin-left: 6px; vertical-align: 2px; }
-  .clubs .cta { align-items: flex-start; margin-top: 26px; gap: 8px; }
-  .clubs .cta p { font-size: 15px; color: var(--ink-dim); }
-  .clubs .fine { margin-top: 18px; font-size: 13px; color: var(--ink-faint); }
-  .clubs-visual { display: flex; justify-content: center; }
-  /* The paywall's header card: one drive showing Apex, a 40 s loop. */
-  .apex-card {
-    width: min(460px, calc(100vw - 88px)); aspect-ratio: 300 / 190; position: relative; overflow: hidden;
-    border-radius: min(28px, calc((100vw - 88px) * 18 / 300)); background: #fff;
-    box-shadow: 0 14px 34px rgba(0,0,0,.14), 0 1px 3px rgba(0,0,0,.06);
-  }
-  .apex-card img, .apex-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .apex-card video { opacity: 0; transition: opacity .2s; }
-  .apex-card video.on { opacity: 1; }
-  @media (max-width: 720px) { .clubs-card { padding: 32px 20px; border-radius: 26px; gap: 24px; } .clubs .note-from { font-size: 17px; } }
-  @media (min-width: 900px) { .clubs-rest { margin-top: 28px; } }
-
-  /* ═══ ROADS ═════════════════════════════════════════════════════════ */
-  .roads { padding: 100px 0 0; }
-  .roads-head { text-align: center; max-width: 680px; margin: 0 auto 30px; padding: 0 20px; }
-  .roads-head h2 { font-size: clamp(36px, 4.6vw, 58px); }
-  .roads-head p { color: var(--ink-dim); font-size: 18px; margin-top: 14px; }
-  .road-strip {
-    list-style: none; margin: 0; padding: 4px max(30px, calc((100vw - var(--max)) / 2 + 30px)) 18px;
-    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 300px); gap: 18px;
-    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
-    scroll-padding-inline: max(30px, calc((100vw - var(--max)) / 2 + 30px));
-  }
-  .road-strip::-webkit-scrollbar { display: none; }
-  .road-strip li { scroll-snap-align: start; padding-bottom: 14px; }
-  .road-strip a { display: block; height: 100%; text-decoration: none; color: var(--ink); background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06); transition: transform .18s, box-shadow .18s; }
-  .road-strip a:hover { box-shadow: 0 16px 36px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); }
-  .road-strip a:hover { transform: translateY(-3px); }
-  .road-strip img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
-  .road-strip .body { padding: 14px 16px 16px; }
-  .road-strip .n { font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
-  .road-strip .m { display: flex; align-items: center; gap: 8px; margin-top: 8px; color: var(--ink-dim); font-size: 14px; }
-  .road-strip .chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px 3px 7px; border-radius: 8px; color: #fff; font-size: 12.5px; font-weight: 700; }
-  .road-strip .chip svg { width: 12px; height: 12px; }
-  .roads .browse { text-align: center; margin-top: 26px; font-weight: 600; color: var(--ink-dim); }
-  @media (max-width: 720px) { .road-strip { padding-left: 20px; padding-right: 20px; scroll-padding-inline: 20px; } }
-  .road-strip .m span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-</style>
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
 </head>
-<body class="landing">
+<body>
 <!-- The site's bar, as on the planner and the route pages (page_parts.py
      ROUTE_HEAD; the user, 2026-10-29), styled and wired by the site-bar
      stylesheet and script in assets. -->
@@ -424,7 +52,7 @@
   <nav class="links" aria-label="Site">
     <a href="/drives/">Explore</a>
     <a href="/plan/" class="wide-only">Plan a Route</a>
-    <a href="/#pricing">Pricing</a>
+    <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
   <span class="grow"></span>
@@ -444,11 +72,9 @@
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
   <a href="/drives/">Explore</a>
-  <a href="/#pricing">Pricing</a>
+  <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
 </nav>
-<div class="terrain" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 <svg style="display:none" aria-hidden="true">
   <symbol id="apple" viewBox="0 0 24 24">
     <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
@@ -474,99 +100,105 @@
   </symbol>
 </svg>
 
-<main>
-<!-- ═══ 1 · THE TWO PANELS ═════════════════════════════════════════════ -->
-<section class="split" aria-label="Carve">
-  <div class="art">
-    <img class="aerial" src="/assets/aerial.jpg?v=14ee667752" width="1200" height="1500" fetchpriority="high"
-         alt="An illustrated mountain road from above, winding over a bridge and a river, with a red car and a blue car on its bends">
-    <div class="art-copy">
-      <h1 class="logo"><svg viewBox="0 0 300 45" aria-hidden="true"><use href="#wordmark"/></svg><span class="visually-hidden">Carve: Scenic Drive Planner</span></h1>
-      <p class="tagline">For the love of driving.</p>
-      <p class="pitch">Find great roads, plan the twisty way and drive or ride it turn by turn. Carve never reroutes you onto the fastest one.</p>
-      <div class="gets">
-        <a class="get" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
-        <a class="get" data-get-twin href="/android/" hidden><svg aria-hidden="true"><use href="#android"/></svg><span>Join the Android beta</span></a>
-      </div>
-      <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
-        <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
-        <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
-        <li class="sep" aria-hidden="true"></li>
-        <li><svg role="img" aria-label="Android"><use href="#android"/></svg></li>
-        <li><svg role="img" aria-label="Android Auto"><use href="#androidauto"/></svg></li>
-      </ul>
+<main class="home">
+<!-- ═══ GREAT ROADS NEAR YOU ═══════════════════════════════════════════
+     The user, 2026-10-29: the hook is the great roads near you, and the
+     route is the reason to install. On a computer, a front door to the
+     planner (/plan keeps the whole planner; what's typed here goes with
+     you) beside a map of the roads near you; on a phone, no typing, just
+     the roads. home.js fills in the place, the map and the drives. -->
+<section class="hero" aria-label="Great roads near you">
+  <div class="hero-copy">
+    <div class="lead">
+      <div class="near-chip" id="near-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></svg><span>Near <strong id="near-name">you</strong></span><span aria-hidden="true">·</span><button type="button" id="near-change">Change</button></div>
+      <h1>Great roads near you.<br><span class="em">Drive them together.</span></h1>
+      <p class="pitch">Pick a road and plan the drive in a minute. Send your group one link, and everyone drives the same roads, even with no signal.</p>
     </div>
-  </div>
-
-  <div class="show">
-    <div class="carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="What Carve does">
-      <div class="slides" id="slides">
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 6" data-bg="#FFFFFF">
-          <div class="scene"><img class="still" src="/assets/welcome/find-first.jpg?v=df717e2acd" data-first="/assets/welcome/find-first.jpg?v=df717e2acd" data-last="/assets/welcome/find-last.jpg?v=97fdee3277" alt="The Legendary Drives, and Tail of the Dragon opening on its map: 11.3 miles, Intense"><video muted playsinline preload="none" data-src="/assets/welcome/find.mp4?v=88d90a9db6" aria-hidden="true"></video></div>
-          <figcaption>Find the good roads.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 6" data-bg="#FFFFFF">
-          <div class="scene"><img class="still" src="/assets/welcome/anywhere-first.jpg?v=c37ab7b103" data-first="/assets/welcome/anywhere-first.jpg?v=c37ab7b103" data-last="/assets/welcome/anywhere-last.jpg?v=acc935fd68" alt="Driving with no signal, turn by turn, and the same drive on a CarPlay screen"><video muted playsinline preload="none" data-src="/assets/welcome/anywhere.mp4?v=772b573040" aria-hidden="true"></video></div>
-          <figcaption>Offline guidance & CarPlay.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 6" data-bg="#FFFFFF">
-          <div class="scene"><img class="still" src="/assets/welcome/together-first.jpg?v=1593737eb1" data-first="/assets/welcome/together-first.jpg?v=1593737eb1" data-last="/assets/welcome/together-last.jpg?v=a55590460c" alt="Going-to-the-Sun Road with three friends on the map, each by name"><video muted playsinline preload="none" data-src="/assets/welcome/together.mp4?v=7c6f037c16" aria-hidden="true"></video></div>
-          <figcaption>Drive as a group.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 6" data-bg="#FFFFFF">
-          <div class="scene"><img class="still" src="/assets/welcome/describe-first.jpg?v=675b9dad79" data-first="/assets/welcome/describe-first.jpg?v=675b9dad79" data-last="/assets/welcome/describe-last.jpg?v=3484bc5a5b" alt="Typing “Twisty roads near Asheville, about two hours” and getting a drive back: the Parkway west to Waterrock Knob"><video muted playsinline preload="none" data-src="/assets/welcome/describe.mp4?v=e9910b7fdd" aria-hidden="true"></video></div>
-          <figcaption>Just say where you want to go.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 6" data-bg="#FFFFFF">
-          <div class="scene"><img class="still" src="/assets/welcome/plan-first.jpg?v=daa677bae4" data-first="/assets/welcome/plan-first.jpg?v=daa677bae4" data-last="/assets/welcome/plan-last.jpg?v=803e60215e" alt="A route built stop by stop on the map, or imported from Google Maps"><video muted playsinline preload="none" data-src="/assets/welcome/plan.mp4?v=48e2b5d76e" aria-hidden="true"></video></div>
-          <figcaption>Plan it your way.</figcaption>
-        </figure>
-        <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 6" data-bg="#FFFFFF">
-          <div class="scene"><img class="still" src="/assets/welcome/know-first.jpg?v=c7ce8834d7" data-first="/assets/welcome/know-first.jpg?v=c7ce8834d7" data-last="/assets/welcome/know-last.jpg?v=5b6394ee07" alt="A 3D flyover of Beartooth Highway, with the weather on the way and when the road is usually quiet"><video muted playsinline preload="none" data-src="/assets/welcome/know.mp4?v=6c9f8ccaf6" aria-hidden="true"></video></div>
-          <figcaption>Know before you go.</figcaption>
-        </figure>
+    <div class="door" id="door">
+      <div class="tabs" role="tablist" aria-label="How to start">
+        <button type="button" role="tab" id="tab-plan" aria-selected="true" aria-controls="pane-plan">Plan a drive</button>
+        <button type="button" role="tab" id="tab-bring" aria-selected="false" aria-controls="pane-bring">Import route</button>
       </div>
-      <button class="arrow prev" type="button" id="prev" aria-controls="slides" aria-label="Previous">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button class="arrow next" type="button" id="next" aria-controls="slides" aria-label="Next">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="dots" id="dots" aria-label="Choose a screen"></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══ CLUBS ═══════════════════════════════════════════════════════ -->
-<section class="clubs" id="clubs">
-  <div class="wrap">
-    <div class="clubs-card rise">
-      <div class="clubs-head">
-        <h2>Made for the group drive.</h2>
-        <p class="note-from">I've been a member of the Porsche Club of America's Golden Gate Region since 2023, and we drive together every month. If you've planned a drive, you know the problem: you spend hours finding the best roads and building the route, and regular map apps undo it. They reroute you onto the fastest way, and when the signal drops, the route goes with it. I built Carve for drivers and riders with a specific road in mind, who are out for the drive, not the commute.</p>
-        <p class="sig">Chris, founder of Carve</p>
-      </div>
-      <div class="clubs-visual" aria-hidden="true"><div class="apex-card"><picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/welcome/apex-still.jpg?v=1ed8626af8"><img src="/assets/welcome/apex-first.jpg?v=e4e88689db" alt="A drive on Going-to-the-Sun Road in Carve: offline, three in the group, weather along the way, when it's usually quiet, and the way back after a wrong turn"></picture><video muted loop playsinline preload="none" data-src="/assets/welcome/apex.mp4?v=f5d0077d07" aria-hidden="true"></video></div></div>
-      <div class="clubs-rest">
-        <ul class="club-points"><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Plan once, share one link</b><span>Everyone gets the same route, on iPhone or Android.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M3.5 10h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Pick the right day<span class=apex>APEX</span></b><span>Road conditions and popular times show when it's dry and quiet.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 19l6-10 4 6 2.5-3.5L21.5 19z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="17" cy="6" r="2" fill="currentColor"/></svg></span><div><b>Preview it together<span class=apex>APEX</span></b><span>Fly the whole route in 3D before anyone leaves.</span></div></li><li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 18.5c.6-2.2 2-3.3 3.5-3.3s2.9 1.1 3.5 3.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Drive as one group<span class=apex>APEX</span></b><span>Everyone on the map by name, and turns that work with no signal.</span></div></li></ul>
-        <div class="cta">
-          <a class="btn btn-primary" href="mailto:support@carve.run?subject=Our%20club%27s%20drives">Set up your club's next drive</a>
-          <p>Organizing a drive? I'll build your route in Carve with you, free.</p>
+      <form id="pane-plan" class="pane" role="tabpanel" aria-labelledby="tab-plan">
+        <div class="stops">
+          <label><span class="pin" style="background:#2E9E52" aria-hidden="true"></span><span class="vh">Start</span><input type="text" id="door-from" placeholder="Start" autocomplete="off"></label>
+          <label><span class="pin" style="background:#15181C" aria-hidden="true"></span><span class="vh">Destination</span><input type="text" id="door-to" placeholder="Where to? Or pick a road on the map" autocomplete="off"></label>
         </div>
-        <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
+        <button type="submit" class="hb green go">Plan the route<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+      <div id="pane-bring" class="pane" role="tabpanel" aria-labelledby="tab-bring" hidden>
+        <label class="drop" id="door-drop">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v4h16v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <b>Drop a GPX file</b><span>From Ride with GPS, a club newsletter, anywhere</span>
+          <input type="file" id="door-file" accept=".gpx,application/gpx+xml" class="vh">
+        </label>
+        <form class="paste" id="door-paste"><span class="vh">Route link</span><input type="url" id="door-link" placeholder="Or paste a Google Maps or Ride with GPS link"><button type="submit" class="hb green">Open</button></form>
+        <p class="err" id="door-err" hidden></p>
       </div>
+    </div>
+    <a class="for-app" href="#get">Here for the app? Get Carve on iPhone or Android<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <div class="hero-map" id="hero-map" role="region" aria-label="Map of great driving roads near you">
+    <span class="label"><i aria-hidden="true"></i>Great driving roads</span>
+    <button type="button" class="locate" id="hero-locate"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8z" fill="currentColor"/></svg>Use my location</button>
+  </div>
+</section>
+
+<section class="near" aria-labelledby="near-title">
+  <div class="near-head"><h2 id="near-title">Great drives near you</h2><a href="/drives/" class="wide-only-h">See all drives near you</a></div>
+  <ul class="cards-near loading" id="near-list"><li></li><li></li><li></li><li></li></ul>
+  <a class="hb light near-all phone-only-h" href="/drives/">See all drives near you</a>
+</section>
+
+<!-- ═══ THE EASIEST WAY TO ORGANIZE A DRIVE ════════════════════════════
+     Small pictures on a computer; on a phone, the app itself, a phone
+     playing its clips (/assets/*.mp4). -->
+<section class="steps-sec" aria-labelledby="steps-title">
+  <h2 id="steps-title">The easiest way <span class="em">to organize a drive.</span></h2>
+  <ol class="steps">
+    <li class="step">
+      <div class="vis vis-plan" aria-hidden="true">
+        <svg class="bg" viewBox="0 0 420 280" preserveAspectRatio="xMidYMid slice"><rect width="420" height="280" fill="#EEF0E3"/><path d="M0 220 C 90 190, 180 250, 280 225 C 340 210, 390 240, 420 235 L 420 280 L 0 280 Z" fill="#C8DFF2"/><path d="M190 50 C 230 40, 250 90, 290 80 C 330 70, 320 120, 360 130 C 390 138, 395 170, 380 190" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><path d="M190 50 C 230 40, 250 90, 290 80 C 330 70, 320 120, 360 130 C 390 138, 395 170, 380 190" fill="none" stroke="#2E92FF" stroke-width="5" stroke-linecap="round"/><circle cx="190" cy="50" r="9" fill="#2E9E52" stroke="#fff" stroke-width="2.5"/><circle cx="380" cy="190" r="9" fill="#15181C" stroke="#fff" stroke-width="2.5"/></svg>
+        <div class="mini"><div class="seg"><span>Plan</span><span>Import</span></div><div class="field">Carmel</div><div class="field">Ragged Point</div><div class="tags"><span>GPX</span><span>Ride with GPS</span><span>Google Maps link</span></div></div>
+      </div>
+      <div class="seq" data-clips="plan:Pick a great road|import:Or paste a Google Maps link"></div>
+      <div class="words"><span class="num">1</span><div><h3>Plan or import</h3><p>Start from a great road, plan it on the big screen at carve.run, or paste a Google Maps link and Carve keeps its exact roads. GPX and Ride with GPS routes work too.</p></div></div>
+    </li>
+    <li class="step step-share">
+      <div class="vis vis-share" aria-hidden="true">
+        <div class="card"><b>Big Sur Saturday run</b><span class="sub">73 mi · 2 stops</span><span class="link">carve.run/k7Qm2Xa</span><div class="two"><span>Share link</span><span>Print turns</span></div></div>
+        <div class="qr"><svg class="qr" viewBox="0 0 37 37" shape-rendering="crispEdges" role="img" aria-label="QR code: get Carve on your phone"><rect width="37" height="37" fill="#fff"/><path d="M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM16 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM23 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM29 2h1v1h-1zM30 2h1v1h-1zM31 2h1v1h-1zM32 2h1v1h-1zM33 2h1v1h-1zM34 2h1v1h-1zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM14 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM25 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM34 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM30 4h1v1h-1zM31 4h1v1h-1zM32 4h1v1h-1zM34 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM18 5h1v1h-1zM20 5h1v1h-1zM23 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM31 5h1v1h-1zM32 5h1v1h-1zM34 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM11 6h1v1h-1zM13 6h1v1h-1zM15 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM31 6h1v1h-1zM32 6h1v1h-1zM34 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM19 7h1v1h-1zM20 7h1v1h-1zM23 7h1v1h-1zM25 7h1v1h-1zM28 7h1v1h-1zM34 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM26 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM30 8h1v1h-1zM31 8h1v1h-1zM32 8h1v1h-1zM33 8h1v1h-1zM34 8h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM21 9h1v1h-1zM26 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM19 10h1v1h-1zM22 10h1v1h-1zM23 10h1v1h-1zM25 10h1v1h-1zM32 10h1v1h-1zM33 10h1v1h-1zM3 11h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM9 11h1v1h-1zM12 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM25 11h1v1h-1zM28 11h1v1h-1zM29 11h1v1h-1zM31 11h1v1h-1zM32 11h1v1h-1zM33 11h1v1h-1zM34 11h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM20 12h1v1h-1zM23 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM27 12h1v1h-1zM29 12h1v1h-1zM30 12h1v1h-1zM31 12h1v1h-1zM34 12h1v1h-1zM3 13h1v1h-1zM4 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM17 13h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM21 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM25 13h1v1h-1zM26 13h1v1h-1zM29 13h1v1h-1zM31 13h1v1h-1zM33 13h1v1h-1zM3 14h1v1h-1zM5 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM22 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM27 14h1v1h-1zM29 14h1v1h-1zM30 14h1v1h-1zM31 14h1v1h-1zM33 14h1v1h-1zM3 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM19 15h1v1h-1zM22 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM32 15h1v1h-1zM33 15h1v1h-1zM2 16h1v1h-1zM8 16h1v1h-1zM11 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM17 16h1v1h-1zM19 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM26 16h1v1h-1zM28 16h1v1h-1zM29 16h1v1h-1zM30 16h1v1h-1zM31 16h1v1h-1zM2 17h1v1h-1zM3 17h1v1h-1zM4 17h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM12 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM28 17h1v1h-1zM31 17h1v1h-1zM32 17h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM19 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM23 18h1v1h-1zM24 18h1v1h-1zM25 18h1v1h-1zM26 18h1v1h-1zM27 18h1v1h-1zM28 18h1v1h-1zM30 18h1v1h-1zM31 18h1v1h-1zM32 18h1v1h-1zM2 19h1v1h-1zM6 19h1v1h-1zM7 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM22 19h1v1h-1zM25 19h1v1h-1zM26 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM30 19h1v1h-1zM31 19h1v1h-1zM34 19h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM11 20h1v1h-1zM14 20h1v1h-1zM20 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM26 20h1v1h-1zM29 20h1v1h-1zM30 20h1v1h-1zM32 20h1v1h-1zM33 20h1v1h-1zM3 21h1v1h-1zM6 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM10 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM21 21h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM28 21h1v1h-1zM30 21h1v1h-1zM33 21h1v1h-1zM2 22h1v1h-1zM4 22h1v1h-1zM7 22h1v1h-1zM8 22h1v1h-1zM9 22h1v1h-1zM13 22h1v1h-1zM16 22h1v1h-1zM17 22h1v1h-1zM18 22h1v1h-1zM21 22h1v1h-1zM24 22h1v1h-1zM31 22h1v1h-1zM32 22h1v1h-1zM33 22h1v1h-1zM2 23h1v1h-1zM3 23h1v1h-1zM4 23h1v1h-1zM6 23h1v1h-1zM7 23h1v1h-1zM10 23h1v1h-1zM11 23h1v1h-1zM13 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM23 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM28 23h1v1h-1zM34 23h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM14 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM24 24h1v1h-1zM28 24h1v1h-1zM29 24h1v1h-1zM31 24h1v1h-1zM33 24h1v1h-1zM34 24h1v1h-1zM3 25h1v1h-1zM4 25h1v1h-1zM5 25h1v1h-1zM6 25h1v1h-1zM10 25h1v1h-1zM11 25h1v1h-1zM12 25h1v1h-1zM13 25h1v1h-1zM16 25h1v1h-1zM18 25h1v1h-1zM19 25h1v1h-1zM20 25h1v1h-1zM22 25h1v1h-1zM25 25h1v1h-1zM26 25h1v1h-1zM28 25h1v1h-1zM29 25h1v1h-1zM31 25h1v1h-1zM2 26h1v1h-1zM5 26h1v1h-1zM7 26h1v1h-1zM8 26h1v1h-1zM9 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM14 26h1v1h-1zM15 26h1v1h-1zM16 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM20 26h1v1h-1zM21 26h1v1h-1zM24 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM27 26h1v1h-1zM28 26h1v1h-1zM29 26h1v1h-1zM30 26h1v1h-1zM10 27h1v1h-1zM11 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM18 27h1v1h-1zM20 27h1v1h-1zM21 27h1v1h-1zM23 27h1v1h-1zM26 27h1v1h-1zM30 27h1v1h-1zM31 27h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM7 28h1v1h-1zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM18 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM22 28h1v1h-1zM23 28h1v1h-1zM25 28h1v1h-1zM26 28h1v1h-1zM28 28h1v1h-1zM30 28h1v1h-1zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM11 29h1v1h-1zM12 29h1v1h-1zM13 29h1v1h-1zM14 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM20 29h1v1h-1zM21 29h1v1h-1zM22 29h1v1h-1zM25 29h1v1h-1zM26 29h1v1h-1zM30 29h1v1h-1zM31 29h1v1h-1zM32 29h1v1h-1zM33 29h1v1h-1zM34 29h1v1h-1zM2 30h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM8 30h1v1h-1zM11 30h1v1h-1zM12 30h1v1h-1zM14 30h1v1h-1zM16 30h1v1h-1zM17 30h1v1h-1zM21 30h1v1h-1zM24 30h1v1h-1zM25 30h1v1h-1zM26 30h1v1h-1zM27 30h1v1h-1zM28 30h1v1h-1zM29 30h1v1h-1zM30 30h1v1h-1zM32 30h1v1h-1zM33 30h1v1h-1zM2 31h1v1h-1zM4 31h1v1h-1zM5 31h1v1h-1zM6 31h1v1h-1zM8 31h1v1h-1zM10 31h1v1h-1zM11 31h1v1h-1zM13 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM16 31h1v1h-1zM17 31h1v1h-1zM21 31h1v1h-1zM23 31h1v1h-1zM24 31h1v1h-1zM25 31h1v1h-1zM29 31h1v1h-1zM31 31h1v1h-1zM32 31h1v1h-1zM33 31h1v1h-1zM34 31h1v1h-1zM2 32h1v1h-1zM4 32h1v1h-1zM5 32h1v1h-1zM6 32h1v1h-1zM8 32h1v1h-1zM10 32h1v1h-1zM11 32h1v1h-1zM18 32h1v1h-1zM19 32h1v1h-1zM20 32h1v1h-1zM22 32h1v1h-1zM24 32h1v1h-1zM26 32h1v1h-1zM28 32h1v1h-1zM29 32h1v1h-1zM31 32h1v1h-1zM2 33h1v1h-1zM8 33h1v1h-1zM10 33h1v1h-1zM11 33h1v1h-1zM14 33h1v1h-1zM15 33h1v1h-1zM16 33h1v1h-1zM17 33h1v1h-1zM22 33h1v1h-1zM25 33h1v1h-1zM28 33h1v1h-1zM29 33h1v1h-1zM30 33h1v1h-1zM34 33h1v1h-1zM2 34h1v1h-1zM3 34h1v1h-1zM4 34h1v1h-1zM5 34h1v1h-1zM6 34h1v1h-1zM7 34h1v1h-1zM8 34h1v1h-1zM11 34h1v1h-1zM13 34h1v1h-1zM14 34h1v1h-1zM15 34h1v1h-1zM17 34h1v1h-1zM18 34h1v1h-1zM19 34h1v1h-1zM21 34h1v1h-1zM23 34h1v1h-1zM24 34h1v1h-1zM27 34h1v1h-1zM28 34h1v1h-1zM30 34h1v1h-1zM32 34h1v1h-1z" fill="#111113"/><rect x="13.54" y="13.54" width="9.91" height="9.91" rx="2.64" fill="#fff"/><clipPath id="qri"><rect x="14.54" y="14.54" width="7.93" height="7.93" rx="1.98"/></clipPath><image href="/assets/icon-128.png?v=87d1534580" x="14.54" y="14.54" width="7.93" height="7.93" clip-path="url(#qri)"/></svg></div>
+      </div>
+      <div class="words"><span class="num">2</span><div><h3>Share with your club or group</h3><p>One link and a QR code for the newsletter or the group text, and printed turns for the paper crowd. Change the route and the link stays the same.</p></div></div>
+    </li>
+    <li class="step">
+      <div class="vis vis-drive" aria-hidden="true">
+        <svg class="bg" viewBox="0 0 420 280" preserveAspectRatio="xMidYMid slice"><rect width="420" height="280" fill="#23282E"/><path d="M-10 250 C 60 220, 90 160, 160 150 C 230 140, 250 80, 320 70 C 370 62, 400 30, 430 20" fill="none" stroke="#3A4048" stroke-width="16" stroke-linecap="round"/><path d="M-10 250 C 60 220, 90 160, 160 150 C 230 140, 250 80, 320 70 C 370 62, 400 30, 430 20" fill="none" stroke="#2E92FF" stroke-width="7" stroke-linecap="round"/><circle cx="70" cy="214" r="13" fill="#2E92FF" stroke="#fff" stroke-width="3"/><circle cx="150" cy="152" r="13" fill="#E4731C" stroke="#fff" stroke-width="3"/><circle cx="300" cy="74" r="13" fill="#6A5FE8" stroke="#fff" stroke-width="3"/></svg>
+        <div class="alert"><b>Hazard ahead, reported by the group</b><span>0.4 mi</span></div>
+        <div class="tags"><span>No signal needed</span><span>Back on route if you miss a turn</span></div>
+      </div>
+      <div class="seq" data-clips="group:Your group, live on the map|offline:No signal? Turns keep coming|return:Missed a turn? Right back on route"></div>
+      <div class="words"><span class="num">3</span><div><h3>Drive together</h3><p>See the whole group on the map, and get warned about hazards the cars ahead report. Lose signal and the turns keep coming. Miss one and Carve leads you back on.</p></div></div>
+    </li>
+  </ol>
+  <div class="get-app" id="get">
+    <div class="qr" role="img" aria-label="QR code to get Carve on your phone"><svg class="qr" viewBox="0 0 37 37" shape-rendering="crispEdges" role="img" aria-label="QR code: get Carve on your phone"><rect width="37" height="37" fill="#fff"/><path d="M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM16 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM23 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM29 2h1v1h-1zM30 2h1v1h-1zM31 2h1v1h-1zM32 2h1v1h-1zM33 2h1v1h-1zM34 2h1v1h-1zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM14 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM25 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM34 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM30 4h1v1h-1zM31 4h1v1h-1zM32 4h1v1h-1zM34 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM18 5h1v1h-1zM20 5h1v1h-1zM23 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM31 5h1v1h-1zM32 5h1v1h-1zM34 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM11 6h1v1h-1zM13 6h1v1h-1zM15 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM31 6h1v1h-1zM32 6h1v1h-1zM34 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM19 7h1v1h-1zM20 7h1v1h-1zM23 7h1v1h-1zM25 7h1v1h-1zM28 7h1v1h-1zM34 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM26 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM30 8h1v1h-1zM31 8h1v1h-1zM32 8h1v1h-1zM33 8h1v1h-1zM34 8h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM21 9h1v1h-1zM26 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM19 10h1v1h-1zM22 10h1v1h-1zM23 10h1v1h-1zM25 10h1v1h-1zM32 10h1v1h-1zM33 10h1v1h-1zM3 11h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM9 11h1v1h-1zM12 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM25 11h1v1h-1zM28 11h1v1h-1zM29 11h1v1h-1zM31 11h1v1h-1zM32 11h1v1h-1zM33 11h1v1h-1zM34 11h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM20 12h1v1h-1zM23 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM27 12h1v1h-1zM29 12h1v1h-1zM30 12h1v1h-1zM31 12h1v1h-1zM34 12h1v1h-1zM3 13h1v1h-1zM4 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM17 13h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM21 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM25 13h1v1h-1zM26 13h1v1h-1zM29 13h1v1h-1zM31 13h1v1h-1zM33 13h1v1h-1zM3 14h1v1h-1zM5 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM22 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM27 14h1v1h-1zM29 14h1v1h-1zM30 14h1v1h-1zM31 14h1v1h-1zM33 14h1v1h-1zM3 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM19 15h1v1h-1zM22 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM32 15h1v1h-1zM33 15h1v1h-1zM2 16h1v1h-1zM8 16h1v1h-1zM11 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM17 16h1v1h-1zM19 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM26 16h1v1h-1zM28 16h1v1h-1zM29 16h1v1h-1zM30 16h1v1h-1zM31 16h1v1h-1zM2 17h1v1h-1zM3 17h1v1h-1zM4 17h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM12 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM28 17h1v1h-1zM31 17h1v1h-1zM32 17h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM19 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM23 18h1v1h-1zM24 18h1v1h-1zM25 18h1v1h-1zM26 18h1v1h-1zM27 18h1v1h-1zM28 18h1v1h-1zM30 18h1v1h-1zM31 18h1v1h-1zM32 18h1v1h-1zM2 19h1v1h-1zM6 19h1v1h-1zM7 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM22 19h1v1h-1zM25 19h1v1h-1zM26 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM30 19h1v1h-1zM31 19h1v1h-1zM34 19h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM11 20h1v1h-1zM14 20h1v1h-1zM20 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM26 20h1v1h-1zM29 20h1v1h-1zM30 20h1v1h-1zM32 20h1v1h-1zM33 20h1v1h-1zM3 21h1v1h-1zM6 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM10 21h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM21 21h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM28 21h1v1h-1zM30 21h1v1h-1zM33 21h1v1h-1zM2 22h1v1h-1zM4 22h1v1h-1zM7 22h1v1h-1zM8 22h1v1h-1zM9 22h1v1h-1zM13 22h1v1h-1zM16 22h1v1h-1zM17 22h1v1h-1zM18 22h1v1h-1zM21 22h1v1h-1zM24 22h1v1h-1zM31 22h1v1h-1zM32 22h1v1h-1zM33 22h1v1h-1zM2 23h1v1h-1zM3 23h1v1h-1zM4 23h1v1h-1zM6 23h1v1h-1zM7 23h1v1h-1zM10 23h1v1h-1zM11 23h1v1h-1zM13 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM23 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM28 23h1v1h-1zM34 23h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM14 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM24 24h1v1h-1zM28 24h1v1h-1zM29 24h1v1h-1zM31 24h1v1h-1zM33 24h1v1h-1zM34 24h1v1h-1zM3 25h1v1h-1zM4 25h1v1h-1zM5 25h1v1h-1zM6 25h1v1h-1zM10 25h1v1h-1zM11 25h1v1h-1zM12 25h1v1h-1zM13 25h1v1h-1zM16 25h1v1h-1zM18 25h1v1h-1zM19 25h1v1h-1zM20 25h1v1h-1zM22 25h1v1h-1zM25 25h1v1h-1zM26 25h1v1h-1zM28 25h1v1h-1zM29 25h1v1h-1zM31 25h1v1h-1zM2 26h1v1h-1zM5 26h1v1h-1zM7 26h1v1h-1zM8 26h1v1h-1zM9 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM14 26h1v1h-1zM15 26h1v1h-1zM16 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM20 26h1v1h-1zM21 26h1v1h-1zM24 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM27 26h1v1h-1zM28 26h1v1h-1zM29 26h1v1h-1zM30 26h1v1h-1zM10 27h1v1h-1zM11 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM18 27h1v1h-1zM20 27h1v1h-1zM21 27h1v1h-1zM23 27h1v1h-1zM26 27h1v1h-1zM30 27h1v1h-1zM31 27h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM7 28h1v1h-1zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM18 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM22 28h1v1h-1zM23 28h1v1h-1zM25 28h1v1h-1zM26 28h1v1h-1zM28 28h1v1h-1zM30 28h1v1h-1zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM11 29h1v1h-1zM12 29h1v1h-1zM13 29h1v1h-1zM14 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM20 29h1v1h-1zM21 29h1v1h-1zM22 29h1v1h-1zM25 29h1v1h-1zM26 29h1v1h-1zM30 29h1v1h-1zM31 29h1v1h-1zM32 29h1v1h-1zM33 29h1v1h-1zM34 29h1v1h-1zM2 30h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM8 30h1v1h-1zM11 30h1v1h-1zM12 30h1v1h-1zM14 30h1v1h-1zM16 30h1v1h-1zM17 30h1v1h-1zM21 30h1v1h-1zM24 30h1v1h-1zM25 30h1v1h-1zM26 30h1v1h-1zM27 30h1v1h-1zM28 30h1v1h-1zM29 30h1v1h-1zM30 30h1v1h-1zM32 30h1v1h-1zM33 30h1v1h-1zM2 31h1v1h-1zM4 31h1v1h-1zM5 31h1v1h-1zM6 31h1v1h-1zM8 31h1v1h-1zM10 31h1v1h-1zM11 31h1v1h-1zM13 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM16 31h1v1h-1zM17 31h1v1h-1zM21 31h1v1h-1zM23 31h1v1h-1zM24 31h1v1h-1zM25 31h1v1h-1zM29 31h1v1h-1zM31 31h1v1h-1zM32 31h1v1h-1zM33 31h1v1h-1zM34 31h1v1h-1zM2 32h1v1h-1zM4 32h1v1h-1zM5 32h1v1h-1zM6 32h1v1h-1zM8 32h1v1h-1zM10 32h1v1h-1zM11 32h1v1h-1zM18 32h1v1h-1zM19 32h1v1h-1zM20 32h1v1h-1zM22 32h1v1h-1zM24 32h1v1h-1zM26 32h1v1h-1zM28 32h1v1h-1zM29 32h1v1h-1zM31 32h1v1h-1zM2 33h1v1h-1zM8 33h1v1h-1zM10 33h1v1h-1zM11 33h1v1h-1zM14 33h1v1h-1zM15 33h1v1h-1zM16 33h1v1h-1zM17 33h1v1h-1zM22 33h1v1h-1zM25 33h1v1h-1zM28 33h1v1h-1zM29 33h1v1h-1zM30 33h1v1h-1zM34 33h1v1h-1zM2 34h1v1h-1zM3 34h1v1h-1zM4 34h1v1h-1zM5 34h1v1h-1zM6 34h1v1h-1zM7 34h1v1h-1zM8 34h1v1h-1zM11 34h1v1h-1zM13 34h1v1h-1zM14 34h1v1h-1zM15 34h1v1h-1zM17 34h1v1h-1zM18 34h1v1h-1zM19 34h1v1h-1zM21 34h1v1h-1zM23 34h1v1h-1zM24 34h1v1h-1zM27 34h1v1h-1zM28 34h1v1h-1zM30 34h1v1h-1zM32 34h1v1h-1z" fill="#111113"/><rect x="13.54" y="13.54" width="9.91" height="9.91" rx="2.64" fill="#fff"/><clipPath id="qri"><rect x="14.54" y="14.54" width="7.93" height="7.93" rx="1.98"/></clipPath><image href="/assets/icon-128.png?v=87d1534580" x="14.54" y="14.54" width="7.93" height="7.93" clip-path="url(#qri)"/></svg></div>
+    <div class="side">
+      <div><h3>Scan to get the app</h3><p>Or download it from your store. Free to start.</p></div>
+      <div class="stores">
+        <a class="hb dark" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use href="#apple"/></svg>Download for iPhone</a>
+        <a class="hb dark" href="/android/"><svg aria-hidden="true"><use href="#android"/></svg>Download for Android</a>
+      </div>
+      <a class="apex" href="/pricing/">What comes with Apex?</a>
     </div>
   </div>
 </section>
 
-<!-- ═══ ROADS ═══════════════════════════════════════════════════════ -->
-<section class="roads" id="roads">
-  <div class="roads-head rise">
-    <h2>Roads worth <em>the drive</em>.</h2>
-    <p>1,100+ drives, each planned as a Carve route: how far, how long, and how twisty.</p>
-  </div>
-  <ul class="road-strip rise"><li><a href="/drives/tail-of-the-dragon/"><img src="https://carve.run/assets/drives/tail-of-the-dragon.jpg?v=d14c49e611" width="1200" height="900" loading="lazy" alt="">
+<div class="wrapx">
+<!-- ═══ LEGENDARY DRIVES ═══ -->
+<section class="legends" aria-labelledby="legends-title">
+  <h2 id="legends-title">Legendary drives</h2>
+  <ul class="rail"><li><a href="/drives/tail-of-the-dragon/"><img src="https://carve.run/assets/drives/tail-of-the-dragon.jpg?v=d14c49e611" width="1200" height="900" loading="lazy" alt="">
       <div class="body"><div class="n">Tail of the Dragon</div>
       <div class="m"><span class="chip" style="background:#9B1C1C"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21L17 17.5L7 14L17 10.5L7 7L17 3.5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Intense</span><span>11.3 mi · North Carolina</span></div></div></a></li><li><a href="/drives/angeles-crest-highway/"><img src="https://carve.run/assets/drives/angeles-crest-highway.jpg?v=1141f0482d" width="1200" height="900" loading="lazy" alt="">
       <div class="body"><div class="n">Angeles Crest Highway</div>
@@ -589,85 +221,70 @@
       <div class="m"><span class="chip" style="background:#C0860A"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21C14 21 18 17 12 12C6 7 10 3 18 3" fill="none" stroke="#fff" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>Sweeping</span><span>75 mi · Arkansas</span></div></div></a></li></ul>
 </section>
 
-<!-- ═══ 2 · PRICING ════════════════════════════════════════════════════ -->
-<section class="pricing" id="pricing">
-  <div class="wrap">
-    <div class="price-head rise">
-      <h2>Ride along for free.<br>Lead the way with <em>Apex</em>.</h2>
-      <p>Apex drives your routes offline, brings them to CarPlay &amp; Android Auto, and more.</p>
-    </div>
-    <div class="plans">
-      <div class="price-card rise">
-        <div class="plan-name">Carve</div>
-        <div class="price-num">Free</div>
-        <div class="price-sub">Free account, no card</div>
-        <ul class="plan-list">
-          <li>1,100+ hand-picked drives, and the best ones near you</li>
-          <li>Plan your own routes, or import one from Google Maps, and share them by link</li>
-          <li>Turn-by-turn with voice, while you have a signal</li>
-          <li>Weather along the way and the elevation profile</li>
-          <li>Describe a drive in your own words, 5 a day</li>
-          <li>Wrong turn? Directions back to your route, never a reroute</li>
-        </ul>
-        <div class="cta">
-          <a class="btn" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
-        </div>
-      </div>
-      <div class="price-card pro rise" id="pro">
-        <img class="appicon" src="/assets/icon-128.png?v=87d1534580" alt="" width="52" height="52">
-        <div class="plan-name">Carve Apex</div>
-        <div class="price-num">$29.99<small>/ year</small></div>
-        <div class="price-beta">7-day free trial</div>
-        <div class="price-alt">or $4.99<small>/ month</small></div>
-        <div class="price-after">The free trial is for new yearly subscribers. Cancel any time.</div>
-        <ul class="plan-list">
-          <li><strong>Drive without a signal</strong> — the map and every turn, downloaded</li>
-          <li><strong>Group</strong> — drive with friends and see everyone on the map</li>
-          <li><strong>3D previews</strong> — preview any route before you drive it (your first one's free)</li>
-          <li><strong>Unlimited AI route planning</strong> — describe as many drives as you like</li>
-          <li><strong>CarPlay &amp; Android Auto</strong></li>
-          <li><strong>Record a drive</strong> and turn it into a route</li>
-          <li><strong>Road conditions</strong> — wet or dry, ice, fog and wind, before you go</li>
-          <li><strong>Popular times</strong> — when a road is usually quiet or busy</li>
-        </ul>
-        <p class="fine">Prices in US dollars; may vary by region. The free trial is for the yearly plan, and converts to a paid yearly subscription unless cancelled before it ends. Subscriptions renew automatically and are managed in your Apple Account or Google Play account.</p>
-        <div class="cta">
-          <a class="btn btn-primary" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
-        </div>
-      </div>
-    </div>
+<!-- ═══ CLUBS ═══ -->
+<section class="clubs2" aria-labelledby="clubs-title">
+  <h2 id="clubs-title">Running a club drive?</h2>
+  <div>
+    <p class="note">I've been a member of the Porsche Club of America's Golden Gate Region since 2023, and we drive together every month. If you've planned a drive, you know the problem: you spend hours finding the best roads and building the route, and regular map apps undo it. They reroute you onto the fastest way, and when the signal drops, the route goes with it. I built Carve for drivers and riders who are out for the drive, not the commute.</p>
+    <p class="sig">Chris, founder of Carve</p>
   </div>
+  <ul>
+    <li><b>Plan it on a computer</b>, or bring the GPX you already have.</li>
+    <li><b>Send members one link.</b> It opens the same route on iPhone or Android, and edits keep the same link.</li>
+    <li><b>Print the turns</b> for anyone who likes paper.</li>
+    <li><b>See everyone on the map</b> on the day, with hazard warnings from the cars ahead.</li>
+  </ul>
+  <div class="cta"><a class="hb green" href="mailto:support@carve.run?subject=Our%20club%27s%20drives">Set up your club's next drive</a><p>Organizing a drive? I'll build your route in Carve with you, free. Or read <a href="/group-drives/">how to plan and lead a group drive</a>.</p></div>
+  <p class="fine">Carve is independent, and isn't affiliated with or endorsed by the Porsche Club of America.</p>
 </section>
 
-<!-- ═══ DRIVES — every state's drives, two links from here (build_area_pages.py) ═══ -->
+<!-- ═══ DRIVES ANYWHERE: every state's drives, two links from here (build_area_pages.py) ═══ -->
 <!-- drives-home -->
-<section class="home-drives" id="drives">
-  <div class="wrap">
-    <h2 class="rise">Or browse <em>by state</em></h2>
-    <p class="lede rise">1247 drives across the US, Canada, Australia, New Zealand, the UAE and Baja California, each ready to open in Carve: the road, how far, how twisty, and what's nearby.</p>
-    <ul class="rise">
-      <li><a href="/drives/california/">California <span>126</span></a></li>
-      <li><a href="/drives/texas/">Texas <span>70</span></a></li>
-      <li><a href="/drives/new-york/">New York <span>45</span></a></li>
-      <li><a href="/drives/florida/">Florida <span>44</span></a></li>
-      <li><a href="/drives/colorado/">Colorado <span>42</span></a></li>
-      <li><a href="/drives/arizona/">Arizona <span>37</span></a></li>
-      <li><a href="/drives/north-carolina/">North Carolina <span>36</span></a></li>
-      <li><a href="/drives/oregon/">Oregon <span>36</span></a></li>
-      <li><a href="/drives/washington/">Washington <span>35</span></a></li>
-      <li><a href="/drives/utah/">Utah <span>34</span></a></li>
-      <li><a href="/drives/british-columbia/">British Columbia <span>33</span></a></li>
-      <li><a href="/drives/new-mexico/">New Mexico <span>31</span></a></li>
-    </ul>
-    <p class="all rise"><a href="/drives/">See every state, province and region</a></p>
+<section class="anywhere" id="drives" aria-labelledby="anywhere-title">
+  <h2 id="anywhere-title">Drives anywhere</h2>
+  <div class="cols">
+    <div>
+      <h3>Top states and provinces</h3>
+      <ul>
+          <li><a href="/drives/california/">California <span>126</span></a></li>
+          <li><a href="/drives/texas/">Texas <span>70</span></a></li>
+          <li><a href="/drives/new-york/">New York <span>45</span></a></li>
+          <li><a href="/drives/florida/">Florida <span>44</span></a></li>
+          <li><a href="/drives/colorado/">Colorado <span>42</span></a></li>
+          <li><a href="/drives/arizona/">Arizona <span>37</span></a></li>
+          <li><a href="/drives/north-carolina/">North Carolina <span>36</span></a></li>
+          <li><a href="/drives/oregon/">Oregon <span>36</span></a></li>
+          <li><a href="/drives/washington/">Washington <span>35</span></a></li>
+          <li><a href="/drives/utah/">Utah <span>34</span></a></li>
+          <li><a href="/drives/british-columbia/">British Columbia <span>33</span></a></li>
+          <li><a href="/drives/new-mexico/">New Mexico <span>31</span></a></li>
+      </ul>
+      <p class="all"><a href="/drives/">All 1,247 drives, by state and region</a></p>
+    </div>
+    <div>
+      <h3>Famous roads</h3>
+      <ul>
+          <li><a href="/drives/skyline-boulevard/">Skyline Boulevard</a></li>
+          <li><a href="/drives/big-sur-highway-1/">Big Sur, Highway 1</a></li>
+          <li><a href="/drives/tioga-pass/">Tioga Pass</a></li>
+          <li><a href="/drives/angeles-crest-highway/">Angeles Crest Highway</a></li>
+          <li><a href="/drives/million-dollar-highway/">Million Dollar Highway</a></li>
+          <li><a href="/drives/beartooth-highway/">Beartooth Highway</a></li>
+          <li><a href="/drives/going-to-the-sun-road/">Going-to-the-Sun Road</a></li>
+          <li><a href="/drives/tail-of-the-dragon/">Tail of the Dragon</a></li>
+          <li><a href="/drives/cherohala-skyway/">Cherohala Skyway</a></li>
+          <li><a href="/drives/blue-ridge-parkway/">Blue Ridge Parkway</a></li>
+          <li><a href="/drives/kancamagus-highway/">Kancamagus Highway</a></li>
+          <li><a href="/drives/overseas-highway/">Overseas Highway</a></li>
+      </ul>
+    </div>
   </div>
 </section>
 <!-- /drives-home -->
 
-<!-- ═══ FAQ — the plain answers search engines and AI assistants quote ═══ -->
-<section class="faq" id="faq">
-  <div class="wrap">
-    <h2 class="rise">Questions, answered</h2>
+<!-- ═══ FAQ: the plain answers search engines and AI assistants quote ═══ -->
+<section class="faq2" id="faq" aria-labelledby="faq-title">
+  <h2 id="faq-title">Questions, answered</h2>
     <div class="faq-list rise">
       <details>
         <summary>What is Carve?</summary>
@@ -709,33 +326,10 @@
         <summary>Which phones does Carve run on?</summary>
         <p>iPhone with iOS 26 or later, from the App Store, and Android 10 or later, in early access on Google Play.</p>
       </details>
-    </div>
-  </div>
 </section>
-
-<!-- ═══ 3 · CLOSING ════════════════════════════════════════════════════ -->
-<section class="band">
-  <div class="wrap">
-    <div class="band-inner rise">
-      <h2>Your way,<br><em>not the highway.</em></h2>
-      <p>Plan the roads you love, drive or ride them without a signal, and bring your friends along.</p>
-      <div class="cta">
-        <div class="cta-pair">
-          <a class="btn btn-primary btn-lg" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#apple"/></svg><span data-get-label>Get started on iPhone</span></a>
-          <a class="btn btn-primary btn-lg" data-get-twin href="/android/" hidden><svg aria-hidden="true"><use href="#android"/></svg><span>Join the Android beta</span></a>
-        </div>
-        <ul class="platforms" aria-label="Available for iPhone and CarPlay, Android and Android Auto">
-          <li><svg role="img" aria-label="iPhone"><use href="#apple"/></svg></li>
-          <li><svg role="img" aria-label="CarPlay"><use href="#carplay"/></svg></li>
-          <li class="sep" aria-hidden="true"></li>
-          <li><svg role="img" aria-label="Android"><use href="#android"/></svg></li>
-          <li><svg role="img" aria-label="Android Auto"><use href="#androidauto"/></svg></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 </main>
+
 
 <footer>
   <div class="wrap">
@@ -753,230 +347,10 @@
 </footer>
 
 <script>
-  // Where "Get started" goes, by the visitor's phone: on Android, carve.run/android/,
-  // the three steps into the closed test (join the Google Group, opt in, install),
-  // until the app is public on Google Play
-  // (https://play.google.com/store/apps/details?id=run.carve.app); the App
-  // Store everywhere else (live 2026-10-05; no country in the path, so each
-  // visitor gets their own storefront). The anchors carry the App Store link
-  // and the iPhone wording, so the page still works with scripts off.
-  var LINKS = {
-    appStore: "https://apps.apple.com/app/carve-route-planner/id6808087716",
-    androidBeta: "/android/"
-  };
-  (function () {
-    var ua = navigator.userAgent || "";
-    var android = /android/i.test(ua);
-    // iPadOS asks for the desktop site, so a "Mac" with a touch screen is an iPad.
-    var ios = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
-    var url = android ? LINKS.androidBeta : LINKS.appStore;
-    // Neither phone (a computer): the Android beta beside iPhone wherever there's room for two.
-    if (!android && !ios) document.querySelectorAll("[data-get-twin]").forEach(function (a) { a.hidden = false; });
-    var label = android ? "Join the Android beta" : "Get started on iPhone";
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = url; });
-    document.querySelectorAll("[data-get-label]").forEach(function (s) { s.textContent = label; });
-    if (android) {
-      document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
-    }
-  })();
-
-  // The carousel: the store's nine panels, one at a time, each on its own colour. All but
-  // CarPlay are screen recordings, each played once, the
-  // first time its slide is on screen, and left on its last frame. A slide
-  // with a recording waits for it to finish; the rest hold five seconds. A
-  // swipe, an arrow or a dot takes over the timing, and a hover holds it. With reduced
-  // motion nothing moves by itself, and the recordings show their last frame.
-  // The carousel: the app's welcome scenes, one at a time. Each scene's
-  // clip plays from the start whenever its slide comes round; only this
-  // clip and the next are loaded. The still under a clip shows until the
-  // clip is playing, and its last frame once it's done or let go. A swipe,
-  // an arrow or a dot takes over the timing, and a hover holds it. With
-  // reduced motion nothing moves by itself and every scene shows its end.
-  (function () {
-    var track = document.getElementById("slides");
-    var dotsBox = document.getElementById("dots");
-    var carousel = document.getElementById("carousel");
-    var panel = carousel.closest(".show");
-    if (!track) return;
-    var slides = Array.prototype.slice.call(track.children);
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var HOLD = 5000, AFTER_VIDEO = 2500, STALL = 6000;
-    // `index` is the slide on screen; `target` the one being scrolled to.
-    var index = -1, target = 0, timer = null, stall = null, visible = false, hovering = false;
-
-    var scenes = slides.map(function (slide) {
-      return { still: slide.querySelector(".still"), video: slide.querySelector("video"), done: false };
-    });
-    var dots = slides.map(function (slide, i) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.setAttribute("aria-label", "Show " + (i + 1) + " of " + slides.length + ": " + slide.querySelector("figcaption").textContent);
-      b.addEventListener("click", function () { go(i); });
-      dotsBox.appendChild(b);
-      return b;
-    });
-
-    function load(k) {
-      var v = scenes[k].video;
-      if (v && !reduce && !v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; }
-    }
-    function unload(k) {
-      var v = scenes[k].video;
-      if (!v || !v.getAttribute("src")) return;
-      v.pause();
-      v.classList.remove("on");
-      v.removeAttribute("src");
-      v.load();
-    }
-    function finished(k) {
-      var sc = scenes[k];
-      if (sc.done) return;
-      sc.done = true;
-      sc.still.src = sc.still.dataset.last;
-      if (k === index) schedule(AFTER_VIDEO);
-    }
-    function giveUp(k) {
-      unload(k);
-      finished(k);
-    }
-    function play(k) {
-      var sc = scenes[k], v = sc.video;
-      if (!v || reduce || sc.done || !visible) return;
-      load(k);
-      clearTimeout(stall);
-      stall = setTimeout(function () { if (k === index && !v.classList.contains("on")) giveUp(k); }, STALL);
-      var p = v.play();
-      if (p && p.catch) p.catch(function () { if (k === index && !v.classList.contains("on")) giveUp(k); });
-    }
-
-    scenes.forEach(function (sc, k) {
-      var v = sc.video;
-      if (reduce) { sc.done = true; sc.still.src = sc.still.dataset.last; return; }
-      if (!v) return;
-      v.muted = true;
-      v.addEventListener("playing", function () { if (k === index) { clearTimeout(stall); v.classList.add("on"); } });
-      v.addEventListener("ended", function () { finished(k); });
-      v.addEventListener("timeupdate", function () { if (v.duration && v.currentTime >= v.duration - 0.1) finished(k); });
-      v.addEventListener("error", function () { if (k === index && v.getAttribute("src")) giveUp(k); });
-    });
-
-    document.getElementById("prev").addEventListener("click", function () { go((target - 1 + slides.length) % slides.length); });
-    document.getElementById("next").addEventListener("click", function () { go((target + 1) % slides.length); });
-
-    function go(i) {
-      target = i;
-      track.scrollTo({ left: i * track.clientWidth, behavior: reduce ? "auto" : "smooth" });
-      settle(i);
-    }
-    function settle(i) {
-      target = i;
-      if (i === index) return;
-      // The slide left behind lets its clip go and keeps its last frame.
-      if (index >= 0 && scenes[index].video) {
-        unload(index);
-        scenes[index].still.src = scenes[index].still.dataset.last;
-      }
-      index = i;
-      var sc = scenes[i];
-      panel.style.backgroundColor = slides[i].dataset.bg;
-      dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); });
-      slides.forEach(function (s, j) { s.setAttribute("aria-hidden", j === i ? "false" : "true"); });
-      var next = (i + 1) % slides.length;
-      scenes.forEach(function (_, k) { if (k !== i && k !== next) unload(k); });
-      if (sc.video && !reduce) {
-        // From the start, as a fresh play.
-        sc.done = false;
-        sc.still.src = sc.still.dataset.first;
-        sc.video.classList.remove("on");
-        if (sc.video.getAttribute("src")) { try { sc.video.currentTime = 0; } catch (e) {} }
-        else load(i);
-      }
-      load(next);
-      play(i);
-      schedule();
-    }
-    function schedule(wait) {
-      clearTimeout(timer);
-      if (reduce || !visible || hovering || index < 0) return;
-      var sc = scenes[index];
-      if (sc.video && !sc.done) return;   // a clip runs its course first
-      timer = setTimeout(function () { go((index + 1) % slides.length); }, wait || HOLD);
-    }
-
-    var settleTimer = null;
-    track.addEventListener("scroll", function () {
-      clearTimeout(settleTimer);
-      settleTimer = setTimeout(function () {
-        settle(Math.round(track.scrollLeft / track.clientWidth));
-      }, 90);
-    }, { passive: true });
-    window.addEventListener("resize", function () { go(Math.max(index, 0)); });
-
-    carousel.addEventListener("mouseenter", function () { hovering = true; schedule(); });
-    carousel.addEventListener("mouseleave", function () { hovering = false; schedule(); });
-
-    function setVisible(on) {
-      visible = on;
-      var sc = index >= 0 ? scenes[index] : null;
-      if (!on) {
-        clearTimeout(timer);
-        clearTimeout(stall);
-        if (sc && sc.video) sc.video.pause();
-        return;
-      }
-      if (sc && sc.video && !sc.done) play(index);
-      schedule();
-    }
-    var io = null;
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) setVisible(false);
-      else if (io) { io.unobserve(carousel); io.observe(carousel); }
-      else setVisible(true);
-    });
-    if ("IntersectionObserver" in window) {
-      io = new IntersectionObserver(function (entries) { setVisible(entries[0].isIntersecting); }, { threshold: .4 });
-      io.observe(carousel);
-    } else {
-      visible = true;
-    }
-    settle(0);
-  })();
-  // The club card's clip: loaded the first time the card comes into view,
-  // playing only while it's on screen, faded in once it really plays.
-  (function () {
-    var v = document.querySelector(".apex-card video");
-    if (!v || !("IntersectionObserver" in window)) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    v.addEventListener("playing", function () { v.classList.add("on"); });
-    new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
-        if (!v.getAttribute("src")) { v.preload = "auto"; v.src = v.dataset.src; }
-        var p = v.play();
-        if (p && p.catch) p.catch(function () {});
-      } else {
-        v.pause();
-      }
-    }, { threshold: .25 }).observe(v);
-  })();
-
-  (function () {
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var items = document.querySelectorAll(".rise");
-    if (reduce || !("IntersectionObserver" in window)) {
-      items.forEach(function (el) { el.classList.add("in"); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add("in");
-        io.unobserve(e.target);
-      });
-    }, { rootMargin: "0px 0px -10% 0px", threshold: .12 });
-    items.forEach(function (el) { io.observe(el); });
-  })();
+  // Old links to the home page's pricing go to its own page now.
+  if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
 <script src="/assets/carve-site.js?v=81545ecfbc" defer></script>
-<script type="module" src="/assets/site-bar.js?v=4f25bc3543"></script>
+<script type="module" src="/assets/home.js?v=6c7f02bd07"></script>
 </body>
 </html>

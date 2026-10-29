@@ -2475,7 +2475,51 @@ async function start() {
     try { window.history.replaceState(null, "", "/plan/"); } catch {}
     if (!session) openAccount("choose", { saving: false, title: "Sign in" });
   }
+  await takeHandoff();
   if (!storageWorks) toast("This browser isn't keeping data, so a reload starts the route over.");
+}
+
+// What the home page's front door sent along (assets/home.js handOff; the
+// user, 2026-10-29): a link (Google Maps, Ride with GPS, a Carve drive), a
+// GPX file's text, or a start and destination as typed. Kept in this tab's
+// sessionStorage, never the address bar, and used once.
+const HANDOFF_KEY = "carve.plan.handoff";
+
+async function takeHandoff() {
+  let handoff = null;
+  try {
+    handoff = JSON.parse(sessionStorage.getItem(HANDOFF_KEY) || "null");
+    sessionStorage.removeItem(HANDOFF_KEY);
+  } catch {
+    return;
+  }
+  if (!handoff || !(Date.now() - handoff.at < 10 * 60 * 1000)) return;
+  if (handoff.kind === "link" && handoff.url) return importLink(handoff.url);
+  if (handoff.kind === "gpx" && handoff.text) return importFile(new File([handoff.text], handoff.name || "route.gpx"));
+  if (handoff.kind !== "stops") return;
+  // Each typed place becomes the search's best answer near the map; one it
+  // can't find stays typed in its row, to search from there.
+  const missed = [];
+  for (const [role, query] of [["start", handoff.from], ["end", handoff.to]]) {
+    if (!query) continue;
+    try {
+      // One search session per place, as the rows' typeahead has (attachSearch).
+      const searchSession = crypto.randomUUID();
+      const near = mapReady ? map.getCenter() : null;
+      const found = (await planner("search", { query, session: searchSession, ...(near ? { near: { lat: near.lat, lon: near.lng } } : {}) })).places?.[0];
+      if (!found) throw new Failure("");
+      const place = Number.isFinite(found.lat) ? found : { ...(await planner("place", { id: found.id, session: searchSession })).place, name: found.name };
+      choosePlace(role, undefined, place);
+    } catch {
+      missed.push([role, query]);
+    }
+  }
+  missed.forEach(([role, query], i) => {
+    const input = document.querySelector(`[data-focus="${role}"]`);
+    if (!input) return;
+    input.value = query;
+    if (!i) { input.focus(); input.dispatchEvent(new Event("input")); }
+  });
 }
 
 start();

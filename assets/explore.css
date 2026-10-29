@@ -1,0 +1,109 @@
+/* Explore (/drives/) and the Back at the top of a drive's page (the user,
+   2026-10-29). Loaded after /plan/plan.css and /assets/route-view.css, whose
+   bar, floating card (.panel) and pills Explore shares: the map of every
+   drive fills the window, the list floats over its left side; on a phone
+   the list is the page and the map opens over it. */
+
+/* ── a drive's Back ── */
+.rv .rv-back {
+  flex: none; display: flex; align-items: center; gap: 4px; align-self: stretch;
+  padding: 14px 18px 12px 14px; border-bottom: 1px solid var(--line);
+  color: var(--green); font-weight: 700; font-size: 17px; text-decoration: none;
+}
+.rv .rv-back svg { width: 22px; height: 22px; }
+.rv .rv-back:hover { background: var(--fill-2); }
+@media (max-width: 699px), (max-height: 560px) {
+  /* Over the map's top left, where a phone's back is. */
+  .rv .rv-back {
+    position: absolute; z-index: 6; top: calc(var(--bar) + 12px); left: 12px;
+    padding: 9px 16px 9px 10px; border: 0; border-radius: 999px; background: #fff; box-shadow: var(--shadow);
+  }
+}
+
+/* ── Explore ── */
+.ex { position: fixed; inset: var(--bar) 0 0 0; }
+.ex-map { position: absolute; inset: 0; background: var(--map); }
+.ex-map .maplibregl-map { position: absolute; inset: 0; }
+.ex-panel { display: flex; flex-direction: column; }
+.ex-top { flex: none; padding: 20px 20px 14px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid var(--line); }
+.ex-top h1 { font-size: 26px; }
+.ex-search { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px; border-radius: 999px; background: var(--fill); color: var(--ink-3); }
+.ex-search svg { width: 20px; height: 20px; flex: none; }
+.ex-search input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font-size: 17px; color: var(--ink); }
+.ex-search:focus-within { box-shadow: 0 0 0 3px var(--green) inset; }
+.ex-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.ex-chip, .ex-select {
+  display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 13px;
+  border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 15px; font-weight: 700; color: var(--ink-2);
+}
+.ex-chip .dot { width: 10px; height: 10px; border-radius: 50%; }
+.ex-chip:hover, .ex-select:hover { border-color: #D6D2C6; }
+.ex-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.ex-select { appearance: none; padding-right: 13px; cursor: pointer; }
+.ex-scroll { gap: 10px; padding-top: 16px; }
+.ex-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ex-head h2 { font-size: 21px; }
+.ex-list { list-style: none; margin: 0 -10px; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.ex-row { display: flex; gap: 14px; align-items: center; padding: 10px; border-radius: 16px; color: inherit; text-decoration: none; }
+.ex-row:hover, .ex-row.on { background: var(--fill-2); }
+.ex-row img { width: 112px; height: 80px; flex: none; object-fit: cover; border-radius: 12px; background: var(--fill); }
+.ex-row .t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ex-row .n { font-weight: 700; font-size: 17px; line-height: 1.25; }
+.ex-row .m { font-size: 15px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ex-row .lv { font-weight: 700; }
+.ex-row .a { font-size: 14px; color: var(--ink-3); }
+.ex-more { font-size: 15px; padding: 4px 0 6px; }
+.ex-empty { padding: 18px 4px; color: var(--ink-3); }
+
+/* For search engines and anyone without scripts: the famous drives and the states. */
+.ex-static { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 22px; }
+.ex-static .sect h2 { font-size: 19px; margin-bottom: 10px; }
+.ex-static .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ex-static .cards a { display: flex; flex-direction: column; gap: 4px; color: inherit; text-decoration: none; }
+.ex-static .cards img { width: 100%; height: auto; aspect-ratio: 1.6 / 1; object-fit: cover; border-radius: 12px; background: var(--fill); }
+.ex-static .cards .n { font-weight: 700; font-size: 15px; line-height: 1.25; }
+.ex-static .cards .m { font-size: 13px; color: var(--ink-3); }
+.ex-static .cards .mark { display: none; }
+.ex-static .states { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; font-size: 15px; }
+.ex-static .states a { color: var(--ink); text-decoration: none; }
+.ex-static .states a:hover { color: var(--green); text-decoration: underline; }
+.ex-static .states span { color: var(--ink-3); font-size: 13px; }
+.ex .rv-links { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 18px 0 4px; font-size: 14px; }
+.ex .rv-links a { color: var(--ink-3); }
+
+/* The map's own controls. */
+.ex-locate {
+  position: absolute; z-index: 3; top: 16px; right: 60px; display: inline-flex; align-items: center; gap: 8px;
+  height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: #fff; box-shadow: var(--shadow);
+  font-weight: 700; font-size: 15px; color: var(--ink);
+}
+.ex-locate svg { width: 16px; height: 16px; color: var(--route); }
+.ex-toggle { display: none; }
+
+/* The card on a road, while a drive is pointed at. */
+.ex-pop .maplibregl-popup-content { padding: 8px; border-radius: 16px; box-shadow: var(--shadow); font-family: "Figtree", system-ui, sans-serif; }
+.ex-pop .maplibregl-popup-tip { display: none; }
+.ex-card { display: flex; gap: 10px; align-items: center; width: 270px; color: var(--ink); text-decoration: none; }
+.ex-card img { width: 64px; height: 64px; flex: none; object-fit: cover; border-radius: 10px; background: var(--fill); }
+.ex-card .n { font-weight: 700; font-size: 15px; line-height: 1.2; }
+.ex-card .m { font-size: 13px; color: var(--ink-3); }
+.ex-card .go { font-size: 13px; font-weight: 700; color: var(--green); margin-top: 2px; }
+
+@media (max-width: 699px), (max-height: 560px) {
+  html, body { height: auto; }
+  body { background: #fff; }
+  .ex { position: static; padding-top: var(--bar); }
+  .ex-panel { position: static; width: auto; border-radius: 0; box-shadow: none; overflow: visible; }
+  .ex-top { padding: 18px 16px 12px; }
+  .ex-scroll { overflow: visible; padding: 14px 16px 90px; }
+  .ex-row img { width: 96px; height: 72px; }
+  /* The map opens over the list, under the bar. */
+  .ex-map { position: fixed; inset: var(--bar) 0 0 0; z-index: 8; display: none; }
+  .ex.map-open .ex-map { display: block; }
+  .ex-locate { top: 12px; right: 12px; }
+  .ex-toggle {
+    display: inline-flex; position: fixed; z-index: 9; left: 50%; bottom: 22px; transform: translateX(-50%);
+    align-items: center; height: 46px; padding: 0 22px; border: 0; border-radius: 999px;
+    background: var(--ink); color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 8px 20px rgba(0,0,0,.3);
+  }
+}
