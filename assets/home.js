@@ -451,6 +451,28 @@ function offerApp() {
   setTimeout(() => wrap.classList.add("on"), 700);
 }
 
+
+// ── the app's QR code carries the visit's campaign ───────────────────
+// A visitor from an ad or a tagged link scans a code tagged with it
+// (/get/?ct=…-qr), so App Store Connect can tell the campaign of an
+// install that began on a computer. Others keep the page's own code.
+async function tagAppCode() {
+  const campaign = window.carveCampaign || "";
+  if (!wide() || !campaign || /^site/.test(campaign) || !window.carveCampaignLink) return;
+  if (!window.qrcode) {
+    await new Promise((done, fail) => {
+      const tag = Object.assign(document.createElement("script"), { src: "/plan/vendor/qrcode.js", onload: done, onerror: fail });
+      document.head.appendChild(tag);
+    }).catch(() => null);
+  }
+  if (!window.qrcode) return;
+  const code = qrcode(0, "M");
+  code.addData(window.carveCampaignLink("https://carve.run/get/"));
+  code.make();
+  const box = document.querySelector(".get-app > .qr");
+  if (box) box.innerHTML = code.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+}
+
 // ── start ────────────────────────────────────────────────────────────
 
 function riseIn() {
@@ -468,6 +490,8 @@ function riseIn() {
 async function main() {
   riseIn();
   offerApp();
+  // carve-site.js loads deferred, after this module may already have run.
+  if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
   wireDoor();
   wireSteps();
   $("near-change").addEventListener("click", locate);

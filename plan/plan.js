@@ -1787,6 +1787,8 @@ async function save() {
     store.remove(PENDING_SAVE_KEY);
     saveDraft();
     showSaved();
+    // The planner's goal for the site's counting (carve-site.js), with the visit's campaign.
+    window.carveTrack?.("Route Saved");
     enrich();
   } catch (failure) {
     toast(failure.message, true);
@@ -2024,7 +2026,9 @@ let qrModel = null;
 function drawQR() {
   if (!window.qrcode) return;
   qrModel = qrcode(0, "M");
-  qrModel.addData(shareLink());
+  // The code carries the visit's campaign to the phone that scans it (carve-site.js),
+  // so an install that follows can be told from which campaign it came.
+  qrModel.addData(window.carveCampaignLink ? window.carveCampaignLink(shareLink()) : shareLink());
   qrModel.make();
   const box = $("qr");
   box.innerHTML = qrModel.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
@@ -2033,6 +2037,7 @@ function drawQR() {
 
 function downloadQR() {
   if (!qrModel) return;
+  window.carveTrack?.("QR Downloaded");
   const count = qrModel.getModuleCount();
   const scale = 24;
   const margin = 4 * scale;
@@ -2069,6 +2074,7 @@ const escapeHTML = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&am
 const stayWords = (minutes) => (minutes < 60 ? `${minutes} min` : formatDuration(minutes * 60).replace(" h", " hr"));
 
 function printDirections() {
+  window.carveTrack?.("Directions Printed");
   const unitMeters = miles ? 1609.344 : 1000;
   const unit = miles ? "mi" : "km";
   const turns = plan.path.instructions;
@@ -2327,6 +2333,7 @@ function wire() {
     try {
       await navigator.clipboard.writeText(shareLink());
       toast("Link copied.");
+      window.carveTrack?.("Link Copied");
     } catch {
       $("link-out").select();
       toast("Press ⌘C or Ctrl+C to copy.");

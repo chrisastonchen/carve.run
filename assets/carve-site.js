@@ -48,7 +48,7 @@
   var path = location.pathname || "/";
   if (/^\/r\//.test(path) || /^\/[0-9A-Za-z]{10}$/.test(path) || /^\/[0-9a-f]{32}$/.test(path)) path = "/r/";
 
-  var kind = path === "/" ? "home" : path === "/r/" ? "share" : /^\/drives\//.test(path) ? "drive" : "";
+  var kind = path === "/" ? "home" : path === "/r/" ? "share" : /^\/drives\//.test(path) ? "drive" : /^\/plan\//.test(path) ? "plan" : "";
   var pageTag = kind ? "site-" + kind : "site";
 
   function clean(text, max) {
@@ -175,6 +175,25 @@
     // The Android page's steps: the group, the test's opt-in, the Play listing.
     else if (a && a.getAttribute("data-beta-step")) send("Beta Step", { step: a.getAttribute("data-beta-step"), ct: ct });
   }, true);
+
+  // For the site's own scripts: a goal counted with this visit's campaign
+  // (the planner's Route Saved, QR Shown, Link Copied), and a link that
+  // carries the campaign on to the phone that scans it (a QR code's
+  // ?ct=…-qr), so App Store Connect can tell which campaign a computer
+  // visit that ended in an install on a phone came from.
+  window.carveTrack = function (name, props) {
+    var all = { ct: ct };
+    for (var key in props || {}) all[key] = props[key];
+    send(name, all);
+  };
+  window.carveCampaign = ct;
+  window.carveCampaignLink = function (href) {
+    return safe(function () {
+      var url = new URL(href, location.href);
+      url.searchParams.set("ct", clean(ct, 27) + "-qr");
+      return url.toString();
+    }, href);
+  };
 
   function ready() { tagLinks(); tagBanner(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
