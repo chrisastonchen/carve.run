@@ -280,7 +280,14 @@ a { color: var(--green); }
 .sources span { display: inline-flex; align-items: center; gap: 6px; }
 .sources img { width: 18px; height: 18px; border-radius: 5px; }
 .sources img.pin { border-radius: 0; }
-.bring .linkish { align-self: flex-start; }
+.gpx-drop {
+  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 76px; padding: 14px 18px;
+  border: 2px dashed #D3D1CB; border-radius: 16px; background: var(--fill-2); color: var(--ink-3);
+  font: inherit; font-size: 15.5px; font-weight: 600; cursor: pointer; transition: background .15s, border-color .15s, color .15s;
+}
+.gpx-drop svg { width: 20px; height: 20px; flex: none; }
+.gpx-drop u { color: var(--green); text-decoration: none; font-weight: 700; }
+.gpx-drop:hover, .gpx-drop.over { border-color: var(--green); background: var(--green-tint); color: var(--ink-2); }
 .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 4px; }
 .figures b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
 /* The figures roll to a new value, slot-machine style (plan.js roll). */

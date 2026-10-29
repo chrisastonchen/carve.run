@@ -2283,16 +2283,24 @@ function wire() {
   $("gpx-btn").addEventListener("click", () => $("gpx").click());
   $("gpx").addEventListener("change", () => importFile($("gpx").files[0]));
   const app = document.querySelector(".app");
+  // On the Import tab its drop box lights up for a file; elsewhere the
+  // whole window does. Dropped anywhere, it comes in.
+  const dropBox = $("gpx-btn");
   app.addEventListener("dragover", (event) => {
     if (![...event.dataTransfer.types].includes("Files")) return;
     event.preventDefault();
-    $("drop").hidden = false;
+    if (!$("bring").hidden && !saved) dropBox.classList.add("over");
+    else $("drop").hidden = false;
+  });
+  app.addEventListener("dragleave", (event) => {
+    if (!event.relatedTarget || !app.contains(event.relatedTarget)) dropBox.classList.remove("over");
   });
   $("drop").addEventListener("dragleave", () => ($("drop").hidden = true));
   app.addEventListener("drop", (event) => {
     if (!event.dataTransfer.files.length) return;
     event.preventDefault();
     $("drop").hidden = true;
+    dropBox.classList.remove("over");
     importFile(event.dataTransfer.files[0]);
   });
   $("save").addEventListener("click", save);
