@@ -1112,13 +1112,55 @@ function syncImportButton() {
 
 function renderFigures() {
   const distance = plan.path ? formatDistance(plan.path.distanceMeters, miles) : null;
-  $("fig-dist").textContent = distance ? distance.value : "–";
+  roll($("fig-dist"), distance ? distance.value : "–");
   $("fig-dist-unit").textContent = distance ? distance.unit : miles ? "miles" : "km";
   const stays = plan.waypoints.reduce((sum, w) => sum + (w.type === "stop" ? w.stayMinutes || 0 : 0), 0);
-  $("fig-time").textContent = plan.path ? formatDuration(plan.path.durationSeconds + stays * 60) : "–";
+  roll($("fig-time"), plan.path ? formatDuration(plan.path.durationSeconds + stays * 60) : "–");
   const stops = stopCount();
-  $("fig-stops").textContent = String(stops);
+  roll($("fig-stops"), String(stops));
   $("fig-stops-unit").textContent = stops === 1 ? "stop" : "stops";
+}
+
+const STILL = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+
+/// A figure that rolls to its new value like a slot machine's reels (the
+/// user, 2026-10-29): each digit a strip of 0–9 twice over, spun from the
+/// digit it showed (or 0) to the new one on the second turn, left to right.
+/// Only when it changes; still for reduced motion. Read aloud as text.
+function roll(node, text) {
+  if (node.dataset.shown === text) return;
+  const before = node.dataset.shown || "";
+  node.dataset.shown = text;
+  if (STILL?.matches || !/\d/.test(text)) {
+    node.textContent = text;
+    return;
+  }
+  node.textContent = "";
+  const spoken = el("span", "visually-hidden", text);
+  const shown = el("span", "rolling");
+  shown.setAttribute("aria-hidden", "true");
+  node.append(spoken, shown);
+  // The old digits, lined up from the right with the new ones.
+  const old = before.padStart(text.length, " ").slice(-text.length);
+  const reels = [];
+  [...text].forEach((ch, i) => {
+    // Not a digit: in a box like a reel's, so it sits on the same line.
+    if (!/\d/.test(ch)) return shown.append(el("span", "slot", ch === " " ? "\u00a0" : ch));
+    const slot = el("span", "slot");
+    const reel = el("span", "reel");
+    reel.innerHTML = "0123456789".repeat(2).split("").map((d) => `<span>${d}</span>`).join("");
+    const from = /\d/.test(old[i]) ? Number(old[i]) : 0;
+    reel.style.transform = `translateY(${-from * 5}%)`;
+    slot.append(reel);
+    shown.append(slot);
+    reels.push([reel, 10 + Number(ch), reels.length]);
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    for (const [reel, to, order] of reels) {
+      reel.style.transitionDelay = `${order * 70}ms`;
+      reel.style.transform = `translateY(${-to * 5}%)`;
+    }
+  }));
 }
 
 function renderRows() {
@@ -2074,8 +2116,8 @@ function openAccount(step = "choose", { saving = true, title } = {}) {
   $("acc-title").textContent = title || (saving ? "Sign in to save your route" : "Keep planning");
   // What an account is for, in a line (the user, 2026-10-29).
   $("acc-sub").textContent = saving
-    ? "It's saved to your account, ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and your group."
-    : "Your routes are saved to your account, ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and your group.";
+    ? "Then it will be ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and live group tracking."
+    : "Then your routes will be ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and live group tracking.";
   const dialog = $("account");
   setStep(step);
   if (!dialog.open) dialog.showModal();

@@ -283,6 +283,12 @@ a { color: var(--green); }
 .bring .linkish { align-self: flex-start; }
 .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 4px; }
 .figures b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+/* The figures roll to a new value, slot-machine style (plan.js roll). */
+.figures b { font-variant-numeric: tabular-nums; }
+.figures b span { font-size: inherit; color: inherit; }
+.slot { display: inline-block; height: 1.1em; overflow: hidden; vertical-align: top; }
+.reel { display: block; transition: transform .75s cubic-bezier(.18, .9, .25, 1); }
+.reel span { display: block; height: 1.1em; line-height: 1.1; }
 .figures span { font-size: 14.5px; color: var(--ink-3); }
 
 /* ── saved ── */
