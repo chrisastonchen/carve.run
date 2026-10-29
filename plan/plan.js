@@ -850,6 +850,9 @@ function setStartMode(mode) {
   startMode = mode;
   $("tab-plan").setAttribute("aria-selected", String(mode === "plan"));
   $("tab-import").setAttribute("aria-selected", String(mode === "import"));
+  $("mode-note").textContent = mode === "import"
+    ? "Already have a route? Paste a link from Google Maps, Ride with GPS or Carve, or open a GPX file."
+    : "Plan a route by searching or clicking on the map.";
   render();
   if (mode === "import") $("link-in").focus();
 }
@@ -872,14 +875,16 @@ function render({ keepTyping = false } = {}) {
   $("undo").disabled = !history.back.length;
   $("redo").disabled = !history.forward.length;
   $("start-over").disabled = !hasAny && !plan.name;
-  // An empty panel is just the ends and a way to bring a route in: the
-  // history buttons and the save footer come with the first place.
+  // The history buttons come with the first place.
   $("history-buttons").hidden = !hasAny && !history.back.length && !history.forward.length;
   // The trip only means something once there's a start.
   $("head-left").hidden = !plan.start;
   $("list-head").hidden = importing || ($("head-left").hidden && $("history-buttons").hidden);
-  $("foot").hidden = !hasAny;
-  $("join").hidden = !!session || hasAny;
+  // The figures, the name and Save are there from the start, Save greyed
+  // until there's a route; "Sign up or log in" stays under them for a guest
+  // (the user, 2026-10-29).
+  $("foot").hidden = importing;
+  $("join").hidden = !!session;
   $("trip").value = plan.trip;
   if (document.activeElement !== $("route-name")) $("route-name").value = plan.name || "";
   renderNotice();
@@ -1913,7 +1918,6 @@ function renderWho() {
   $("sign-in").hidden = signedIn;
   $("who").hidden = !signedIn;
   // "No account until you save" is for guests.
-  $("save-note").hidden = signedIn;
   if (signedIn) $("join").hidden = true;
   if (!signedIn) return;
   $("who-name").textContent = profile?.username || session.user.email?.split("@")[0] || "Account";

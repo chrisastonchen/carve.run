@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=20">
+<link rel="stylesheet" href="/plan/plan.css?v=21">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -101,6 +101,7 @@
             <button type="button" role="tab" id="tab-plan" aria-selected="true" aria-controls="rows">Plan</button>
             <button type="button" role="tab" id="tab-import" aria-selected="false" aria-controls="bring">Import</button>
           </div>
+          <p class="dim mode-note" id="mode-note" aria-live="polite">Plan a route by searching or clicking on the map.</p>
         </div>
         <div class="notice" id="import-notice" hidden>
           <svg class="tick" aria-hidden="true"><use href="#i-check"/></svg>
@@ -140,7 +141,6 @@
         <label for="route-name" class="visually-hidden">Route name</label>
         <input id="route-name" class="field" type="text" maxlength="120" placeholder="Name your drive">
         <button type="button" class="pill green big" id="save" disabled>Save and get the link</button>
-        <p class="dim center small" id="save-note">Free. No account until you save.</p>
       </div>
       <!-- Signed out, with nothing planned yet: a way in (the user, 2026-10-29). -->
       <div class="foot join" id="join" hidden>
@@ -262,6 +262,6 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=24"></script>
+<script type="module" src="/plan/plan.js?v=25"></script>
 </body>
 </html>

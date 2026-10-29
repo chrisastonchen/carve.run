@@ -155,7 +155,8 @@ a { color: var(--green); }
 .view { position: absolute; inset: 0; display: flex; flex-direction: column; }
 .scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 22px 22px 16px; display: flex; flex-direction: column; gap: 14px; }
 .foot { flex: none; padding: 16px 22px 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
-.foot.join { border-top: none; padding: 12px 22px 16px; }
+.foot.join { border-top: none; padding: 0 22px 16px; }
+.foot:not([hidden]) + .foot.join { margin-top: -8px; }
 .foot.join p { margin: 0; font-size: 15px; }
 .textlink { border: 0; padding: 0; background: none; font: inherit; color: var(--green); font-weight: 700; cursor: pointer; }
 .textlink:hover { text-decoration: underline; }
@@ -164,6 +165,7 @@ a { color: var(--green); }
 .seg { display: grid; grid-template-columns: 1fr 1fr; margin-top: 16px; padding: 3px; border-radius: 999px; background: var(--fill); }
 .seg button { height: 38px; border: none; border-radius: 999px; background: none; font: inherit; font-size: 15.5px; font-weight: 700; color: var(--ink-3); cursor: pointer; }
 .seg button:hover { color: var(--ink); }
+.mode-note { margin-top: 12px; font-size: 16px; line-height: 1.4; }
 .seg button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 
 .notice {
