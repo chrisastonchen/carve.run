@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=11">
+<link rel="stylesheet" href="/plan/plan.css?v=13">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -144,9 +144,9 @@
 
     <!-- Saved -->
     <section class="view" id="saved-view" hidden>
-      <button type="button" class="pill grey edit" id="edit"><svg aria-hidden="true"><use href="#i-edit"/></svg>Edit</button>
       <div class="scroll">
         <div class="saved-head">
+          <button type="button" class="pill grey edit" id="edit"><svg aria-hidden="true"><use href="#i-edit"/></svg>Edit</button>
           <span class="ok"><svg aria-hidden="true"><use href="#i-check"/></svg>Saved to your Carve account</span>
           <h1 id="s-name"></h1>
           <p class="dim" id="s-sub"></p>
@@ -175,14 +175,22 @@
           <div class="unit-head"><b>Elevation</b><span class="dim" id="elev-text"></span></div>
           <svg id="elev" viewBox="0 0 372 44" preserveAspectRatio="none" aria-hidden="true"></svg>
         </div>
+        <section class="unit" id="along-unit" hidden>
+          <div class="unit-head"><b>Along the way</b></div>
+          <ol class="along-list" id="along-list"></ol>
+        </section>
         <div class="unit" id="curve-unit" hidden>
           <div class="unit-head"><b>Curves</b><span class="dim" id="curve-text"></span></div>
           <div class="curve-bar" id="curve-bar" role="img"></div>
           <div class="key"><span>Gentle</span><i></i><span>Hairpins</span></div>
         </div>
+        <section class="unit" id="near-unit" hidden>
+          <div class="unit-head"><b>More drives near here</b></div>
+          <ul class="near-cards" id="near-cards"></ul>
+        </section>
       </div>
       <div class="foot quiet">
-        <button type="button" class="linkish grey" id="plan-another">Plan another</button>
+        <button type="button" class="linkish grey" id="plan-another">+ Plan a new route</button>
       </div>
     </section>
   </aside>
@@ -248,6 +256,6 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=15"></script>
+<script type="module" src="/plan/plan.js?v=17"></script>
 </body>
 </html>

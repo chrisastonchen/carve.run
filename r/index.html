@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-route-wait="page">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
@@ -21,20 +21,16 @@
 <meta name="twitter:title" content="A Carve route">
 <meta name="twitter:description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
 <meta name="twitter:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#1D5B3A">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
-<link rel="stylesheet" href="/drives.css?v=a92e6230db">
+<link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
+<link rel="stylesheet" href="/plan/plan.css?v=13">
+<link rel="stylesheet" href="/assets/route-view.css?v=71e49f00d9">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
      route_profile.js or page_parts.py, not this file. -->
 <style>
-  .missing { text-align: center; padding: 48px 0; color: var(--ink-3); }
-  .gmaps {
-    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: 18px;
-    border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink);
-    font: inherit; font-size: 15.5px; font-weight: 600; cursor: pointer;
-  }
-  .gmaps:hover { background: var(--fill); }
   .gmaps-warning {
     width: min(400px, calc(100vw - 32px)); box-sizing: border-box; padding: 24px; border: 0; border-radius: 20px;
     background: #fff; color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.25);
@@ -44,11 +40,11 @@
   .gmaps-warning p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--ink-2); }
   .gmaps-warning .actions { display: flex; gap: 10px; margin-top: 20px; }
   .gmaps-warning .actions > * {
-    flex: 1; min-height: 46px; padding: 0 12px; display: flex; align-items: center; justify-content: center; border-radius: 12px; white-space: nowrap;
-    font: inherit; font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer;
+    flex: 1; min-height: 46px; padding: 0 12px; display: flex; align-items: center; justify-content: center; border-radius: 999px; white-space: nowrap;
+    font: inherit; font-size: 15.5px; font-weight: 700; text-decoration: none; cursor: pointer;
   }
-  #gmaps-cancel { flex: 0 0 auto; padding: 0 20px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
-  #gmaps-open { background: var(--blue); color: #fff; }
+  #gmaps-cancel { flex: 0 0 auto; padding: 0 20px; border: none; background: var(--fill); color: var(--ink); }
+  #gmaps-open { background: var(--green); color: #fff; }
 </style>
 </head>
 <body>
@@ -60,18 +56,72 @@
   <symbol id="carplay" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/><path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/></symbol>
   <symbol id="androidauto" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/></symbol>
 </svg>
-<nav class="nav">
-  <a class="brand" href="/" aria-label="Carve"><img src="/assets/icon-128.png?v=87d1534580" alt="" width="30" height="30"><img class="wordmark" src="/assets/wordmark-light.png?v=87d7b93bbc" alt="Carve" width="300" height="45"></a>
-  <div class="nav-links">
-    <a href="/drives/">Drives</a>
-    <a href="/#carousel">How it works</a>
-    <a class="cta" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716">Get Carve, free</a>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-wordmark" viewBox="0 0 300 45"><path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+  <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M18.44 5.56c-.68 1.17-1.35 2.33-2.03 3.5l-.11-.04c-1.82-.7-3.48-.8-4.42-.79-1.86.02-3.35.46-4.26.82-.08-.15-1.75-3.02-2.02-3.49a1.15 1.15 0 0 0-.14-.19c-.33-.36-.91-.49-1.38-.2-.48.28-.71.94-.39 1.5 1.95 3.37-.1-.21 1.95 3.36.02.03-.5.26-1.39 1.02C2.9 12.18.45 14.77 0 18.99h24c-.12-1.11-.37-2.1-.75-3.07-.74-1.91-1.84-3.29-2.74-4.18a12.1 12.1 0 0 0-2.13-1.69c.66-1.12 1.31-2.26 1.96-3.38.21-.36.19-.8-.01-1.12a1.1 1.1 0 0 0-.85-.53c-.52-.05-.94.31-1.05.54zM18.4 14.02c.39.59.32 1.33-.16 1.65-.48.32-1.19.1-1.58-.49-.39-.59-.32-1.33.16-1.65.47-.32 1.18-.11 1.58.49zM7.21 13.53c.48.32.55 1.06.16 1.65-.4.59-1.1.81-1.59.49-.48-.32-.55-1.06-.16-1.65.4-.6 1.11-.81 1.59-.49z"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 9v4l2.5 2M9 2h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <!-- The app's start and finish marks (Material Icons, Apache 2.0, as android/…/ic_pin_flag*.xml). -->
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6z" fill="currentColor"/></symbol>
+  <symbol id="i-flag-checkered" viewBox="0 0 24 24"><path d="M5,4h2v16H5V4zM7,4h2v2H7V4zM11,4h2v2h-2V4zM15,4h2v2h-2V4zM19,4h2v2h-2V4zM9,6h2v2H9V6zM13,6h2v2h-2V6zM17,6h2v2h-2V6zM7,8h2v2H7V8zM11,8h2v2h-2V8zM15,8h2v2h-2V8zM19,8h2v2h-2V8zM9,10h2v2H9v-2zM13,10h2v2h-2v-2zM17,10h2v2h-2v-2z" fill="currentColor"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" fill="currentColor"/><circle cx="12" cy="9" r="2.6" fill="#fff"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z M14 3v5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 15l1.6-4.2A2 2 0 0 1 7.5 9.5h9a2 2 0 0 1 1.9 1.3L20 15v3h-2.2M6.2 18H4v-3h16M8.5 18h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.3" cy="18" r="1.6" fill="currentColor"/><circle cx="16.7" cy="18" r="1.6" fill="currentColor"/></symbol>
+</svg>
+<header class="bar">
+  <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
+  <nav class="links" aria-label="Site">
+    <a href="/drives/">Explore</a>
+    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/support/">Support</a>
+  </nav>
+  <span class="grow"></span>
+  <a class="pill white wide-only" id="sign-in" href="/plan/#sign-in" hidden>Sign in</a>
+  <div class="who wide-only" id="who" hidden>
+    <button type="button" class="who-btn" id="who-btn" aria-haspopup="menu" aria-expanded="false">
+      <span class="avatar" id="avatar"><svg aria-hidden="true"><use href="#i-car"/></svg></span>
+      <span id="who-name"></span>
+      <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+    </button>
+    <div class="who-menu" id="who-menu" role="menu" hidden>
+      <button type="button" role="menuitem" id="sign-out">Sign out</button>
+    </div>
   </div>
+  <a class="pill white narrow-only" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#i-apple"/></svg>Get the App</a>
+  <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+</header>
+<nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/drives/">Explore</a>
+  <a href="/#pricing">Pricing</a>
+  <a href="/support/">Support</a>
 </nav>
-<figure class="cover" id="cover" style="margin:0" hidden></figure>
-<main class="col" id="route">
-  <p class="missing" id="missing">Loading the route…</p>
-</main>
+<div class="rv">
+<div class="rv-map" id="rv-map" role="region" aria-label="Map of the route"><div class="rv-still"></div></div>
+<aside class="panel" aria-label="The route">
+<div class="scroll">
+<p class="missing" id="missing">Loading the route…</p>
+<nav class="rv-links" aria-label="More">
+  <a href="/drives/">Drives</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+</nav>
+</div>
+<div class="foot quiet"><a class="linkish grey" href="/plan/">+ Plan a new route</a></div>
+</aside>
+<div class="legend" id="rv-legend" hidden aria-label="Map key">
+  <span><i class="k-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp">1</i>Waypoint</span><span><i class="k-end"><svg aria-hidden="true"><use href="#i-flag-checkered"/></svg></i>Destination</span>
+</div>
+</div>
+<div class="printout" id="printout" aria-hidden="true"></div>
 
 <dialog id="gmaps-warning" class="gmaps-warning" aria-labelledby="gmaps-title">
   <h2 id="gmaps-title">Your route may change</h2>
@@ -251,7 +301,7 @@ const RouteProfile = (() => {
 </script>
 <script>
   const PLATFORMS = `<div class="platforms"><a href="https://apps.apple.com/app/carve-route-planner/id6808087716" title="iPhone and CarPlay" aria-label="Carve for iPhone and CarPlay on the App Store"><svg aria-hidden="true"><use href="#apple"/></svg><svg aria-hidden="true"><use href="#carplay"/></svg></a><span class="psep" aria-hidden="true"></span><a href="https://carve.run/android/" title="Android and Android Auto" aria-label="Carve for Android and Android Auto"><svg aria-hidden="true"><use href="#android"/></svg><svg aria-hidden="true"><use href="#androidauto"/></svg></a></div>`;
-  const APP_SECTION = `  <section class="sect">
+  const APP_SECTION = `  <section class="sect" id="rv-app">
     <h2>What you get in the app</h2>
     <div class="feats"><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 19c4 0 3-7 7-7s3-7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5" cy="19" r="2.2" fill="currentColor"/><circle cx="19" cy="5" r="2.2" fill="currentColor"/></svg></span><div><b>Turn by turn, on this road</b><span class="d">Spoken directions along the exact route. Carve never reroutes you onto a faster one.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><div><b>Preview it in 3D</b><span class="d">Fly the whole drive over satellite and terrain before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 9a13 13 0 0 1 18 0M6.5 12.5a8 8 0 0 1 11 0M10 16a3 3 0 0 1 4 0M3 3l18 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Drive it with no signal<span class=apex>APEX</span></b><span class="d">Download the map and every turn before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M14 18.5c.6-2.2 2-3.3 3.5-3.3s2.9 1.1 3.5 3.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><b>Live Group Tracking<span class=apex>APEX</span></b><span class="d">Everyone on the route, on the map, by name.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 17a4.5 4.5 0 0 1-.6-9 5.5 5.5 0 0 1 10.6 1.6A3.7 3.7 0 0 1 17 17z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><path d="M9 20l1-1.6M13 20l1-1.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg></span><div><b>Road conditions<span class=apex>APEX</span></b><span class="d">Wet or dry, ice, fog and wind along the road before you go.</span></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.1"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg></span><div><b>Record your drives<span class=apex>APEX</span></b><span class="d">Record a drive and turn it into a route to drive again or share.</span></div></div></div>
     <div class="get"><p>Free on iPhone and Android. CarPlay and Android Auto come with <a href="/#pricing" style="color:inherit">Apex</a>.</p><div class="stores"><a class="store" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a><a class="store" href="https://carve.run/android/"><svg viewBox="0 0 22 24"><use href="#play"/></svg><span><small>Early access on</small><b>Google Play</b></span></a></div></div>
@@ -464,32 +514,35 @@ const RouteProfile = (() => {
   // MARK: - The page
 
   function render(info) {
-    const main = document.getElementById("route");
-    main.innerHTML = "";
+    // Into the route's card (page_parts.route_open), before its links.
+    const card = document.querySelector(".rv .scroll");
+    const links = card.querySelector(".rv-links");
+    const add = (node) => { if (node) card.insertBefore(node, links); };
+    document.getElementById("missing").remove();
     const name = info.name || "A Carve route";
     document.title = name + " — a drive on Carve";
 
-    // The top: its photo across the page, as a drive's page has it.
-    const hasPhoto = !!(info.photo && /^https:\/\//.test(info.photo.url || ""));
-    const cover = document.getElementById("cover");
-    if (hasPhoto) {
+    // Its photo, the card's first thing, as a drive's page has it.
+    if (info.photo && /^https:\/\//.test(info.photo.url || "")) {
       const img = el("img", { src: info.photo.url, alt: name, fetchpriority: "high" });
-      img.addEventListener("error", () => cover.remove());
       const credit = info.photo.credit
         ? el("figcaption", {}, "Photo: ", /^https:\/\//.test(info.photo.creditURL || "")
             ? el("a", { href: info.photo.creditURL, rel: "noopener" }, info.photo.credit) : info.photo.credit)
         : null;
-      cover.append(img, credit);
-      cover.hidden = false;
+      const figure = el("figure", { class: "rv-photo" }, img, credit);
+      img.addEventListener("error", () => figure.remove());
+      add(figure);
     }
 
     const place = info.place ? (info.place.long || info.place.short) : null;
-    main.append(el("p", { class: "crumbs" }, el("a", { href: "/drives/" }, "Drives"),
-      place ? [" ", el("span", { "aria-hidden": "true" }, "›"), " ", place] : null));
-    main.append(el("h1", {}, name));
     const roads = (info.roads || []).slice(0, 3).join(", ");
     const by = info.author ? "A drive by @" + info.author : null;
-    if (roads || by) main.append(el("p", { class: "sub" }, [roads, by].filter(Boolean).join(" · ")));
+    const edit = el("a", { class: "pill grey edit", id: "rv-edit", href: "/plan/", hidden: "" }, icon("i-edit"), "Edit");
+    add(el("div", { class: "rv-head" }, edit,
+      el("p", { class: "crumbs" }, el("a", { href: "/drives/" }, "Drives"),
+        place ? [" ", el("span", { "aria-hidden": "true" }, "›"), " ", place] : null),
+      el("h1", {}, name),
+      roads || by ? el("p", { class: "sub" }, [roads, by].filter(Boolean).join(" · ")) : null));
 
     // The facts in one line, as on a drive's page.
     const stat = (kind) => (info.stats || []).find((s) => s && s.kind === kind);
@@ -510,47 +563,83 @@ const RouteProfile = (() => {
       if (i) row.append(el("span", { class: "sep", "aria-hidden": "true" }));
       row.append(f);
     });
-    main.append(row);
+    add(row);
 
-    if (token) {
-      main.append(el("div", { class: "route-map" },
-        el("img", { src: "/map/" + encodeURIComponent(token), width: 1200, height: 630, alt: "Map of " + name })));
-    }
-
-    // One way into the app: a code to scan on a computer, a button on a phone.
-    const link = location.origin + location.pathname + location.search;
+    // Into the app: the planner's scan unit and link on a computer, the
+    // store's button on a phone.
+    const link = token ? "https://carve.run/" + token : location.href;
     const code = qrSVG(link);
-    if (code) {
-      main.append(el("div", { class: "scan" }, code, el("div", {},
-        el("b", {}, "Scan to drive it in Carve"),
-        el("p", {}, "Point your phone's camera here to open " + name + " in the app, ready to drive turn by turn. Free on iPhone and Android."),
-        el("p", { class: "on" }, "iPhone · Android · CarPlay · Android Auto"))));
-    }
+    add(el("div", { class: "scan" },
+      el("div", { class: "scan-top" },
+        el("div", { class: "qr", id: "rv-qr", role: "img", "aria-label": "QR code for " + link }, code),
+        el("div", {}, el("b", {}, "Scan to drive it in Carve"), el("span", { class: "dim" }, "Point a phone's camera here. It opens ready to drive."))),
+      el("div", { class: "two" },
+        el("button", { type: "button", class: "pill white", id: "rv-download" }, icon("i-download"), "Download"),
+        el("button", { type: "button", class: "pill white", id: "rv-print" }, icon("i-print"), "Print directions"))));
+    add(el("div", { class: "paste link" },
+      el("input", { id: "rv-link", readonly: "", "aria-label": "The route's link", value: link.replace("https://", "") }),
+      el("button", { type: "button", class: "pill green", id: "rv-copy" }, "Copy link")));
     const button = el("a", { href: isAndroid ? ANDROID_URL : APP_STORE_URL }, icon(isAndroid ? "android" : "apple"), "Drive it in Carve, free");
     button.addEventListener("click", openInApp);
-    main.append(el("div", { class: "go" }, button,
+    add(el("div", { class: "go" }, button,
       el("p", {}, "Opens this route in the app, or where to get it."),
       markup(PLATFORMS)));
 
     if (info.blurb) {
-      main.append(el("section", { class: "sect" }, el("h2", {}, "The drive"),
+      add(el("section", { class: "sect" }, el("h2", {}, "The drive"),
         el("div", { class: "prose" }, String(info.blurb).split(/\n\s*\n/).map((t) => el("p", {}, t)))));
     }
 
-    // Along the way: the start, its stops, the end; then its elevation and curves.
+    // Along the way: the start, its stops, the end, in the map's marks;
+    // then its elevation and curves.
     const start = "Start", end = info.roundTrip ? "Back to the start" : "End";
-    const points = [[start, "start"]].concat((info.stops || []).map((s, i) => [s.name, String(i + 1)])).concat([[end, "end"]]);
-    const along = el("ol", { class: "along" }, points.map(([what, kind]) => el("li", {},
-      kind === "start" || kind === "end"
-        ? markup(`<span class="dot ${kind}"><svg><use href="#flag"/></svg></span>`)[0]
-        : el("span", { class: "dot" }, kind),
-      el("div", { class: "what" }, el("strong", {}, what)))));
-    main.append(el("section", { class: "sect" }, el("h2", {}, "Along the way"), along,
+    const flag = (kind) => markup(`<span class="badge ${kind}"><svg aria-hidden="true"><use href="#${kind === "start" ? "i-flag" : "i-flag-checkered"}"/></svg></span>`)[0];
+    const along = el("ol", { class: "along" },
+      el("li", {}, flag("start"), el("div", { class: "what" }, el("strong", {}, start))),
+      (info.stops || []).map((s, i) => el("li", { "data-place": s.name }, el("span", { class: "badge stop" }, stopLetter(i + 1)),
+        el("div", { class: "what" }, el("strong", {}, s.name)))),
+      el("li", {}, info.roundTrip ? flag("start") : flag("dest"), el("div", { class: "what" }, el("strong", {}, end))));
+    add(el("section", { class: "sect" }, el("h2", {}, "Along the way"), along,
       units(info, start, info.roundTrip ? "Start" : end), googleMapsButton(info.googleMaps)));
 
-    main.append(markup(APP_SECTION)[0]);
-    main.append(el("p", { class: "sources" },
+    const nearby = el("section", { class: "sect", hidden: "" }, el("h2", {}, "More drives near here"));
+    add(nearby);
+    add(markup(APP_SECTION)[0]);
+    add(el("p", { class: "rv-sources" },
       "Distance, time, elevation, curves and intensity are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
+    return nearby;
+  }
+
+  // MARK: - Drives near it
+
+  /// Up to four of Carve's drives within about 250 km of where this one
+  /// starts, nearest first (drives/near.json, build_area_pages.py).
+  async function drivesNear(section, at) {
+    if (!section || !at) return;
+    try {
+      const response = await fetch("/drives/near.json", { cache: "default" });
+      if (!response.ok) return;
+      const all = await response.json();
+      const r = Math.PI / 180;
+      const km = (d) => {
+        const h = Math.sin((d.a - at.lat) * r / 2) ** 2 + Math.cos(at.lat * r) * Math.cos(d.a * r) * Math.sin((d.o - at.lon) * r / 2) ** 2;
+        return 2 * 6371 * Math.asin(Math.sqrt(h));
+      };
+      const near = all.map((d) => [km(d), d]).filter(([k]) => k < 250).sort((x, y) => x[0] - y[0]).slice(0, 4);
+      if (!near.length) return;
+      const band = (b) => (typeof b === "number" ? INTENSITY.find((x) => b < x.below) : null);
+      section.append(el("ul", { class: "cards nearby" }, near.map(([, d]) => {
+        const level = band(d.b);
+        const mark = level ? markup(`<span class="mark" style="background:${level.colour}"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="${level.path}" fill="none" stroke="#fff" stroke-width="${level.weight + 0.6}" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`)[0] : null;
+        return el("li", {}, el("a", { href: "/drives/" + d.s + "/" },
+          el("img", { src: d.c, width: 1200, height: 750, loading: "lazy", alt: "" }),
+          el("span", { class: "n" }, d.n),
+          el("span", { class: "m" }, mark, (level ? level.title + " · " : "") + d.m + " mi")));
+      })));
+      section.hidden = false;
+    } catch (e) {
+      // Nothing near, then.
+    }
   }
 
   // MARK: - Opening the app
@@ -836,6 +925,7 @@ const RouteProfile = (() => {
       if (!response.ok) return null;
       const row = (await response.json())[0];
       if (!row) return null;
+      fetchedRow = row;
       const p = row.payload || {};
       const points = Array.isArray(p.pathGeometry) ? p.pathGeometry.map((q) => [q.latitude, q.longitude]) : [];
       const heights = ((p.elevationProfile || {}).metersAboveSea || []).filter((h) => typeof h === "number");
@@ -888,6 +978,21 @@ const RouteProfile = (() => {
     }
   }
 
+  // The map, the code's download, print and Edit are route-view.js's: it
+  // takes the token, and the row if this page already fetched it.
+  let fetchedRow = null;
+  const mapFrame = document.getElementById("rv-map");
+  if (token && mapFrame) {
+    mapFrame.dataset.token = token;
+    mapFrame.dataset.wait = "1";
+    const still = mapFrame.querySelector(".rv-still");
+    if (still) still.append(el("img", { src: "/map/" + encodeURIComponent(token), width: 1200, height: 630, alt: "Map of the route" }));
+  }
+  function ready() {
+    if (fetchedRow) window.carveRouteRow = fetchedRow;
+    window.dispatchEvent(new Event("carve:route"));
+  }
+
   (async function () {
     const page = await drivePage();
     if (page) { location.replace(page); return; }
@@ -900,23 +1005,22 @@ const RouteProfile = (() => {
     }
     info = info || (payload ? await fromBackend() : await fromBackendWaiting()) || fromPayload();
     if (info) {
-      render(info);
+      const nearby = render(info);
+      // Where it starts comes with the row route-view.js fetches.
+      window.addEventListener("carve:row", (event) => {
+        const row = event.detail || {};
+        if (Number.isFinite(row.start_lat) && Number.isFinite(row.start_lon)) drivesNear(nearby, { lat: row.start_lat, lon: row.start_lon });
+      }, { once: true });
+      ready();
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";
     }
   })();
 </script>
-<footer>
-  <span>Carve · for the drives you take for their own sake</span>
-  <div class="links">
-    <a href="/drives/">Drives</a>
-    <a href="/about/">About</a>
-    <a href="/privacy/">Privacy</a>
-    <a href="/terms/">Terms</a>
-    <a href="/support/">Support</a>
-  </div>
-</footer>
+<script src="/plan/vendor/qrcode.js?v=144" defer></script>
+<script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
+<script type="module" src="/assets/route-view.js?v=d09b638aec"></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;

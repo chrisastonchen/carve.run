@@ -82,6 +82,7 @@ const store = {
 const DRAFT_KEY = "carve.plan.draft";
 const SESSION_KEY = "carve.plan.session";
 const PENDING_SAVE_KEY = "carve.plan.pending-save";
+const PENDING_EDIT_KEY = "carve.plan.pending-edit";
 const VIEW_KEY = "carve.plan.view";
 
 // ── state ────────────────────────────────────────────────────────────
@@ -1366,6 +1367,39 @@ async function importCarve(token) {
   fitRoute();
 }
 
+/// Edit from a route's page (/plan/?edit=<token>): the owner's route, to
+/// change and save in place; anyone else's, a copy to make their own.
+async function editShared(token) {
+  if (!/^[A-Za-z0-9]{10}$/.test(token)) return;
+  busy(true, "Opening your route…");
+  try {
+    const rows = await rest("/rest/v1/rpc/redeem_share_token", { method: "POST", body: { share_token: token } });
+    const row = rows?.[0];
+    if (!row) throw new Failure("That route couldn't be found.");
+    const mine = session && String(row.owner_id).toLowerCase() === String(session.user.id).toLowerCase();
+    await importCarve(token);
+    if (mine) {
+      const payload = row.payload || {};
+      plan.id = String(payload.id || row.id).toUpperCase();
+      plan.token = token;
+      plan.createdAt = payload.createdAt || null;
+      plan.ownerId = session.user.id;
+      plan.imported = null;
+      plan.kept = {
+        ...(payload.photo ? { photo: payload.photo } : {}),
+        ...(payload.author ? { author: payload.author } : {}),
+      };
+      changed();
+    } else {
+      toast("That's someone else's route. Saving makes a copy of your own.");
+    }
+  } catch (failure) {
+    toast(failure.message, true);
+  } finally {
+    busy(false);
+  }
+}
+
 async function importFile(file) {
   if (!file) return;
   if (file.size > 50 * 1024 * 1024) return toast("That file is too big to be a drive.", true);
@@ -1522,6 +1556,59 @@ function showSaved() {
   drawQR();
   renderSavedFacts();
   renderBlurb(true);
+  renderAlong();
+  renderNearby();
+}
+
+/// The start, the stops and waypoints, the end, with the map's marks.
+function renderAlong() {
+  const list = $("along-list");
+  list.innerHTML = "";
+  const labels = markerLabels(plan.waypoints);
+  const row = (badge, name) => {
+    const li = el("li");
+    li.append(badge, el("span", "", name));
+    list.append(li);
+  };
+  if (plan.start) row(markBadge("start"), plan.start.label || "Start");
+  plan.waypoints.forEach((w, i) => row(el("span", `badge ${w.type === "stop" ? "stop" : "wp"}`, labels[i]), w.label || (w.type === "stop" ? `Stop ${labels[i]}` : w.road || `Waypoint ${labels[i]}`)));
+  if (loops()) row(markBadge("dest"), "Back to the start");
+  else if (plan.end) row(markBadge("dest"), plan.end.label || "Destination");
+  $("along-unit").hidden = list.childElementCount < 2;
+}
+
+/// Up to four of Carve's drives within about 250 km of the start
+/// (drives/near.json, as a shared route's page lists them).
+async function renderNearby() {
+  const box = $("near-cards");
+  box.innerHTML = "";
+  $("near-unit").hidden = true;
+  if (!plan.start) return;
+  try {
+    const response = await fetch("/drives/near.json", { cache: "default" });
+    if (!response.ok) return;
+    const all = await response.json();
+    const near = all
+      .map((d) => [meters({ lat: d.a, lon: d.o }, plan.start), d])
+      .filter(([m]) => m < 250000)
+      .sort((x, y) => x[0] - y[0])
+      .slice(0, 4);
+    for (const [, d] of near) {
+      const a = el("a");
+      a.href = `/drives/${d.s}/`;
+      const img = el("img");
+      img.src = d.c;
+      img.alt = "";
+      img.loading = "lazy";
+      a.append(img, el("span", "n", d.n), el("span", "m", `${d.m} mi`));
+      const li = el("li");
+      li.append(a);
+      box.append(li);
+    }
+    $("near-unit").hidden = !near.length;
+  } catch {
+    // Nothing near, then.
+  }
 }
 
 function renderSavedFacts() {
@@ -1690,9 +1777,9 @@ let emailForCode = "";
 /// Sign-in: to save the drive, or (`saving: false`) to keep planning
 /// once a guest's share runs out.
 let saveAfterSignIn = true;
-function openAccount(step = "choose", { saving = true } = {}) {
+function openAccount(step = "choose", { saving = true, title } = {}) {
   saveAfterSignIn = saving;
-  $("acc-title").textContent = saving ? "Save your drive" : "Keep planning";
+  $("acc-title").textContent = title || (saving ? "Save your drive" : "Keep planning");
   const dialog = $("account");
   setStep(step);
   if (!dialog.open) dialog.showModal();
@@ -1724,6 +1811,11 @@ async function afterSignIn() {
   const found = await loadProfile().catch(() => null);
   if (!found) return setStep("username");
   $("account").close();
+  const pendingEdit = store.get(PENDING_EDIT_KEY);
+  if (pendingEdit) {
+    store.remove(PENDING_EDIT_KEY);
+    return editShared(pendingEdit);
+  }
   if (saveAfterSignIn) await save();
 }
 
@@ -1975,10 +2067,27 @@ async function start() {
   }
   if (session) {
     await loadProfile().catch(() => null);
-    if (cameBack && store.get(PENDING_SAVE_KEY)) {
+    const pendingEdit = store.get(PENDING_EDIT_KEY);
+    if (cameBack && pendingEdit) {
+      store.remove(PENDING_EDIT_KEY);
+      if (profile) await editShared(pendingEdit);
+    } else if (cameBack && store.get(PENDING_SAVE_KEY)) {
       if (!profile) openAccount("username");
       else save();
     }
+  }
+  // From a route's page: its owner's Edit, or the bar's Sign in.
+  const editing = new URLSearchParams(location.search).get("edit");
+  if (editing) {
+    try { window.history.replaceState(null, "", "/plan/"); } catch {}
+    if (session) await editShared(editing);
+    else {
+      store.set(PENDING_EDIT_KEY, editing);
+      openAccount("choose", { saving: false, title: "Sign in to edit" });
+    }
+  } else if (location.hash === "#sign-in") {
+    try { window.history.replaceState(null, "", "/plan/"); } catch {}
+    if (!session) openAccount("choose", { saving: false, title: "Sign in" });
   }
   if (!storageWorks) toast("This browser isn't keeping data, so a reload starts the route over.");
 }

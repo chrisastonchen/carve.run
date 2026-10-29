@@ -272,9 +272,9 @@ a { color: var(--green); }
 .figures span { font-size: 14.5px; color: var(--ink-3); }
 
 /* ── saved ── */
-.edit { position: absolute; right: 18px; top: 18px; z-index: 2; height: 40px; font-size: 15px; padding: 0 16px 0 12px; }
+.edit { position: absolute; right: 0; top: 0; z-index: 2; height: 40px; font-size: 15px; padding: 0 16px 0 12px; }
 .edit svg { width: 15px; height: 15px; }
-.saved-head { padding-right: 84px; }
+.saved-head { position: relative; padding-right: 84px; }
 .ok { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #1D7A3E; }
 .ok svg { width: 14px; height: 14px; color: #1D7A3E; }
 .saved-head h1 { margin-top: 6px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
@@ -303,6 +303,17 @@ a { color: var(--green); }
 @keyframes shim { from { background-position: 100% 0; } to { background-position: -100% 0; } }
 @media (prefers-reduced-motion: reduce) { .shimmer i { animation: none; } }
 #elev { display: block; width: 100%; height: 44px; margin-top: 6px; }
+/* The saved route's places and the drives near it, as a route's page has them. */
+.along-list { list-style: none; margin: 8px 0 0; padding: 0; }
+.along-list li { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 16px; font-weight: 600; }
+.along-list li:last-child { border-bottom: 0; }
+.along-list .badge { width: 24px; height: 24px; }
+.near-cards { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+.near-cards a { display: block; text-decoration: none; color: inherit; }
+.near-cards img { width: 100%; aspect-ratio: 1.6 / 1; object-fit: cover; border-radius: 14px; background: var(--fill); display: block; }
+.near-cards .n { display: block; font-weight: 700; font-size: 15px; margin-top: 7px; line-height: 1.25; }
+.near-cards .m { display: block; color: var(--ink-3); font-size: 13px; margin-top: 2px; }
+.near-cards a:hover .n { color: var(--green); }
 .curve-bar { margin-top: 8px; height: 12px; border-radius: 6px; }
 .key { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #6E6E73; }
 .key i { flex: 0 0 60px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }

@@ -99,6 +99,8 @@ export function routePayload(plan, now = appleDate()) {
   const loops = plan.trip === "roundTrip" || plan.trip === "outAndBack";
   const end = loops ? plan.start : plan.end;
   const payload = {
+    // What the planner doesn't make but a route it edits had: its photo, its maker.
+    ...(plan.kept && typeof plan.kept === "object" ? plan.kept : {}),
     id: plan.id,
     name: clip(plan.name, MOST_NAME_CHARACTERS) || "Untitled drive",
     start: coordinate(plan.start),
