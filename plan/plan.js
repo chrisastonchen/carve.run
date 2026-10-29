@@ -19,7 +19,7 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js";
-import { level, lineOf } from "./good-roads.js?v=2";
+import { level, lineOf, roadPoints, wholeRoad } from "./good-roads.js?v=3";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -634,33 +634,60 @@ function hoverRoad(event) {
   tag.hidden = false;
 }
 
-/// The road's card, beside the click menu: its picture, place, how
-/// twisty, length, time and climb, and its page.
-function showRoadPeek(road, menu) {
-  const peek = $("road-peek");
+/// The road, as the click menu's header: its picture, name, how twisty,
+/// length and time, and its page.
+function roadHeader(road) {
+  const head = el("div", "road-head");
   const l = level(road.b);
   const length = Number.isFinite(road.m) ? formatDistance(road.m * 1609.344, miles) : null;
-  const figures = [
-    length ? `<b>${length.value}</b> ${length.unit}` : "",
-    Number.isFinite(road.min) ? `<b>${formatDuration(road.min * 60)}</b>` : "",
-    Number.isFinite(road.c) && road.c > 0 ? `<b>${Math.round(miles ? road.c : road.c * 0.3048).toLocaleString()}</b> ${miles ? "ft" : "m"} climb` : "",
+  const facts = [
+    l ? `<span class="lvl" style="color:${l.colour}">${l.title}</span>` : "",
+    length ? `${length.value} ${length.unit}` : "",
+    Number.isFinite(road.min) ? formatDuration(road.min * 60) : "",
   ].filter(Boolean).map((f) => `<span class="fig">${f}</span>`).join("");
-  peek.innerHTML = `
+  head.innerHTML = `
     ${road.i ? `<img src="${escapeHTML(road.i)}" alt="">` : ""}
-    <div class="rcd-body">
-      <h3>${escapeHTML(road.n)}</h3>
-      ${road.p ? `<p class="dim">${escapeHTML(road.p)}</p>` : ""}
-      <div class="rcd-facts">${l ? `<span class="chip" style="background:${l.colour}">${twistMark(road, 13).replace('class="twist"', 'class="twist bare"')}${l.title}</span>` : ""}<div class="rcd-figs">${figures}</div></div>
-      <a class="rcd-more" href="/drives/${encodeURIComponent(road.s)}/" target="_blank" rel="noopener">About this road</a>
+    <div class="rh-body">
+      <div class="rh-name">${twistMark(road, 13)}<b>${escapeHTML(road.n)}</b></div>
+      <div class="rh-facts">${facts}</div>
+      <a href="/drives/${encodeURIComponent(road.s)}/" target="_blank" rel="noopener">About this road →</a>
     </div>`;
-  const box = map.getContainer().getBoundingClientRect();
-  const left = parseFloat(menu.style.left);
-  const top = parseFloat(menu.style.top);
-  const width = 290;
-  const right = left + menu.offsetWidth + 10;
-  peek.style.left = `${right + width <= box.width - 8 ? right : Math.max(8, left - width - 10)}px`;
-  peek.style.top = `${Math.max(12, Math.min(top, box.height - 380))}px`;
-  peek.hidden = false;
+  return head;
+}
+
+/// The plan's points in order, as [lon, lat]: start, waypoints, end (the
+/// start again on a loop).
+function chainPoints() {
+  const points = [plan.start, ...plan.waypoints];
+  points.push(loops() ? plan.start : plan.end);
+  return points.filter(Boolean).map((p) => [p.lon, p.lat]);
+}
+
+const routePace = () => (plan.path?.durationSeconds > 0 ? plan.path.distanceMeters / plan.path.durationSeconds : NaN);
+
+/// "Drive the whole road": in where it adds least, from the nearer end;
+/// its first end named for the road, points along it to keep the router
+/// on it, its far end by the catalog's name (the app's PlanRoads.points).
+/// With no route yet, it is the route: its ends the start and the end.
+function driveWholeRoad(road) {
+  const placed = wholeRoad(road, chainPoints(), routePace());
+  const points = roadPoints(placed);
+  const spot = (p) => ({ id: newUUID(() => crypto.randomUUID()), lat: round(p.at[1]), lon: round(p.at[0]), label: p.label ? clip(p.label, MOST_LABEL_CHARACTERS) : null });
+  const fresh = !plan.start && !plan.end;
+  const added = fresh ? points.slice(1, -1) : points;
+  if (plan.waypoints.length + added.length > MAX_WAYPOINTS) {
+    return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
+  }
+  edit(() => {
+    if (fresh) {
+      plan.start = spot(points[0]);
+      if (!loops()) plan.end = spot(points[points.length - 1]);
+    }
+    const at = fresh || !plan.start ? plan.waypoints.length : Math.min(placed.index, plan.waypoints.length);
+    plan.waypoints.splice(at, 0, ...added.map((p) => ({ ...spot(p), type: "marker" })));
+  });
+  const length = Number.isFinite(road.m) ? formatDistance(road.m * 1609.344, miles) : null;
+  toast(`Added ${road.n}${length ? `: +${length.value} ${length.unit}, about ${formatDuration(fresh ? placed.roadSeconds : placed.seconds)}` : ""}.`);
 }
 
 /// Straight lines between the points while the road is on its way.
@@ -776,52 +803,60 @@ function onMapClick(event) {
   const stops = stopCount();
   const nextStop = markerLabels([...plan.waypoints.filter((w) => w.type === "stop"), { type: "stop" }]).pop();
   const nextWaypoint = String(plan.waypoints.length - stops + 1);
+  // Always in this order; the likeliest lit (the user, 2026-10-29).
   const choices = [
     { key: "start", label: "Start here", icon: `<span class="badge start">${MARKS.start}</span>` },
-    { key: "stop", label: "Add a stop", icon: `<span class="badge stop">${nextStop}</span>` },
-    { key: "wp", label: "Add a waypoint", icon: `<span class="badge wp">${nextWaypoint}</span>` },
+    { key: "wp", label: "Add a waypoint here", icon: `<span class="badge wp">${nextWaypoint}</span>` },
+    { key: "stop", label: "Add a stop here", icon: `<span class="badge stop">${nextStop}</span>` },
   ];
   if (!loops()) choices.push({ key: "end", label: "End here", icon: `<span class="badge dest">${MARKS.dest}</span>` });
   const likeliest = !plan.start ? "start" : !plan.end && !loops() ? "end" : "wp";
-  choices.sort((a, b) => (a.key === likeliest ? -1 : b.key === likeliest ? 1 : 0));
   const menu = $("click-menu");
   menu.innerHTML = "";
-  choices.forEach((choice, i) => {
+  const item = (html, onPick, className = "") => {
     const button = document.createElement("button");
     button.type = "button";
     button.setAttribute("role", "menuitem");
-    button.innerHTML = `${choice.icon}<span>${choice.label}</span>`;
-    if (i === 0) button.classList.add("on");
+    if (className) button.className = className;
+    button.innerHTML = html;
     button.addEventListener("click", () => {
       closeClickMenu();
-      placeAt(choice.key, menuAt);
+      onPick();
     });
     menu.append(button);
-  });
-  const cancel = document.createElement("button");
-  cancel.type = "button";
-  cancel.className = "cancel";
-  cancel.setAttribute("role", "menuitem");
-  cancel.textContent = "Cancel";
-  cancel.addEventListener("click", closeClickMenu);
-  menu.append(cancel);
+    return button;
+  };
+  // On one of Carve's drives: the road first, then what to do here.
   const point = event.point;
-  const box = map.getContainer().getBoundingClientRect();
-  menu.style.left = `${Math.min(point.x + 18, box.width - 240)}px`;
-  menu.style.top = `${Math.max(12, Math.min(point.y - 110, box.height - 290))}px`;
-  menu.hidden = false;
-  // On one of Carve's drives: its card beside the menu.
   const road = roadAt(point);
-  if (road) showRoadPeek(road, menu);
+  menu.classList.toggle("with-road", !!road);
+  if (road) menu.append(roadHeader(road));
+  let lit = null;
+  for (const choice of choices) {
+    const button = item(`${choice.icon}<span>${choice.label}</span>`, () => placeAt(choice.key, menuAt));
+    if (choice.key === likeliest) (lit = button).classList.add("on");
+  }
+  if (road) {
+    const whole = wholeRoad(road, chainPoints(), routePace());
+    const length = Number.isFinite(road.m) ? formatDistance(road.m * 1609.344, miles) : null;
+    const time = chainPoints().length ? `adds about ${formatDuration(whole.seconds)}` : `about ${formatDuration(whole.roadSeconds)}`;
+    item(`<span class="badge whole"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20C5 13 19 15 19 8V4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3.2 3"/></svg></span><span class="two"><span>Drive the whole road</span><small>${length ? `${length.value} ${length.unit} · ` : ""}${time}</small></span>`, () => driveWholeRoad(road), "whole");
+  }
+  item("Cancel", () => {}, "cancel");
+  const box = map.getContainer().getBoundingClientRect();
+  menu.hidden = false;
+  const width = menu.offsetWidth, height = menu.offsetHeight;
+  // Beside the spot, kept on the map.
+  menu.style.left = `${point.x + 18 + width <= box.width - 8 ? point.x + 18 : Math.max(8, point.x - 18 - width)}px`;
+  menu.style.top = `${Math.max(12, Math.min(point.y - (road ? 160 : 110), box.height - height - 12))}px`;
   $("road-hover").hidden = true;
   tempPin?.remove();
   tempPin = new maplibregl.Marker({ element: pinElement("temp", "") }).setLngLat([lng, lat]).addTo(map);
-  menu.querySelector("button").focus();
+  (lit || menu.querySelector("button")).focus();
 }
 
 function closeClickMenu() {
   $("click-menu").hidden = true;
-  $("road-peek").hidden = true;
   tempPin?.remove();
   tempPin = null;
 }
