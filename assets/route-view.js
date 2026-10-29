@@ -9,10 +9,10 @@
 // and the apps redeem it; a page without one (no token, no network, no
 // WebGL) keeps its picture of the road and still reads.
 import { markerLabels, turnKind, formatDistance, formatDuration, usesMiles } from "/plan/route-wire.js";
+import { session, signedIn } from "/assets/site-bar.js";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
-const SESSION_KEY = "carve.plan.session";
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const PANEL_GAP = 30;
 
@@ -23,83 +23,6 @@ const PHONE = "(max-width: 699px), (max-height: 560px)";
 const phone = () => window.matchMedia(PHONE).matches;
 const escapeHTML = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
-function readStore(key) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
-
-// ── the bar: the phone's menu, Get the App, the account ──────────────
-
-const session = readStore(SESSION_KEY);
-const signedIn = !!session?.user?.id;
-
-function wireBar() {
-  const button = $("menu-btn");
-  const sheet = $("sheet");
-  if (button && sheet) {
-    button.addEventListener("click", () => {
-      const open = sheet.hidden;
-      sheet.hidden = !open;
-      button.setAttribute("aria-expanded", String(open));
-      if (open) sheet.querySelector("a")?.focus();
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape" || sheet.hidden) return;
-      sheet.hidden = true;
-      button.setAttribute("aria-expanded", "false");
-      button.focus();
-    });
-  }
-  if (/android/i.test(navigator.userAgent || "")) {
-    document.querySelectorAll("[data-get-app]").forEach((a) => (a.href = "/android/"));
-    document.querySelectorAll("[data-get-icon]").forEach((u) => u.setAttribute("href", "#i-android"));
-  }
-  const signIn = $("sign-in");
-  const who = $("who");
-  if (!signedIn) {
-    if (signIn) signIn.hidden = false;
-    return;
-  }
-  if (who) who.hidden = false;
-  $("who-name").textContent = session.user.email ? session.user.email.split("@")[0] : "Account";
-  $("who-btn")?.addEventListener("click", () => {
-    const menu = $("who-menu");
-    menu.hidden = !menu.hidden;
-    $("who-btn").setAttribute("aria-expanded", String(!menu.hidden));
-  });
-  $("sign-out")?.addEventListener("click", () => {
-    try { localStorage.removeItem(SESSION_KEY); } catch {}
-    location.reload();
-  });
-  loadProfile();
-}
-
-/// The planner's account, as the planner shows it: username and picture.
-async function loadProfile() {
-  if (!(session.expires_at > Date.now() / 1000)) return;
-  try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${session.user.id.toLowerCase()}&select=username,avatar_url`, {
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${session.access_token}` },
-    });
-    if (!response.ok) return;
-    const profile = (await response.json())[0];
-    if (!profile) return;
-    if (profile.username) $("who-name").textContent = profile.username;
-    const url = profile.avatar_url;
-    if (url && /^https:\/\//.test(url)) {
-      const img = document.createElement("img");
-      img.alt = "";
-      img.src = url;
-      $("avatar").replaceChildren(img);
-    }
-  } catch {
-    // The name from the email stays.
-  }
-}
 
 // ── the route ────────────────────────────────────────────────────────
 
@@ -492,7 +415,6 @@ async function wireOwner(token, row) {
 // ── start ────────────────────────────────────────────────────────────
 
 // The bar doesn't wait for the route (a bad link still has its menu).
-wireBar();
 wireBanner();
 
 // The phone's "open in the app" bar: closed, it stays closed for the visit.

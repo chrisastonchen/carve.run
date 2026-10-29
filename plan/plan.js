@@ -725,7 +725,8 @@ function placeAt(kind, at) {
 /// Where a new point adds the least distance to the chain.
 function bestSlot(p) {
   const chain = [plan.start, ...plan.waypoints, loops() ? plan.start : plan.end];
-  if (!plan.start) return 0;
+  // Before there's a start, places go on in the order they're picked.
+  if (!plan.start) return plan.waypoints.length;
   if (!chain[chain.length - 1]) return plan.waypoints.length;
   let best = plan.waypoints.length;
   let cost = Infinity;
@@ -1035,8 +1036,8 @@ function kindSwitch(point) {
   });
 }
 
-function kindSelect(value, onChange, quiet = false) {
-  const wrap = el("span", quiet ? "kind quiet" : "kind");
+function kindSelect(value, onChange) {
+  const wrap = el("span", "kind");
   const select = el("select");
   select.setAttribute("aria-label", "Stop or waypoint");
   select.append(new Option("Waypoint", "marker"), new Option("Stop", "stop"));
@@ -1084,39 +1085,16 @@ function addRow() {
   const line = el("div", "field-line");
   cell.append(line);
   li.append(cell);
-  if (!adding) {
-    const button = el("button", "add-row", "Add a stop or waypoint");
-    button.type = "button";
-    button.addEventListener("click", () => {
-      // Stops go after a start: without one, the start comes first.
-      if (!plan.start) {
-        document.querySelector('[data-focus="start"]')?.focus();
-        return;
-      }
-      adding = true;
-      focusAfterRender = '[data-focus="add"]';
-      renderRows();
-    });
-    line.append(button, kindSelect(addType, (type) => (addType = type), true));
-    li.append(el("span", "grip off"), el("span", "clear off"));
-    return li;
-  }
+  // A plain search field, like the start's and the destination's: a pick
+  // becomes a waypoint, whose row then has the Stop/Waypoint dropdown; it
+  // works before there's a start or a destination (the user, 2026-10-29).
   const wrap = el("span", "input-wrap");
   const input = el("input", "row-input empty");
-  const describe = () => {
-    input.placeholder = addType === "stop" ? "Search for a stop" : "Search for a waypoint";
-    input.setAttribute("aria-label", addType === "stop" ? "New stop" : "New waypoint");
-  };
-  describe();
+  input.placeholder = "Add a stop or waypoint";
+  input.setAttribute("aria-label", "Add a stop or waypoint");
   input.dataset.focus = "add";
   wrap.append(input);
-  line.append(wrap, kindSelect(addType, (type) => {
-    addType = type;
-    describe();
-    // Back to typing where they were, not with the text selected.
-    input.focus();
-    input.setSelectionRange(input.value.length, input.value.length);
-  }));
+  line.append(wrap);
   li.append(el("span", "grip off"), el("span", "clear off"));
   attachSearch(li, input, (place) => {
     adding = false;

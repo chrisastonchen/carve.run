@@ -232,15 +232,6 @@ a { color: var(--green); }
   .row:hover .clear, .row:focus-within .clear { visibility: visible; }
 }
 .row .clear.off { visibility: hidden; }
-.add-row {
-  flex: 1 1 auto; min-width: 0; height: 46px; border: none; border-radius: 12px; background: transparent;
-  box-shadow: inset 0 0 0 1.5px #CFCBC0; color: var(--ink-3); font-weight: 600; font-size: 16px; text-align: left; padding: 0 14px;
-}
-.add-row:hover { background: #fff; }
-/* The add row is a slot in the list, not a third field (the user, 2026-10-29). */
-.add-row { box-shadow: none; padding: 0 10px; }
-.kind.quiet select { width: auto; background: transparent; box-shadow: none; color: var(--ink-3); font-weight: 600; }
-.kind.quiet select:hover { color: var(--ink); }
 .grip { width: 32px; height: 44px; border: none; background: none; color: #B5B8BD; cursor: grab; display: flex; align-items: center; justify-content: center; flex: none; }
 .grip svg { width: 20px; height: 20px; }
 .grip.off { visibility: hidden; }

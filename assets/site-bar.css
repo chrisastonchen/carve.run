@@ -1,0 +1,59 @@
+/* The site's green bar on a page that doesn't load the planner's
+   stylesheet: the home page (the user, 2026-10-29). The same bar as
+   /plan/plan.css's "the site bar" (the planner and the route pages), with
+   the few shared rules it leans on written in here — keep the two in step.
+   In the page's flow, held at the top, so it never covers what's under it. */
+
+:root { --bar: 64px; }
+[hidden] { display: none !important; }
+
+.bar {
+  position: sticky; top: 0; z-index: 20; height: var(--bar);
+  display: flex; align-items: center; gap: 10px; padding: 0 20px 0 24px;
+  background: #1D5B3A; color: #fff;
+  font-family: "Figtree", -apple-system, system-ui, sans-serif; font-size: 17px; line-height: 1.45;
+}
+.bar button { font: inherit; color: inherit; cursor: pointer; }
+.bar :focus-visible, .sheet :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.bar .brand { display: flex; color: #fff; margin-right: 10px; }
+.bar .wordmark { display: block; width: 112px; height: 17px; }
+.bar .links { display: flex; gap: 4px; }
+.bar .links a {
+  padding: 10px 14px; border-radius: 999px; color: rgba(255,255,255,.86);
+  font-size: 16px; font-weight: 700; text-decoration: none;
+}
+.bar .links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.bar .grow { flex: 1; }
+.bar .pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  height: 44px; padding: 0 18px; border: none; border-radius: 999px;
+  background: #fff; color: #1D5B3A; font-size: 16px; font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.bar .pill svg { width: 18px; height: 18px; flex: none; }
+.bar .who { position: relative; }
+.bar .who-btn {
+  display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 12px 0 4px;
+  border: none; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; font-weight: 700; font-size: 16px;
+}
+.bar .avatar { width: 36px; height: 36px; border-radius: 50%; background: #F2C94C; display: flex; align-items: center; justify-content: center; overflow: hidden; color: #15181C; }
+.bar .avatar svg { width: 22px; height: 22px; }
+.bar .avatar img { width: 100%; height: 100%; object-fit: cover; }
+.bar .chev { width: 12px; height: 12px; }
+.bar .who-menu {
+  position: absolute; right: 0; top: 52px; min-width: 180px; padding: 6px; border-radius: 16px;
+  background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); color: #15181C;
+}
+.bar .who-menu button { width: 100%; height: 44px; padding: 0 14px; border: none; border-radius: 10px; background: none; text-align: left; font-weight: 700; }
+.bar .who-menu button:hover { background: #F1F1EF; }
+.bar .menu-btn { width: 44px; height: 44px; border: none; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; display: flex; align-items: center; justify-content: center; }
+.bar .menu-btn svg { width: 20px; height: 20px; }
+.sheet {
+  position: fixed; inset: var(--bar) 0 0 0; z-index: 19; padding: 8px 20px 24px;
+  background: #1D5B3A; display: flex; flex-direction: column;
+  font-family: "Figtree", -apple-system, system-ui, sans-serif;
+}
+.sheet a { display: block; padding: 16px 6px; border-bottom: 1px solid rgba(255,255,255,.14); color: #fff; font-size: 22px; font-weight: 700; text-decoration: none; }
+
+@media (max-width: 699px) { .bar .wide-only { display: none !important; } .bar .links { display: none; } .bar { padding: 0 12px 0 16px; } .bar .wordmark { width: 100px; height: 15px; } }
+@media (max-width: 360px) { .bar .pill { padding: 0 12px; font-size: 14.5px; } .bar .pill svg { display: none; } .bar .wordmark { width: 88px; height: 13px; } }
+@media (min-width: 700px) { .bar .narrow-only { display: none !important; } .sheet { display: none !important; } }
