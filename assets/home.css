@@ -461,3 +461,15 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .for-app { font-size: 14px; }
 }
 @media (max-width: 899px) { .cards-near .ph { aspect-ratio: 4 / 5; border-radius: 24px; } .cards-near .n { font-size: 23px; } }
+/* A phone's deck (the user, 2026-10-29: the cards were edge to edge and too tall):
+   the snap keeps the page's margin, and the cards are a normal size. */
+@media (max-width: 899px) {
+  .cards-near { padding: 0 16px 6px; scroll-padding-inline: 16px; gap: 12px; }
+  .cards-near li { flex: 0 0 72%; }
+  .cards-near .ph { aspect-ratio: 4 / 3; border-radius: 18px; }
+  .cards-near .t { padding: 50px 14px 14px; border-radius: 0 0 18px 18px; }
+  .cards-near .n { font-size: 18px; }
+  .cards-near .m { font-size: 13px; }
+  .cards-near .away { font-size: 12px; }
+  .rail { scroll-padding-inline: 0; }
+}
