@@ -1,31 +1,36 @@
 # Carve: Scenic Drive Planner
 
-> Carve (carve.run) is a scenic-drive route planner and turn-by-turn navigation app for cars, on iPhone (with CarPlay) and Android (with Android Auto). You plan the exact roads you want, stop by stop, and Carve guides you along that route — it never swaps it for a faster one. With Carve Apex, routes download for driving with no cell signal, and Group lets everyone driving a route see each other on the map.
+> Carve (carve.run) is a scenic-drive and group-drive route planner with turn-by-turn navigation, for cars and motorcycles, on iPhone (with CarPlay) and Android (with Android Auto), with a free route planner on the web. Find the great driving roads near you, plan the exact roads you want stop by stop (or import a GPX file, a Ride with GPS route or a Google Maps link), share one link with your group or club, and drive it together: Carve never swaps your route for a faster one. With Carve Apex, routes download for driving with no cell signal, and everyone on the route shows on one map.
 
-Carve at carve.run is separate from other apps called Carve: it is for cars, plans any route, runs on iPhone and Android, and is made by Chris Aston Chen.
+Carve at carve.run is separate from other apps called Carve: it is for cars and motorcycles, plans any route, runs on iPhone and Android, and is made by Chris Aston Chen.
 
 - Website: https://carve.run/
+- Explore every drive on a map: https://carve.run/drives/
+- Plan a route on a computer (free): https://carve.run/plan/
+- Pricing: https://carve.run/pricing/
 - App Store (iPhone, iOS 26+): https://apps.apple.com/app/carve-route-planner/id6808087716
-- Android (Android 10+): early access on Google Play; public release coming
+- Android (Android 10+): early access on Google Play: https://carve.run/android/
 - Made by: Chris Aston Chen
 - About: https://carve.run/about/
 - Contact: support@carve.run
 
 ## What it does
 
-- Plan routes stop by stop, by search or by tapping the map; choose scenic, balanced or shortest roads
-- Make a scenic loop that starts and ends where you are ("roll the dice")
-- See distance, drive time and elevation before you leave
-- Spoken turn-by-turn directions with live traffic, on the route you planned
-- Import a route from a Google Maps link
-- Share routes by link; recipients open them in Carve or any browser, and changes stay in sync
-- Group: drivers on the same route see each other on the map and car screen, by name, anywhere on the route (Carve Apex; opt-in per drive, no location history)
-- Made for car clubs, rallies and group drives as much as solo weekend drives
+- Find great driving roads: 1,100+ hand-picked drives in the US, Canada, Australia, New Zealand, the UAE and Baja California, rated Leisurely, Sweeping, Twisty or Intense, on a map of the roads near you
+- Plan routes stop by stop, by search or by tapping the map, in the app or on a computer at carve.run/plan; choose scenic, balanced or shortest roads
+- Import a GPX file (Ride with GPS, Garmin and others), a Ride with GPS link or a Google Maps link, matched to the same roads
+- Describe a drive in your own words and Carve plans it (5 a day free); or roll the dice for a scenic loop from where you are
+- See distance, drive time, elevation and the weather along the way before you leave
+- Share one link or QR code; recipients open the route in Carve or any browser, edits keep the same link, and turn-by-turn directions print
+- Spoken turn-by-turn directions with live traffic, on the route you planned, never rerouted; after a wrong turn, directions forward to where you rejoin the route
+- One-tap hazard reports (debris, animals, crashes) that warn the drivers behind you on the route
+- Group: drivers on the same route see each other on the map and car screen, by name, with how far ahead or behind (joining is free; seeing the group takes Carve Apex; opt-in per drive, no location history)
+- Made for car clubs, riding groups, road rallies and tours as much as solo weekend drives (not a timing or scoring tool for competitive rallies)
 
 ## Pricing
 
-- Free: planning, importing, sharing, and driving with a signal
-- Carve Apex: $29.99 a year with a 7-day free trial for new subscribers, or $4.99 a month. Adds offline maps and turns, Group (see your whole group on the map), 3D route previews (one free), Apple CarPlay and Android Auto, and recording a drive to turn it into a route. Turn-by-turn guidance back to your route after a wrong turn (no rerouting) is free with a signal
+- Free: finding drives, planning (app and web), importing, sharing, joining a group drive, and driving with a signal, with guidance back to your route after a wrong turn
+- Carve Apex: $29.99 a year with a 7-day free trial for new subscribers, or $4.99 a month. Adds offline maps and turns, the whole group on your map, 3D route previews (one free), unlimited AI route planning, Apple CarPlay and Android Auto, recording a drive to turn it into a route, road conditions and popular times. Details: https://carve.run/pricing/
 
 ## Famous drives
 Guides to famous drives, each with a route that opens in Carve: https://carve.run/drives/
@@ -46,8 +51,8 @@ Guides to famous drives, each with a route that opens in Carve: https://carve.ru
 
 ## Guides
 
-- [How to plan a scenic drive](https://carve.run/plan-a-scenic-drive/): Step by step: start from a great road or describe the drive, build the route stop by stop on Scenic roads, check weather, conditions and a 3D Flyover, download it for no signal, and drive it without rerouting.
-- [How to plan and lead a group drive](https://carve.run/group-drives/): Step by step for car clubs, group drives and road rallies: plan once, share one link (iPhone, Android or browser), download for no signal, turn on Group to see everyone on the map by name, brief the group, and keep it together with lead and sweep cars.
+- [How to plan a scenic drive](https://carve.run/plan-a-scenic-drive/): Step by step: start from a great road on Carve's map of drives or describe the drive, build the route stop by stop on Scenic roads (in the app, or on a computer at carve.run/plan), or import a Google Maps link, a GPX file or a Ride with GPS route; check weather, conditions and a 3D Flyover, download it for no signal, and drive it without rerouting, with hazard warnings from drivers ahead.
+- [How to plan and lead a group drive](https://carve.run/group-drives/): Step by step for car clubs, group drives and road rallies: plan once (in the app, on a computer at carve.run/plan, or import a GPX file, Ride with GPS or Google Maps route), share one link and QR code (iPhone, Android or browser; printed turns for anyone without the app), download for no signal, turn on Group to see everyone on the map by name, brief the group, keep it together with lead and sweep cars, and warn the group about hazards.
 
 ## Comparisons
 

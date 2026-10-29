@@ -403,6 +403,54 @@ function wireSteps() {
   }, { threshold: 0.35 }).observe(document.querySelector(".steps"));
 }
 
+
+// ── on a phone, the first time: app or browser ───────────────────────
+// The home page only, once per visitor, never on a drive guide people
+// reach from search (the user, 2026-10-29); built here, so it isn't in the
+// page search engines read.
+const SHEET_KEY = "carve.home.appsheet";
+
+function openApp() {
+  const ua = navigator.userAgent || "";
+  if (/android/i.test(ua)) {
+    // Opened as its home-screen icon does (no link for it to read), else its early-access page.
+    location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=run.carve.app;S.browser_fallback_url="
+      + encodeURIComponent("https://carve.run/android/") + ";end";
+    return;
+  }
+  let left = false;
+  const leaving = () => { left = true; };
+  window.addEventListener("pagehide", leaving, { once: true });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) leaving(); }, { once: true });
+  setTimeout(() => { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl() : "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
+  // iOS opens Carve on this and ignores the rest (it isn't a route's link).
+  location.href = "carve://open";
+}
+
+function offerApp() {
+  if (wide()) return;
+  try { if (localStorage.getItem(SHEET_KEY)) return; } catch { return; }
+  if ((document.referrer || "").startsWith(location.origin + "/")) return;
+  const chevron = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const wrap = document.createElement("div");
+  wrap.className = "app-sheet";
+  wrap.innerHTML = `<div class="veil"></div>
+    <div class="sheet-card" role="dialog" aria-modal="true" aria-label="Open Carve">
+      <button type="button" class="choice app"><img src="/assets/icon-128.png" alt="" width="52" height="52"><span><b>Continue in the app</b><small>Free · offline turns, your group on the map</small></span>${chevron}</button>
+      <button type="button" class="choice web"><span class="globe"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.6 2.8 2.6 15.2 0 18M12 3c-2.6 2.8-2.6 15.2 0 18" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><span><b>Continue in the browser</b></span>${chevron}</button>
+    </div>`;
+  const close = () => {
+    try { localStorage.setItem(SHEET_KEY, String(Date.now())); } catch { /* private mode */ }
+    wrap.classList.remove("on");
+    setTimeout(() => wrap.remove(), 300);
+  };
+  wrap.querySelector(".veil").addEventListener("click", close);
+  wrap.querySelector(".web").addEventListener("click", close);
+  wrap.querySelector(".app").addEventListener("click", () => { close(); openApp(); });
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.classList.add("on"), 700);
+}
+
 // ── start ────────────────────────────────────────────────────────────
 
 function riseIn() {
@@ -419,6 +467,7 @@ function riseIn() {
 
 async function main() {
   riseIn();
+  offerApp();
   wireDoor();
   wireSteps();
   $("near-change").addEventListener("click", locate);
