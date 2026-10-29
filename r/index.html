@@ -27,7 +27,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=16">
-<link rel="stylesheet" href="/assets/route-view.css?v=33be2c0e16">
+<link rel="stylesheet" href="/assets/route-view.css?v=b54d055e2d">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
      route_profile.js or page_parts.py, not this file. -->
 <style>
@@ -588,7 +588,7 @@ const RouteProfile = (() => {
     // The bar at the bottom, as page_parts.py's BANNER_INSIDE.
     const banner = el("a", { href: store },
       el("img", { src: "/assets/icon-128.png?v=87d1534580", alt: "", width: "40", height: "40" }),
-      el("span", { class: "why" }, el("b", {}, "Drive this in Carve"), el("span", {}, "Free turn-by-turn directions")),
+      el("span", { class: "why" }, "This drive is more fun in the app"),
       el("span", { class: "open" }, "Open"));
     banner.addEventListener("click", openInApp);
     add(el("div", { class: "app-banner" },

@@ -169,9 +169,7 @@
   .rv .app-banner .x svg { width: 16px; height: 16px; fill: none; stroke: currentColor; }
   .rv .app-banner a { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
   .rv .app-banner img { flex: none; width: 40px; height: 40px; border-radius: 9px; }
-  .rv .app-banner .why { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
-  .rv .app-banner .why b { font-size: 15px; font-weight: 800; }
-  .rv .app-banner .why span { font-size: 13px; color: var(--ink-3); }
+  .rv .app-banner .why { flex: 1; min-width: 0; font-size: 16px; font-weight: 800; line-height: 1.25; }
   .rv .app-banner .open { flex: none; display: flex; align-items: center; height: 38px; padding: 0 20px; border-radius: 999px; background: var(--green); color: #fff; font-size: 15px; font-weight: 800; }
   html.banner-closed .rv { padding-bottom: 0; }
   html.banner-closed .rv .app-banner { display: none; }
