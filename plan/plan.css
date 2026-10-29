@@ -198,18 +198,25 @@ a { color: var(--green); }
 .input-wrap { position: relative; display: flex; flex: 1 1 auto; min-width: 0; }
 .row-input {
   width: 100%; height: 46px; border: none; border-radius: 12px; background: #fff;
-  padding: 0 44px 0 14px; font-size: 17px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08);
+  padding: 0 14px; font-size: 17px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08);
 }
 .row-input::placeholder { color: #8B9098; font-weight: 500; }
 .row-input:focus { outline: none; box-shadow: 0 0 0 3px var(--green); }
 .row-input.empty { padding-right: 14px; }
-.row-input.timed { padding-right: 80px; }
+.row-input.timed { padding-right: 46px; }
+/* Remove: past the handle, shown on the row being pointed at (always on
+   touch screens, which can't point). */
 .clear {
-  position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+  flex: none; margin-left: -6px;
   width: 30px; height: 30px; border: none; border-radius: 999px; background: var(--fill);
   color: var(--ink-3); font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center;
 }
 .clear:hover { background: #E4E3DE; color: var(--ink); }
+@media (hover: hover) {
+  .row .clear { visibility: hidden; }
+  .row:hover .clear, .row:focus-within .clear { visibility: visible; }
+}
+.row .clear.off { visibility: hidden; }
 .add-row {
   flex: 1 1 auto; min-width: 0; height: 46px; border: none; border-radius: 12px; background: transparent;
   box-shadow: inset 0 0 0 1.5px #CFCBC0; color: var(--ink-3); font-weight: 600; font-size: 16px; text-align: left; padding: 0 14px;
@@ -225,7 +232,7 @@ a { color: var(--green); }
 .kind svg { position: absolute; right: 8px; width: 11px; height: 11px; pointer-events: none; color: var(--ink-3); }
 /* A stop's stay: a timer in a circle inside the field, left of the ×. The
    select sits invisibly over it, so picking is the browser's own list. */
-.stay { position: absolute; right: 43px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 999px; background: var(--fill); color: var(--ink-3); display: flex; align-items: center; justify-content: center; }
+.stay { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 999px; background: var(--fill); color: var(--ink-3); display: flex; align-items: center; justify-content: center; }
 .stay:hover { background: #E4E3DE; color: var(--ink); }
 .stay.set { background: var(--stop); color: #fff; }
 .stay svg { width: 17px; height: 17px; pointer-events: none; }

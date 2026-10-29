@@ -868,14 +868,6 @@ function placeRow({ role, point, index, label, placeholder }) {
     input.classList.add("timed");
     wrap.append(stayControl(point));
   }
-  if (point) {
-    const clear = el("button", "clear", "×");
-    clear.type = "button";
-    clear.setAttribute("aria-label", "Remove");
-    clear.title = "Remove";
-    clear.addEventListener("click", () => removePoint(role, index));
-    wrap.append(clear);
-  }
   const line = el("div", "field-line");
   line.append(wrap);
   if (role === "waypoint") line.append(kindSwitch(point));
@@ -883,13 +875,29 @@ function placeRow({ role, point, index, label, placeholder }) {
   li.append(cell);
   attachSearch(li, input, (place) => choosePlace(role, index, place));
 
-  const grip = el("button", `grip${point ? "" : " off"}`);
-  grip.type = "button";
-  grip.innerHTML = '<svg aria-hidden="true"><use href="#i-grip"/></svg>';
-  grip.setAttribute("aria-label", "Drag to reorder. Or use the arrow keys.");
-  grip.tabIndex = point ? 0 : -1;
+  // Only what's between the ends moves; the start and destination stay put.
+  const movable = role === "waypoint";
+  const grip = el(movable ? "button" : "span", `grip${movable ? "" : " off"}`);
+  if (movable) {
+    grip.type = "button";
+    grip.innerHTML = '<svg aria-hidden="true"><use href="#i-grip"/></svg>';
+    grip.setAttribute("aria-label", "Drag to reorder. Or use the arrow keys.");
+  }
   li.append(grip);
-  if (point) makeDraggable(li, grip, role, index);
+  if (movable) makeDraggable(li, grip, index);
+  else if (role === "end") acceptDrops(li, plan.waypoints.length);
+  // Removing takes the whole row, so it sits outside the field, past the
+  // handle, and shows when the row is pointed at.
+  if (point) {
+    const clear = el("button", "clear", "×");
+    clear.type = "button";
+    clear.setAttribute("aria-label", "Remove this row");
+    clear.title = "Remove";
+    clear.addEventListener("click", () => removePoint(role, index));
+    li.append(clear);
+  } else {
+    li.append(el("span", "clear off"));
+  }
   return li;
 }
 
@@ -964,7 +972,7 @@ function addRow() {
       renderRows();
     });
     line.append(button, kindSelect(addType, (type) => (addType = type)));
-    li.append(el("span", "grip off"));
+    li.append(el("span", "grip off"), el("span", "clear off"));
     return li;
   }
   const wrap = el("span", "input-wrap");
@@ -983,7 +991,7 @@ function addRow() {
     input.focus();
     input.setSelectionRange(input.value.length, input.value.length);
   }));
-  li.append(el("span", "grip off"));
+  li.append(el("span", "grip off"), el("span", "clear off"));
   attachSearch(li, input, (place) => {
     adding = false;
     choosePlace("add", undefined, place);
@@ -1132,22 +1140,36 @@ function attachSearch(li, input, onPick, onLeave) {
   });
 }
 
-// drag to reorder (and the arrow keys on the handle)
+// drag to reorder the stops and waypoints (and the arrow keys on the handle)
 let dragFrom = null;
-function makeDraggable(li, grip, role, index) {
-  const position = role === "start" ? 0 : role === "end" ? plan.waypoints.length + 1 : index + 1;
+function makeDraggable(li, grip, index) {
   grip.addEventListener("pointerdown", () => (li.draggable = true));
   li.addEventListener("dragstart", (event) => {
-    dragFrom = position;
+    dragFrom = index;
     li.classList.add("dragging");
     event.dataTransfer.effectAllowed = "move";
-    event.dataTransfer.setData("text/plain", String(position));
+    event.dataTransfer.setData("text/plain", String(index));
   });
   li.addEventListener("dragend", () => {
     li.draggable = false;
     li.classList.remove("dragging");
     document.querySelectorAll(".drop-before").forEach((n) => n.classList.remove("drop-before"));
   });
+  acceptDrops(li, index);
+  grip.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+    event.preventDefault();
+    const to = Math.max(0, Math.min(index + (event.key === "ArrowUp" ? -1 : 1), plan.waypoints.length - 1));
+    if (to === index) return;
+    move(index, to);
+    focusAfterRender = `[data-role="waypoint"][data-index="${to}"] .grip`;
+    renderRows();
+  });
+}
+
+/// A row a dragged stop or waypoint can be dropped on, landing before it
+/// (the destination's row: after the last one).
+function acceptDrops(li, slot) {
   li.addEventListener("dragover", (event) => {
     if (dragFrom === null) return;
     event.preventDefault();
@@ -1158,38 +1180,20 @@ function makeDraggable(li, grip, role, index) {
     event.preventDefault();
     const from = dragFrom;
     dragFrom = null;
-    if (from !== null && from !== position) move(from, position);
-  });
-  grip.addEventListener("keydown", (event) => {
-    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
-    event.preventDefault();
-    const to = position + (event.key === "ArrowUp" ? -1 : 1);
-    move(position, to);
-    focusAfterRender = `.row:nth-child(${Math.max(1, Math.min(to + 1, plan.waypoints.length + 3))}) .grip`;
-    renderRows();
+    if (from === null) return;
+    move(from, slot > from ? slot - 1 : slot);
   });
 }
 
-/// Moves a place along [start, …waypoints, end]; whatever lands first is
-/// the start and last the destination, and a former end takes a
-/// waypoint's place in between.
+/// Moves a stop or waypoint to another place between the ends.
 function move(from, to) {
-  const chain = [plan.start, ...plan.waypoints, loops() ? null : plan.end];
-  const last = chain.length - 1;
-  if (to < 0 || to > last || !chain[from]) return;
+  const count = plan.waypoints.length;
+  if (from < 0 || from >= count || to < 0 || to >= count || from === to) return;
   edit(() => {
-    const [item] = chain.splice(from, 1);
-    chain.splice(to, 0, item);
-    const filled = chain;
-    const start = filled[0];
-    const end = loops() ? null : filled[filled.length - 1];
-    const middle = filled.slice(1, loops() ? undefined : -1).filter(Boolean);
-    plan.start = start ? strip(start) : null;
-    if (!loops()) plan.end = end ? strip(end) : null;
-    plan.waypoints = middle.map((p) => (p.type ? p : { ...p, type: "marker" }));
+    const [item] = plan.waypoints.splice(from, 1);
+    plan.waypoints.splice(to, 0, item);
   });
 }
-const strip = ({ id, lat, lon, label }) => ({ id, lat, lon, label });
 
 // ── bringing a route in ──────────────────────────────────────────────
 
