@@ -166,7 +166,10 @@ a { color: var(--green); }
 .notice .x svg { width: 16px; height: 16px; }
 
 .list-head { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
-.undo { display: flex; gap: 6px; }
+.undo { display: flex; align-items: center; gap: 6px; }
+.pill.small { height: 44px; padding: 0 16px; font-size: 15px; }
+.pill.small:disabled { opacity: .4; }
+.dialog-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; }
 
 /* Rows never shrink, or a two-line stop squashes over its divider; the
    destination stays pinned while the rows above it scroll (the user's

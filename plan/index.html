@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=1">
+<link rel="stylesheet" href="/plan/plan.css?v=2">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -103,6 +103,7 @@
         <div class="list-head">
           <span class="eyebrow">Your route</span>
           <span class="undo">
+            <button type="button" class="pill grey small" id="start-over" disabled>Start over</button>
             <button type="button" class="round" id="undo" aria-label="Undo" title="Undo (⌘Z)" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg></button>
             <button type="button" class="round" id="redo" aria-label="Redo" title="Redo (⇧⌘Z)" disabled><svg aria-hidden="true"><use href="#i-redo"/></svg></button>
           </span>
@@ -192,6 +193,17 @@
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 </div>
 
+<dialog class="sheet-dialog" id="start-over-dialog" aria-labelledby="start-over-title">
+  <form method="dialog">
+    <h2 id="start-over-title">Start over?</h2>
+    <p class="dim">This clears your route and everything on it. Routes you've saved stay saved.</p>
+    <div class="dialog-actions">
+      <button type="submit" class="pill grey" value="cancel" autofocus>Keep planning</button>
+      <button type="submit" class="pill green" value="clear">Start over</button>
+    </div>
+  </form>
+</dialog>
+
 <dialog class="sheet-dialog" id="account" aria-labelledby="acc-title">
   <button type="button" class="round x-top" id="acc-close" aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
   <div data-step="choose">
@@ -232,6 +244,6 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=2"></script>
+<script type="module" src="/plan/plan.js?v=3"></script>
 </body>
 </html>

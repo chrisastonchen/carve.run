@@ -646,6 +646,7 @@ function render() {
   $("legend").hidden = !hasAny || !map;
   $("undo").disabled = !history.back.length;
   $("redo").disabled = !history.forward.length;
+  $("start-over").disabled = !hasAny && !plan.name;
   $("trip").value = plan.trip;
   if (document.activeElement !== $("route-name")) $("route-name").value = plan.name || "";
   renderNotice();
@@ -1540,6 +1541,9 @@ function showPlan() {
 }
 
 function planAnother() {
+  // A road still on its way belongs to the plan being cleared.
+  clearTimeout(routeTimer);
+  routeAsk++;
   plan = blankPlan();
   saved = false;
   history.back.length = 0;
@@ -1560,6 +1564,12 @@ function osAwareGetApp() {
 function wire() {
   $("undo").addEventListener("click", undo);
   $("redo").addEventListener("click", redo);
+  $("start-over").addEventListener("click", () => $("start-over-dialog").showModal());
+  $("start-over-dialog").addEventListener("close", () => {
+    if ($("start-over-dialog").returnValue !== "clear") return;
+    planAnother();
+    if (mapReady) map.easeTo({ zoom: Math.min(map.getZoom(), 9) });
+  });
   document.addEventListener("keydown", (event) => {
     const typing = /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement?.tagName);
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "z" && !typing && !saved) {
