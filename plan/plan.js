@@ -806,8 +806,8 @@ function onMapClick(event) {
   // Always in this order; the likeliest lit (the user, 2026-10-29).
   const choices = [
     { key: "start", label: "Start here", icon: `<span class="badge start">${MARKS.start}</span>` },
-    { key: "wp", label: "Add a waypoint here", icon: `<span class="badge wp">${nextWaypoint}</span>` },
-    { key: "stop", label: "Add a stop here", icon: `<span class="badge stop">${nextStop}</span>` },
+    { key: "wp", label: "Add a waypoint", icon: `<span class="badge wp">${nextWaypoint}</span>` },
+    { key: "stop", label: "Add a stop", icon: `<span class="badge stop">${nextStop}</span>` },
   ];
   if (!loops()) choices.push({ key: "end", label: "End here", icon: `<span class="badge dest">${MARKS.dest}</span>` });
   const likeliest = !plan.start ? "start" : !plan.end && !loops() ? "end" : "wp";
