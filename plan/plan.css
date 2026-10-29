@@ -165,7 +165,7 @@ a { color: var(--green); }
 .notice .x { position: absolute; right: 6px; top: 6px; width: 40px; height: 40px; border: none; border-radius: 999px; background: none; color: #2F4A3A; display: flex; align-items: center; justify-content: center; }
 .notice .x svg { width: 16px; height: 16px; }
 
-.list-head { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
+.list-head { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 4px; }
 .undo { display: flex; align-items: center; gap: 6px; }
 .pill.small { height: 44px; padding: 0 16px; font-size: 15px; }
 .pill.small:disabled { opacity: .4; }

@@ -768,6 +768,10 @@ function render() {
   $("undo").disabled = !history.back.length;
   $("redo").disabled = !history.forward.length;
   $("start-over").disabled = !hasAny && !plan.name;
+  // An empty panel is just the ends and a way to bring a route in: the
+  // history buttons and the save footer come with the first place.
+  $("history-buttons").hidden = !hasAny && !history.back.length && !history.forward.length;
+  $("foot").hidden = !hasAny;
   $("trip").value = plan.trip;
   if (document.activeElement !== $("route-name")) $("route-name").value = plan.name || "";
   renderNotice();
@@ -807,7 +811,8 @@ function renderRows() {
   const labels = markerLabels(plan.waypoints);
   list.append(placeRow({ role: "start", point: plan.start, placeholder: "Choose a start" }));
   plan.waypoints.forEach((w, i) => list.append(placeRow({ role: "waypoint", point: w, index: i, label: labels[i] })));
-  list.append(addRow());
+  // Nothing to add between until there's an end to add it to.
+  if (plan.start || plan.end || plan.waypoints.length) list.append(addRow());
   if (loops()) {
     const li = el("li", "row dest");
     li.append(markBadge("dest"), textCell(plan.trip === "outAndBack" ? "Back the same way to the start" : "Back to the start"));
@@ -815,7 +820,9 @@ function renderRows() {
   } else {
     list.append(placeRow({ role: "end", point: plan.end, placeholder: "Choose a destination" }));
   }
-  $("rows-hint").textContent = plan.start ? "Drag a row to reorder." : "Or click the map.";
+  // The empty panel already says to search or click the map.
+  $("rows-hint").hidden = plan.waypoints.length < 2;
+  $("rows-hint").textContent = "Drag a row to reorder.";
   if (focusAfterRender) {
     const target = list.querySelector(focusAfterRender);
     focusAfterRender = null;

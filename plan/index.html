@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=9">
+<link rel="stylesheet" href="/plan/plan.css?v=10">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -105,7 +105,7 @@
         </div>
         <div class="list-head">
           <span class="eyebrow">Your route</span>
-          <span class="undo">
+          <span class="undo" id="history-buttons">
             <button type="button" class="pill grey small" id="start-over" disabled>Start over</button>
             <button type="button" class="round" id="undo" aria-label="Undo" title="Undo (⌘Z)" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg></button>
             <button type="button" class="round" id="redo" aria-label="Redo" title="Redo (⇧⌘Z)" disabled><svg aria-hidden="true"><use href="#i-redo"/></svg></button>
@@ -129,7 +129,7 @@
           <input id="gpx" type="file" accept=".gpx,application/gpx+xml,application/xml,text/xml" hidden>
         </div>
       </div>
-      <div class="foot">
+      <div class="foot" id="foot">
         <div class="figures" id="figures">
           <div><b id="fig-dist">–</b><span id="fig-dist-unit">miles</span></div>
           <div><b id="fig-time">–</b><span>drive time</span></div>
@@ -248,6 +248,6 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=10"></script>
+<script type="module" src="/plan/plan.js?v=11"></script>
 </body>
 </html>
