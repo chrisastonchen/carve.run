@@ -12,9 +12,17 @@
    "coverage": 0.02,
    "since": "2026-10-24"
   },
+  "highway-131-kickapoo-valley": {
+   "coverage": 0.67,
+   "since": "2026-10-28"
+  },
   "highway-74-whitewater-minnesota": {
    "coverage": 0.72,
    "since": "2026-10-24"
+  },
+  "highway-95-st-croix-minnesota": {
+   "coverage": 0.66,
+   "since": "2026-10-28"
   },
   "klondike-highway-white-pass": {
    "coverage": 0.48,
@@ -27,6 +35,10 @@
   "nc-12-hatteras-island": {
    "coverage": 0.58,
    "since": "2026-10-24"
+  },
+  "old-kings-highway-6a": {
+   "coverage": 0.11,
+   "since": "2026-10-28"
   },
   "stevens-canyon-road": {
    "coverage": 0.21,
@@ -41,10 +53,10 @@
    "since": "2026-10-24"
   },
   "tunnel-of-trees-m-119": {
-   "coverage": 0.56,
+   "coverage": 0.15,
    "since": "2026-10-24"
   }
  },
  "format": 1,
- "updated": "2026-10-28T13:30:21Z"
+ "updated": "2026-10-29T13:35:37Z"
 }
