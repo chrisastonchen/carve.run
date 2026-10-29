@@ -842,11 +842,30 @@ function nameWaypointsByRoad() {
 
 let adding = false;
 let focusAfterRender = null;
+/// Which way in an empty panel shows: "plan" (the rows) or "import".
+let startMode = "plan";
+
+function setStartMode(mode) {
+  startMode = mode;
+  $("tab-plan").setAttribute("aria-selected", String(mode === "plan"));
+  $("tab-import").setAttribute("aria-selected", String(mode === "import"));
+  render();
+  if (mode === "import") $("link-in").focus();
+}
 
 function render({ keepTyping = false } = {}) {
   const hasAny = !!(plan.start || plan.end || plan.waypoints.length);
+  // Once there's a route, the panel is the route: the switch goes, and an
+  // import that just landed shows in the rows.
+  if (hasAny && startMode !== "plan") {
+    startMode = "plan";
+    $("tab-plan").setAttribute("aria-selected", "true");
+    $("tab-import").setAttribute("aria-selected", "false");
+  }
+  const importing = startMode === "import";
   $("intro").hidden = hasAny;
-  $("bring").hidden = hasAny;
+  $("bring").hidden = !importing;
+  $("rows").hidden = importing;
   $("map-hint").hidden = hasAny || saved || !map;
   $("legend").hidden = !hasAny || !map;
   $("undo").disabled = !history.back.length;
@@ -855,6 +874,9 @@ function render({ keepTyping = false } = {}) {
   // An empty panel is just the ends and a way to bring a route in: the
   // history buttons and the save footer come with the first place.
   $("history-buttons").hidden = !hasAny && !history.back.length && !history.forward.length;
+  // The trip only means something once there's a start.
+  $("head-left").hidden = !plan.start;
+  $("list-head").hidden = importing || ($("head-left").hidden && $("history-buttons").hidden);
   $("foot").hidden = !hasAny;
   $("join").hidden = !!session || hasAny;
   $("trip").value = plan.trip;
@@ -915,7 +937,7 @@ function renderRows() {
     list.append(placeRow({ role: "end", point: plan.end, placeholder: "Choose a destination" }));
   }
   // The empty panel already says to search or click the map.
-  $("rows-hint").hidden = plan.waypoints.length < 2;
+  $("rows-hint").hidden = plan.waypoints.length < 2 || startMode === "import";
   $("rows-hint").textContent = "Drag a row to reorder.";
   if (focusAfterRender) {
     const target = list.querySelector(focusAfterRender);
@@ -1013,8 +1035,8 @@ function kindSwitch(point) {
   });
 }
 
-function kindSelect(value, onChange) {
-  const wrap = el("span", "kind");
+function kindSelect(value, onChange, quiet = false) {
+  const wrap = el("span", quiet ? "kind quiet" : "kind");
   const select = el("select");
   select.setAttribute("aria-label", "Stop or waypoint");
   select.append(new Option("Waypoint", "marker"), new Option("Stop", "stop"));
@@ -1075,7 +1097,7 @@ function addRow() {
       focusAfterRender = '[data-focus="add"]';
       renderRows();
     });
-    line.append(button, kindSelect(addType, (type) => (addType = type)));
+    line.append(button, kindSelect(addType, (type) => (addType = type), true));
     li.append(el("span", "grip off"), el("span", "clear off"));
     return li;
   }
@@ -2059,6 +2081,8 @@ function wire() {
 
   $("sign-in").addEventListener("click", () => openAccount());
   $("join-create").addEventListener("click", () => openAccount("choose", { saving: false, title: "Create an account" }));
+  $("tab-plan").addEventListener("click", () => setStartMode("plan"));
+  $("tab-import").addEventListener("click", () => setStartMode("import"));
   $("join-login").addEventListener("click", () => openAccount("choose", { saving: false, title: "Log in" }));
   $("who-btn").addEventListener("click", () => {
     const open = $("who-menu").hidden;

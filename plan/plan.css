@@ -155,13 +155,16 @@ a { color: var(--green); }
 .view { position: absolute; inset: 0; display: flex; flex-direction: column; }
 .scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 22px 22px 16px; display: flex; flex-direction: column; gap: 14px; }
 .foot { flex: none; padding: 16px 22px 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
-.foot.join { gap: 8px; }
-.foot.join p { margin: 0; }
+.foot.join { border-top: none; padding: 12px 22px 16px; }
+.foot.join p { margin: 0; font-size: 15px; }
 .textlink { border: 0; padding: 0; background: none; font: inherit; color: var(--green); font-weight: 700; cursor: pointer; }
 .textlink:hover { text-decoration: underline; }
 .foot.quiet { padding: 10px 16px 12px; align-items: center; }
 .intro h1 { font-size: 30px; }
-.intro p { margin-top: 6px; font-size: 18px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; margin-top: 16px; padding: 3px; border-radius: 999px; background: var(--fill); }
+.seg button { height: 38px; border: none; border-radius: 999px; background: none; font: inherit; font-size: 15.5px; font-weight: 700; color: var(--ink-3); cursor: pointer; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 
 .notice {
   position: relative; display: flex; gap: 12px; align-items: flex-start;
@@ -234,6 +237,10 @@ a { color: var(--green); }
   box-shadow: inset 0 0 0 1.5px #CFCBC0; color: var(--ink-3); font-weight: 600; font-size: 16px; text-align: left; padding: 0 14px;
 }
 .add-row:hover { background: #fff; }
+/* The add row is a slot in the list, not a third field (the user, 2026-10-29). */
+.add-row { box-shadow: none; padding: 0 10px; }
+.kind.quiet select { width: auto; background: transparent; box-shadow: none; color: var(--ink-3); font-weight: 600; }
+.kind.quiet select:hover { color: var(--ink); }
 .grip { width: 32px; height: 44px; border: none; background: none; color: #B5B8BD; cursor: grab; display: flex; align-items: center; justify-content: center; flex: none; }
 .grip svg { width: 20px; height: 20px; }
 .grip.off { visibility: hidden; }
@@ -271,8 +278,8 @@ a { color: var(--green); }
 .select { position: relative; display: inline-flex; align-items: center; }
 .select select { appearance: none; -webkit-appearance: none; height: 44px; padding: 0 40px 0 16px; border: none; border-radius: 999px; background: var(--fill); font-weight: 700; font-size: 16px; }
 .select svg { position: absolute; right: 16px; width: 14px; height: 14px; pointer-events: none; color: var(--ink-2); }
-.bring { padding: 20px; border-radius: 22px; background: var(--mint); display: flex; flex-direction: column; gap: 12px; }
-.bring h2 { font-size: 21px; }
+.bring { display: flex; flex-direction: column; gap: 14px; }
+.bring .paste input { background: var(--fill); }
 .paste { display: flex; gap: 8px; }
 .paste input { flex: 1 1 auto; min-width: 0; height: 52px; border: none; border-radius: 14px; background: #fff; padding: 0 14px; font-size: 17px; font-weight: 600; }
 .paste .pill { height: 52px; }
