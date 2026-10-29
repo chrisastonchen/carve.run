@@ -19,7 +19,7 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js";
-import { findRoads, level, replace as placeRoadAgain, roadPoints } from "./good-roads.js?v=1";
+import { level, lineOf } from "./good-roads.js?v=2";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -507,14 +507,20 @@ function setUpMap() {
     map.addSource("route", { type: "geojson", data: emptyLine() });
     map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#ffffff", "line-width": 11 } }, firstLabel);
     map.addLayer({ id: "route-line", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#2E92FF", "line-width": 6 } }, firstLabel);
-    // Carve's drives near the route: thinner, dashed, violet (the app's
-    // colour for a drive that isn't yours), under the route's own line.
-    map.addSource("good-roads", { type: "geojson", data: emptyLine() });
-    map.addLayer({ id: "good-roads-casing", type: "line", source: "good-roads", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#ffffff", "line-width": 6, "line-opacity": 0.85 } }, "route-casing");
-    map.addLayer({ id: "good-roads-line", type: "line", source: "good-roads", layout: { "line-join": "round" }, paint: { "line-color": "#6A4CFF", "line-width": 3.5, "line-dasharray": ["literal", [2, 1.4]] } }, "route-casing");
-    // Only a road's chip opens its card: a click on the line is a click on
-    // the map, for its menu (Start here, Add a stop…), so a point on the
-    // road can still be chosen (the user, 2026-10-29).
+    // Carve's drives: dashed violet (the app's colour for a drive that
+    // isn't yours), under the route's own line; from about a state's width
+    // in, where they're roads and not a tangle. Quiet beside the route —
+    // thin, see-through, barely edged — until pointed at (the user,
+    // 2026-10-29: the bright ones fought the blue route for attention).
+    const pointedAt = (on, off) => ["case", ["boolean", ["feature-state", "hover"], false], on, off];
+    map.addSource("good-roads", { type: "geojson", data: emptyLine(), promoteId: "t" });
+    map.addLayer({ id: "good-roads-casing", type: "line", source: "good-roads", minzoom: GOOD_ROADS_ZOOM, layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#ffffff", "line-width": pointedAt(7, 5), "line-opacity": pointedAt(0.9, 0.5) } }, "route-casing");
+    map.addLayer({ id: "good-roads-line", type: "line", source: "good-roads", minzoom: GOOD_ROADS_ZOOM, layout: { "line-join": "round" }, paint: { "line-color": "#6A4CFF", "line-width": pointedAt(3.5, 2.6), "line-opacity": pointedAt(1, 0.62), "line-dasharray": ["literal", [2, 1.6]] } }, "route-casing");
+    // A wide, invisible line to point at: a 3.5 px one is hard to hit.
+    map.addLayer({ id: "good-roads-hit", type: "line", source: "good-roads", minzoom: GOOD_ROADS_ZOOM, paint: { "line-color": "#000000", "line-width": 18, "line-opacity": 0.01 } }, "route-casing");
+    map.on("mousemove", "good-roads-hit", (event) => hoverRoad(event));
+    map.on("mouseleave", "good-roads-hit", () => hoverRoad(null));
+    showGoodRoads();
     mapReady = true;
     drawRoute();
     drawPins();
@@ -555,120 +561,81 @@ function drawRoute() {
     : emptyLine());
   map.setPaintProperty("route-line", "line-dasharray", plan.path ? null : ["literal", [1.5, 1.5]]);
   placeChips();
-  scheduleGoodRoads();
 }
 
-// ── good roads: Carve's drives near the route, to add ────────────────
-// As the app's planner (Carve/Home/PlanGoodRoads.swift): the nearest few
-// of Carve's drives within three miles that aren't on the route, each a
-// dashed violet line with a chip (how twisty, its name, +); the chip's
-// name opens a card on the map with its picture and figures (the user,
+// ── good roads: Carve's drives on the map ────────────────────────────
+// Every one of Carve's drives in view, a dashed violet line (the app's
+// Explore roads), from the planner's first look, route or no route.
+// Pointing at one shows its name beside the cursor; a click on it is a
+// click on the map (its menu: Start here, Add a stop…), with the road's
+// card beside the menu. No adding a whole road: from a start to a
+// destination it pulled the route miles the wrong way and back (the user,
 // 2026-10-29).
 
-let roadsCatalog = null;
-let roadsLoading = null;
-let goodRoads = [];
-const roadChips = [];
-let roadCard = null;
-let goodRoadsTimer = 0;
-const GOOD_ROADS_SHOWN = 5;
+/// Below this zoom, a country of dashed lines is a tangle, not roads.
+const GOOD_ROADS_ZOOM = 6;
+let roadsByToken = new Map();
 
-function loadRoads() {
-  roadsLoading ??= fetch("/drives/roads.json", { cache: "default" })
-    .then((response) => (response.ok ? response.json() : []))
-    .catch(() => [])
-    .then((rows) => (roadsCatalog = Array.isArray(rows) ? rows : []));
-  return roadsLoading;
-}
-
-function scheduleGoodRoads() {
-  clearTimeout(goodRoadsTimer);
-  goodRoadsTimer = setTimeout(refreshGoodRoads, 350);
-}
-
-/// The plan's points in order, as [lon, lat]: start, waypoints, end (the
-/// start again on a loop).
-function chainPoints() {
-  const points = [plan.start, ...plan.waypoints];
-  if (loops()) points.push(plan.start);
-  else points.push(plan.end);
-  return points.filter(Boolean).map((p) => [p.lon, p.lat]);
-}
-
-function roadsInput() {
-  const chain = chainPoints();
-  const path = plan.path?.geometry?.length >= 2 ? plan.path.geometry : chain;
-  const pace = plan.path?.durationSeconds > 0 ? plan.path.distanceMeters / plan.path.durationSeconds : NaN;
-  return { path, chain, metersPerSecond: pace };
-}
-
-async function refreshGoodRoads() {
-  if (!mapReady) return;
-  const input = roadsInput();
-  if (saved || !input.chain.length) return showGoodRoads([]);
-  if (!roadsCatalog) await loadRoads();
-  showGoodRoads(findRoads(roadsInput(), roadsCatalog, GOOD_ROADS_SHOWN));
-}
-
-let goodRoadsShown = "";
-function showGoodRoads(found) {
-  goodRoads = found;
-  // The same roads, chips in the same places: nothing to redraw.
-  const shown = found.map((f) => `${f.road.t}@${f.addAt}`).join("|");
-  if (shown === goodRoadsShown) return;
-  goodRoadsShown = shown;
-  if (roadCard && !found.some((f) => f.road.t === roadCard.token)) closeRoadCard();
-  if (!mapReady || !map.getSource("good-roads")) return;
+async function showGoodRoads() {
+  let rows = [];
+  try {
+    const response = await fetch("/drives/roads.json", { cache: "default" });
+    if (response.ok) rows = await response.json();
+  } catch {
+    // No roads, then: the planner works the same without them.
+  }
+  if (!Array.isArray(rows) || !mapReady) return;
+  roadsByToken = new Map(rows.map((road) => [road.t, road]));
   map.getSource("good-roads").setData({
     type: "FeatureCollection",
-    features: found.map((f) => ({ type: "Feature", geometry: { type: "LineString", coordinates: f.line }, properties: { t: f.road.t } })),
+    features: rows.filter((road) => lineOf(road).length >= 2).map((road) => ({
+      type: "Feature", geometry: { type: "LineString", coordinates: lineOf(road) }, properties: { t: road.t },
+    })),
   });
-  for (const chip of roadChips) chip.remove();
-  roadChips.length = 0;
-  for (const f of found) {
-    if (!f.addAt) continue;
-    const chip = new maplibregl.Marker({ element: roadChip(f), anchor: "center" }).setLngLat(f.addAt).addTo(map);
-    roadChips.push(chip);
-  }
 }
 
+const roadAt = (point) => {
+  if (!map.getLayer("good-roads-hit")) return null;
+  const token = map.queryRenderedFeatures(point, { layers: ["good-roads-hit"] })[0]?.properties?.t;
+  return token ? roadsByToken.get(token) : null;
+};
+
 /// The road's bend, white in its level's colour, as the apps mark it.
-function twistMark(found, size = 14) {
-  const l = level(found.road.b);
+function twistMark(road, size = 14) {
+  const l = level(road.b);
   if (!l) return "";
   return `<span class="twist" style="background:${l.colour}" title="${l.title}"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${l.path}" fill="none" stroke="#fff" stroke-width="${l.weight + 0.6}" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
 }
 
-function roadChip(found) {
-  const chip = el("div", "gr-chip");
-  const open = el("button", "rc-open");
-  open.type = "button";
-  open.innerHTML = `${twistMark(found)}<span class="rc-name">${escapeHTML(found.road.n)}</span>`;
-  open.title = `${found.road.n}: see the road`;
-  open.addEventListener("click", (event) => {
-    event.stopPropagation();
-    openRoadCard(found.road.t, found.addAt);
-  });
-  const add = el("button", "rc-add");
-  add.type = "button";
-  add.setAttribute("aria-label", `Add ${found.road.n} to the route`);
-  add.title = "Add to the route";
-  add.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
-  add.addEventListener("click", (event) => {
-    event.stopPropagation();
-    addGoodRoad(found.road.t);
-  });
-  chip.append(open, add);
-  chip.addEventListener("mousedown", (event) => event.stopPropagation());
-  return chip;
+/// The name beside the cursor while it's on a road; gone off it.
+let pointedRoad = null;
+function hoverRoad(event) {
+  const tag = $("road-hover");
+  const road = event && !saved ? roadAt(event.point) : null;
+  // The road pointed at stands out from the rest.
+  if ((road?.t ?? null) !== pointedRoad) {
+    if (pointedRoad) map.setFeatureState({ source: "good-roads", id: pointedRoad }, { hover: false });
+    pointedRoad = road?.t ?? null;
+    if (pointedRoad) map.setFeatureState({ source: "good-roads", id: pointedRoad }, { hover: true });
+  }
+  if (!road) {
+    tag.hidden = true;
+    map.getCanvas().style.cursor = "";
+    return;
+  }
+  map.getCanvas().style.cursor = "pointer";
+  if (tag.dataset.t !== road.t) {
+    tag.dataset.t = road.t;
+    tag.innerHTML = `${twistMark(road)}<span>${escapeHTML(road.n)}</span>`;
+  }
+  tag.style.transform = `translate(${event.point.x + 16}px, ${event.point.y - 44}px)`;
+  tag.hidden = false;
 }
 
-function openRoadCard(token, at) {
-  const found = goodRoads.find((f) => f.road.t === token);
-  if (!found) return;
-  closeRoadCard();
-  closeClickMenu();
-  const road = found.road;
+/// The road's card, beside the click menu: its picture, place, how
+/// twisty, length, time and climb, and its page.
+function showRoadPeek(road, menu) {
+  const peek = $("road-peek");
   const l = level(road.b);
   const length = Number.isFinite(road.m) ? formatDistance(road.m * 1609.344, miles) : null;
   const figures = [
@@ -676,50 +643,22 @@ function openRoadCard(token, at) {
     Number.isFinite(road.min) ? `<b>${formatDuration(road.min * 60)}</b>` : "",
     Number.isFinite(road.c) && road.c > 0 ? `<b>${Math.round(miles ? road.c : road.c * 0.3048).toLocaleString()}</b> ${miles ? "ft" : "m"} climb` : "",
   ].filter(Boolean).map((f) => `<span class="fig">${f}</span>`).join("");
-  const node = el("div", "road-card");
-  node.innerHTML = `
-    ${road.i ? `<img src="${escapeHTML(road.i)}" alt="" loading="lazy">` : ""}
+  peek.innerHTML = `
+    ${road.i ? `<img src="${escapeHTML(road.i)}" alt="">` : ""}
     <div class="rcd-body">
       <h3>${escapeHTML(road.n)}</h3>
       ${road.p ? `<p class="dim">${escapeHTML(road.p)}</p>` : ""}
-      <div class="rcd-facts">${l ? `<span class="chip" style="background:${l.colour}">${twistMark(found, 13).replace('class="twist"', 'class="twist bare"')}${l.title}</span>` : ""}<div class="rcd-figs">${figures}</div></div>
-      <p class="dim rcd-adds">Adds about ${formatDuration(found.seconds)} to your drive</p>
-      <button type="button" class="pill green rcd-add">Add to route</button>
+      <div class="rcd-facts">${l ? `<span class="chip" style="background:${l.colour}">${twistMark(road, 13).replace('class="twist"', 'class="twist bare"')}${l.title}</span>` : ""}<div class="rcd-figs">${figures}</div></div>
       <a class="rcd-more" href="/drives/${encodeURIComponent(road.s)}/" target="_blank" rel="noopener">About this road</a>
     </div>`;
-  node.querySelector(".rcd-add").addEventListener("click", () => addGoodRoad(token));
-  node.addEventListener("mousedown", (event) => event.stopPropagation());
-  const popup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, maxWidth: "300px", offset: 14, className: "road-popup" })
-    .setLngLat(at).setDOMContent(node).addTo(map);
-  popup.on("close", () => { if (roadCard?.popup === popup) roadCard = null; });
-  roadCard = { token, popup };
-}
-
-function closeRoadCard() {
-  const card = roadCard;
-  roadCard = null;
-  card?.popup.remove();
-}
-
-function addGoodRoad(token) {
-  const found = goodRoads.find((f) => f.road.t === token);
-  if (!found) return;
-  const placed = placeRoadAgain(found, chainPoints(), roadsInput().metersPerSecond);
-  const points = roadPoints(placed);
-  if (plan.waypoints.length + points.length > MAX_WAYPOINTS) {
-    return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
-  }
-  closeRoadCard();
-  const added = points.map((p) => ({
-    id: newUUID(() => crypto.randomUUID()),
-    lat: round(p.at[1]), lon: round(p.at[0]),
-    label: p.label ? clip(p.label, MOST_LABEL_CHARACTERS) : null,
-    type: "marker",
-  }));
-  edit(() => plan.waypoints.splice(Math.min(placed.index, plan.waypoints.length), 0, ...added));
-  const l = level(found.road.b);
-  const length = Number.isFinite(found.road.m) ? formatDistance(found.road.m * 1609.344, miles) : null;
-  toast(`Added ${found.road.n}${length ? `: +${length.value} ${length.unit}${l ? ` of ${l.title.toLowerCase()} road` : ""}` : ""}. Undo with ⌘Z.`);
+  const box = map.getContainer().getBoundingClientRect();
+  const left = parseFloat(menu.style.left);
+  const top = parseFloat(menu.style.top);
+  const width = 290;
+  const right = left + menu.offsetWidth + 10;
+  peek.style.left = `${right + width <= box.width - 8 ? right : Math.max(8, left - width - 10)}px`;
+  peek.style.top = `${Math.max(12, Math.min(top, box.height - 380))}px`;
+  peek.hidden = false;
 }
 
 /// Straight lines between the points while the road is on its way.
@@ -827,8 +766,6 @@ function placeChips() {
 let menuAt = null;
 function onMapClick(event) {
   if (saved) return;
-  // A click away from an open road card only closes it.
-  if (roadCard) return closeRoadCard();
   // A click away from an open menu only closes it.
   if (!$("click-menu").hidden) return closeClickMenu();
   const { lng, lat } = event.lngLat;
@@ -871,6 +808,10 @@ function onMapClick(event) {
   menu.style.left = `${Math.min(point.x + 18, box.width - 240)}px`;
   menu.style.top = `${Math.max(12, Math.min(point.y - 110, box.height - 290))}px`;
   menu.hidden = false;
+  // On one of Carve's drives: its card beside the menu.
+  const road = roadAt(point);
+  if (road) showRoadPeek(road, menu);
+  $("road-hover").hidden = true;
   tempPin?.remove();
   tempPin = new maplibregl.Marker({ element: pinElement("temp", "") }).setLngLat([lng, lat]).addTo(map);
   menu.querySelector("button").focus();
@@ -878,6 +819,7 @@ function onMapClick(event) {
 
 function closeClickMenu() {
   $("click-menu").hidden = true;
+  $("road-peek").hidden = true;
   tempPin?.remove();
   tempPin = null;
 }
@@ -1806,8 +1748,6 @@ async function enrich() {
 const shareLink = () => `${SITE}/${plan.token}`;
 
 function showSaved() {
-  showGoodRoads([]);
-  closeRoadCard();
   $("plan-view").hidden = true;
   $("saved-view").hidden = false;
   $("map-hint").hidden = true;
