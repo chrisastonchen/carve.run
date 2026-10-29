@@ -473,3 +473,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .cards-near .away { font-size: 12px; }
   .rail { scroll-padding-inline: 0; }
 }
+/* The phone's clips: chevrons either side, and a swipe on its screen. */
+.seq .stage { display: flex; align-items: center; gap: 8px; }
+.seq .frame { width: 250px; height: 534px; touch-action: pan-y; }
+.seq .nav { width: 36px; height: 36px; flex: none; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--ink); box-shadow: 0 2px 10px rgba(21,24,28,.16); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.seq .nav svg { width: 18px; height: 18px; }
+.seq .nav:active { transform: scale(.94); }

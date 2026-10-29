@@ -287,7 +287,10 @@ function locate() {
 
 function wireClips(box) {
   const scenes = box.dataset.clips.split("|").map((s) => { const [name, caption] = s.split(":"); return { name, caption }; });
-  box.innerHTML = `<div class="frame"><img class="still" alt="" src="/assets/${scenes[0].name}-first.jpg"><video muted playsinline preload="none" aria-hidden="true"></video></div>
+  const chevron = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  box.innerHTML = `<div class="stage"><button type="button" class="nav prev" aria-label="Previous">${chevron("M15 5l-7 7 7 7")}</button>
+    <div class="frame"><img class="still" alt="" src="/assets/${scenes[0].name}-first.jpg"><video muted playsinline preload="none" aria-hidden="true"></video></div>
+    <button type="button" class="nav next" aria-label="Next">${chevron("M9 5l7 7-7 7")}</button></div>
     <span class="cap"></span><div class="dots">${scenes.map((s, i) => `<button type="button" aria-label="${escapeHTML(s.caption)}"></button>`).join("")}</div>`;
   const still = box.querySelector(".still"), video = box.querySelector("video"), cap = box.querySelector(".cap");
   const dots = [...box.querySelectorAll(".dots button")];
@@ -308,6 +311,18 @@ function wireClips(box) {
   video.addEventListener("ended", () => go(at + 1));
   video.addEventListener("error", () => setTimeout(() => go(at + 1), 2500));
   dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
+  // The chevrons, and a swipe across the phone's screen, step through its clips.
+  box.querySelector(".prev").addEventListener("click", () => go(at - 1));
+  box.querySelector(".next").addEventListener("click", () => go(at + 1));
+  const frame = box.querySelector(".frame");
+  let startX = null, startY = 0;
+  frame.addEventListener("touchstart", (event) => { startX = event.touches[0].clientX; startY = event.touches[0].clientY; }, { passive: true });
+  frame.addEventListener("touchend", (event) => {
+    if (startX == null) return;
+    const dx = event.changedTouches[0].clientX - startX, dy = event.changedTouches[0].clientY - startY;
+    startX = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) go(at + (dx < 0 ? 1 : -1));
+  });
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
     if (reduce) return;
