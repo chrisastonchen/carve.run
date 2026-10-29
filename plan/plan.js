@@ -665,14 +665,32 @@ function meters(a, b) {
 /// A place clicked on the map gets a name to show in the list.
 async function nameSpot(spot) {
   try {
-    const { name } = await planner("reverse", { at: { lat: spot.lat, lon: spot.lon } });
+    const { name, town } = await planner("reverse", { at: { lat: spot.lat, lon: spot.lon } });
     const target = [plan.start, plan.end, ...plan.waypoints].find((p) => p && p.id === spot.id);
     if (target && name) {
       target.label = clip(name, MOST_LABEL_CHARACTERS);
+      if (town) target.town = town;
+      else delete target.town;
       changed();
     }
   } catch {
     // Unnamed is fine: the row says what it is.
+  }
+}
+
+/// The start's and destination's towns, for the drive's name: looked up
+/// once for an end that came without one (a Google link's, an import's).
+function findTowns() {
+  for (const end of [plan.start, plan.end]) {
+    if (!end || end.town || end.townAsked) continue;
+    end.townAsked = true;
+    planner("reverse", { at: { lat: end.lat, lon: end.lon } })
+      .then(({ town }) => {
+        if (!town) return;
+        end.town = town;
+        changed();
+      })
+      .catch(() => {});
   }
 }
 
@@ -756,6 +774,7 @@ function render() {
   renderFigures();
   drawRoute();
   drawPins();
+  findTowns();
   $("save").disabled = !plan.path;
   $("save").textContent = plan.id ? "Save changes" : "Save and get the link";
 }
@@ -961,7 +980,7 @@ function removePoint(role, index) {
 }
 
 function choosePlace(role, index, place) {
-  const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS) };
+  const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS), ...(place.town ? { town: place.town } : {}) };
   edit(() => {
     if (role === "start") plan.start = spot;
     else if (role === "end") plan.end = spot;
@@ -1327,11 +1346,14 @@ async function writeRoute() {
 }
 
 /// "Main Street, Ramona" is Ramona when a place stands for a whole end.
-const town = (label) => (label ? label.split(",").map((s) => s.trim()).filter(Boolean).pop() : null);
+/// An end's town: the one it was found in, or (until that's known) its
+/// name up to the first comma.
+const town = (point) => point?.town || (point?.label ? point.label.split(",")[0].trim() : null) || null;
 
+/// Town to town: "Escondido to Julian", never street to street.
 function suggestedName() {
-  const from = town(plan.start?.label);
-  const to = loops() ? null : town(plan.end?.label);
+  const from = town(plan.start);
+  const to = loops() ? null : town(plan.end);
   if (from && to) return `${from} to ${to}`;
   return from ? `From ${from}` : "My drive";
 }
@@ -1395,7 +1417,7 @@ function showSaved() {
   $("map-hint").hidden = true;
   closeClickMenu();
   $("s-name").textContent = plan.name;
-  const ends = [town(plan.start?.label), loops() ? "back" : town(plan.end?.label)].filter(Boolean).join(" → ");
+  const ends = [town(plan.start), loops() ? "back" : town(plan.end)].filter(Boolean).join(" → ");
   const tripWord = { oneWay: "One way", roundTrip: "Round trip", outAndBack: "Out and back" }[plan.trip];
   const stops = stopCount();
   $("s-sub").textContent = [ends, tripWord, stops ? `${stops} stop${stops === 1 ? "" : "s"}` : null].filter(Boolean).join(" · ");
@@ -1839,7 +1861,7 @@ async function start() {
   render();
   // A guest's check runs while they look at the map, not when they search.
   if (!session) fetchPass();
-  if (LOCAL) window.__planner = { get plan() { return plan; }, showSaved, enrich, render, importTrack, placeAt, printDirections };
+  if (LOCAL) window.__planner = { get plan() { return plan; }, suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
     showSaved();
     renderBlurb(false);
