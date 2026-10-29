@@ -493,6 +493,20 @@ async function wireOwner(token, row) {
 
 // The bar doesn't wait for the route (a bad link still has its menu).
 wireBar();
+wireBanner();
+
+// The phone's "open in the app" bar: closed, it stays closed for the visit.
+// The share page adds its bar later, so the click is caught on the page.
+function wireBanner() {
+  const BANNER_KEY = "carve.banner.closed";
+  const close = () => document.documentElement.classList.add("banner-closed");
+  try { if (sessionStorage.getItem(BANNER_KEY)) close(); } catch {}
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest?.("[data-close-banner]")) return;
+    close();
+    try { sessionStorage.setItem(BANNER_KEY, "1"); } catch {}
+  });
+}
 
 async function start() {
   // Someone signed in to Carve has the app's pitch already.
