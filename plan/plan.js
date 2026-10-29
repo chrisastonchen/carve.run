@@ -514,6 +514,8 @@ function setUpMap() {
     // 2026-10-29: the bright ones fought the blue route for attention).
     const pointedAt = (on, off) => ["case", ["boolean", ["feature-state", "hover"], false], on, off];
     map.addSource("good-roads", { type: "geojson", data: emptyLine(), promoteId: "t" });
+    // Pointed at, it glows.
+    map.addLayer({ id: "good-roads-glow", type: "line", source: "good-roads", minzoom: GOOD_ROADS_ZOOM, layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#6A4CFF", "line-width": pointedAt(14, 0), "line-blur": 5, "line-opacity": pointedAt(0.55, 0) } }, "route-casing");
     map.addLayer({ id: "good-roads-casing", type: "line", source: "good-roads", minzoom: GOOD_ROADS_ZOOM, layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#ffffff", "line-width": pointedAt(7, 5), "line-opacity": pointedAt(0.9, 0.5) } }, "route-casing");
     map.addLayer({ id: "good-roads-line", type: "line", source: "good-roads", minzoom: GOOD_ROADS_ZOOM, layout: { "line-join": "round" }, paint: { "line-color": "#6A4CFF", "line-width": pointedAt(3.5, 2.6), "line-opacity": pointedAt(1, 0.62), "line-dasharray": ["literal", [2, 1.6]] } }, "route-casing");
     // A wide, invisible line to point at: a 3.5 px one is hard to hit.
