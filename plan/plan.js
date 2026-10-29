@@ -2071,7 +2071,11 @@ let emailForCode = "";
 let saveAfterSignIn = true;
 function openAccount(step = "choose", { saving = true, title } = {}) {
   saveAfterSignIn = saving;
-  $("acc-title").textContent = title || (saving ? "Save your drive" : "Keep planning");
+  $("acc-title").textContent = title || (saving ? "Sign in to save your route" : "Keep planning");
+  // What an account is for, in a line (the user, 2026-10-29).
+  $("acc-sub").textContent = saving
+    ? "It's saved to your account, ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and your group."
+    : "Your routes are saved to your account, ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and your group.";
   const dialog = $("account");
   setStep(step);
   if (!dialog.open) dialog.showModal();
@@ -2264,7 +2268,7 @@ function wire() {
   $("qr-download").addEventListener("click", downloadQR);
   $("print").addEventListener("click", printDirections);
 
-  $("sign-in").addEventListener("click", () => openAccount());
+  $("sign-in").addEventListener("click", () => openAccount("choose", { saving: false, title: "Sign in" }));
   $("join-create").addEventListener("click", () => openAccount("choose", { saving: false, title: "Create an account" }));
   $("tab-plan").addEventListener("click", () => setStartMode("plan"));
   $("tab-import").addEventListener("click", () => setStartMode("import"));
