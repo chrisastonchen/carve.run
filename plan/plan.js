@@ -24,7 +24,7 @@ const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
 // Cloudflare Turnstile's public site key: guests prove they're a browser
 // once an hour before the planner spends anything on them. Empty, no check.
-const TURNSTILE_SITE_KEY = "";
+const TURNSTILE_SITE_KEY = "0x4AAAAAAFqn1SkCkqJfDpRa";
 /// On a local preview (scripts/plan-tests/dev-server.mjs) the functions are
 /// served next to the page, so it can be tried before they're deployed.
 const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
