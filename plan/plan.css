@@ -226,10 +226,11 @@ a { color: var(--green); }
 .grip svg { width: 20px; height: 20px; }
 .grip.off { visibility: hidden; }
 .kind { flex: none; position: relative; display: inline-flex; align-items: center; }
-.kind select { appearance: none; -webkit-appearance: none; height: 36px; padding: 0 24px 0 8px; border: none; border-radius: 10px; background: none; font-size: 14px; font-weight: 700; color: var(--ink-3); cursor: pointer; }
-.kind select:hover { background: #fff; color: var(--ink); }
+/* A box like the fields', ending where the start's and destination's do. */
+.kind select { appearance: none; -webkit-appearance: none; width: 116px; height: 46px; padding: 0 30px 0 14px; border: none; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); font-size: 15px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
+.kind select:hover { color: var(--ink); }
 .kind select:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--green); }
-.kind svg { position: absolute; right: 8px; width: 11px; height: 11px; pointer-events: none; color: var(--ink-3); }
+.kind svg { position: absolute; right: 13px; width: 12px; height: 12px; pointer-events: none; color: var(--ink-3); }
 /* A stop's stay: a timer in a circle inside the field, left of the ×. The
    select sits invisibly over it, so picking is the browser's own list. */
 .stay { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 999px; background: var(--fill); color: var(--ink-3); display: flex; align-items: center; justify-content: center; }
