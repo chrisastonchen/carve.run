@@ -153,6 +153,7 @@ function remember() {
 function restore(json) {
   Object.assign(plan, JSON.parse(json));
   plan.elevationProfile = null;
+  plan.profile = null;
   plan.blurb = null;
   changed({ reroute: !plan.frozen, record: false });
 }
@@ -177,8 +178,10 @@ function edit(fn, { geometry = true } = {}) {
   remember();
   fn();
   if (geometry) {
+    // Elevation, curves and the summary were the old road's.
     plan.frozen = false;
     plan.elevationProfile = null;
+    plan.profile = null;
     plan.blurb = null;
   }
   changed({ reroute: geometry });
@@ -1387,7 +1390,12 @@ async function importFile(file) {
 
 async function save() {
   if (!plan.path) return;
-  plan.name = clip($("route-name").value, MOST_NAME_CHARACTERS) || suggestedName();
+  // A name the planner made follows the route ("From El Granada" moved to
+  // Belmont is "From Belmont"); one they typed is theirs.
+  const typed = clip($("route-name").value, MOST_NAME_CHARACTERS);
+  const madeHere = !typed || (plan.nameMade && typed === plan.name);
+  plan.name = madeHere ? suggestedName() : typed;
+  plan.nameMade = madeHere;
   if (!session || !(await accessToken())) {
     store.set(DRAFT_KEY, { plan, saved });
     openAccount();
