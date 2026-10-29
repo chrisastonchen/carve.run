@@ -175,6 +175,10 @@ a { color: var(--green); }
 
 .list-head { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 4px; }
 .undo { display: flex; align-items: center; gap: 6px; }
+/* The header's pills share the trip dropdown's height (the user, 2026-10-29). */
+.undo .pill.small { height: 34px; padding: 0 13px; font-size: 14.5px; }
+.undo .round { width: 34px; height: 34px; }
+.undo .round svg { width: 16px; height: 16px; }
 .pill.small { height: 44px; padding: 0 16px; font-size: 15px; }
 .pill.small:disabled { opacity: .4; }
 .bot-check { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 40; padding: 16px 18px; border-radius: 20px; background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.22); text-align: center; }
