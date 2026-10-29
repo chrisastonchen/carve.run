@@ -22,6 +22,9 @@ import {
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
+// Cloudflare Turnstile's public site key: guests prove they're a browser
+// once an hour before the planner spends anything on them. Empty, no check.
+const TURNSTILE_SITE_KEY = "";
 /// On a local preview (scripts/plan-tests/dev-server.mjs) the functions are
 /// served next to the page, so it can be tried before they're deployed.
 const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
@@ -157,20 +160,106 @@ function saveDraft() {
 
 class Failure extends Error {}
 
-async function planner(action, body = {}) {
+/// The planner, as this planner: their account when signed in, otherwise
+/// a guest with this hour's pass (fetched again once if it's turned down).
+async function planner(action, body = {}, retried = false) {
+  const token = await accessToken().catch(() => null);
+  const pass = token ? null : currentPass();
   let response;
   try {
     response = await fetch(`${FUNCTIONS}/planner`, {
       method: "POST",
-      headers: { "content-type": "application/json", apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-      body: JSON.stringify({ action, ...body }),
+      headers: { "content-type": "application/json", apikey: SUPABASE_KEY, Authorization: `Bearer ${token || SUPABASE_KEY}` },
+      body: JSON.stringify({ action, ...body, ...(pass ? { pass } : {}) }),
     });
   } catch {
     throw new Failure("Couldn't reach Carve. Check the connection and try again.");
   }
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Failure(data.error || "Something went wrong. Try again.");
-  return data;
+  if (response.ok) return data;
+  if (data.needsPass && !retried) {
+    guestPass = null;
+    if (await fetchPass()) return planner(action, body, true);
+    openAccount("choose", { saving: false });
+    throw new Failure("Couldn't check this browser. Sign in to keep planning. It's free.");
+  }
+  if (data.signIn) openAccount("choose", { saving: false });
+  throw new Failure(data.error || "Something went wrong. Try again.");
+}
+
+// ── the guest's pass ─────────────────────────────────────────────────
+
+let guestPass = null;
+let passOnItsWay = null;
+let turnstileWidget = null;
+
+const currentPass = () => (guestPass && guestPass.expires - 60 > Date.now() / 1000 ? guestPass.pass : null);
+
+/// Turnstile's check, then the planner's pass for it. Most people never
+/// see a thing; a doubtful browser gets one checkbox. False when the check
+/// can't run here at all.
+function fetchPass() {
+  if (!TURNSTILE_SITE_KEY || LOCAL) return Promise.resolve(false);
+  if (currentPass()) return Promise.resolve(true);
+  passOnItsWay ??= (async () => {
+    try {
+      const token = await turnstileToken();
+      if (!token) return false;
+      const response = await fetch(`${FUNCTIONS}/planner`, {
+        method: "POST",
+        headers: { "content-type": "application/json", apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        body: JSON.stringify({ action: "pass", token }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.pass) return false;
+      guestPass = { pass: data.pass, expires: data.expires };
+      return true;
+    } catch {
+      return false;
+    } finally {
+      passOnItsWay = null;
+    }
+  })();
+  return passOnItsWay;
+}
+
+function loadTurnstile() {
+  if (window.turnstile) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.onload = () => resolve(!!window.turnstile);
+    script.onerror = () => resolve(false);
+    document.head.append(script);
+    setTimeout(() => resolve(!!window.turnstile), 10000);
+  });
+}
+
+async function turnstileToken() {
+  if (!(await loadTurnstile())) return null;
+  return new Promise((resolve) => {
+    const done = (token) => {
+      $("bot-check").hidden = true;
+      resolve(token);
+    };
+    const options = {
+      sitekey: TURNSTILE_SITE_KEY,
+      appearance: "interaction-only",
+      callback: (token) => done(token),
+      "error-callback": () => done(null),
+      "expired-callback": () => done(null),
+      "before-interactive-callback": () => ($("bot-check").hidden = false),
+    };
+    try {
+      if (turnstileWidget !== null) {
+        window.turnstile.remove(turnstileWidget);
+      }
+      turnstileWidget = window.turnstile.render("#bot-check-widget", options);
+    } catch {
+      done(null);
+    }
+  });
 }
 
 async function rest(path, { method = "GET", body, headers = {} } = {}) {
@@ -393,10 +482,17 @@ function chainLine() {
   return points.map((p) => [p.lon, p.lat]);
 }
 
+/// The app's marks: a flag for the start, a checkered flag for the end.
+const MARKS = {
+  start: '<svg aria-hidden="true"><use href="#i-flag"/></svg>',
+  dest: '<svg aria-hidden="true"><use href="#i-flag-checkered"/></svg>',
+};
+
 function pinElement(kind, label) {
   const el = document.createElement("div");
   el.className = `pin ${kind}`;
-  if (label) el.textContent = label;
+  if (kind === "start" || kind === "dest") el.innerHTML = MARKS[kind];
+  else if (label) el.textContent = label;
   el.addEventListener("click", (event) => event.stopPropagation());
   return el;
 }
@@ -423,6 +519,12 @@ function drawPins() {
 }
 
 const round = (n) => Math.round(n * 1e6) / 1e6;
+
+function markBadge(kind) {
+  const badge = el("span", `badge ${kind}`);
+  badge.innerHTML = MARKS[kind];
+  return badge;
+}
 
 function fitRoute() {
   if (!mapReady) return;
@@ -688,7 +790,7 @@ function renderRows() {
   list.append(addRow());
   if (loops()) {
     const li = el("li", "row dest");
-    li.append(el("span", "badge dest"), textCell(plan.trip === "outAndBack" ? "Back the same way to the start" : "Back to the start"));
+    li.append(markBadge("dest"), textCell(plan.trip === "outAndBack" ? "Back the same way to the start" : "Back to the start"));
     list.append(li);
   } else {
     list.append(placeRow({ role: "end", point: plan.end, placeholder: "Choose a destination" }));
@@ -726,8 +828,8 @@ function placeRow({ role, point, index, label, placeholder }) {
   const li = el("li", `row${role === "end" ? " dest" : ""}`);
   li.dataset.role = role;
   if (index !== undefined) li.dataset.index = String(index);
-  if (role === "start") li.append(el("span", "badge start"));
-  else if (role === "end") li.append(el("span", "badge dest"));
+  if (role === "start") li.append(markBadge("start"));
+  else if (role === "end") li.append(markBadge("dest"));
   else li.append(el("span", `badge ${point.type === "stop" ? "stop" : "wp"}`, label));
 
   const cell = el("div", "cell");
@@ -737,10 +839,15 @@ function placeRow({ role, point, index, label, placeholder }) {
   input.autocomplete = "off";
   input.spellcheck = false;
   input.value = rowName(point, role);
+  input.title = input.value;
   input.placeholder = placeholder || "Search for a place";
   input.setAttribute("aria-label", role === "start" ? "Start" : role === "end" ? "Destination" : `${point.type === "stop" ? "Stop" : "Waypoint"} ${label}`);
   input.dataset.focus = role === "waypoint" ? `w${index}` : role;
   wrap.append(input);
+  if (role === "waypoint" && point.type === "stop") {
+    input.classList.add("timed");
+    wrap.append(stayControl(point));
+  }
   if (point) {
     const clear = el("button", "clear", "×");
     clear.type = "button";
@@ -749,8 +856,10 @@ function placeRow({ role, point, index, label, placeholder }) {
     clear.addEventListener("click", () => removePoint(role, index));
     wrap.append(clear);
   }
-  cell.append(wrap);
-  if (role === "waypoint") cell.append(kindRow(point, index));
+  const line = el("div", "field-line");
+  line.append(wrap);
+  if (role === "waypoint") line.append(kindSwitch(point));
+  cell.append(line);
   li.append(cell);
   attachSearch(li, input, (place) => choosePlace(role, index, place));
 
@@ -764,8 +873,7 @@ function placeRow({ role, point, index, label, placeholder }) {
   return li;
 }
 
-function kindRow(point, index) {
-  const row = el("div", "kind-row");
+function kindSwitch(point) {
   const seg = el("div", "seg");
   seg.setAttribute("role", "radiogroup");
   seg.setAttribute("aria-label", "Stop or waypoint");
@@ -785,24 +893,27 @@ function kindRow(point, index) {
     });
     seg.append(button);
   }
-  row.append(seg);
-  if (point.type === "stop") {
-    const stay = el("span", "stay");
-    stay.innerHTML = '<svg aria-hidden="true"><use href="#i-clock"/></svg>';
-    const select = el("select");
-    select.setAttribute("aria-label", "Time to stay");
-    select.append(new Option("Add stay time", "0"));
-    for (const minutes of STAY_CHOICES) select.append(new Option(`Stay ${minutes < 60 ? `${minutes} min` : formatDuration(minutes * 60).replace(" h", " hr")}`, String(minutes)));
-    select.value = String(point.stayMinutes || 0);
-    select.addEventListener("change", () => edit(() => {
-      const minutes = Number(select.value);
-      if (minutes) point.stayMinutes = minutes;
-      else delete point.stayMinutes;
-    }, { geometry: false }));
-    stay.append(select);
-    row.append(stay);
-  }
-  return row;
+  return seg;
+}
+
+/// How long a stop's stay is: a timer button, filled once there's a time.
+function stayControl(point) {
+  const stayText = (minutes) => `Stay ${minutes < 60 ? `${minutes} min` : formatDuration(minutes * 60).replace(" h", " hr")}`;
+  const stay = el("span", `stay${point.stayMinutes ? " set" : ""}`);
+  stay.innerHTML = '<svg aria-hidden="true"><use href="#i-clock"/></svg>';
+  stay.title = point.stayMinutes ? stayText(point.stayMinutes) : "Add stay time";
+  const select = el("select");
+  select.setAttribute("aria-label", point.stayMinutes ? `Time to stay: ${stayText(point.stayMinutes)}` : "Add stay time");
+  select.append(new Option("No stay time", "0"));
+  for (const minutes of STAY_CHOICES) select.append(new Option(stayText(minutes), String(minutes)));
+  select.value = String(point.stayMinutes || 0);
+  select.addEventListener("change", () => edit(() => {
+    const minutes = Number(select.value);
+    if (minutes) point.stayMinutes = minutes;
+    else delete point.stayMinutes;
+  }, { geometry: false }));
+  stay.append(select);
+  return stay;
 }
 
 function addRow() {
@@ -1043,6 +1154,8 @@ async function importLink(text) {
   busy(true, "Bringing it in…");
   try {
     if (link.kind === "rwgps") {
+      // The track goes to the planner next: have the pass before asking.
+      if (!session) await fetchPass();
       const response = await fetch(`${FUNCTIONS}/ride-with-gps`, {
         method: "POST",
         headers: { "content-type": "application/json", apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
@@ -1455,7 +1568,12 @@ function printDirections() {
 // ── account dialog ───────────────────────────────────────────────────
 
 let emailForCode = "";
-function openAccount(step = "choose") {
+/// Sign-in: to save the drive, or (`saving: false`) to keep planning
+/// once a guest's share runs out.
+let saveAfterSignIn = true;
+function openAccount(step = "choose", { saving = true } = {}) {
+  saveAfterSignIn = saving;
+  $("acc-title").textContent = saving ? "Save your drive" : "Keep planning";
   const dialog = $("account");
   setStep(step);
   if (!dialog.open) dialog.showModal();
@@ -1473,7 +1591,7 @@ function accountError(message) {
 
 function oauth(provider) {
   store.set(DRAFT_KEY, { plan, saved });
-  store.set(PENDING_SAVE_KEY, true);
+  store.set(PENDING_SAVE_KEY, saveAfterSignIn);
   if (!storageWorks) {
     accountError("This browser isn't keeping data, so signing in with " + (provider === "apple" ? "Apple" : "Google") + " would lose your route. Use email instead.");
     return;
@@ -1487,7 +1605,7 @@ async function afterSignIn() {
   const found = await loadProfile().catch(() => null);
   if (!found) return setStep("username");
   $("account").close();
-  await save();
+  if (saveAfterSignIn) await save();
 }
 
 function renderWho() {
@@ -1719,6 +1837,8 @@ async function start() {
   renderWho();
   setUpMap();
   render();
+  // A guest's check runs while they look at the map, not when they search.
+  if (!session) fetchPass();
   if (LOCAL) window.__planner = { get plan() { return plan; }, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
     showSaved();

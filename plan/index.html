@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=2">
+<link rel="stylesheet" href="/plan/plan.css?v=5">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -29,6 +29,9 @@
   <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 9v4l2.5 2M9 2h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <!-- The app's start and finish marks (Material Icons, Apache 2.0, as android/…/ic_pin_flag*.xml). -->
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6z" fill="currentColor"/></symbol>
+  <symbol id="i-flag-checkered" viewBox="0 0 24 24"><path d="M5,4h2v16H5V4zM7,4h2v2H7V4zM11,4h2v2h-2V4zM15,4h2v2h-2V4zM19,4h2v2h-2V4zM9,6h2v2H9V6zM13,6h2v2h-2V6zM17,6h2v2h-2V6zM7,8h2v2H7V8zM11,8h2v2h-2V8zM15,8h2v2h-2V8zM19,8h2v2h-2V8zM9,10h2v2H9v-2zM13,10h2v2h-2v-2zM17,10h2v2h-2v-2z" fill="currentColor"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" fill="currentColor"/><circle cx="12" cy="9" r="2.6" fill="#fff"/></symbol>
   <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z M14 3v5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -184,13 +187,14 @@
     </section>
   </aside>
 
-  <div class="map-hint" id="map-hint" hidden><span class="dot-start"></span>Click the map or search</div>
+  <div class="map-hint" id="map-hint" hidden><span class="dot-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></span>Click the map or search</div>
   <div class="legend" id="legend" hidden aria-label="Map key">
-    <span><i class="k-start"></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp">1</i>Waypoint</span><span><i class="k-end"></i>Destination</span>
+    <span><i class="k-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp">1</i>Waypoint</span><span><i class="k-end"><svg aria-hidden="true"><use href="#i-flag-checkered"/></svg></i>Destination</span>
   </div>
   <div class="click-menu" id="click-menu" role="menu" aria-label="Add this spot" hidden></div>
   <div class="drop" id="drop" hidden><span>Drop the GPX file to bring it in</span></div>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <div class="bot-check" id="bot-check" hidden><p>One quick check before you plan.</p><div id="bot-check-widget"></div></div>
 </div>
 
 <dialog class="sheet-dialog" id="start-over-dialog" aria-labelledby="start-over-title">
@@ -244,6 +248,6 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=3"></script>
+<script type="module" src="/plan/plan.js?v=4"></script>
 </body>
 </html>
