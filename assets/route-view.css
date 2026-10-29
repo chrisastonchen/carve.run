@@ -154,6 +154,12 @@
   .rv .scroll > .rv-photo { order: 2; margin: 0; height: 190px; border-radius: 16px; }
   .rv-head h1 { font-size: 28px; }
   .rv .facts .sep { display: none; }
+  /* The app's button stays in reach (the user, 2026-10-29): a bar locked
+     to the bottom of the screen while the page scrolls under it. */
+  .rv { padding-bottom: 78px; }
+  .rv .go { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; padding: 10px 16px max(10px, env(safe-area-inset-bottom)); background: rgba(255,255,255,.97); border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(0,0,0,.06); }
+  .rv .go a { height: 52px; }
+  .rv .go p, .rv .go .platforms { display: none; }
 }
 
 /* ── the browser's own Print: the guide itself (Print directions fills
