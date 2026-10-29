@@ -883,6 +883,10 @@ function renderNotice() {
     : "Some of it couldn't be matched to roads, so it's drawn as it was";
 }
 
+function syncImportButton() {
+  $("link-go").disabled = !$("link-in").value.trim();
+}
+
 function renderFigures() {
   const distance = plan.path ? formatDistance(plan.path.distanceMeters, miles) : null;
   $("fig-dist").textContent = distance ? distance.value : "–";
@@ -1332,6 +1336,7 @@ async function importLink(text) {
       await importCarve(link.token);
     }
     $("link-in").value = "";
+    syncImportButton();
   } catch (failure) {
     toast(failure.message, true);
   } finally {
@@ -2017,8 +2022,11 @@ function wire() {
   });
   $("link-form").addEventListener("submit", (event) => {
     event.preventDefault();
-    importLink($("link-in").value);
+    if ($("link-in").value.trim()) importLink($("link-in").value);
   });
+  // Import lights up green once there's a link to import (the user, 2026-10-29).
+  $("link-in").addEventListener("input", syncImportButton);
+  syncImportButton();
   $("gpx-btn").addEventListener("click", () => $("gpx").click());
   $("gpx").addEventListener("change", () => importFile($("gpx").files[0]));
   const app = document.querySelector(".app");
