@@ -155,6 +155,10 @@ a { color: var(--green); }
 .view { position: absolute; inset: 0; display: flex; flex-direction: column; }
 .scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 22px 22px 16px; display: flex; flex-direction: column; gap: 14px; }
 .foot { flex: none; padding: 16px 22px 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
+.foot.join { gap: 8px; }
+.foot.join p { margin: 0; }
+.textlink { border: 0; padding: 0; background: none; font: inherit; color: var(--green); font-weight: 700; cursor: pointer; }
+.textlink:hover { text-decoration: underline; }
 .foot.quiet { padding: 10px 16px 12px; align-items: center; }
 .intro h1 { font-size: 30px; }
 .intro p { margin-top: 6px; font-size: 18px; }
@@ -257,7 +261,9 @@ a { color: var(--green); }
 .suggest .a { display: block; font-size: 13.5px; color: var(--ink-3); }
 .suggest .none { color: var(--ink-3); cursor: default; }
 .hint { padding: 0 4px; font-size: 15.5px; color: var(--ink-3); margin-top: -4px; }
-.trip { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
+.head-left { display: flex; align-items: center; gap: 10px; }
+.select.small select { height: 34px; padding: 0 32px 0 13px; font-size: 14.5px; }
+.select.small svg { right: 12px; width: 12px; height: 12px; }
 .select { position: relative; display: inline-flex; align-items: center; }
 .select select { appearance: none; -webkit-appearance: none; height: 44px; padding: 0 40px 0 16px; border: none; border-radius: 999px; background: var(--fill); font-weight: 700; font-size: 16px; }
 .select svg { position: absolute; right: 16px; width: 14px; height: 14px; pointer-events: none; color: var(--ink-2); }
@@ -268,8 +274,8 @@ a { color: var(--green); }
 .paste .pill { height: 52px; }
 .sources { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; font-weight: 600; color: #2F4A3A; }
 .sources span { display: inline-flex; align-items: center; gap: 6px; }
-.sources svg { width: 15px; height: 15px; }
-.sources .g { color: #EA4335; } .sources .r { color: #E8590C; } .sources .c { color: var(--green); }
+.sources img { width: 18px; height: 18px; border-radius: 5px; }
+.sources img.pin { border-radius: 0; }
 .bring .linkish { align-self: flex-start; margin-top: -4px; }
 .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 4px; }
 .figures b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }

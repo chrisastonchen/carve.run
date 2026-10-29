@@ -856,6 +856,7 @@ function render({ keepTyping = false } = {}) {
   // history buttons and the save footer come with the first place.
   $("history-buttons").hidden = !hasAny && !history.back.length && !history.forward.length;
   $("foot").hidden = !hasAny;
+  $("join").hidden = !!session || hasAny;
   $("trip").value = plan.trip;
   if (document.activeElement !== $("route-name")) $("route-name").value = plan.name || "";
   renderNotice();
@@ -1904,6 +1905,7 @@ function renderWho() {
   $("who").hidden = !signedIn;
   // "No account until you save" is for guests.
   $("save-note").hidden = signedIn;
+  if (signedIn) $("join").hidden = true;
   if (!signedIn) return;
   $("who-name").textContent = profile?.username || session.user.email?.split("@")[0] || "Account";
   const avatar = $("avatar");
@@ -2044,6 +2046,8 @@ function wire() {
   $("print").addEventListener("click", printDirections);
 
   $("sign-in").addEventListener("click", () => openAccount());
+  $("join-create").addEventListener("click", () => openAccount("choose", { saving: false, title: "Create an account" }));
+  $("join-login").addEventListener("click", () => openAccount("choose", { saving: false, title: "Log in" }));
   $("who-btn").addEventListener("click", () => {
     const open = $("who-menu").hidden;
     $("who-menu").hidden = !open;
@@ -2056,7 +2060,13 @@ function wire() {
     const token = session?.access_token;
     signedOut();
     $("who-menu").hidden = true;
-    if (token) fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: "POST", headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` } }).catch(() => {});
+    // Signed out, the page starts again as a guest's (the user, 2026-10-29);
+    // the plan comes back from the draft.
+    store.set(DRAFT_KEY, { plan, saved });
+    const loggedOut = token
+      ? fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: "POST", headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(3000) }).catch(() => {})
+      : Promise.resolve();
+    loggedOut.finally(() => location.reload());
   });
   $("menu-btn").addEventListener("click", () => {
     const open = $("sheet").hidden;
