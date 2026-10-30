@@ -8,6 +8,7 @@ import "/assets/site-bar.js";
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
+import { attachPlaceSearch, placeOf } from "/assets/home-search.js";
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const WIDE = "(min-width: 900px)";
@@ -249,14 +250,20 @@ function wireDoor() {
     $("door-from").focus();
     $("door-from").select();
   });
+  // Search suggestions near the map's middle, or near the start.
+  const near = () => {
+    if (map) { const c = map.getCenter(); return { lat: c.lat, lon: c.lng }; }
+    const f = $("door-from").dataset;
+    return f.lat ? { lat: Number(f.lat), lon: Number(f.lon) } : null;
+  };
+  attachPlaceSearch($("door-from"), near);
+  attachPlaceSearch($("door-to"), near);
   $("pane-plan").addEventListener("submit", (event) => {
     event.preventDefault();
-    const fromText = $("door-from").value.trim(), to = $("door-to").value.trim();
-    // The start filled in from where we think they are goes as the place itself, no search.
-    const field = $("door-from");
-    const from = field.dataset.lat && fromText === field.dataset.label
-      ? { name: fromText, lat: Number(field.dataset.lat), lon: Number(field.dataset.lon) } : fromText;
-    if (!fromText && !to) { location.href = "/plan/"; return; }
+    // A place picked from the suggestions, or filled in from where we think
+    // they are, goes as the place itself; typed words are searched on arrival.
+    const from = placeOf($("door-from")), to = placeOf($("door-to"));
+    if (!from && !to) { location.href = "/plan/"; return; }
     handOff({ kind: "stops", from, to });
   });
   const err = (text) => { $("door-err").textContent = text; $("door-err").hidden = !text; };
