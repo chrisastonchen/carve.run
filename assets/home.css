@@ -755,9 +755,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 
 /* ═══ The app, right under the hero (the user, 2026-10-30): as AllTrails
    does it, a headline, one line, the code, two buttons and the phone. ═══ */
-.app-band { background: var(--sand-2); padding: 0 clamp(24px, 5vw, 72px); overflow: hidden; }
+.app-band { background: var(--sand-2); padding: 88px clamp(24px, 5vw, 72px); overflow: hidden; }
 .app-in { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 64px; }
-.app-words { display: flex; flex-direction: column; gap: 18px; padding: 72px 0; }
+.app-words { display: flex; flex-direction: column; gap: 18px; }
 .app-band h2 { font-size: clamp(44px, 4.6vw, 64px); }
 .app-band .sub { font-size: 20px; line-height: 1.5; color: var(--ink-2); max-width: 26em; }
 .app-band .get-app { align-self: flex-start; margin-top: 18px; padding: 0; gap: 24px; background: none; border-radius: 0; }
@@ -769,8 +769,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .badge span { display: flex; flex-direction: column; font-size: 21px; font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; }
 .badge small { font-size: 12px; font-weight: 500; letter-spacing: 0; }
 .badge:hover { background: #22262B; }
-.app-phone { align-self: end; width: 330px; height: 560px; }
-.app-phone .frame { position: relative; width: 100%; height: 100%; border: 11px solid #15181C; border-bottom: 0; border-radius: 52px 52px 0 0; background: #0E1A24; overflow: hidden; box-sizing: border-box; }
+.app-phone { width: 300px; height: 620px; }
+.app-phone .frame { position: relative; width: 100%; height: 100%; border: 11px solid #15181C; border-radius: 52px; box-shadow: 0 30px 60px rgba(21,24,28,.22); background: #0E1A24; overflow: hidden; box-sizing: border-box; }
 .app-phone video, .app-phone .still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .app-phone video { opacity: 0; transition: opacity .2s; }
 .app-phone video.on { opacity: 1; }
@@ -778,9 +778,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .app-band { margin-top: 40px; } }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
-  .app-band { padding: 0 16px; }
+  .app-band { padding: 40px 16px 44px; }
   .app-in { display: block; }
-  .app-words { padding: 40px 0 44px; gap: 12px; }
+  .app-words { gap: 12px; }
   .app-band h2 { font-size: 34px; }
   .app-band .sub { font-size: 17px; }
   .app-band .get-app { align-self: stretch; margin-top: 10px; }
