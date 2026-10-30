@@ -11,7 +11,7 @@ import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
 import { attachPlaceSearch, placeOf } from "/assets/home-search.js";
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
-const WIDE = "(min-width: 900px)";
+const WIDE = "(min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine)";
 const HANDOFF_KEY = "carve.plan.handoff";
 const NO_PHOTO = "data:image/svg+xml," + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120"><rect width="160" height="120" fill="#E3EBDA"/>'

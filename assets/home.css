@@ -1,3 +1,5 @@
+/* Phones in landscape are wider than 900px but short and touch: they keep
+   the phone layout (the user, 10/29). WIDE in home.js matches. */
 /* carve.run's home page (the user, 2026-10-29): great roads near you, then
    the easiest way to organize a drive in three steps, then the app. On a
    computer the hero has a small front door to the planner and a map of the
@@ -202,7 +204,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .faq2 details p { color: var(--ink-2); line-height: 1.55; }
 
 /* ═══ A PHONE ═══ */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .wide-only-h { display: none !important; }
   .phone-only-h { display: flex !important; }
   .hero { display: block; min-height: 0; }
@@ -253,7 +255,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 /* ═══ On a computer, the hero as the planner looks (the user, 2026-10-29):
    the map across the whole width, the words and the front door on a card
    floating over its left side. ═══ */
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero { position: relative; display: block; height: min(800px, calc(100vh - 64px)); min-height: 660px; }
   /* MapLibre's stylesheet, loaded after this one, makes its container relative. */
   .hero > .hero-map, .hero > .hero-map.maplibregl-map { position: absolute; inset: 0; }
@@ -287,7 +289,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .legends h2, .clubs2 h2, .anywhere h2, .faq2 h2 { font-size: 30px; }
 .steps-sec > h2 { font-size: clamp(32px, 3vw, 42px); }
 .near-head h2 { font-size: 26px; }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero {
     width: calc(100% - 2 * var(--gutter)); max-width: var(--page); margin: 24px auto 0;
     height: min(660px, calc(100vh - 64px - 48px)); min-height: 600px; border-radius: 28px; overflow: hidden;
@@ -303,7 +305,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-map .locate { right: 18px; top: 18px; }
   .near { padding-top: 40px; padding-bottom: 56px; }
 }
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .near { padding-left: 0; padding-right: 0; }
   .steps-sec { padding-left: 16px; padding-right: 16px; }
 }
@@ -439,16 +441,16 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .clubs2 .problem { font-size: 18px; line-height: 1.5; font-weight: 600; color: var(--green-dark); margin-bottom: 16px; }
 .clubs2 .founder { align-self: start; padding: 18px 20px; border-radius: 18px; background: rgba(255,255,255,.6); }
 .clubs2 .founder .note { font-size: 15.5px; line-height: 1.55; font-style: normal; }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero-copy { gap: 16px; }
   .for-org { font-size: 13.5px; padding: 9px 12px; }
 }
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .proof { font-size: 13px; }
   .for-org { display: none; }
   .clubs2 { margin-top: 30px; }
 }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero { height: min(740px, calc(100vh - 64px - 40px)); min-height: 660px; }
   .hero-copy { justify-content: safe center; gap: 14px; padding: 24px 26px; }
   .hero-copy .lead { gap: 12px; }
@@ -460,10 +462,10 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hb { height: 46px; }
   .for-app { font-size: 14px; }
 }
-@media (max-width: 899px) { .cards-near .ph { aspect-ratio: 4 / 5; border-radius: 24px; } .cards-near .n { font-size: 23px; } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .cards-near .ph { aspect-ratio: 4 / 5; border-radius: 24px; } .cards-near .n { font-size: 23px; } }
 /* A phone's deck (the user, 2026-10-29: the cards were edge to edge and too tall):
    the snap keeps the page's margin, and the cards are a normal size. */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .cards-near { padding: 0 16px 6px; scroll-padding-inline: 16px; gap: 12px; }
   .cards-near li { flex: 0 0 72%; }
   .cards-near .ph { aspect-ratio: 4 / 3; border-radius: 18px; }
@@ -516,7 +518,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .org-line svg { width: 15px; height: 15px; }
 .org-line:hover { text-decoration: underline; }
 .hero-video { display: none; }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   /* the place belongs to the map */
   .hero > .near-chip { position: absolute; z-index: 3; left: calc(min(460px, 42%) + 36px); top: 18px; box-shadow: 0 4px 14px rgba(0,0,0,.12); border: 0; }
   .hero-copy { gap: 20px; }
@@ -525,7 +527,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 
 /* On a phone, the canyon run plays behind the words, dimmed. */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero { position: relative; overflow: hidden; background: #17221B; color: #fff; padding-bottom: 26px; }
   .hero-video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
   .hero-video.on { opacity: 1; }
@@ -548,7 +550,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .together figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 80px 28px 26px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,0)); display: flex; flex-direction: column; gap: 4px; }
 .together figcaption b { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
 .together figcaption span { font-size: 16px; opacity: .9; }
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .together { margin-top: 36px; grid-template-columns: 1fr; height: auto; }
   .together .wide img { aspect-ratio: 4 / 3; height: auto; }
   .together .tall { display: none; }
@@ -561,7 +563,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .clubs2 .founder { padding: 12px 12px 18px; }
 .clubs2 .founder img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 30% 60%; border-radius: 12px; margin-bottom: 14px; }
 .clubs2 .founder .note, .clubs2 .founder .sig { padding: 0 8px; }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .proof { flex-wrap: wrap; }
   .proof li { white-space: nowrap; }
   .hero h1 { font-size: clamp(30px, 2.7vw, 40px); }
@@ -573,7 +575,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 
 /* The hero card's photo: the club's line of cars, across the card's top. */
 .card-photo { display: none; }
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .card-photo { display: block; width: calc(100% + 60px); max-width: none; margin: -30px -30px 2px; height: 128px; object-fit: cover; object-position: 50% 55%; border-radius: 26px 26px 0 0; }
 }
 
@@ -596,7 +598,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .collage .words { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px 34px 30px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,0)); display: flex; flex-direction: column; gap: 4px; pointer-events: none; }
 .collage .words b { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
 .collage .words span { font-size: 17px; opacity: .92; }
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .collage { --s: 28px; --g: 6px; height: 300px; border-radius: 22px; }
   .collage .words { padding: 80px 18px 18px; }
   .collage .words b { font-size: 26px; }
@@ -610,11 +612,11 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .collage .words > div { display: flex; flex-direction: column; gap: 4px; }
 .collage .words .cta { pointer-events: auto; flex: none; box-shadow: none; }
 .home .collage .words .cta { color: var(--ink); }
-@media (max-width: 899px) { .collage .words { gap: 12px; } .collage .words .cta { height: 42px; padding: 0 16px; font-size: 14px; } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .collage .words { gap: 12px; } .collage .words .cta { height: 42px; padding: 0 16px; font-size: 14px; } }
 /* the button under the words, not beside them (the user, 2026-10-29) */
 .collage .words { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 4px; }
 .collage .words .cta { margin-top: 14px; }
-@media (max-width: 899px) { .collage .words .cta { margin-top: 10px; } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .collage .words .cta { margin-top: 10px; } }
 /* Four panels (the user, 2026-10-29): boundaries at a quarter, a half and three quarters. */
 .collage .p1 { left: 0; right: auto; width: calc(25% + var(--s) / 2 - var(--g) / 2); clip-path: polygon(0 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
 .collage .p2 { left: calc(25% - var(--s) / 2 + var(--g) / 2); right: auto; width: calc(25% + var(--s) - var(--g)); clip-path: polygon(var(--s) 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
@@ -627,17 +629,17 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 /* a deeper scrim, so the words read over any of the photos */
 .collage .words { padding-top: 170px; background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 100%); }
 .collage .words b, .collage .words span { text-shadow: 0 1px 12px rgba(0,0,0,.35); }
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   /* on a phone, the two that read best at that size */
   .collage .p1, .collage .p4 { display: none; }
   .collage .p2 { left: 0; width: calc(50% + var(--s) / 2 - var(--g) / 2); clip-path: polygon(0 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
   .collage .p3 { left: calc(50% - var(--s) / 2 + var(--g) / 2); right: 0; width: auto; clip-path: polygon(var(--s) 0, 100% 0, 100% 100%, 0 100%); }
   .collage .words { padding-top: 110px; }
 }
-@media (max-width: 899px) { .collage { height: 400px; } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .collage { height: 400px; } }
 /* the three reasons on one line (the user, 2026-10-29) */
 .proof { flex-wrap: nowrap; gap: 4px 12px; }
-@media (max-width: 899px) { .proof { gap: 4px 10px; font-size: 13px; } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .proof { gap: 4px 10px; font-size: 13px; } }
 .proof li { white-space: nowrap; }
 @media (max-width: 399px) { .proof { gap: 4px 8px; font-size: 12px; } }
 /* "Drive them together." on one line on small phones (360px) */
@@ -651,12 +653,12 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .clubs2 .cta { flex-direction: column; align-items: flex-start; gap: 10px; }
 .clubs2 .cta .hb svg { width: 18px; height: 18px; margin-left: 8px; vertical-align: -3px; }
 .clubs2 .cta .guide { font-size: 15px; font-weight: 600; color: var(--green-dark); }
-@media (max-width: 899px) { .clubs2 .problem { font-size: 18px; } .clubs2 .ticks li { font-size: 15.5px; } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .clubs2 .problem { font-size: 18px; } .clubs2 .ticks li { font-size: 15.5px; } }
 .clubs2 .cta { margin-top: 26px; }
 .clubs2 .cta .guide { text-decoration: none; }
 /* On a phone: three club photos behind the words, story style (the user, 10/29: the video was too fast) */
 .hero-story { display: none; }
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero { min-height: 380px; }
   .hero-story { display: block; position: absolute; inset: 0; }
   .hero-story img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s ease; }
@@ -671,7 +673,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 @keyframes storyfill { to { transform: scaleX(1); } }
 /* On a phone: the app button under the reasons; the place moves to the drives below (the user, 10/29) */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero { min-height: 400px; }
   .hero .door, .hero > .near-chip { display: none !important; }
   .hero-get { margin-top: 26px; width: 100%; height: 52px; justify-content: center; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
@@ -682,16 +684,16 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .near-change2[hidden] { display: none !important; }
 }
 /* On a phone: the reasons stacked, bigger (the user, 10/29) */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero .proof { flex-direction: column; flex-wrap: nowrap; gap: 9px; font-size: 17px; margin-top: 6px; }
   .hero .proof li::before { width: 20px; height: 20px; }
   .hero-get { margin-top: 30px; }
 }
-@media (max-width: 899px) { .hero { min-height: 0; padding-bottom: 46px; } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .hero { min-height: 0; padding-bottom: 46px; } }
 /* darker scrim behind the words on phones (the user, 10/29) */
-@media (max-width: 899px) { .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.78) 0%, rgba(8,14,10,.62) 55%, rgba(8,14,10,.45) 100%); } }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.78) 0%, rgba(8,14,10,.62) 55%, rgba(8,14,10,.45) 100%); } }
 /* more air in the phone header and above the drives (the user, 10/29) */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero { padding-bottom: 64px; }
   .hero-copy { padding-top: 40px; gap: 18px; }
   .hero .proof { margin-top: 10px; gap: 11px; }
@@ -699,7 +701,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .near { padding-top: 30px; }
 }
 /* under the app button: the car screen, small (the user, 10/29) */
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero-car { margin: 10px 0 0; justify-content: center; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,.85); }
   .hero-car svg { width: 15px; height: 15px; }
 }
@@ -716,4 +718,4 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .door .bot-check[hidden] { display: none; }
 .door .bot-check p { margin: 0 0 6px; }
 /* the card lets the suggestions hang below it */
-@media (min-width: 900px) { .hero-copy { overflow: visible; } }
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .hero-copy { overflow: visible; } }
