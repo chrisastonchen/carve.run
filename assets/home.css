@@ -670,19 +670,14 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-story.still .bars { display: none; }
 }
 @keyframes storyfill { to { transform: scaleX(1); } }
-/* On a phone: one full-width "Where to?" bar under the reasons (the user, 10/29) */
+/* On a phone: the app button under the reasons; the place moves to the drives below (the user, 10/29) */
 @media (max-width: 899px) {
-  .hero { min-height: 440px; }
-  .hero .door { display: block; padding: 0; border: 0; background: none; box-shadow: none; max-width: none; margin-top: 4px; }
-  .hero .door #pane-bring, .hero .door .from, .hero .door #door-from-field, .hero .door .switch { display: none !important; }
-  .hero .door #pane-plan { display: flex; align-items: center; gap: 6px; padding: 5px 5px 5px 6px; border-radius: 999px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
-  .hero .door #pane-plan .field { flex: 1; min-width: 0; background: none; padding: 0 0 0 6px; }
-  .hero .door #pane-plan input { font-size: 16px; color: var(--ink); }
-  .hero .door .go { flex: none; width: 46px; height: 46px; padding: 0; border-radius: 50%; font-size: 0; gap: 0; display: inline-flex; align-items: center; justify-content: center; }
-  .hero .door .go svg { width: 20px; height: 20px; margin: 0; }
-}
-@media (max-width: 899px) {
-  .hero .door #pane-plan { flex-direction: row; flex-wrap: nowrap; }
-  .hero .door #pane-plan .field { display: flex; }
-  .hero .door #pane-plan .go { width: 46px; min-width: 0; margin: 0; }
+  .hero { min-height: 400px; }
+  .hero .door, .hero > .near-chip { display: none !important; }
+  .hero-get { margin-top: 26px; width: 100%; height: 52px; justify-content: center; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+  .hero-get svg { width: 20px; height: 20px; }
+  .near-head { align-items: baseline; justify-content: space-between; flex-wrap: nowrap; }
+  .near-head h2 { display: block !important; font-size: 22px; letter-spacing: -0.01em; }
+  .near-change2 { flex: none; border: 0; background: none; padding: 0; font: inherit; font-size: 15px; font-weight: 700; color: var(--green); cursor: pointer; }
+  .near-change2[hidden] { display: none !important; }
 }

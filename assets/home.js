@@ -64,7 +64,7 @@ function renderNear() {
     <span class="ph"><img src="${escapeHTML(r.i || NO_PHOTO)}" alt="" loading="lazy"></span>
     <span class="t"><span class="away">${escapeHTML(awayText(r))}</span><span class="n">${escapeHTML(r.n)}</span>
     <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a></li>`).join("");
-  $("near-title").textContent = place ? `Great drives near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
+  $("near-title").textContent = place ? `${wide() ? "Great drives" : "Drives"} near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
   // The front door's start, from where we think they are: most people only type where to.
   const field = $("door-from");
   if (place && (!field.value || field.value === field.dataset.label)) {
@@ -77,6 +77,7 @@ function renderNear() {
   }
   const chip = $("near-chip");
   chip.hidden = !place;
+  $("near-change2").hidden = !place;
   if (place) $("near-name").textContent = place.label === "you" ? "you" : place.label;
 }
 
@@ -488,9 +489,10 @@ async function tagAppCode() {
 
 // ── on a phone, the club's photos behind the words, story style ────
 function heroStory() {
-  // the phone's search bar: short placeholder
-  const to = document.getElementById("door-to");
-  if (to && !wide()) to.placeholder = "Where to?";
+  if (/android/i.test(navigator.userAgent || "")) {
+    const get = document.querySelector(".hero-get span");
+    if (get) get.textContent = "Get Carve on Android";
+  }
   const story = document.querySelector(".hero-story");
   if (!story || wide()) return;
   const imgs = [...story.querySelectorAll("img")];
@@ -540,6 +542,7 @@ async function main() {
   wireDoor();
   wireSteps();
   $("near-change").addEventListener("click", locate);
+  $("near-change2").addEventListener("click", locate);
   $("hero-locate").addEventListener("click", locate);
   if (!wide()) document.querySelectorAll(".seq").forEach(wireClips);
   const [data, guess] = await Promise.all([

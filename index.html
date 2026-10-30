@@ -30,7 +30,7 @@
 <link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=9bb6ad869e">
 <link rel="stylesheet" href="/assets/site-bar.css?v=1b5bcab43d">
-<link rel="stylesheet" href="/assets/home.css?v=1f12b60022">
+<link rel="stylesheet" href="/assets/home.css?v=518d898cc1">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -108,7 +108,7 @@
      you) beside a map of the roads near you; on a phone, no typing, just
      the roads. home.js fills in the place, the map and the drives. -->
 <section class="hero" aria-label="Find great roads">
-  <!-- On a phone, the club's canyon run plays behind the words (home.js). -->
+  <!-- On a phone, three club photos play behind the words (home.js). -->
   <div class="hero-story" aria-hidden="true">
     <img class="on" src="/assets/people/story-line.jpg?v=dc23b158a4" alt="" loading="lazy" style="object-position:60% 70%">
     <img src="/assets/people/story-ocean.jpg?v=5adf32634d" alt="" loading="lazy" style="object-position:50% 85%">
@@ -122,6 +122,7 @@
       <h1>Find great roads.<br><span class="em">Drive them together.</span></h1>
       <ul class="proof"><li>Never reroutes</li><li>Works offline</li><li>Group tracking</li></ul>
     </div>
+    <a class="hb light hero-get phone-only-h" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#i-apple"/></svg><span>Get Carve on iPhone</span></a>
     <div class="door" id="door">
       <form id="pane-plan" class="pane">
         <p class="from" id="door-from-line" hidden>From <strong id="door-from-name"></strong> · <button type="button" class="textlink" id="door-from-change">change</button></p>
@@ -149,7 +150,7 @@
 </section>
 
 <section class="near" aria-labelledby="near-title">
-  <div class="near-head"><h2 id="near-title">Great drives near you</h2><a href="/drives/" class="wide-only-h">See all drives near you</a></div>
+  <div class="near-head"><h2 id="near-title">Great drives near you</h2><button type="button" class="near-change2 phone-only-h" id="near-change2" hidden>Change</button><a href="/drives/" class="wide-only-h">See all drives near you</a></div>
   <ul class="cards-near loading" id="near-list"><li></li><li></li><li></li><li></li></ul>
   <a class="hb light near-all phone-only-h" href="/drives/">See all drives near you</a>
 </section>
@@ -435,6 +436,6 @@
   if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
 <script src="/assets/carve-site.js?v=af19fd915b" defer></script>
-<script type="module" src="/assets/home.js?v=d27d570553"></script>
+<script type="module" src="/assets/home.js?v=5406787b67"></script>
 </body>
 </html>
