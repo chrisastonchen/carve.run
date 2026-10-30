@@ -635,3 +635,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .collage .words { padding-top: 110px; }
 }
 @media (max-width: 899px) { .collage { height: 400px; } }
+/* the three reasons on one line (the user, 2026-10-29) */
+.proof { flex-wrap: nowrap; gap: 4px 12px; }
+@media (max-width: 899px) { .proof { gap: 4px 10px; font-size: 13px; } }
+.proof li { white-space: nowrap; }
+@media (max-width: 399px) { .proof { gap: 4px 8px; font-size: 12px; } }
