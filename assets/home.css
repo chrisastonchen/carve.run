@@ -498,3 +498,140 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .app-sheet .choice > svg { width: 20px; height: 20px; flex: none; color: var(--ink-4); }
 /* The phone clips' captions as plain words, not pills (the user, 2026-10-29). */
 .seq .cap { padding: 0; border-radius: 0; background: none; color: var(--ink); font-size: 16px; font-weight: 700; text-align: center; }
+
+/* ═══ The calmer hero card (the user, 2026-10-29: "cluttered"): the headline,
+   three reasons, one question, an import link; the place sits on the map. ═══ */
+.door .pane { gap: 10px; }
+.door .field { display: flex; align-items: center; gap: 12px; padding: 5px 6px 5px 12px; border-radius: 14px; background: var(--sand); }
+.door .field[hidden] { display: none; }
+.door .field .pin { width: 24px; height: 24px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; }
+.door .field .pin svg { width: 14px; height: 14px; }
+.door .from { font-size: 15px; color: var(--ink-3); padding: 2px 2px 0; }
+.door .from strong { color: var(--ink); }
+.door .from .textlink, .door .switch { border: 0; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--green); cursor: pointer; }
+.door .switch { align-self: center; font-size: 14px; font-weight: 600; margin-top: 2px; }
+.door .switch:hover, .door .from .textlink:hover { text-decoration: underline; }
+.org-line { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--green-dark); text-decoration: none; }
+.home .org-line { color: var(--green-dark); }
+.org-line svg { width: 15px; height: 15px; }
+.org-line:hover { text-decoration: underline; }
+.hero-video { display: none; }
+@media (min-width: 900px) {
+  /* the place belongs to the map */
+  .hero > .near-chip { position: absolute; z-index: 3; left: calc(min(460px, 42%) + 36px); top: 18px; box-shadow: 0 4px 14px rgba(0,0,0,.12); border: 0; }
+  .hero-copy { gap: 20px; }
+  .hero h1 { font-size: clamp(32px, 3vw, 44px); }
+  .proof { flex-wrap: nowrap; font-size: 13.5px; }
+}
+
+/* On a phone, the canyon run plays behind the words, dimmed. */
+@media (max-width: 899px) {
+  .hero { position: relative; overflow: hidden; background: #17221B; color: #fff; padding-bottom: 26px; }
+  .hero-video { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
+  .hero-video.on { opacity: 1; }
+  .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to bottom, rgba(8,14,10,.45), rgba(8,14,10,.62)); }
+  .hero > .near-chip, .hero-copy { position: relative; z-index: 2; }
+  .hero > .near-chip { margin: 22px 16px 0; background: rgba(255,255,255,.92); border: 0; }
+  .hero-copy { padding-top: 18px; }
+  .hero h1 { color: #fff; }
+  .hero .em { color: #BFE5CB; }
+  .proof { color: #fff; }
+  .proof li::before { background-color: rgba(255,255,255,.9); }
+  .org-line { display: none; }
+}
+
+/* ═══ Drive them together: the club's own photos ═══ */
+.together { margin-top: 56px; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 16px; height: 460px; }
+.together figure { position: relative; margin: 0; border-radius: 24px; overflow: hidden; background: var(--sand-2); }
+.together img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.together .tall img { object-position: 50% 70%; }
+.together figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 80px 28px 26px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,0)); display: flex; flex-direction: column; gap: 4px; }
+.together figcaption b { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+.together figcaption span { font-size: 16px; opacity: .9; }
+@media (max-width: 899px) {
+  .together { margin-top: 36px; grid-template-columns: 1fr; height: auto; }
+  .together .wide img { aspect-ratio: 4 / 3; height: auto; }
+  .together .tall { display: none; }
+  .together figcaption { padding: 60px 18px 18px; }
+  .together figcaption b { font-size: 26px; }
+  .together figcaption span { font-size: 14px; }
+}
+
+/* The founder, in his car, beside his words. */
+.clubs2 .founder { padding: 12px 12px 18px; }
+.clubs2 .founder img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 30% 60%; border-radius: 12px; margin-bottom: 14px; }
+.clubs2 .founder .note, .clubs2 .founder .sig { padding: 0 8px; }
+@media (min-width: 900px) {
+  .proof { flex-wrap: wrap; }
+  .proof li { white-space: nowrap; }
+  .hero h1 { font-size: clamp(30px, 2.7vw, 40px); }
+  /* the card hugs what's in it, floating over the map like the planner's */
+  .hero { height: min(640px, calc(100vh - 64px - 40px)); min-height: 560px; }
+  .hero-copy { bottom: auto; max-height: calc(100% - 36px); justify-content: flex-start; padding: 30px 30px 26px; }
+}
+.clubs2 .founder img { height: auto; }
+
+/* The hero card's photo: the club's line of cars, across the card's top. */
+.card-photo { display: none; }
+@media (min-width: 900px) {
+  .card-photo { display: block; width: calc(100% + 60px); max-width: none; margin: -30px -30px 2px; height: 128px; object-fit: cover; object-position: 50% 55%; border-radius: 26px 26px 0 0; }
+}
+
+/* Drive them together: three photos as one piece, split on the diagonal,
+   the words over all of it (the user, 2026-10-29). Each panel is cut by
+   the same slant (--s) with a gap (--g) between. */
+.together { display: block; height: auto; }
+.collage { --s: 56px; --g: 10px; position: relative; height: 440px; border-radius: 28px; overflow: hidden; background: var(--cream); }
+.collage figure { position: absolute; top: 0; bottom: 0; margin: 0; border-radius: 0; background: var(--sand-2); }
+.collage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.collage .p1 { left: 0; width: calc(33.333% + var(--s) / 2 - var(--g) / 2);
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
+.collage .p2 { left: calc(33.333% - var(--s) / 2 + var(--g) / 2); width: calc(33.333% + var(--s) - var(--g));
+  clip-path: polygon(var(--s) 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
+.collage .p3 { left: calc(66.667% - var(--s) / 2 + var(--g) / 2); right: 0;
+  clip-path: polygon(var(--s) 0, 100% 0, 100% 100%, 0 100%); }
+.collage .p1 img { object-position: 50% 60%; }
+.collage .p2 img { object-position: 50% 75%; }
+.collage .p3 img { object-position: 60% 60%; }
+.collage .words { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px 34px 30px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,0)); display: flex; flex-direction: column; gap: 4px; pointer-events: none; }
+.collage .words b { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+.collage .words span { font-size: 17px; opacity: .92; }
+@media (max-width: 899px) {
+  .collage { --s: 28px; --g: 6px; height: 300px; border-radius: 22px; }
+  .collage .words { padding: 80px 18px 18px; }
+  .collage .words b { font-size: 26px; }
+  .collage .words span { font-size: 14px; }
+}
+/* the Giulia in the middle, the cars behind it in view; the redwoods on the right */
+.collage .p2 img { object-position: 22% 60%; }
+.collage .p3 img { object-position: 45% 80%; }
+/* Drive them together: the way in, on the right. */
+.collage .words { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 20px; pointer-events: none; }
+.collage .words > div { display: flex; flex-direction: column; gap: 4px; }
+.collage .words .cta { pointer-events: auto; flex: none; box-shadow: none; }
+.home .collage .words .cta { color: var(--ink); }
+@media (max-width: 899px) { .collage .words { gap: 12px; } .collage .words .cta { height: 42px; padding: 0 16px; font-size: 14px; } }
+/* the button under the words, not beside them (the user, 2026-10-29) */
+.collage .words { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 4px; }
+.collage .words .cta { margin-top: 14px; }
+@media (max-width: 899px) { .collage .words .cta { margin-top: 10px; } }
+/* Four panels (the user, 2026-10-29): boundaries at a quarter, a half and three quarters. */
+.collage .p1 { left: 0; right: auto; width: calc(25% + var(--s) / 2 - var(--g) / 2); clip-path: polygon(0 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
+.collage .p2 { left: calc(25% - var(--s) / 2 + var(--g) / 2); right: auto; width: calc(25% + var(--s) - var(--g)); clip-path: polygon(var(--s) 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
+.collage .p3 { left: calc(50% - var(--s) / 2 + var(--g) / 2); right: auto; width: calc(25% + var(--s) - var(--g)); clip-path: polygon(var(--s) 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
+.collage .p4 { left: calc(75% - var(--s) / 2 + var(--g) / 2); right: 0; clip-path: polygon(var(--s) 0, 100% 0, 100% 100%, 0 100%); }
+.collage .p1 img { object-position: 45% 60%; }
+.collage .p2 img { object-position: 18% 60%; }
+.collage .p3 img { object-position: 55% 70%; }
+.collage .p4 img { object-position: 45% 80%; }
+/* a deeper scrim, so the words read over any of the photos */
+.collage .words { padding-top: 170px; background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 100%); }
+.collage .words b, .collage .words span { text-shadow: 0 1px 12px rgba(0,0,0,.35); }
+@media (max-width: 899px) {
+  /* on a phone, the two that read best at that size */
+  .collage .p1, .collage .p4 { display: none; }
+  .collage .p2 { left: 0; width: calc(50% + var(--s) / 2 - var(--g) / 2); clip-path: polygon(0 0, 100% 0, calc(100% - var(--s)) 100%, 0 100%); }
+  .collage .p3 { left: calc(50% - var(--s) / 2 + var(--g) / 2); right: 0; width: auto; clip-path: polygon(var(--s) 0, 100% 0, 100% 100%, 0 100%); }
+  .collage .words { padding-top: 110px; }
+}
+@media (max-width: 899px) { .collage { height: 400px; } }

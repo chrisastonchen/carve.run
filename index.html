@@ -30,7 +30,7 @@
 <link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=9bb6ad869e">
 <link rel="stylesheet" href="/assets/site-bar.css?v=1b5bcab43d">
-<link rel="stylesheet" href="/assets/home.css?v=202700ffbe">
+<link rel="stylesheet" href="/assets/home.css?v=8de204dfae">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -108,26 +108,24 @@
      you) beside a map of the roads near you; on a phone, no typing, just
      the roads. home.js fills in the place, the map and the drives. -->
 <section class="hero" aria-label="Great roads near you">
+  <!-- On a phone, the club's canyon run plays behind the words (home.js). -->
+  <video class="hero-video" muted playsinline loop preload="none" poster="/assets/people/diablo-poster.jpg?v=8262924be0" data-src="/assets/people/diablo.mp4?v=e876e67669" aria-hidden="true"></video>
+  <div class="near-chip" id="near-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></svg><span>Near <strong id="near-name">you</strong></span><span aria-hidden="true">·</span><button type="button" id="near-change">Change</button></div>
   <div class="hero-copy">
+    <img class="card-photo" src="/assets/people/strip-coast.jpg?v=6b16118993" alt="A long line of sports cars on a club drive on a coast road" width="1000" height="303">
     <div class="lead">
-      <div class="near-chip" id="near-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></svg><span>Near <strong id="near-name">you</strong></span><span aria-hidden="true">·</span><button type="button" id="near-change">Change</button></div>
       <h1>Great roads near you.<br><span class="em">Drive them together.</span></h1>
-      <p class="pitch">Pick a road and plan the drive in a few minutes. Send your group one link, and everyone drives the same roads.</p>
-      <ul class="proof"><li>Never reroutes you off your roads</li><li>Works with no signal</li><li>Live group tracking</li><li>Members join free</li></ul>
+      <ul class="proof"><li>Never reroutes</li><li>Works with no signal</li><li>Live group tracking</li></ul>
     </div>
     <div class="door" id="door">
-      <div class="tabs" role="tablist" aria-label="How to start">
-        <button type="button" role="tab" id="tab-plan" aria-selected="true" aria-controls="pane-plan">Plan a drive</button>
-        <button type="button" role="tab" id="tab-bring" aria-selected="false" aria-controls="pane-bring">Import route</button>
-      </div>
-      <form id="pane-plan" class="pane" role="tabpanel" aria-labelledby="tab-plan">
-        <div class="stops">
-          <label><span class="pin" style="background:#2E9E52" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6z" fill="currentColor"/></svg></span><span class="vh">Start</span><input type="text" id="door-from" placeholder="Start" autocomplete="off"></label>
-          <label><span class="pin" style="background:#15181C" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5,4h2v16H5V4zM7,4h2v2H7V4zM11,4h2v2h-2V4zM15,4h2v2h-2V4zM19,4h2v2h-2V4zM9,6h2v2H9V6zM13,6h2v2h-2V6zM17,6h2v2h-2V6zM7,8h2v2H7V8zM11,8h2v2h-2V8zM15,8h2v2h-2V8zM19,8h2v2h-2V8zM9,10h2v2H9v-2zM13,10h2v2h-2v-2zM17,10h2v2h-2v-2z" fill="currentColor"/></svg></span><span class="vh">Destination</span><input type="text" id="door-to" placeholder="Where to? Or pick a road on the map" autocomplete="off"></label>
-        </div>
+      <form id="pane-plan" class="pane">
+        <p class="from" id="door-from-line" hidden>From <strong id="door-from-name"></strong> · <button type="button" class="textlink" id="door-from-change">change</button></p>
+        <label class="field" id="door-from-field"><span class="pin" style="background:#2E9E52" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6z" fill="currentColor"/></svg></span><span class="vh">Start</span><input type="text" id="door-from" placeholder="Start" autocomplete="off"></label>
+        <label class="field"><span class="pin" style="background:#15181C" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5,4h2v16H5V4zM7,4h2v2H7V4zM11,4h2v2h-2V4zM15,4h2v2h-2V4zM19,4h2v2h-2V4zM9,6h2v2H9V6zM13,6h2v2h-2V6zM17,6h2v2h-2V6zM7,8h2v2H7V8zM11,8h2v2h-2V8zM15,8h2v2h-2V8zM19,8h2v2h-2V8zM9,10h2v2H9v-2zM13,10h2v2h-2v-2zM17,10h2v2h-2v-2z" fill="currentColor"/></svg></span><span class="vh">Destination</span><input type="text" id="door-to" placeholder="Where to? Or pick a road on the map" autocomplete="off"></label>
         <button type="submit" class="hb green go">Plan the route<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="textlink switch" id="door-import">Have a route? Import it ›</button>
       </form>
-      <div id="pane-bring" class="pane" role="tabpanel" aria-labelledby="tab-bring" hidden>
+      <div id="pane-bring" class="pane" hidden>
         <label class="drop" id="door-drop">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v4h16v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <b>Drop a GPX file</b><span>From Ride with GPS, a club newsletter, anywhere</span>
@@ -135,9 +133,10 @@
         </label>
         <form class="paste" id="door-paste"><span class="vh">Route link</span><input type="url" id="door-link" placeholder="Or paste a Google Maps or Ride with GPS link"><button type="submit" class="hb green">Open</button></form>
         <p class="err" id="door-err" hidden></p>
+        <button type="button" class="textlink switch" id="door-plan">‹ Plan a drive instead</button>
       </div>
     </div>
-    <a class="for-org" href="#clubs">Organizing a club drive? Import your route, share one link, see everyone on the day<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a class="org-line" href="#clubs">Organizing a club drive? Members join free<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
   <div class="hero-map" id="hero-map" role="region" aria-label="Map of great driving roads near you">
     <div class="road-panel" id="road-panel" hidden></div>
@@ -246,6 +245,19 @@
   </div>
 </section>
 
+<!-- ═══ DRIVE THEM TOGETHER: the club's own photos (the user, 2026-10-29) ═══ -->
+<div class="wrapx">
+<section class="together" aria-label="Drive them together">
+  <div class="collage">
+    <figure class="p1"><img src="/assets/people/convict.jpg?v=3af691b57e" alt="A row of convertibles parked below the mountains at Convict Lake" loading="lazy" width="800" height="895"></figure>
+    <figure class="p2"><img src="/assets/people/giulia.jpg?v=51fd1c87f3" alt="A green Alfa Romeo Giulia leading a group of cars along a wooded road" loading="lazy" width="900" height="806"></figure>
+    <figure class="p3"><img src="/assets/people/blue-line.jpg?v=1986bda9ae" alt="A blue Porsche Cayman leading a line of Porsches along a country road through golden hills" loading="lazy" width="900" height="1200"></figure>
+    <figure class="p4"><img src="/assets/people/redwoods.jpg?v=fa898c348a" alt="Five convertibles in a line on a wet road through the redwoods, sun rays through the trees" loading="lazy" width="1000" height="1091"></figure>
+    <div class="words"><b>Drive them together.</b><span>One route, one link, the whole group on the same roads.</span><a class="hb light cta wide-only-h" href="/plan/">Plan a drive<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="hb light cta phone-only-h" href="/drives/">Find a drive<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+  </div>
+</section>
+</div>
+
 <div class="wrapx">
 <!-- ═══ CLUBS: for the organizer, right after the steps ═══ -->
 <section class="clubs2" id="clubs" aria-labelledby="clubs-title">
@@ -260,6 +272,7 @@
     </ul>
   </div>
   <div class="founder">
+    <img src="/assets/people/founder-targa.jpg?v=79ff12c101" alt="Chris, founder of Carve, driving his black Porsche 911 Targa on a foggy, winding road" loading="lazy" width="1400" height="855">
     <p class="note">“I've been a member of the Porsche Club of America's Golden Gate Region since 2023, and we drive together every month. I built Carve for drivers and riders who are out for the drive, not the commute.”</p>
     <p class="sig">Chris, founder of Carve</p>
   </div>
@@ -418,6 +431,6 @@
   if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
 <script src="/assets/carve-site.js?v=af19fd915b" defer></script>
-<script type="module" src="/assets/home.js?v=1dee32d053"></script>
+<script type="module" src="/assets/home.js?v=ec06a1298a"></script>
 </body>
 </html>

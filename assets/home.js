@@ -71,6 +71,9 @@ function renderNear() {
     const label = place.label === "you" ? "My location" : place.label;
     Object.assign(field.dataset, { label, lat: String(place.lat), lon: String(place.lon) });
     field.value = label;
+    $("door-from-name").textContent = label;
+    $("door-from-line").hidden = false;
+    $("door-from-field").hidden = true;
   }
   const chip = $("near-chip");
   chip.hidden = !place;
@@ -230,12 +233,21 @@ function handOff(what) {
 }
 
 function wireDoor() {
-  const tabs = [$("tab-plan"), $("tab-bring")];
-  const panes = [$("pane-plan"), $("pane-bring")];
-  tabs.forEach((tab, i) => tab.addEventListener("click", () => {
-    tabs.forEach((t, j) => t.setAttribute("aria-selected", String(i === j)));
-    panes.forEach((p, j) => { p.hidden = i !== j; });
-  }));
+  // Planning is the card; importing is a link away, not a second tab.
+  const show = (importing) => {
+    $("pane-plan").hidden = importing;
+    $("pane-bring").hidden = !importing;
+    (importing ? $("door-link") : $("door-to")).focus();
+  };
+  $("door-import").addEventListener("click", () => show(true));
+  $("door-plan").addEventListener("click", () => show(false));
+  // The start we filled in is one line; "change" opens the field.
+  $("door-from-change").addEventListener("click", () => {
+    $("door-from-line").hidden = true;
+    $("door-from-field").hidden = false;
+    $("door-from").focus();
+    $("door-from").select();
+  });
   $("pane-plan").addEventListener("submit", (event) => {
     event.preventDefault();
     const fromText = $("door-from").value.trim(), to = $("door-to").value.trim();
@@ -473,6 +485,16 @@ async function tagAppCode() {
   if (box) box.innerHTML = code.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
 }
 
+
+// ── on a phone, the club's canyon run behind the words ───────────────
+function heroVideo() {
+  const video = document.querySelector(".hero-video");
+  if (!video || wide() || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  video.src = video.dataset.src;
+  video.addEventListener("playing", () => video.classList.add("on"), { once: true });
+  video.play().catch(() => {});
+}
+
 // ── start ────────────────────────────────────────────────────────────
 
 function riseIn() {
@@ -490,6 +512,7 @@ function riseIn() {
 async function main() {
   riseIn();
   offerApp();
+  heroVideo();
   // carve-site.js loads deferred, after this module may already have run.
   if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
   wireDoor();
