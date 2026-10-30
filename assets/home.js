@@ -438,13 +438,9 @@ function openApp() {
       + encodeURIComponent("https://carve.run/android/") + ";end";
     return;
   }
-  let left = false;
-  const leaving = () => { left = true; };
-  window.addEventListener("pagehide", leaving, { once: true });
-  document.addEventListener("visibilitychange", () => { if (document.hidden) leaving(); }, { once: true });
-  setTimeout(() => { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl() : "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
-  // iOS opens Carve on this and ignores the rest (it isn't a route's link).
-  location.href = "carve://open";
+  // Not carve://open: without the app, Safari stops on "the address is
+  // invalid". The App Store page offers Open when Carve is installed.
+  location.href = window.carveStoreUrl ? carveStoreUrl() : "https://apps.apple.com/app/carve-route-planner/id6808087716";
 }
 
 function offerApp() {
