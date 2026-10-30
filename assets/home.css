@@ -654,3 +654,35 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 @media (max-width: 899px) { .clubs2 .problem { font-size: 18px; } .clubs2 .ticks li { font-size: 15.5px; } }
 .clubs2 .cta { margin-top: 26px; }
 .clubs2 .cta .guide { text-decoration: none; }
+/* On a phone: three club photos behind the words, story style (the user, 10/29: the video was too fast) */
+.hero-story { display: none; }
+@media (max-width: 899px) {
+  .hero { min-height: 380px; }
+  .hero-story { display: block; position: absolute; inset: 0; }
+  .hero-story img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s ease; }
+  .hero-story img.on { opacity: 1; }
+  .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.72) 0%, rgba(8,14,10,.42) 42%, rgba(8,14,10,.05) 70%, rgba(8,14,10,.3) 100%); }
+  .hero-story .bars { position: absolute; left: 16px; right: 16px; bottom: 14px; z-index: 3; display: flex; gap: 5px; }
+  .hero-story .bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.35); overflow: hidden; position: relative; }
+  .hero-story .bars i::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; transform: scaleX(0); }
+  .hero-story .bars i.done::after { transform: scaleX(1); }
+  .hero-story .bars i.on::after { animation: storyfill 5s linear forwards; }
+  .hero-story.still .bars { display: none; }
+}
+@keyframes storyfill { to { transform: scaleX(1); } }
+/* On a phone: one full-width "Where to?" bar under the reasons (the user, 10/29) */
+@media (max-width: 899px) {
+  .hero { min-height: 440px; }
+  .hero .door { display: block; padding: 0; border: 0; background: none; box-shadow: none; max-width: none; margin-top: 4px; }
+  .hero .door #pane-bring, .hero .door .from, .hero .door #door-from-field, .hero .door .switch { display: none !important; }
+  .hero .door #pane-plan { display: flex; align-items: center; gap: 6px; padding: 5px 5px 5px 6px; border-radius: 999px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+  .hero .door #pane-plan .field { flex: 1; min-width: 0; background: none; padding: 0 0 0 6px; }
+  .hero .door #pane-plan input { font-size: 16px; color: var(--ink); }
+  .hero .door .go { flex: none; width: 46px; height: 46px; padding: 0; border-radius: 50%; font-size: 0; gap: 0; display: inline-flex; align-items: center; justify-content: center; }
+  .hero .door .go svg { width: 20px; height: 20px; margin: 0; }
+}
+@media (max-width: 899px) {
+  .hero .door #pane-plan { flex-direction: row; flex-wrap: nowrap; }
+  .hero .door #pane-plan .field { display: flex; }
+  .hero .door #pane-plan .go { width: 46px; min-width: 0; margin: 0; }
+}

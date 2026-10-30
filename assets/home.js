@@ -486,13 +486,35 @@ async function tagAppCode() {
 }
 
 
-// ── on a phone, the club's canyon run behind the words ───────────────
-function heroVideo() {
-  const video = document.querySelector(".hero-video");
-  if (!video || wide() || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  video.src = video.dataset.src;
-  video.addEventListener("playing", () => video.classList.add("on"), { once: true });
-  video.play().catch(() => {});
+// ── on a phone, the club's photos behind the words, story style ────
+function heroStory() {
+  // the phone's search bar: short placeholder
+  const to = document.getElementById("door-to");
+  if (to && !wide()) to.placeholder = "Where to?";
+  const story = document.querySelector(".hero-story");
+  if (!story || wide()) return;
+  const imgs = [...story.querySelectorAll("img")];
+  const bars = [...story.querySelectorAll(".bars i")];
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { story.classList.add("still"); return; }
+  imgs.forEach((img) => { img.loading = "eager"; });
+  let at = 0, timer = 0;
+  const show = (n) => {
+    at = (n + imgs.length) % imgs.length;
+    imgs.forEach((img, i) => img.classList.toggle("on", i === at));
+    bars.forEach((b, i) => { b.classList.toggle("done", i < at); b.classList.remove("on"); });
+    void bars[at].offsetWidth; // restart the fill
+    bars[at].classList.add("on");
+    clearTimeout(timer);
+    timer = setTimeout(() => show(at + 1), 5000);
+  };
+  // tap the photo (not the words or links) to skip ahead
+  document.querySelector(".hero").addEventListener("click", (e) => {
+    if (!wide() && !e.target.closest("a, button, input, form, .hero-copy")) show(at + 1);
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) clearTimeout(timer); else show(at);
+  });
+  show(0);
 }
 
 // ── start ────────────────────────────────────────────────────────────
@@ -512,7 +534,7 @@ function riseIn() {
 async function main() {
   riseIn();
   offerApp();
-  heroVideo();
+  heroStory();
   // carve-site.js loads deferred, after this module may already have run.
   if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
   wireDoor();
