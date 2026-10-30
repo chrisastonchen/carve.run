@@ -573,11 +573,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 .clubs2 .founder img { height: auto; }
 
-/* The hero card's photo: the club's line of cars, across the card's top. */
-.card-photo { display: none; }
-@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
-  .card-photo { display: block; width: calc(100% + 60px); max-width: none; margin: -30px -30px 2px; height: 128px; object-fit: cover; object-position: 50% 55%; border-radius: 26px 26px 0 0; }
-}
 
 /* Drive them together: three photos as one piece, split on the diagonal,
    the words over all of it (the user, 2026-10-29). Each panel is cut by
@@ -719,3 +714,24 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .door .bot-check p { margin: 0 0 6px; }
 /* the card lets the suggestions hang below it */
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .hero-copy { overflow: visible; } }
+
+/* Six photos, 8 s each (the user, 2026-10-30). Each photo carries its own
+   crop: --p behind a phone's words, --w across the card's top on a computer,
+   where the photo grows so the card sits as far from the map's foot as its top. */
+.hero-story img { object-position: var(--p); }
+.hero-story.card-story { display: none; }
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
+  .hero-copy { bottom: 18px; max-height: none; }
+  .hero-story.card-story { display: block; position: relative; flex: 1 1 auto; min-height: 128px; margin: -30px -30px 2px; border-radius: 26px 26px 0 0; overflow: hidden; background: #17221B; cursor: pointer; }
+  .card-story img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--w); opacity: 0; transition: opacity .9s ease; }
+  .card-story img.on { opacity: 1; }
+  .card-story .bars { position: absolute; left: 14px; right: 14px; bottom: 12px; display: flex; gap: 5px; }
+  .card-story .bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.4); overflow: hidden; position: relative; }
+  .card-story .bars i::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; transform: scaleX(0); }
+  .card-story .bars i.done::after { transform: scaleX(1); }
+  .card-story .bars i.on::after { animation: storyfill 8s linear forwards; }
+  .card-story.still .bars { display: none; }
+}
+/* 10/30 stock photos in the collage's first and third panels (the user kept the Giulia and the redwoods). */
+.collage .p1 img { object-position: 45% 62%; }
+.collage .p3 img { object-position: 35% 28%; }

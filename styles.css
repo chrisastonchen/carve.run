@@ -221,3 +221,5 @@ details p { padding: 0 0 14px; }
   background: var(--sky); color: var(--ink); font-weight: 700; font-size: 16px;
 }
 .doc ol.steps h3 { margin: 4px 0 6px; }
+/* A guide's photo under its byline (the user, 2026-10-30: more pictures across the site). */
+.doc .guide-photo { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 22px; margin: -14px 0 30px; }

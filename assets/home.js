@@ -502,8 +502,9 @@ function heroStory() {
     const car = document.querySelector(".hero-car");
     if (car) { car.querySelector("use").setAttribute("href", "#androidauto"); car.querySelector("span").textContent = "Also on Android Auto"; }
   }
-  const story = document.querySelector(".hero-story");
-  if (!story || wide()) return;
+  // a phone plays the photos behind the words; a computer, across the card's top
+  const story = document.querySelector(wide() ? ".card-story" : ".hero-story:not(.card-story)");
+  if (!story) return;
   const imgs = [...story.querySelectorAll("img")];
   const bars = [...story.querySelectorAll(".bars i")];
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { story.classList.add("still"); return; }
@@ -520,7 +521,7 @@ function heroStory() {
   };
   // tap the photo (not the words or links) to skip ahead
   document.querySelector(".hero").addEventListener("click", (e) => {
-    if (!wide() && !e.target.closest("a, button, input, form, .hero-copy")) show(at + 1);
+    if (wide() ? e.target.closest(".card-story") : !e.target.closest("a, button, input, form, .hero-copy")) show(at + 1);
   });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) clearTimeout(timer); else show(at);
