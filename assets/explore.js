@@ -191,17 +191,22 @@ function buildMap(saved) {
     map.addSource("ex-roads", { type: "geojson", data: features() });
     map.addSource("ex-mids", { type: "geojson", data: midpoints() });
     const on = (a, b) => ["case", ["boolean", ["feature-state", "on"], false], a, b];
-    map.addLayer({ id: "ex-glow", type: "line", source: "ex-roads", minzoom: 6, layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#6A4CFF", "line-width": on(16, 0), "line-blur": 6, "line-opacity": on(0.5, 0) } });
-    map.addLayer({ id: "ex-casing", type: "line", source: "ex-roads", minzoom: 6, layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#fff", "line-width": on(9, 6), "line-opacity": 0.9 } });
-    map.addLayer({ id: "ex-line", type: "line", source: "ex-roads", minzoom: 6, layout: { "line-join": "round" },
+    // The lines load at every zoom, unseen below 5, and the dots fade out
+    // over the zoom after 6: a zoom past 6 then has lines to stretch while
+    // sharper ones are cut. With lines from 6 only and dots up to it, the map
+    // went blank until they came (the user, 2026-10-30, on a phone).
+    map.addLayer({ id: "ex-glow", type: "line", source: "ex-roads", layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": "#6A4CFF", "line-width": on(16, 0), "line-blur": 6, "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 6, on(0.5, 0)] } });
+    map.addLayer({ id: "ex-casing", type: "line", source: "ex-roads", layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": "#fff", "line-width": on(9, 6), "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 6, 0.9] } });
+    map.addLayer({ id: "ex-line", type: "line", source: "ex-roads", layout: { "line-join": "round" },
       paint: { "line-color": "#6A4CFF", "line-width": ["interpolate", ["linear"], ["zoom"], 4, on(4, 1.5), 9, on(5, 3)],
-        "line-dasharray": ["literal", [2, 1.6]], "line-opacity": on(1, 0.8) } });
+        "line-dasharray": ["literal", [2, 1.6]], "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 6, on(1, 0.8)] } });
     // Under zoom 6 a road is a speck: a dot shows where each drive is.
-    map.addLayer({ id: "ex-dots", type: "circle", source: "ex-mids", maxzoom: 6,
+    map.addLayer({ id: "ex-dots", type: "circle", source: "ex-mids", maxzoom: 7,
       paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 3, on(6, 3), 6, on(8, 5)], "circle-color": "#6A4CFF",
-        "circle-stroke-color": "#fff", "circle-stroke-width": on(2, 1) } });
+        "circle-stroke-color": "#fff", "circle-stroke-width": on(2, 1),
+        "circle-opacity": ["interpolate", ["linear"], ["zoom"], 6, 1, 7, 0], "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 6, 1, 7, 0] } });
     // Drives the filters leave out sit under a pale veil, not gone.
     map.addLayer({ id: "ex-hidden", type: "line", source: "ex-roads", minzoom: 6, filter: ["==", ["get", "k"], -1], paint: { "line-color": "#EFEDE6", "line-width": 6, "line-opacity": 0.85 } });
     map.addLayer({ id: "ex-hit", type: "line", source: "ex-roads", minzoom: 6, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });

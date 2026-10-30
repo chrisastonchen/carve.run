@@ -191,15 +191,20 @@ async function buildMap() {
       features: roads.map((r) => ({ type: "Feature", id: r.k, properties: { k: r.k }, geometry: { type: "Point", coordinates: lineOf(r)[Math.floor(lineOf(r).length / 2)] } })),
     } });
     const on = (a, b) => ["case", ["boolean", ["feature-state", "on"], false], a, b];
-    map.addLayer({ id: "home-glow", type: "line", source: "home-roads", minzoom: 7, layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#6A4CFF", "line-width": on(16, 0), "line-blur": 6, "line-opacity": on(0.45, 0) } });
-    map.addLayer({ id: "home-casing", type: "line", source: "home-roads", minzoom: 7, layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#fff", "line-width": on(9, 6), "line-opacity": 0.85 } });
-    map.addLayer({ id: "home-line", type: "line", source: "home-roads", minzoom: 7, layout: { "line-join": "round" },
-      paint: { "line-color": "#6A4CFF", "line-width": on(5, 3), "line-dasharray": ["literal", [2, 1.6]], "line-opacity": on(1, 0.8) } });
-    map.addLayer({ id: "home-dots", type: "circle", source: "home-mids", maxzoom: 7,
+    // The lines load at every zoom, unseen below 6, and the dots fade out
+    // over the zoom after 7: a zoom past 7 then has lines to stretch while
+    // sharper ones are cut. With lines from 7 only and dots up to it, the map
+    // went blank until they came (the user, 2026-10-30, on a phone).
+    map.addLayer({ id: "home-glow", type: "line", source: "home-roads", layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": "#6A4CFF", "line-width": on(16, 0), "line-blur": 6, "line-opacity": ["interpolate", ["linear"], ["zoom"], 6, 0, 7, on(0.45, 0)] } });
+    map.addLayer({ id: "home-casing", type: "line", source: "home-roads", layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": "#fff", "line-width": on(9, 6), "line-opacity": ["interpolate", ["linear"], ["zoom"], 6, 0, 7, 0.85] } });
+    map.addLayer({ id: "home-line", type: "line", source: "home-roads", layout: { "line-join": "round" },
+      paint: { "line-color": "#6A4CFF", "line-width": on(5, 3), "line-dasharray": ["literal", [2, 1.6]], "line-opacity": ["interpolate", ["linear"], ["zoom"], 6, 0, 7, on(1, 0.8)] } });
+    map.addLayer({ id: "home-dots", type: "circle", source: "home-mids", maxzoom: 8,
       paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 3, on(6, 3.5), 7, on(8, 5.5)], "circle-color": "#6A4CFF",
-        "circle-stroke-color": "#fff", "circle-stroke-width": on(2, 1.2) } });
+        "circle-stroke-color": "#fff", "circle-stroke-width": on(2, 1.2),
+        "circle-opacity": ["interpolate", ["linear"], ["zoom"], 7, 1, 8, 0], "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 7, 1, 8, 0] } });
     map.addLayer({ id: "home-hit", type: "line", source: "home-roads", minzoom: 7, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
     map.addLayer({ id: "home-dot-hit", type: "circle", source: "home-mids", maxzoom: 7, paint: { "circle-radius": 12, "circle-opacity": 0.01 } });
     fitNear();
