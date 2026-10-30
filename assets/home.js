@@ -250,11 +250,21 @@ function wireDoor() {
     $("door-from").focus();
     $("door-from").select();
   });
-  // Search suggestions near the map's middle, or near the start.
+  // Search suggestions near the start once it's picked, else the middle of
+  // the map the card leaves showing (the map's own middle is under the card,
+  // offshore for the Bay Area, and gave Maryland for "Alice's"), else the
+  // visitor's place.
   const near = () => {
-    if (map) { const c = map.getCenter(); return { lat: c.lat, lon: c.lng }; }
     const f = $("door-from").dataset;
-    return f.lat ? { lat: Number(f.lat), lon: Number(f.lon) } : null;
+    if (f.lat) return { lat: Number(f.lat), lon: Number(f.lon) };
+    if (map && map.getZoom() >= 5) {
+      const card = document.querySelector(".hero-copy").getBoundingClientRect();
+      const box = $("hero-map").getBoundingClientRect();
+      const left = Math.max(0, card.right - box.left);
+      const c = map.unproject([(left + box.width) / 2, box.height / 2]).wrap();
+      return { lat: c.lat, lon: c.lng };
+    }
+    return place ? { lat: place.lat, lon: place.lon } : null;
   };
   attachPlaceSearch($("door-from"), near);
   attachPlaceSearch($("door-to"), near);

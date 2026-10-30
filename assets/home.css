@@ -735,3 +735,11 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 /* 10/30 stock photos in the collage's first and third panels (the user kept the Giulia and the redwoods). */
 .collage .p1 img { object-position: 45% 62%; }
 .collage .p3 img { object-position: 35% 28%; }
+
+/* Place suggestions can run past the hero's foot (the user, 2026-10-30:
+   they were cut off): the map keeps the rounded corners, the hero lets
+   the list out and sits above the sections after it. */
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
+  .hero { overflow: visible; z-index: 5; }
+  .hero > .hero-map { border-radius: inherit; overflow: hidden; }
+}
