@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="/plan/plan.css?v=28">
 <link rel="stylesheet" href="/assets/route-view.css?v=b3f7eca099">
 <link rel="stylesheet" href="/assets/explore.css?v=8b3c595597">
+<meta name="apple-itunes-app" content="app-id=6808087716, app-argument=https://carve.run/J7YcAVLVe3">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -186,12 +187,10 @@
             + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
           return;
         }
-        var left = false;
-        var leaving = function () { left = true; };
-        window.addEventListener("pagehide", leaving, { once: true });
-        document.addEventListener("visibilitychange", function () { if (document.hidden) leaving(); }, { once: true });
-        setTimeout(function () { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl("https://apps.apple.com/app/carve-route-planner/id6808087716") : "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
-        location.href = "carve://route?t=" + t;
+        // Not carve://: without the app, Safari stops on "the address is
+        // invalid". The store offers Open when Carve is installed, and
+        // Safari's own banner (app-argument) opens this drive in it.
+        location.href = window.carveStoreUrl ? carveStoreUrl("https://apps.apple.com/app/carve-route-planner/id6808087716") : "https://apps.apple.com/app/carve-route-planner/id6808087716";
       });
     });
   })();

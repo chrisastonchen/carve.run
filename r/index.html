@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=28">
 <link rel="stylesheet" href="/assets/route-view.css?v=b3f7eca099">
+<link rel="stylesheet" href="/assets/explore.css?v=8b3c595597">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
      route_profile.js or page_parts.py, not this file. -->
 <style>
@@ -348,7 +349,7 @@ const RouteProfile = (() => {
   if (APP_STORE_ID && isApple) {
     const meta = document.createElement("meta");
     meta.name = "apple-itunes-app";
-    meta.content = "app-id=" + APP_STORE_ID;
+    meta.content = "app-id=" + APP_STORE_ID + (token ? ", app-argument=https://carve.run/" + encodeURIComponent(token) : "");
     document.head.appendChild(meta);
   }
 
@@ -656,9 +657,8 @@ const RouteProfile = (() => {
   // MARK: - Opening the app
 
   // Try the app, fall back to the store. There is no way to ask a phone
-  // whether an app is installed: on iPhone the scheme is attempted and the
-  // store follows unless the page goes away, which is what happens when the
-  // app takes over; on Android an intent link names the app and its own
+  // whether an app is installed: on iPhone and iPad the store answers it
+  // (Get or Open); on Android an intent link names the app and its own
   // fallback.
   function openInApp(event) {
     if (!token && !payload) return;   // nothing to open: let the store link work
@@ -672,12 +672,10 @@ const RouteProfile = (() => {
         + "S.browser_fallback_url=" + encodeURIComponent(ANDROID_URL) + ";end";
       return;
     }
-    let left = false;
-    const leaving = () => { left = true; };
-    window.addEventListener("pagehide", leaving, { once: true });
-    document.addEventListener("visibilitychange", () => { if (document.hidden) leaving(); }, { once: true });
-    setTimeout(() => { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl(APP_STORE_URL) : APP_STORE_URL; }, 1500);
-    location.href = "carve://route?" + query;
+    // Not carve://: without the app, Safari stops on "the address is
+    // invalid". The store offers Open when Carve is installed, and Safari's
+    // own banner (app-argument, above) opens this route in it.
+    location.href = window.carveStoreUrl ? carveStoreUrl(APP_STORE_URL) : APP_STORE_URL;
   }
 
   // MARK: - Google Maps
@@ -1066,15 +1064,20 @@ const RouteProfile = (() => {
             + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
           return;
         }
-        var left = false;
-        var leaving = function () { left = true; };
-        window.addEventListener("pagehide", leaving, { once: true });
-        document.addEventListener("visibilitychange", function () { if (document.hidden) leaving(); }, { once: true });
-        setTimeout(function () { if (!left) location.href = window.carveStoreUrl ? carveStoreUrl("https://apps.apple.com/app/carve-route-planner/id6808087716") : "https://apps.apple.com/app/carve-route-planner/id6808087716"; }, 1500);
-        location.href = "carve://route?t=" + t;
+        // Not carve://: without the app, Safari stops on "the address is
+        // invalid". The store offers Open when Carve is installed, and
+        // Safari's own banner (app-argument) opens this drive in it.
+        location.href = window.carveStoreUrl ? carveStoreUrl("https://apps.apple.com/app/carve-route-planner/id6808087716") : "https://apps.apple.com/app/carve-route-planner/id6808087716";
       });
     });
   })();
+  // A drive's Back: the page before it, when that was the site's (Explore's
+  // list keeps its place and map); otherwise Explore.
+  function carveBack() {
+    var from = document.referrer || "";
+    if (from.indexOf(location.origin + "/") === 0 && history.length > 1) { history.back(); return false; }
+    return true;
+  }
 </script>
 <script src="/assets/carve-site.js?v=af19fd915b" defer></script>
 </body>
