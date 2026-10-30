@@ -166,21 +166,27 @@ export function attachPlaceSearch(input, near = () => null) {
 
   input.setAttribute("autocomplete", "off");
   input.setAttribute("aria-autocomplete", "list");
+  // A spinner at the field's end from the first letter that searches until
+  // the places come (the user, 2026-10-30).
+  const busy = (on) => field.classList.toggle("busy", on);
   input.addEventListener("input", () => {
     delete input.dataset.lat; delete input.dataset.lon; delete input.dataset.label;
     clearTimeout(timer);
     const typed = input.value.trim();
-    if (typed.length < SEARCH_MIN_CHARS) return close();
+    if (typed.length < SEARCH_MIN_CHARS) { busy(false); return close(); }
+    busy(true);
     timer = setTimeout(async () => {
       try {
         const at = near();
         const data = await planner("search", { query: typed, session: sessionId, ...(at ? { near: at } : {}) });
         if (input.value.trim() !== typed) return;
+        busy(false);
         results = (data.places || []).slice(0, 6);
         active = 0;
         query = typed;
         show();
       } catch {
+        if (input.value.trim() === typed) busy(false);
         close();
       }
     }, SEARCH_DELAY_MS);

@@ -743,3 +743,12 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero { overflow: visible; z-index: 5; }
   .hero > .hero-map { border-radius: inherit; overflow: hidden; }
 }
+
+/* Places on their way: a small spinner at the end of the field. */
+.door .field.busy input { padding-right: 42px; }
+.door .field.busy::after {
+  content: ""; position: absolute; right: 20px; top: 50%; width: 16px; height: 16px; margin-top: -10px;
+  border: 2px solid rgba(21,24,28,.14); border-top-color: var(--green); border-radius: 50%;
+  animation: field-spin .7s linear infinite; pointer-events: none;
+}
+@keyframes field-spin { to { transform: rotate(360deg); } }
