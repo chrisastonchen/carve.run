@@ -640,3 +640,5 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 @media (max-width: 899px) { .proof { gap: 4px 10px; font-size: 13px; } }
 .proof li { white-space: nowrap; }
 @media (max-width: 399px) { .proof { gap: 4px 8px; font-size: 12px; } }
+/* "Drive them together." on one line on small phones (360px) */
+@media (max-width: 379px) { .hero h1 { font-size: 34px; } }
