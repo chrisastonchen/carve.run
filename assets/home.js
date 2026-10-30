@@ -492,6 +492,8 @@ function heroStory() {
   if (/android/i.test(navigator.userAgent || "")) {
     const get = document.querySelector(".hero-get span");
     if (get) get.textContent = "Get Carve on Android";
+    const car = document.querySelector(".hero-car");
+    if (car) { car.querySelector("use").setAttribute("href", "#androidauto"); car.querySelector("span").textContent = "Also on Android Auto"; }
   }
   const story = document.querySelector(".hero-story");
   if (!story || wide()) return;
