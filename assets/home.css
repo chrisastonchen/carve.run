@@ -666,7 +666,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-story .bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.35); overflow: hidden; position: relative; }
   .hero-story .bars i::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; transform: scaleX(0); }
   .hero-story .bars i.done::after { transform: scaleX(1); }
-  .hero-story .bars i.on::after { animation: storyfill 5s linear forwards; }
+  .hero-story .bars i.on::after { animation: storyfill 8s linear forwards; }
   .hero-story.still .bars { display: none; }
 }
 @keyframes storyfill { to { transform: scaleX(1); } }
@@ -688,3 +688,5 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-get { margin-top: 30px; }
 }
 @media (max-width: 899px) { .hero { min-height: 0; padding-bottom: 46px; } }
+/* darker scrim behind the words on phones (the user, 10/29) */
+@media (max-width: 899px) { .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.78) 0%, rgba(8,14,10,.62) 55%, rgba(8,14,10,.45) 100%); } }

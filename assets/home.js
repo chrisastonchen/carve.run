@@ -507,7 +507,7 @@ function heroStory() {
     void bars[at].offsetWidth; // restart the fill
     bars[at].classList.add("on");
     clearTimeout(timer);
-    timer = setTimeout(() => show(at + 1), 5000);
+    timer = setTimeout(() => show(at + 1), 8000);
   };
   // tap the photo (not the words or links) to skip ahead
   document.querySelector(".hero").addEventListener("click", (e) => {
