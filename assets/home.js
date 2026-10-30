@@ -368,6 +368,30 @@ function wireClips(box) {
   dots[0].setAttribute("aria-current", "true");
 }
 
+// The app section's phone, on a computer: its clips one after another,
+// nothing to press, playing only while it's on screen.
+function playPhone(box) {
+  if (!box || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const names = box.dataset.clips.split("|");
+  const video = box.querySelector("video");
+  let at = 0, visible = false;
+  const go = (i) => {
+    at = i % names.length;
+    box.querySelector(".still").src = `/assets/${names[at]}-first.jpg`;
+    video.classList.remove("on");
+    video.src = `/assets/${names[at]}.mp4`;
+    if (visible) video.play().catch(() => {});
+  };
+  video.addEventListener("playing", () => video.classList.add("on"));
+  video.addEventListener("ended", () => go(at + 1));
+  video.addEventListener("error", () => setTimeout(() => go(at + 1), 2500));
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (visible) { if (!video.getAttribute("src")) go(0); else video.play().catch(() => {}); }
+    else video.pause();
+  }, { threshold: 0.4 }).observe(box);
+}
+
 
 // ── the three steps, played in turn ──────────────────────────────────
 // Each scene rests as a picture; while the section is on screen they play
@@ -565,7 +589,8 @@ async function main() {
   $("near-change").addEventListener("click", locate);
   $("near-change2").addEventListener("click", locate);
   $("hero-locate").addEventListener("click", locate);
-  if (!wide()) document.querySelectorAll(".seq").forEach(wireClips);
+  if (wide()) playPhone(document.querySelector(".app-phone"));
+  else document.querySelectorAll(".step .seq").forEach(wireClips);
   const [data, guess] = await Promise.all([
     fetch("/drives/roads.json").then((r) => r.json()).catch(() => []),
     guessPlace(),
