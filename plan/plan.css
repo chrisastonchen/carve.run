@@ -137,8 +137,12 @@ a { color: var(--green); }
 
 /* ── phone gate ── */
 .phone-gate { padding: calc(var(--bar) + 32px) 24px 32px; display: flex; flex-direction: column; gap: 18px; background: #FBF8EF; min-height: 100%; }
-.gate-art { height: 200px; border-radius: 24px; background: #D4E6FD; display: flex; align-items: center; justify-content: center; }
-.gate-art svg { max-width: 100%; }
+.gate-art { height: 300px; border-radius: 24px; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; padding-top: 28px;
+  background: radial-gradient(120% 90% at 50% 0%, #2B5A3E 0%, #14301F 60%, #0B1C12 100%); }
+/* The app's own plan screen, cut off at the card's foot like a phone held up */
+.gate-phone { width: 210px; flex: none; border-radius: 34px 34px 0 0; padding: 7px 7px 0; background: #0A0C0E;
+  box-shadow: 0 0 0 1.5px #3A3F45, 0 24px 48px rgba(0,0,0,.45); }
+.gate-phone img { display: block; width: 100%; height: auto; border-radius: 28px 28px 0 0; }
 .phone-gate h1 { font-size: 30px; }
 .phone-gate p { font-size: 18px; color: var(--ink-2); }
 
