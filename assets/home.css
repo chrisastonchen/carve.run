@@ -642,3 +642,15 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 @media (max-width: 399px) { .proof { gap: 4px 8px; font-size: 12px; } }
 /* "Drive them together." on one line on small phones (360px) */
 @media (max-width: 379px) { .hero h1 { font-size: 34px; } }
+/* clubs, shortened (the user, 2026-10-29): one line, four ticks, planner CTA */
+.clubs2 .problem { font-size: 20px; font-weight: 700; margin-bottom: 18px; }
+.clubs2 ul.ticks { gap: 12px; }
+.clubs2 .ticks li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding-left: 30px; position: relative; font-size: 16.5px; }
+.clubs2 .ticks li::before { content: ""; position: absolute; left: 0; top: 2px; width: 20px; height: 20px; border-radius: 50%; background: var(--green-dark) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px no-repeat; }
+.clubs2 .ticks li span { color: #4F6B5A; }
+.clubs2 .cta { flex-direction: column; align-items: flex-start; gap: 10px; }
+.clubs2 .cta .hb svg { width: 18px; height: 18px; margin-left: 8px; vertical-align: -3px; }
+.clubs2 .cta .guide { font-size: 15px; font-weight: 600; color: var(--green-dark); }
+@media (max-width: 899px) { .clubs2 .problem { font-size: 18px; } .clubs2 .ticks li { font-size: 15.5px; } }
+.clubs2 .cta { margin-top: 26px; }
+.clubs2 .cta .guide { text-decoration: none; }
