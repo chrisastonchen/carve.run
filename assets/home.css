@@ -778,7 +778,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .app-band { margin-top: 40px; } }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
-  .app-band { padding: 40px 16px 44px; }
+  /* A phone already has Get the App in the bar and the hero's button
+     (the user, 2026-10-30: three in a row was too many). */
+  .app-band { display: none; }
   .app-in { display: block; }
   .app-words { gap: 12px; }
   .app-band h2 { font-size: 34px; }
