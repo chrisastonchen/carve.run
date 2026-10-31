@@ -4,10 +4,6 @@
    "coverage": 0.55,
    "since": "2026-10-24"
   },
-  "gates-pass-road": {
-   "coverage": 0.71,
-   "since": "2026-10-26"
-  },
   "going-to-the-sun-road": {
    "coverage": 0.02,
    "since": "2026-10-24"
@@ -17,12 +13,8 @@
    "since": "2026-10-28"
   },
   "highway-74-whitewater-minnesota": {
-   "coverage": 0.72,
+   "coverage": 0.6,
    "since": "2026-10-24"
-  },
-  "highway-95-st-croix-minnesota": {
-   "coverage": 0.66,
-   "since": "2026-10-28"
   },
   "klondike-highway-white-pass": {
    "coverage": 0.48,
@@ -32,31 +24,35 @@
    "coverage": 0.51,
    "since": "2026-10-24"
   },
-  "nc-12-hatteras-island": {
-   "coverage": 0.58,
-   "since": "2026-10-24"
+  "little-tujunga-canyon-road": {
+   "coverage": 0.63,
+   "since": "2026-10-29"
   },
-  "old-kings-highway-6a": {
-   "coverage": 0.11,
-   "since": "2026-10-28"
+  "monitor-pass": {
+   "coverage": 0.52,
+   "since": "2026-10-30"
   },
-  "stevens-canyon-road": {
-   "coverage": 0.21,
-   "since": "2026-10-26"
+  "sonora-pass": {
+   "coverage": 0.69,
+   "since": "2026-10-30"
   },
   "storm-king-highway": {
    "coverage": 0.57,
    "since": "2026-10-24"
+  },
+  "tasman-highway-launceston-st-helens": {
+   "coverage": 0.63,
+   "since": "2026-10-30"
   },
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
   },
   "tunnel-of-trees-m-119": {
-   "coverage": 0.15,
+   "coverage": 0.21,
    "since": "2026-10-24"
   }
  },
  "format": 1,
- "updated": "2026-10-29T13:35:37Z"
+ "updated": "2026-10-31T13:10:13Z"
 }
