@@ -4,6 +4,10 @@
    "coverage": 0.55,
    "since": "2026-10-24"
   },
+  "crater-lake-rim-drive": {
+   "coverage": 0.52,
+   "since": "2026-10-31"
+  },
   "going-to-the-sun-road": {
    "coverage": 0.02,
    "since": "2026-10-24"
@@ -28,9 +32,25 @@
    "coverage": 0.63,
    "since": "2026-10-29"
   },
+  "m-26-keweenaw-shore": {
+   "coverage": 0.2,
+   "since": "2026-10-31"
+  },
   "monitor-pass": {
    "coverage": 0.52,
    "since": "2026-10-30"
+  },
+  "natchez-trace-tennessee": {
+   "coverage": 0.7,
+   "since": "2026-10-31"
+  },
+  "old-kings-highway-6a": {
+   "coverage": 0.11,
+   "since": "2026-10-31"
+  },
+  "page-mill-to-pescadero": {
+   "coverage": 0.59,
+   "since": "2026-10-31"
   },
   "sonora-pass": {
    "coverage": 0.69,
@@ -39,10 +59,6 @@
   "storm-king-highway": {
    "coverage": 0.57,
    "since": "2026-10-24"
-  },
-  "tasman-highway-launceston-st-helens": {
-   "coverage": 0.63,
-   "since": "2026-10-30"
   },
   "trail-ridge-road": {
    "coverage": 0.01,
@@ -54,5 +70,5 @@
   }
  },
  "format": 1,
- "updated": "2026-10-31T13:10:13Z"
+ "updated": "2026-11-01T14:10:09Z"
 }
