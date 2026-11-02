@@ -123,7 +123,11 @@ function picture(route, share) {
 
 function row(route) {
   const share = (route.shares || []).find((s) => s.token && !s.revoked_at);
-  const page = share ? `/${share.token}` : null;
+  // On a phone, Open goes through open.carve.run: Carve opens it if it's
+  // installed, else the route's page; never the App Store (the user,
+  // 2026-11-01; the Worker's ?then=page). A carve.run link can't open the
+  // app from a carve.run page.
+  const page = share ? (narrow ? `https://open.carve.run/${share.token}?then=page&ct=my-drives` : `/${share.token}`) : null;
   const edit = `/plan/?route=${encodeURIComponent(route.id)}`;
   const li = document.createElement("li");
   li.className = "drive-row";
