@@ -155,7 +155,16 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 /* ═══ LEGENDARY DRIVES ═══ */
 .wrapx { max-width: 1296px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 72px); }
 .legends { padding-top: 64px; display: flex; flex-direction: column; gap: 18px; }
-.legends h2, .clubs2 h2, .anywhere h2, .faq2 h2 { font-size: 34px; }
+.legends h2, .anywhere h2, .faq2 h2 { font-size: 34px; }
+/* From the founder: the quote alone, the photo beside it (the user, 11/1). */
+.founder-sec { margin-top: 56px; }
+.founder-sec .founder { margin: 0; padding: 14px; border-radius: 28px; background: var(--mint); color: #2B4A37; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; align-items: center; }
+.founder-sec img { display: block; width: 100%; height: 100%; min-height: 300px; object-fit: cover; object-position: 30% 60%; border-radius: 18px; }
+.founder-sec figcaption { padding: 24px 34px 24px 0; }
+.founder-sec blockquote { margin: 0; }
+.founder-sec blockquote p { font-size: 21px; line-height: 1.5; font-weight: 600; color: var(--green-dark); }
+.founder-sec .sig { margin-top: 16px; font-weight: 700; color: var(--green-dark); }
+.founder-sec .fine { margin-top: 18px; font-size: 13px; opacity: .75; }
 .rail { list-style: none; margin: 0; padding: 0 0 6px; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .rail::-webkit-scrollbar { display: none; }
 .rail li { flex: 0 0 300px; scroll-snap-align: start; }
@@ -168,15 +177,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .rail .chip svg { width: 12px; height: 12px; }
 
 /* ═══ CLUBS ═══ */
-.clubs2 { margin-top: 56px; padding: 40px 44px; border-radius: 28px; background: var(--mint); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px 48px; color: #2B4A37; }
-.clubs2 h2 { color: var(--green-dark); grid-column: 1 / -1; }
-.clubs2 .note { font-size: 17px; line-height: 1.55; }
-.clubs2 .sig { margin-top: 10px; font-weight: 700; color: var(--green-dark); }
-.clubs2 ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 16px; line-height: 1.45; }
-.clubs2 li b { color: var(--green-dark); }
-.clubs2 .cta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
-.clubs2 .cta p { font-size: 15px; }
-.clubs2 .fine { grid-column: 1 / -1; font-size: 13px; opacity: .75; }
 
 /* ═══ DRIVES ANYWHERE (build_area_pages.py fills the states) ═══ */
 .anywhere { padding: 64px 0 24px; display: flex; flex-direction: column; gap: 20px; }
@@ -232,9 +232,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .get-app .stores .hb { width: 100%; }
   .get-app .apex { text-align: center; }
   .legends { padding-top: 44px; }
-  .legends h2, .clubs2 h2, .anywhere h2, .faq2 h2 { font-size: 26px; }
+  .legends h2, .anywhere h2, .faq2 h2 { font-size: 26px; }
   .rail li { flex-basis: 240px; }
-  .clubs2 { display: flex; flex-direction: column; padding: 26px 22px; margin-top: 36px; }
   .anywhere { padding-top: 44px; }
   .anywhere .cols { grid-template-columns: 1fr; }
 }
@@ -275,7 +274,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .rail li { flex-basis: 250px; }
 .rail img { height: 160px; }
 .rail .n { font-size: 16px; }
-.legends h2, .clubs2 h2, .anywhere h2, .faq2 h2 { font-size: 30px; }
+.legends h2, .anywhere h2, .faq2 h2 { font-size: 30px; }
 .steps-sec > h2 { font-size: clamp(32px, 3vw, 42px); }
 .near-head h2 { font-size: 26px; }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
@@ -427,9 +426,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .home .for-org { color: var(--green-dark); }
 .step .example { display: inline-block; margin-top: 8px; font-weight: 700; font-size: 15px; text-underline-offset: 3px; }
 .step .example::after { content: " ↗"; }
-.clubs2 .problem { font-size: 18px; line-height: 1.5; font-weight: 600; color: var(--green-dark); margin-bottom: 16px; }
-.clubs2 .founder { align-self: start; padding: 18px 20px; border-radius: 18px; background: rgba(255,255,255,.6); }
-.clubs2 .founder .note { font-size: 15.5px; line-height: 1.55; font-style: normal; }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero-copy { gap: 16px; }
   .for-org { font-size: 13.5px; padding: 9px 12px; }
@@ -437,7 +433,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .proof { font-size: 13px; }
   .for-org { display: none; }
-  .clubs2 { margin-top: 30px; }
 }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero { height: min(740px, calc(100vh - 64px - 40px)); min-height: 660px; }
@@ -541,9 +536,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 
 /* The founder, in his car, beside his words. */
-.clubs2 .founder { padding: 12px 12px 18px; }
-.clubs2 .founder img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 30% 60%; border-radius: 12px; margin-bottom: 14px; }
-.clubs2 .founder .note, .clubs2 .founder .sig { padding: 0 8px; }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .proof { flex-wrap: wrap; }
   .proof li { white-space: nowrap; }
@@ -552,7 +544,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero { height: min(640px, calc(100vh - 64px - 40px)); min-height: 560px; }
   .hero-copy { bottom: auto; max-height: calc(100% - 36px); justify-content: flex-start; padding: 30px 30px 26px; }
 }
-.clubs2 .founder img { height: auto; }
 
 
 /* Drive them together: three photos as one piece, split on the diagonal,
@@ -621,17 +612,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 /* "Drive them together." on one line on small phones (360px) */
 @media (max-width: 379px) { .hero h1 { font-size: 34px; } }
 /* clubs, shortened (the user, 2026-10-29): one line, four ticks, planner CTA */
-.clubs2 .problem { font-size: 20px; font-weight: 700; margin-bottom: 18px; }
-.clubs2 ul.ticks { gap: 12px; }
-.clubs2 .ticks li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding-left: 30px; position: relative; font-size: 16.5px; }
-.clubs2 .ticks li::before { content: ""; position: absolute; left: 0; top: 2px; width: 20px; height: 20px; border-radius: 50%; background: var(--green-dark) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px no-repeat; }
-.clubs2 .ticks li span { color: #4F6B5A; }
-.clubs2 .cta { flex-direction: column; align-items: flex-start; gap: 10px; }
-.clubs2 .cta .hb svg { width: 18px; height: 18px; margin-left: 8px; vertical-align: -3px; }
-.clubs2 .cta .guide { font-size: 15px; font-weight: 600; color: var(--green-dark); }
-@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .clubs2 .problem { font-size: 18px; } .clubs2 .ticks li { font-size: 15.5px; } }
-.clubs2 .cta { margin-top: 26px; }
-.clubs2 .cta .guide { text-decoration: none; }
 /* On a phone: three club photos behind the words, story style (the user, 10/29: the video was too fast) */
 .hero-story { display: none; }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
@@ -778,4 +758,11 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .feats .sub { margin-top: 14px; font-size: 17px; }
   .feat-phone { width: min(260px, 66vw); margin-top: 36px; padding: 8px; border-radius: 40px; }
   .feat-get { margin-top: 32px; width: min(280px, 100%); }
+}
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
+  .founder-sec { margin-top: 36px; }
+  .founder-sec .founder { grid-template-columns: 1fr; gap: 6px; padding: 12px; border-radius: 24px; }
+  .founder-sec img { height: auto; min-height: 0; aspect-ratio: 16 / 10; }
+  .founder-sec figcaption { padding: 12px 10px 14px; }
+  .founder-sec blockquote p { font-size: 17px; }
 }
