@@ -13,7 +13,7 @@ import { session, signedIn } from "/assets/site-bar.js";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
+const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
 const PANEL_GAP = 30;
 
 const $ = (id) => document.getElementById(id);

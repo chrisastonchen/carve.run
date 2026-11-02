@@ -29,26 +29,30 @@
 }
 
 :root {
-  --paper:     #FBF8EF;
-  --paper-2:   #F3EEE1;
-  --ink:       #15181C;
-  --ink-dim:   #5D636C;
-  --ink-faint: #8B9098;
-  --line:      #E2DCCC;
-  --sky:       #D4E7FF;
-  --sky-deep:  #B9D6FF;
-  --mint:      #DCF1E2;
-  --peach:     #FFE4D3;
-  --lilac:     #E7E1FF;
-  --start:     #2E9E52;
-  --stop:      #E4731C;
-  --marker:    #6A5FE8;
-  --route:     #2E92FF;
-  --car:       #E0342B;
-  --asphalt:   #15181C;
+  color-scheme: dark;
+  --paper: #0E1210;
+  --paper-2: #161B18;
+  --ink: #EEF1EE;
+  --ink-dim: #A3ACA6;
+  --ink-faint: #79827C;
+  --line: #2A332E;
+  --sky: #13283D;
+  --sky-deep: #1B3A58;
+  --mint: #14301F;
+  --peach: #3A2416;
+  --lilac: #241F3D;
+  --start: #2E9E52;
+  --stop: #E4731C;
+  --marker: #6A5FE8;
+  --route: #2E92FF;
+  --car: #E0342B;
+  --asphalt: #EEF1EE;
   --serif: "Newsreader", "Iowan Old Style", Palatino, Georgia, serif;
   --sans: "Figtree", -apple-system, "SF Pro Text", system-ui, sans-serif;
   --max: 1120px;
+  --green: #1D5B3A;
+  --green-ink: #6FD39A;
+  /* dark (the user, 2026-11-01: the whole site dark): page #0E1210, card #161B18, raised #1D2420, line #2A332E */
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -85,7 +89,7 @@ img { display: block; max-width: 100%; }
   position: fixed; inset: 0; z-index: 9; pointer-events: none; opacity: .05;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>\
+<svg xmlns='http: //www.w3.org/2000/svg' width='160' height='160'>\
 <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter>\
 <rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
@@ -190,7 +194,7 @@ details p { padding: 0 0 14px; }
 }
 .cmp-table .c-yes .mk { background: var(--mint); }
 .cmp-table .c-part .mk { background: var(--peach); }
-.cmp-table .c-no .mk { background: #F6D6D3; }
+.cmp-table .c-no .mk { background: #371815; }
 .cmp-table .c-unk .mk { background: var(--paper-2); color: var(--ink-faint); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .doc .cmp-key { font-size: 14px; color: var(--ink-faint); }

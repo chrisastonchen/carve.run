@@ -10,7 +10,9 @@
 .bar {
   position: sticky; top: 0; z-index: 20; height: var(--bar);
   display: flex; align-items: center; gap: 10px; padding: 0 20px 0 24px;
-  background: #1D5B3A; color: #fff;
+  /* dark, like the rest of the site (the user, 2026-11-01); a hairline
+     sets it off from the page */
+  background: #0E1210; color: #fff; box-shadow: inset 0 -1px 0 rgba(255,255,255,.08);
   font-family: "Figtree", -apple-system, system-ui, sans-serif; font-size: 17px; line-height: 1.45;
 }
 .bar button { font: inherit; color: inherit; cursor: pointer; }
@@ -27,7 +29,7 @@
 .bar .pill {
   display: inline-flex; align-items: center; justify-content: center; gap: 9px;
   height: 44px; padding: 0 18px; border: none; border-radius: 999px;
-  background: #fff; color: #1D5B3A; font-size: 16px; font-weight: 700; text-decoration: none; white-space: nowrap;
+  background: #fff; color: #0E1210; font-size: 16px; font-weight: 700; text-decoration: none; white-space: nowrap;
 }
 .bar .pill svg { width: 18px; height: 18px; flex: none; }
 .bar .who { position: relative; }
@@ -35,21 +37,21 @@
   display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 12px 0 4px;
   border: none; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; font-weight: 700; font-size: 16px;
 }
-.bar .avatar { width: 36px; height: 36px; border-radius: 50%; background: #F2C94C; display: flex; align-items: center; justify-content: center; overflow: hidden; color: #15181C; }
+.bar .avatar { width: 36px; height: 36px; border-radius: 50%; background: #F2C94C; display: flex; align-items: center; justify-content: center; overflow: hidden; color: #EEF1EE; }
 .bar .avatar svg { width: 22px; height: 22px; }
 .bar .avatar img { width: 100%; height: 100%; object-fit: cover; }
 .bar .chev { width: 12px; height: 12px; }
 .bar .who-menu {
   position: absolute; right: 0; top: 52px; min-width: 180px; padding: 6px; border-radius: 16px;
-  background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); color: #15181C;
+  background: #161B18; box-shadow: 0 14px 36px rgba(0,0,0,.2); color: #EEF1EE;
 }
 .bar .who-menu button { width: 100%; height: 44px; padding: 0 14px; border: none; border-radius: 10px; background: none; text-align: left; font-weight: 700; }
-.bar .who-menu button:hover { background: #F1F1EF; }
+.bar .who-menu button:hover { background: #1D2420; }
 .bar .menu-btn { width: 44px; height: 44px; border: none; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; display: flex; align-items: center; justify-content: center; }
 .bar .menu-btn svg { width: 20px; height: 20px; }
 .sheet {
   position: fixed; inset: var(--bar) 0 0 0; z-index: 19; padding: 8px 20px 24px;
-  background: #1D5B3A; display: flex; flex-direction: column;
+  background: #0E1210; display: flex; flex-direction: column;
   font-family: "Figtree", -apple-system, system-ui, sans-serif;
 }
 .sheet a { display: block; padding: 16px 6px; border-bottom: 1px solid rgba(255,255,255,.14); color: #fff; font-size: 22px; font-weight: 700; text-decoration: none; }

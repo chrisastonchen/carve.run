@@ -43,7 +43,7 @@
 /* On a phone, the store's button instead of a code to scan. */
 .rv .go { display: none; }
 .rv .go a { display: flex; align-items: center; justify-content: center; gap: 9px; height: 56px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
-.rv .go a svg { width: 20px; height: 20px; fill: #fff; }
+.rv .go a svg { width: 20px; height: 20px; fill: #161B18; }
 .rv .go p { text-align: center; color: var(--ink-3); font-size: 13px; margin-top: 8px; }
 .rv .platforms { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; color: var(--ink-3); }
 .rv .platforms a { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 10px; color: inherit; background: none; height: auto; }
@@ -57,9 +57,9 @@
 /* ── the guide's sections, sized for the card ── */
 .rv .sect { padding-top: 18px; border-top: 1px solid var(--line); }
 .rv .sect > h2 { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 10px; }
-.rv .prose p { font-size: 16px; line-height: 1.55; color: #3A3A3C; }
+.rv .prose p { font-size: 16px; line-height: 1.55; color: #C3CAC5; }
 .rv .prose p + p { margin-top: 10px; }
-.rv .prose a, .rv .know a, .rv .rv-sources a, .rv .check a { color: var(--green); font-weight: 700; text-decoration: none; }
+.rv .prose a, .rv .know a, .rv .rv-sources a, .rv .check a { color: var(--green-ink); font-weight: 700; text-decoration: none; }
 .rv .prose a:hover, .rv .know a:hover, .rv .rv-sources a:hover, .rv .check a:hover { text-decoration: underline; }
 
 /* Along the way: the map's own marks, the flags and the stops' letters. */
@@ -67,7 +67,7 @@
 .rv .along li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .rv .along li:last-child { border-bottom: 0; }
 .rv .along .badge { width: 26px; height: 26px; font-size: 13px; margin-top: 1px; }
-.rv .along .badge.place { width: 12px; height: 12px; margin: 7px 7px 0; background: #C7C7CC; }
+.rv .along .badge.place { width: 12px; height: 12px; margin: 7px 7px 0; background: #242C27; }
 .rv .along .what { padding-top: 2px; min-width: 0; }
 .rv .along strong { font-weight: 700; }
 .rv .along .what span { display: block; color: var(--ink-3); font-size: 15px; margin-top: 2px; }
@@ -76,7 +76,7 @@
 .rv .units { display: grid; grid-template-columns: 1fr; gap: 22px; margin-top: 18px; }
 .rv .unit .ut { font-size: 15px; font-weight: 700; }
 .rv .unit .us { font-size: 13.5px; color: var(--ink-3); margin-top: 2px; }
-.rv .unit .us em { font-style: normal; color: #C2185B; font-weight: 700; }
+.rv .unit .us em { font-style: normal; color: #ED6EA0; font-weight: 700; }
 .rv .unit .ends { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--ink-3); margin-top: 6px; }
 .rv .elev { position: relative; height: 72px; margin-top: 10px; }
 .rv .elev svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -84,14 +84,14 @@
 .rv .elev .stem { position: absolute; bottom: 0; width: 1px; background: rgba(60,60,67,.35); }
 .rv .cbar { position: relative; margin-top: 30px; height: 12px; border-radius: 6px; }
 .rv .cbar .twisty { position: absolute; bottom: 19px; height: 5px; border: 1.5px solid #C2185B; border-bottom: 0; border-radius: 1px 1px 0 0; }
-.rv .cbar .twisty span { position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: #C2185B; white-space: nowrap; }
+.rv .cbar .twisty span { position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: #ED6EA0; white-space: nowrap; }
 
 .rv .know { padding-left: 20px; margin: 0; }
-.rv .know li { font-size: 16px; line-height: 1.5; color: #3A3A3C; }
+.rv .know li { font-size: 16px; line-height: 1.5; color: #C3CAC5; }
 .rv .know li + li { margin-top: 7px; }
-.rv .check { margin-top: 10px; font-size: 15.5px; color: #3A3A3C; }
+.rv .check { margin-top: 10px; font-size: 15.5px; color: #C3CAC5; }
 .rv .faq h3 { margin: 0; font-size: 16px; font-weight: 700; }
-.rv .faq p { font-size: 15.5px; line-height: 1.5; color: #3A3A3C; margin-top: 3px; }
+.rv .faq p { font-size: 15.5px; line-height: 1.5; color: #C3CAC5; margin-top: 3px; }
 .rv .faq h3 + p + h3 { margin-top: 14px; }
 
 /* Nearby drives: a photo and its words. */
@@ -100,25 +100,25 @@
 .rv .cards img { width: 100%; height: auto; aspect-ratio: 1.6 / 1; object-fit: cover; border-radius: 14px; background: var(--fill); display: block; }
 .rv .cards .n { display: block; font-weight: 700; font-size: 15px; letter-spacing: -.01em; margin-top: 8px; line-height: 1.25; }
 .rv .cards .m { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; color: var(--ink-3); font-size: 13px; margin-top: 3px; }
-.rv .cards a:hover .n { color: var(--green); }
+.rv .cards a:hover .n { color: var(--green-ink); }
 .rv .mark { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #fff; box-shadow: 0 0 0 .5px rgba(0,0,0,.15); flex: none; }
 .rv .more-link { margin-top: 14px; font-weight: 700; font-size: 15px; }
-.rv .more-link a { color: var(--green); text-decoration: none; }
+.rv .more-link a { color: var(--green-ink); text-decoration: none; }
 
 /* What the app adds. */
 .rv .feats { display: grid; grid-template-columns: 1fr; gap: 14px; }
 .rv .feat { display: flex; gap: 12px; align-items: flex-start; }
-.rv .feat .ic { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--green-tint); color: var(--green); flex: none; }
+.rv .feat .ic { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--green-tint); color: var(--green-ink); flex: none; }
 .rv .feat .ic svg { width: 21px; height: 21px; }
 .rv .feat b { display: block; font-size: 15.5px; letter-spacing: -.01em; }
 .rv .feat .d { display: block; color: var(--ink-3); font-size: 14px; line-height: 1.4; margin-top: 2px; }
-.rv .apex { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; color: #13623F; background: #E2F4EA; border-radius: 6px; padding: 2px 6px; vertical-align: 2px; letter-spacing: .02em; }
+.rv .apex { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; color: #76E4B4; background: #1D2420; border-radius: 6px; padding: 2px 6px; vertical-align: 2px; letter-spacing: .02em; }
 .rv .get { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
 .rv .get p { color: var(--ink-3); font-size: 14px; }
 .rv .get p a { color: inherit; }
 .rv .stores { display: flex; gap: 10px; flex-wrap: wrap; }
 .rv .store { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 18px 0 14px; border-radius: 14px; background: #000; color: #fff; text-decoration: none; }
-.rv .store svg { width: 24px; height: 26px; flex: none; fill: #fff; }
+.rv .store svg { width: 24px; height: 26px; flex: none; fill: #161B18; }
 .rv .store small { display: block; font-size: 11px; font-weight: 500; opacity: .85; line-height: 1; }
 .rv .store b { display: block; font-size: 18px; font-weight: 700; letter-spacing: -.01em; line-height: 1.15; }
 
@@ -130,7 +130,7 @@
 
 /* "Your route may change" before Google Maps (a shared route's). */
 .gmaps { display: flex; align-items: center; justify-content: center; width: 100%; height: 48px; margin-top: 14px; border: none; border-radius: 999px; background: var(--fill); color: var(--ink); font-weight: 700; font-size: 15.5px; }
-.gmaps:hover { background: #E8E7E3; }
+.gmaps:hover { background: #242C27; }
 
 /* The key needs room beside the card; below that the pins speak for themselves. */
 @media (max-width: 1100px) { .rv .legend { display: none !important; } }
@@ -139,7 +139,7 @@
    the page; the map comes first on screen though the card leads the page ── */
 @media (max-width: 699px), (max-height: 560px) {
   html, body { height: auto; }
-  body { background: #fff; }
+  body { background: #161B18; }
   .rv { position: static; padding-top: var(--bar); display: flex; flex-direction: column; }
   .rv-map { order: -1; }
   .rv-map { position: relative; inset: auto; height: 46vh; min-height: 260px; max-height: 420px; }
@@ -166,7 +166,7 @@
 .rv .app-banner { display: none; }
 @media ((max-width: 699px) or (max-height: 560px)) and ((max-width: 760px) or (pointer: coarse)) {
   .rv:has(.app-banner) { padding-bottom: 68px; }
-  .rv .app-banner { display: flex; align-items: center; gap: 10px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; padding: 10px 16px max(10px, env(safe-area-inset-bottom)) 6px; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(0,0,0,.08); }
+  .rv .app-banner { display: flex; align-items: center; gap: 10px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; padding: 10px 16px max(10px, env(safe-area-inset-bottom)) 6px; background: #161B18; border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(0,0,0,.08); }
   .rv .app-banner .x { flex: none; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 50%; background: none; color: var(--ink-3); cursor: pointer; }
   .rv .app-banner .x svg { width: 16px; height: 16px; fill: none; stroke: currentColor; }
   .rv .app-banner a { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }

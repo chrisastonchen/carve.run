@@ -11,7 +11,7 @@ import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
 
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
+const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
 const PHONE = "(max-width: 699px), (max-height: 560px)";
 const VIEW_KEY = "carve.explore.view";
 const LIST_MAX = 60;
@@ -208,7 +208,7 @@ function buildMap(saved) {
         "circle-stroke-color": "#fff", "circle-stroke-width": on(2, 1),
         "circle-opacity": ["interpolate", ["linear"], ["zoom"], 6, 1, 7, 0], "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 6, 1, 7, 0] } });
     // Drives the filters leave out sit under a pale veil, not gone.
-    map.addLayer({ id: "ex-hidden", type: "line", source: "ex-roads", minzoom: 6, filter: ["==", ["get", "k"], -1], paint: { "line-color": "#EFEDE6", "line-width": 6, "line-opacity": 0.85 } });
+    map.addLayer({ id: "ex-hidden", type: "line", source: "ex-roads", minzoom: 6, filter: ["==", ["get", "k"], -1], paint: { "line-color": "#0E1210", "line-width": 6, "line-opacity": 0.85 } });
     map.addLayer({ id: "ex-hit", type: "line", source: "ex-roads", minzoom: 6, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
     map.addLayer({ id: "ex-dot-hit", type: "circle", source: "ex-mids", maxzoom: 6, paint: { "circle-radius": 12, "circle-opacity": 0.01 } });
     if (view.near) fitTo(view.near, 10);

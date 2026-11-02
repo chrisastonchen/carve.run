@@ -15,13 +15,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Carve Apex", "brand": {"@type": "Brand", "name": "Carve"}, "description": "Carve's subscription: offline maps and turns, Group, 3D previews, unlimited AI route planning, CarPlay and Android Auto, recording drives, road conditions and popular times.", "url": "https://carve.run/pricing/", "offers": [{"@type": "Offer", "name": "Carve Apex (yearly)", "price": "29.99", "priceCurrency": "USD", "description": "Yearly, with a 7-day free trial for new subscribers."}, {"@type": "Offer", "name": "Carve Apex (monthly)", "price": "4.99", "priceCurrency": "USD"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I need Apex to plan on the web?", "acceptedAnswer": {"@type": "Answer", "text": "No. Planning at carve.run is free, and so are sharing the link, the QR code and the printed turns."}}, {"@type": "Question", "name": "How does the free trial work?", "acceptedAnswer": {"@type": "Answer", "text": "New yearly subscribers get 7 days free. Cancel before it ends and you aren't charged."}}, {"@type": "Question", "name": "Who in the group needs Apex?", "acceptedAnswer": {"@type": "Answer", "text": "Anyone can join a group drive for free, and the group sees them on the map. Seeing everyone else on your own map takes Apex."}}, {"@type": "Question", "name": "Can I cancel any time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Subscriptions renew automatically and you cancel in your Apple Account on iPhone or in Google Play on Android; Apex stays on until the period you paid for ends."}}, {"@type": "Question", "name": "Where do I manage my subscription?", "acceptedAnswer": {"@type": "Answer", "text": "In your Apple Account on iPhone, or in Google Play on Android."}}]}</script>
-<meta name="theme-color" content="#1D5B3A">
+<meta name="theme-color" content="#0E1210">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=d6d8047f43">
-<link rel="stylesheet" href="/assets/site-bar.css?v=1b5bcab43d">
-<link rel="stylesheet" href="/assets/home.css?v=de2972d908">
+<link rel="stylesheet" href="/styles.css?v=b1d0f15cb7">
+<link rel="stylesheet" href="/assets/site-bar.css?v=6130b273c9">
+<link rel="stylesheet" href="/assets/home.css?v=19a05bc2e6">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <style>
   /* carve.run/pricing/ (the user, 2026-10-29: pricing on its own page, not the home page's). */
@@ -31,24 +31,24 @@
   .price-top p { font-size: 18px; color: var(--ink-3); max-width: 34em; line-height: 1.5; }
   .billing { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; width: 260px; padding: 4px; border-radius: 999px; background: var(--sand-2); }
   .billing button { height: 40px; border: 0; border-radius: 999px; background: none; font: 600 15px "Figtree", system-ui, sans-serif; color: var(--ink-3); cursor: pointer; }
-  .billing button[aria-pressed="true"] { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .billing button[aria-pressed="true"] { background: #161B18; color: var(--ink); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
   .plans2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-  .plan { border-radius: 24px; padding: 26px; display: flex; flex-direction: column; gap: 16px; background: #fff; border: 1px solid var(--rule); }
+  .plan { border-radius: 24px; padding: 26px; display: flex; flex-direction: column; gap: 16px; background: #161B18; border: 1px solid var(--rule); }
   .plan.apex { background: var(--mint); border: 2px solid var(--green); }
   .plan .name { font-weight: 800; font-size: 20px; }
   .plan .num { font-weight: 800; font-size: 42px; letter-spacing: -0.02em; line-height: 1.1; }
   .plan .num small { font-size: 17px; font-weight: 600; color: var(--ink-3); }
   .plan .note { font-size: 14px; color: var(--ink-3); }
-  .plan.apex .note { color: var(--green); font-weight: 700; }
+  .plan.apex .note { color: var(--green-ink); font-weight: 700; }
   .plan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 15.5px; line-height: 1.45; color: var(--ink-2); }
   .plan li { display: flex; gap: 10px; }
-  .plan li svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--green); }
+  .plan li svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--green-ink); }
   .plan li b { color: var(--ink); }
   .price-get { display: flex; flex-direction: column; align-items: center; gap: 10px; }
   .price-get .stores { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
   .price-get p { font-size: 14px; color: var(--ink-3); }
   .price-faq h2 { font-size: 26px; margin-bottom: 6px; }
-  .price-faq details { background: #fff; border-color: var(--rule); }
+  .price-faq details { background: #161B18; border-color: var(--rule); }
   .price-faq summary { font-weight: 700; }
   .price-faq details p { color: var(--ink-2); line-height: 1.55; }
   .fine { font-size: 12.5px; color: var(--ink-4); line-height: 1.5; }

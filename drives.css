@@ -12,21 +12,24 @@
 }
 
 :root {
-  --ink: #111113;
-  --ink-2: #6E6E73;
-  --ink-3: #8E8E93;
-  --body: #3A3A3C;
-  --fill: #F2F2F7;
-  --line: rgba(60, 60, 67, .14);
+  color-scheme: dark;
+  --ink: #EEF1EE;
+  --ink-2: #A3ACA6;
+  --ink-3: #79827C;
+  --body: #C3CAC5;
+  --fill: #1D2420;
+  --line: rgba(255, 255, 255, .10);
   --blue: #0A84FF;
-  --tint: #E8F2FF;
-  --pink: #C2185B;
+  --tint: #13283D;
+  --pink: #F06292;
   --col: 760px;
+  --green-ink: #6FD39A;
+  /* dark (the user, 2026-11-01: the whole site dark): page #0E1210, card #161B18, raised #1D2420, line #2A332E */
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
-  margin: 0; background: #fff; color: var(--ink);
+  margin: 0; background: #0E1210; color: var(--ink);
   font-family: "Figtree", -apple-system, system-ui, sans-serif; font-size: 16px; line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -35,7 +38,7 @@ img { display: block; max-width: 100%; }
 h1, h2, h3, p { margin: 0; }
 
 /* ── nav ── */
-.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; border-bottom: 1px solid var(--line); background: #fff; }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; border-bottom: 1px solid var(--line); background: #161B18; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -.02em; text-decoration: none; }
 .brand img { width: 30px; height: 30px; border-radius: 8px; box-shadow: 0 1px 6px rgba(21,24,28,.18); }
 .brand img.wordmark { width: auto; height: 17px; border-radius: 0; box-shadow: none; }
@@ -77,7 +80,7 @@ h1 { font-size: 44px; line-height: 1.05; font-weight: 800; letter-spacing: -.02e
 .scan .on { margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--ink-3); }
 .go { display: none; }
 .go a { display: flex; align-items: center; justify-content: center; gap: 9px; height: 54px; border-radius: 999px; background: var(--blue); color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
-.go a svg { width: 20px; height: 20px; fill: #fff; }
+.go a svg { width: 20px; height: 20px; fill: #161B18; }
 .go p { text-align: center; color: var(--ink-3); font-size: 13px; margin-top: 8px; }
 .platforms { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; color: var(--ink-3); }
 .platforms a { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 10px; color: inherit; }
@@ -124,7 +127,7 @@ h1 { font-size: 44px; line-height: 1.05; font-weight: 800; letter-spacing: -.02e
 .bar .twisty { position: absolute; bottom: 21px; height: 5px; border: 1.5px solid var(--pink); border-bottom: 0; border-radius: 1px 1px 0 0; }
 .bar .twisty span { position: absolute; left: 50%; bottom: 7px; transform: translateX(-50%); font-size: 11.5px; font-weight: 700; color: var(--pink); white-space: nowrap; }
 .key { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); margin-top: 12px; }
-.key i { flex: 0 0 70px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }
+.key i { flex: 0 0 70px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #152B37, #5B7CFA, #9B4DEB, #FF3D8B); }
 
 .know { padding-left: 20px; margin: 0; }
 .know li { font-size: 16px; line-height: 1.5; color: var(--body); }
@@ -142,7 +145,7 @@ h1 { font-size: 44px; line-height: 1.05; font-weight: 800; letter-spacing: -.02e
 .feat .ic svg { width: 22px; height: 22px; }
 .feat b { display: block; font-size: 16px; letter-spacing: -.01em; }
 .feat .d { display: block; color: var(--ink-2); font-size: 14.5px; line-height: 1.4; margin-top: 2px; }
-.apex { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; color: #13623F; background: #E2F4EA; border-radius: 6px; padding: 2px 6px; vertical-align: 2px; letter-spacing: .02em; }
+.apex { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; color: #76E4B4; background: #1D2420; border-radius: 6px; padding: 2px 6px; vertical-align: 2px; letter-spacing: .02em; }
 .get { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
 .get p { color: var(--ink-2); font-size: 14.5px; }
 .stores { display: flex; gap: 12px; flex-wrap: wrap; }
