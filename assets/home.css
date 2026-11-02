@@ -141,15 +141,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .vis svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 /* On a phone the steps show the app itself: a phone playing its clips. */
-.seq { display: none; flex-direction: column; align-items: center; gap: 14px; }
-.seq .frame { width: 270px; height: 576px; border-radius: 46px; border: 9px solid #2A2E33; background: #0E1A24; box-sizing: border-box; overflow: hidden; position: relative; box-shadow: 0 24px 60px rgba(21,24,28,.3); }
-.seq video, .seq .still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.seq video { opacity: 0; transition: opacity .2s; }
-.seq video.on { opacity: 1; }
-.seq .cap { padding: 8px 16px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 700; font-size: 14px; }
-.seq .dots { display: flex; gap: 6px; }
-.seq .dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: #D9D4C6; cursor: pointer; transition: width .2s; }
-.seq .dots button[aria-current="true"] { width: 22px; background: var(--green); }
 
 /* ═══ GET THE APP ═══ */
 .get-app { scroll-margin-top: max(104px, calc(50vh - 60px)); align-self: center; display: flex; align-items: center; gap: 32px; padding: 28px 36px; border-radius: 28px; background: var(--sand); }
@@ -233,9 +224,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .steps-sec > h2 { text-align: left; font-size: 30px; }
   .steps { grid-template-columns: 1fr; gap: 40px; }
   .step { flex-direction: column-reverse; gap: 18px; }
-  .step .vis { display: none; }
-  .step .seq { display: flex; }
-  .step-share .vis { display: flex; height: 240px; }
+  .step-share .vis { height: 240px; }
   .step h3 { font-size: 22px; }
   .get-app { flex-direction: column; align-items: stretch; padding: 0; background: none; gap: 10px; }
   .get-app > .qr, .get-app h3, .get-app .side > div > p { display: none; }
@@ -475,12 +464,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .cards-near .away { font-size: 12px; }
   .rail { scroll-padding-inline: 0; }
 }
-/* The phone's clips: chevrons either side, and a swipe on its screen. */
-.seq .stage { display: flex; align-items: center; gap: 8px; }
-.seq .frame { width: 250px; height: 534px; touch-action: pan-y; }
-.seq .nav { width: 36px; height: 36px; flex: none; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--ink); box-shadow: 0 2px 10px rgba(21,24,28,.16); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-.seq .nav svg { width: 18px; height: 18px; }
-.seq .nav:active { transform: scale(.94); }
 
 /* On a phone, the first time: app or browser (home.js offerApp). */
 .app-sheet { position: fixed; inset: 0; z-index: 50; pointer-events: none; }
@@ -498,8 +481,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .app-sheet .choice b { font-size: 17px; }
 .app-sheet .choice small { font-size: 13px; color: var(--ink-3); }
 .app-sheet .choice > svg { width: 20px; height: 20px; flex: none; color: var(--ink-4); }
-/* The phone clips' captions as plain words, not pills (the user, 2026-10-29). */
-.seq .cap { padding: 0; border-radius: 0; background: none; color: var(--ink); font-size: 16px; font-weight: 700; text-align: center; }
 
 /* ═══ The calmer hero card (the user, 2026-10-29: "cluttered"): the headline,
    three reasons, one question, an import link; the place sits on the map. ═══ */
@@ -753,41 +734,49 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 @keyframes field-spin { to { transform: rotate(360deg); } }
 
-/* ═══ The app, right under the hero (the user, 2026-10-30): as AllTrails
-   does it, a headline, one line, the code, two buttons and the phone. ═══ */
-.app-band { background: var(--sand-2); padding: 88px clamp(24px, 5vw, 72px); overflow: hidden; }
-.app-in { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 64px; }
-.app-words { display: flex; flex-direction: column; gap: 18px; }
-.app-band h2 { font-size: clamp(44px, 4.6vw, 64px); }
-.app-band .sub { font-size: 20px; line-height: 1.5; color: var(--ink-2); max-width: 26em; }
-.app-band .get-app { align-self: flex-start; margin-top: 18px; padding: 0; gap: 24px; background: none; border-radius: 0; }
-.app-band .get-app > .qr { width: 128px; height: 128px; padding: 0; border: 0; background: none; }
-.app-band .stores { flex-direction: column; gap: 12px; }
+/* ═══ The app, right under the hero (the user, 2026-11-01, after AllTrails):
+   three of its best, one under another, each a big centered line, one
+   sentence, the app in a phone and Download the app. ═══ */
+.feats { background: var(--sand-2); padding: 24px 16px 8px; }
+.feat { max-width: 760px; margin: 0 auto; padding: 72px 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.feat + .feat { border-top: 1px solid var(--rule); }
+.feats h2 { font-size: clamp(40px, 5.4vw, 68px); text-wrap: balance; }
+.feats .sub { margin-top: 18px; font-size: 20px; line-height: 1.45; color: var(--ink-2); max-width: 28em; text-wrap: pretty; }
+.feat-phone { position: relative; width: 300px; aspect-ratio: 660 / 1434; margin-top: 44px; padding: 10px; border-radius: 54px; background: #0C0C0E; box-shadow: 0 30px 60px rgba(21,24,28,.22), inset 0 0 0 1.5px rgba(255,255,255,.12); box-sizing: content-box; }
+.feat-phone video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 44px; background: #1B2027; }
+/* The simulator can only dim the Wi-Fi, so the clip's no-signal says it here. */
+.feat-phone .nosig { position: absolute; right: -22px; top: 8px; display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 15px; font-weight: 800; box-shadow: 0 10px 24px rgba(21,24,28,.28); }
+.feat-phone .nosig svg { width: 18px; height: 18px; }
+.feat-get { margin-top: 40px; height: 56px; padding: 0 34px; font-size: 18px; }
 .badge { display: inline-flex; align-items: center; gap: 10px; width: 200px; height: 58px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; background: #000; color: #fff; text-decoration: none; }
 .home .badge { color: #fff; }
 .badge svg { width: 26px; height: 26px; flex: none; }
 .badge span { display: flex; flex-direction: column; font-size: 21px; font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; }
 .badge small { font-size: 12px; font-weight: 500; letter-spacing: 0; }
 .badge:hover { background: #22262B; }
-.app-phone { width: 300px; height: 620px; }
-.app-phone .frame { position: relative; width: 100%; height: 100%; border: 11px solid #15181C; border-radius: 52px; box-shadow: 0 30px 60px rgba(21,24,28,.22); background: #0E1A24; overflow: hidden; box-sizing: border-box; }
-.app-phone video, .app-phone .still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.app-phone video { opacity: 0; transition: opacity .2s; }
-.app-phone video.on { opacity: 1; }
+/* On a computer, Download the app (and the bar's Get the App): the code to
+   scan and both stores. */
+.get-dialog { width: min(440px, calc(100vw - 32px)); padding: 36px 36px 32px; border: 0; border-radius: 28px; background: #fff; color: var(--ink); text-align: center; box-shadow: 0 30px 80px rgba(21,24,28,.3); box-sizing: border-box; }
+.get-dialog::backdrop { background: rgba(10,14,12,.5); }
+.get-dialog h2 { font-size: 28px; }
+.get-dialog p { margin-top: 8px; font-size: 16px; color: var(--ink-3); }
+.get-dialog .get-app { margin-top: 24px; flex-direction: column; gap: 24px; padding: 0; background: none; }
+.get-dialog .get-app > .qr { width: 168px; height: 168px; }
+.get-dialog .stores { justify-content: center; }
+.get-dialog .badge { width: 172px; padding: 0 14px; }
+.get-dialog .badge span { font-size: 19px; }
+.get-dialog .x { position: absolute; right: 14px; top: 14px; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: var(--sand); color: var(--ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.get-dialog .x svg { width: 18px; height: 18px; }
 /* The bar: Get the App leads; Sign in steps back beside it. */
 .bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
-@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .app-band { margin-top: 40px; } }
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .feats { margin-top: 40px; } }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
-  /* A phone already has Get the App in the bar and the hero's button
-     (the user, 2026-10-30: three in a row was too many). */
-  .app-band { display: none; }
-  .app-in { display: block; }
-  .app-words { gap: 12px; }
-  .app-band h2 { font-size: 34px; }
-  .app-band .sub { font-size: 17px; }
-  .app-band .get-app { align-self: stretch; margin-top: 10px; }
-  .app-band .stores { flex-direction: row; gap: 10px; }
-  .badge { flex: 1; width: auto; height: 54px; padding: 0 12px; justify-content: center; }
-  .badge span { font-size: 18px; }
-  .app-phone { display: none; }
+  .feats { padding: 0 16px; }
+  .feat { padding: 56px 0; }
+  .feats h2 { font-size: clamp(34px, 10vw, 44px); }
+  .feats .sub { margin-top: 14px; font-size: 17px; }
+  .feat-phone { width: min(260px, 66vw); margin-top: 36px; padding: 8px; border-radius: 46px; }
+  .feat-phone video { border-radius: 38px; }
+  .feat-phone .nosig { right: -12px; top: 6px; padding: 8px 13px; font-size: 13px; }
+  .feat-get { margin-top: 32px; width: min(280px, 100%); }
 }

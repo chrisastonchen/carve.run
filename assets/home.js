@@ -318,80 +318,35 @@ function locate() {
   }, () => { location.href = "/drives/"; }, { timeout: 10000, maximumAge: 600000 });
 }
 
-// ── the app's clips, on a phone ──────────────────────────────────────
+// ── the app's clips ─────────────────────────────────────────────────
+// Each phone's few-second loop loads when it nears the screen and plays
+// only while it's on screen; with reduced motion, its first frame rests.
+function playClips() {
+  const videos = document.querySelectorAll(".feat-phone video");
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((entries) => entries.forEach(({ target: video, isIntersecting }) => {
+    if (!isIntersecting) { video.pause(); return; }
+    if (!video.getAttribute("src")) video.src = video.dataset.src;
+    video.play().catch(() => {});
+  }), { threshold: 0.25 });
+  videos.forEach((video) => io.observe(video));
+}
 
-function wireClips(box) {
-  const scenes = box.dataset.clips.split("|").map((s) => { const [name, caption] = s.split(":"); return { name, caption }; });
-  const chevron = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  box.innerHTML = `<div class="stage"><button type="button" class="nav prev" aria-label="Previous">${chevron("M15 5l-7 7 7 7")}</button>
-    <div class="frame"><img class="still" alt="" src="/assets/${scenes[0].name}-first.jpg"><video muted playsinline preload="none" aria-hidden="true"></video></div>
-    <button type="button" class="nav next" aria-label="Next">${chevron("M9 5l7 7-7 7")}</button></div>
-    <span class="cap"></span><div class="dots">${scenes.map((s, i) => `<button type="button" aria-label="${escapeHTML(s.caption)}"></button>`).join("")}</div>`;
-  const still = box.querySelector(".still"), video = box.querySelector("video"), cap = box.querySelector(".cap");
-  const dots = [...box.querySelectorAll(".dots button")];
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let at = 0, visible = false;
-  const go = (i) => {
-    at = (i + scenes.length) % scenes.length;
-    const s = scenes[at];
-    cap.textContent = s.caption;
-    dots.forEach((d, j) => d.setAttribute("aria-current", String(j === at)));
-    video.classList.remove("on");
-    still.src = `/assets/${s.name}-${reduce ? "last" : "first"}.jpg`;
-    if (reduce) return;
-    video.src = `/assets/${s.name}.mp4`;
-    if (visible) video.play().catch(() => {});
-  };
-  video.addEventListener("playing", () => video.classList.add("on"));
-  video.addEventListener("ended", () => go(at + 1));
-  video.addEventListener("error", () => setTimeout(() => go(at + 1), 2500));
-  dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
-  // The chevrons, and a swipe across the phone's screen, step through its clips.
-  box.querySelector(".prev").addEventListener("click", () => go(at - 1));
-  box.querySelector(".next").addEventListener("click", () => go(at + 1));
-  const frame = box.querySelector(".frame");
-  let startX = null, startY = 0;
-  frame.addEventListener("touchstart", (event) => { startX = event.touches[0].clientX; startY = event.touches[0].clientY; }, { passive: true });
-  frame.addEventListener("touchend", (event) => {
-    if (startX == null) return;
-    const dx = event.changedTouches[0].clientX - startX, dy = event.changedTouches[0].clientY - startY;
-    startX = null;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) go(at + (dx < 0 ? 1 : -1));
+// ── Download the app, on a computer ─────────────────────────────────
+// A phone's button goes to its store; a computer has no store to go to, so
+// it (and the bar's Get the App) opens the code to scan, with both stores.
+function wireGet() {
+  const dialog = $("get-dialog");
+  if (!dialog?.showModal) return;
+  document.addEventListener("click", (event) => {
+    if (!wide() || !event.target.closest(".feat-get, .bar .get-wide")) return;
+    event.preventDefault();
+    dialog.showModal();
   });
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    if (reduce) return;
-    if (visible) { if (!video.getAttribute("src")) go(at); else video.play().catch(() => {}); }
-    else video.pause();
-  }, { threshold: 0.4 }).observe(box);
-  cap.textContent = scenes[0].caption;
-  dots[0].setAttribute("aria-current", "true");
+  dialog.querySelector(".x").addEventListener("click", () => dialog.close());
+  // a click on the backdrop closes it
+  dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
 }
-
-// The app section's phone, on a computer: its clips one after another,
-// nothing to press, playing only while it's on screen.
-function playPhone(box) {
-  if (!box || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const names = box.dataset.clips.split("|");
-  const video = box.querySelector("video");
-  let at = 0, visible = false;
-  const go = (i) => {
-    at = i % names.length;
-    box.querySelector(".still").src = `/assets/${names[at]}-first.jpg`;
-    video.classList.remove("on");
-    video.src = `/assets/${names[at]}.mp4`;
-    if (visible) video.play().catch(() => {});
-  };
-  video.addEventListener("playing", () => video.classList.add("on"));
-  video.addEventListener("ended", () => go(at + 1));
-  video.addEventListener("error", () => setTimeout(() => go(at + 1), 2500));
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    if (visible) { if (!video.getAttribute("src")) go(0); else video.play().catch(() => {}); }
-    else video.pause();
-  }, { threshold: 0.4 }).observe(box);
-}
-
 
 // ── the three steps, played in turn ──────────────────────────────────
 // Each scene rests as a picture; while the section is on screen they play
@@ -589,8 +544,8 @@ async function main() {
   $("near-change").addEventListener("click", locate);
   $("near-change2").addEventListener("click", locate);
   $("hero-locate").addEventListener("click", locate);
-  if (wide()) playPhone(document.querySelector(".app-phone"));
-  else document.querySelectorAll(".step .seq").forEach(wireClips);
+  wireGet();
+  playClips();
   const [data, guess] = await Promise.all([
     fetch("/drives/roads.json").then((r) => r.json()).catch(() => []),
     guessPlace(),
