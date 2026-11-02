@@ -200,8 +200,37 @@
   // Signed in (the planner's sign-in, kept in this browser), the bar and the
   // phone's menu get My Drives after Plan a Route (the user, 2026-11-01).
   function myDrivesLink() {
-    var signedIn = safe(function () { return !!(JSON.parse(localStorage.getItem("carve.plan.session") || "null") || {}).user; }, false);
-    if (!signedIn) return;
+    var session = safe(function () { return JSON.parse(localStorage.getItem("carve.plan.session") || "null"); }, null);
+    if (!session || !session.user) return;
+    // The phone's bar: Sign in, once signed in, is My Drives, and the menu
+    // ends with Sign out (the user, 2026-11-01).
+    var phonePill = document.getElementById("sign-in-phone");
+    if (phonePill) {
+      phonePill.textContent = "My Drives";
+      phonePill.href = "/my-drives/";
+    }
+    var sheet = document.getElementById("sheet");
+    if (sheet && !document.getElementById("sheet-sign-out")) {
+      var out = document.createElement("a");
+      out.id = "sheet-sign-out";
+      out.href = "/";
+      out.textContent = "Sign out";
+      out.addEventListener("click", function (event) {
+        event.preventDefault();
+        safe(function () { localStorage.removeItem("carve.plan.session"); });
+        // Carve ends the sign-in too, as the planner's Sign out does; a slow
+        // answer doesn't hold the page up.
+        var done = function () { location.reload(); };
+        setTimeout(done, 3000);
+        safe(function () {
+          fetch("https://uvaabajzkzupecemzsug.supabase.co/auth/v1/logout", {
+            method: "POST",
+            headers: { apikey: "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U", Authorization: "Bearer " + session.access_token }
+          }).then(done, done);
+        });
+      });
+      sheet.append(out);
+    }
     document.querySelectorAll(".bar nav.links, nav.sheet").forEach(function (nav) {
       if (nav.querySelector('a[href="/my-drives/"]')) return;
       var a = document.createElement("a");

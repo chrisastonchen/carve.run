@@ -2211,6 +2211,8 @@ let emailForCode = "";
 /// Sign-in: to save the drive, or (`saving: false`) to keep planning
 /// once a guest's share runs out.
 let saveAfterSignIn = true;
+/// A phone's /plan/: the app's pitch, and the site's sign-in.
+let onPhone = false;
 function openAccount(step = "choose", { saving = true, title } = {}) {
   saveAfterSignIn = saving;
   $("acc-title").textContent = title || (saving ? "Sign in to save your route" : "Keep planning");
@@ -2253,6 +2255,7 @@ async function afterSignIn() {
   renderWho();
   const found = await loadProfile().catch(() => null);
   if (!found) return setStep("username");
+  if (onPhone) return location.replace("/my-drives/");
   $("account").close();
   const pendingEdit = store.get(PENDING_EDIT_KEY);
   if (pendingEdit) {
@@ -2496,6 +2499,7 @@ function wire() {
         headers: { Prefer: "return=representation" },
       });
       profile = rows?.[0] || { username };
+      if (onPhone) return location.replace("/my-drives/");
       renderWho();
       $("account").close();
       await save();
@@ -2512,6 +2516,25 @@ async function start() {
     wire();
     // A window opened narrow and then widened gets the planner.
     narrow.addEventListener("change", (event) => { if (!event.matches) location.reload(); }, { once: true });
+    // A phone plans in the app, but signs in here: the bar's Sign in on every
+    // page comes to /plan/#sign-in, and a signed-in phone goes on to My
+    // Drives (the user, 2026-11-01).
+    onPhone = true;
+    session = store.get(SESSION_KEY);
+    const cameBack = await readOAuthReturn().catch(() => false);
+    if (cameBack) {
+      if (await loadProfile().catch(() => null)) return location.replace("/my-drives/");
+      return openAccount("username", { saving: false, title: "Sign in" });
+    }
+    // The bar's Sign in, here or (already on this page) the same address again.
+    const signInHere = () => {
+      if (location.hash !== "#sign-in") return;
+      history_replace();
+      if (session) return location.replace("/my-drives/");
+      openAccount("choose", { saving: false, title: "Sign in" });
+    };
+    window.addEventListener("hashchange", signInHere);
+    signInHere();
     return;
   }
   // /plan/ opens on a new route (the user, 2026-11-01: not the last one
