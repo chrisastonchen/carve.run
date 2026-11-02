@@ -5,6 +5,14 @@
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
 // address bar).
 import "/assets/site-bar.js";
+
+// The hero's car screen: CarPlay on an iPhone, Android Auto on Android (the
+// user, 2026-11-02). Here, not in site-bar.js: that file's import isn't
+// stamped, so a change there waits out the browser's cache.
+if (/android/i.test(navigator.userAgent || "")) {
+  document.querySelectorAll("[data-car-icon]").forEach((u) => u.setAttribute("href", "#androidauto"));
+  document.querySelectorAll("[data-car-name]").forEach((el) => (el.textContent = "Also on Android Auto"));
+}
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
