@@ -42,6 +42,9 @@ function wireBar() {
   if (/android/i.test(navigator.userAgent || "")) {
     document.querySelectorAll("[data-get-app]").forEach((a) => (a.href = "/android/"));
     document.querySelectorAll("[data-get-icon]").forEach((u) => u.setAttribute("href", "#i-android"));
+    // The car screen too: CarPlay on an iPhone, Android Auto here (the user, 2026-11-02).
+    document.querySelectorAll("[data-car-icon]").forEach((u) => u.setAttribute("href", "#androidauto"));
+    document.querySelectorAll("[data-car-name]").forEach((el) => (el.textContent = "Also on Android Auto"));
   }
   const signIn = $("sign-in");
   const who = $("who");
