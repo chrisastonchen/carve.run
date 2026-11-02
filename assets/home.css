@@ -389,7 +389,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero h1 { color: #fff; }
   .hero .em { color: #BFE5CB; }
   .proof { color: #fff; }
-  .proof li::before { background-color: rgba(22, 27, 24, .9); }
+  .proof li::before { background-color: #9DB3A6; } /* brighter, so the tick reads (the user, 11/2) */
   .org-line { display: none; }
 }
 
@@ -521,8 +521,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-get { margin-top: 30px; }
 }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .hero { min-height: 0; padding-bottom: 46px; } }
-/* darker scrim behind the words on phones (the user, 10/29) */
-@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.78) 0%, rgba(8,14,10,.62) 55%, rgba(8,14,10,.45) 100%); } }
+/* the scrim behind the words on phones, lighter again (the user, 11/2; darker 10/29) */
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.58) 0%, rgba(8,14,10,.42) 55%, rgba(8,14,10,.28) 100%); } }
 /* more air in the phone header and above the drives (the user, 10/29) */
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero { padding-bottom: 84px; } /* 20px taller (the user, 2026-11-02) */
@@ -803,7 +803,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-story .bars i { border-radius: 2px; background: rgba(255,255,255,.35); }
   .hero-story .bars i::after { background: #fff; }
   .near-change2 { border: 0; background: none; color: var(--green); }
-  .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.78) 0%, rgba(8,14,10,.62) 55%, rgba(8,14,10,.45) 100%); }
+  .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.58) 0%, rgba(8,14,10,.42) 55%, rgba(8,14,10,.28) 100%); }
   .hero-car { color: rgba(255,255,255,.85); }
   }
   .door .suggest { background: #fff; border-radius: 14px; }
