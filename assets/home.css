@@ -41,7 +41,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .hb.light { background: #161B18; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--rule); }
 .hb.light:hover { background: var(--sand); }
 .home .hb.green { color: #fff; }
-@media not all and (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
 .home .hb.dark { color: #0E1210; }
 }
 .home .hb.light { color: var(--ink); }
@@ -634,6 +634,23 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .feat-phone { width: min(260px, 66vw); margin-top: 36px; padding: 8px; border-radius: 40px; }
   .feat-get { margin-top: 32px; width: min(280px, 100%); }
 }
+/* On a computer, the phone beside its words, and under them the code to scan
+   and both stores, in place of Download the app (the user, 2026-11-02, after
+   AllTrails). Phones keep the button, which opens the store. */
+.feat-stores { display: none; }
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
+  .feats { padding: 24px 40px 8px; }
+  .feat { max-width: 1040px; padding: 88px 0; display: grid; grid-template-columns: 320px minmax(0, 1fr); column-gap: clamp(56px, 8vw, 120px);
+    grid-template-rows: 1fr auto auto auto 1fr; grid-template-areas: "phone ." "phone title" "phone sub" "phone stores" "phone ."; align-items: start; text-align: left; }
+  .feats h2 { grid-area: title; font-size: clamp(44px, 4.6vw, 64px); }
+  .feats .sub { grid-area: sub; max-width: 24em; }
+  .feat-phone { grid-area: phone; width: 320px; margin-top: 0; }
+  .feat-get { display: none; }
+  .feat-stores { grid-area: stores; display: flex; align-items: center; gap: 20px; margin-top: 36px; }
+  .feat-qr { width: 128px; height: 128px; flex: none; padding: 10px; box-sizing: border-box; border-radius: 14px; background: #fff; box-shadow: inset 0 0 0 1px var(--rule); }
+  .feat-stores .stores { display: flex; flex-direction: column; gap: 12px; }
+  .feat-stores .badge { width: 190px; height: 56px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); }
+}
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .founder-sec { margin-top: 36px; }
   .founder-sec .founder { grid-template-columns: 1fr; gap: 6px; padding: 12px; border-radius: 24px; }
@@ -643,7 +660,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 
 /* MapLibre's own controls and popups, dark like the site (the user, 2026-11-01) */
-@media not all and (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
 .maplibregl-ctrl-group { background: #161B18 !important; box-shadow: 0 6px 18px rgba(0,0,0,.4), inset 0 0 0 1px #2A332E !important; }
 .maplibregl-ctrl-group button + button { border-top: 1px solid #2A332E !important; }
 .maplibregl-ctrl-group button:hover { background-color: #1D2420 !important; }
@@ -656,7 +673,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
-@media (prefers-color-scheme: light) {
+@media not all and (prefers-color-scheme: dark) {
   :root { color-scheme: light; --mint: #DCF1E2; --mint-ink: #BFE5CB; --ink: #15181C; --ink-2: #3D434B; --ink-3: #5D636C; --ink-4: #8B9098; --cream: #FBF8EF; --sand: #F6F4EE; --sand-2: #F1EEE5; --rule: #E2DCCC; --green-ink: #1D5B3A; }
   .home a { color: var(--green); }
   .home .em { color: var(--green); }

@@ -13,10 +13,10 @@ import { session, signedIn } from "/assets/site-bar.js";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
-// The map follows the device's theme, dark unless it's set to light (the
+// The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
-const LIGHT_DEVICE = window.matchMedia("(prefers-color-scheme: light)").matches;
-const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=2";
+const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
+const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=3";
 const PANEL_GAP = 30;
 
 const $ = (id) => document.getElementById(id);

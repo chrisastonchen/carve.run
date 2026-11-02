@@ -61,7 +61,7 @@
 @media (min-width: 700px) { .bar .narrow-only { display: none !important; } .sheet { display: none !important; } }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
-@media (prefers-color-scheme: light) {
+@media not all and (prefers-color-scheme: dark) {
   .bar { background: #1D5B3A; box-shadow: none; }
   .bar .links a:hover { background: rgba(255,255,255,.08); }
   .bar .pill { background: #fff; color: #1D5B3A; }

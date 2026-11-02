@@ -232,7 +232,7 @@ details p { padding: 0 0 14px; }
 .doc .guide-photo { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 22px; margin: -14px 0 30px; }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
-@media (prefers-color-scheme: light) {
+@media not all and (prefers-color-scheme: dark) {
   :root { color-scheme: light; --paper: #FBF8EF; --paper-2: #F3EEE1; --ink: #15181C; --ink-dim: #5D636C; --ink-faint: #8B9098; --line: #E2DCCC; --sky: #D4E7FF; --sky-deep: #B9D6FF; --mint: #DCF1E2; --peach: #FFE4D3; --lilac: #E7E1FF; --asphalt: #15181C; --green-ink: #1D5B3A; }
   .cmp-table .c-no .mk { background: #F6D6D3; }
   .cmp-table .c-unk .mk { background: var(--paper-2); }

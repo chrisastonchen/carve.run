@@ -195,7 +195,7 @@ footer a:hover { color: var(--ink); }
 }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
-@media (prefers-color-scheme: light) {
+@media not all and (prefers-color-scheme: dark) {
   :root { color-scheme: light; --ink: #111113; --ink-2: #6E6E73; --ink-3: #8E8E93; --body: #3A3A3C; --fill: #F2F2F7; --line: rgba(60, 60, 67, .14); --tint: #E8F2FF; --pink: #C2185B; --green-ink: #1D5B3A; }
   body { background: #fff; }
   .nav { background: #fff; }

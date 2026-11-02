@@ -191,7 +191,7 @@
 }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
-@media (prefers-color-scheme: light) {
+@media not all and (prefers-color-scheme: dark) {
   .rv .go a svg { fill: #fff; }
   .rv .platforms svg { fill: currentColor; }
   .rv .prose p { color: #3A3A3C; }

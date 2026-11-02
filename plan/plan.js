@@ -30,10 +30,10 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAFqn1SkCkqJfDpRa";
 /// served next to the page, so it can be tried before they're deployed.
 const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 const FUNCTIONS = LOCAL ? `${location.origin}/functions/v1` : `${SUPABASE_URL}/functions/v1`;
-// The map follows the device's theme, dark unless it's set to light (the
+// The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
-const LIGHT_DEVICE = window.matchMedia("(prefers-color-scheme: light)").matches;
-const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=2";
+const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
+const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=3";
 const SITE = "https://carve.run";
 const APP_STORE = "https://apps.apple.com/app/carve-route-planner/id6808087716";
 

@@ -109,7 +109,7 @@
 }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
-@media (prefers-color-scheme: light) {
+@media not all and (prefers-color-scheme: dark) {
   .rv .rv-back { color: var(--green); }
   @media (max-width: 699px), (max-height: 560px) {
   .rv .rv-back { background: #fff; }
