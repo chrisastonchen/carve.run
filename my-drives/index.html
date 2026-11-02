@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>My Drives | Carve</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0E1210">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#1D5B3A"><meta name="theme-color" content="#0E1210">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=0f4a13aac5">
-<link rel="stylesheet" href="/assets/site-bar.css?v=6130b273c9">
-<link rel="stylesheet" href="/assets/home.css?v=f88bb47660">
+<link rel="stylesheet" href="/styles.css?v=af53a77dde">
+<link rel="stylesheet" href="/assets/site-bar.css?v=3157d4a37b">
+<link rel="stylesheet" href="/assets/home.css?v=b82e647b27">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <style>
   /* carve.run/my-drives/: the account's routes, from the app and the planner (the user, 2026-11-01). */
@@ -42,6 +42,16 @@
     .drive-row .name { font-size: 16px; }
     .drive-row .facts { font-size: 14px; }
   }
+
+/* light theme (scripts/light_theme.py): the device's light setting */
+@media (prefers-color-scheme: light) {
+  .drive-row { background: #fff; }
+  .drive-row .thumb { background: var(--sand-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 20c4-1 5-5 8-8s6-3 8-8' fill='none' stroke='%23A9A398' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 36px no-repeat; }
+  .drive-row .acts a { background: var(--sand-2); }
+  .drive-row .acts a.edit { background: var(--green); }
+  .mine .empty { background: var(--sand-2); }
+}
+/* end light theme */
 </style>
 </head>
 <body>

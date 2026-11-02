@@ -491,6 +491,7 @@ a { color: var(--green-ink); }
 .click-menu .two small { font-size: 13.5px; font-weight: 500; color: var(--ink-3); }
 
 /* MapLibre's own controls and popups, dark like the site (the user, 2026-11-01) */
+@media not all and (prefers-color-scheme: light) {
 .maplibregl-ctrl-group { background: #161B18 !important; box-shadow: 0 6px 18px rgba(0,0,0,.4), inset 0 0 0 1px #2A332E !important; }
 .maplibregl-ctrl-group button + button { border-top: 1px solid #2A332E !important; }
 .maplibregl-ctrl-group button:hover { background-color: #1D2420 !important; }
@@ -500,3 +501,162 @@ a { color: var(--green-ink); }
 .maplibregl-ctrl-attrib-button { filter: invert(1); background-color: transparent !important; }
 .maplibregl-popup-content { background: #161B18 !important; color: #EEF1EE; }
 .maplibregl-popup-tip { border-top-color: #161B18 !important; border-bottom-color: #161B18 !important; }
+}
+
+/* light theme (scripts/light_theme.py): the device's light setting */
+@media (prefers-color-scheme: light) {
+  :root { color-scheme: light; --green-tint: #EEF5F0; --mint: #DCF1E2; --ink: #15181C; --ink-2: #4A5058; --ink-3: #5D636C; --fill: #F1F1EF; --fill-2: #F7F6F2; --line: #ECEAE4; --map: #EFEDE6; --shadow: 0 10px 30px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); --green-ink: #1D5B3A; }
+  a { color: var(--green); }
+  .dim { color: var(--ink-3); }
+  .eyebrow { color: var(--ink-3); }
+  .pill.green { color: #fff; }
+  .pill.green:disabled { background: #EDECE8; color: #6B7079; }
+  .pill.white { background: #fff; color: var(--ink); }
+  .pill.grey { background: var(--fill); color: var(--ink); }
+  .pill.grey:hover, .pill.white:hover { background: #E8E7E3; }
+  .pill.black { background: #000; color: #fff; }
+  .pill.outline { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #DADCE0; }
+  .round { background: var(--fill); color: var(--ink); }
+  .linkish { background: none; color: var(--green); }
+  .linkish.grey { color: var(--ink-3); }
+  .field { background: var(--fill); }
+  .field::placeholder { color: #8B9098; }
+  .bar { background: var(--green); color: #fff; box-shadow: none; }
+  .brand { color: #fff; }
+  .links a { color: rgba(255,255,255,.86); }
+  .links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+  .links a[aria-current="page"] { color: #fff; background: rgba(255,255,255,.16); }
+  .bar .pill.white { background: #fff; color: var(--green); }
+  .who-btn { background: rgba(255,255,255,.14); color: #fff; }
+  .avatar { background: #F2C94C; color: var(--ink); }
+  .who-menu { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); color: var(--ink); }
+  .who-menu button { background: none; }
+  .who-menu button:hover { background: var(--fill); }
+  .menu-btn { background: rgba(255,255,255,.14); color: #fff; }
+  .sheet { background: var(--green); }
+  .sheet a { color: #fff; }
+  .phone-gate { background: #FBF8EF; }
+  .gate-art { background: radial-gradient(120% 90% at 50% 0%, #2B5A3E 0%, #14301F 60%, #0B1C12 100%); }
+  .gate-phone { background: #0A0C0E; box-shadow: 0 0 0 1.5px #3A3F45, 0 24px 48px rgba(0,0,0,.45); }
+  .phone-gate p { color: var(--ink-2); }
+  .no-map p { background: #fff; box-shadow: var(--shadow); color: var(--ink-2); }
+  .panel { background: #fff; box-shadow: var(--shadow); }
+  .textlink { background: none; color: var(--green); }
+  .seg { background: var(--fill); }
+  .seg button { background: none; color: var(--ink-3); }
+  .seg button:hover { color: var(--ink); }
+  .seg button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .notice { background: var(--mint); }
+  .notice .tick { color: var(--green); }
+  .notice span { color: #2F4A3A; }
+  .notice .x { background: none; color: #2F4A3A; }
+  .bot-check { background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.22); }
+  .rows { background: var(--fill-2); }
+  .row { background: var(--fill-2); }
+  .row.searching { background: #fff; }
+  .row.drop-before { box-shadow: inset 0 3px 0 var(--green); }
+  .badge { color: #fff; }
+  .badge.start { background: var(--start); }
+  .badge.dest { background: var(--ink); }
+  .badge.stop { background: var(--stop); }
+  .badge.wp { background: var(--wp); }
+  .badge.new { box-shadow: inset 0 0 0 2px #B5B8BD; color: #8B9098; }
+  .row-input { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .row-input::placeholder { color: #8B9098; }
+  .row-input:focus { box-shadow: 0 0 0 3px var(--green); }
+  .clear { background: var(--fill); color: var(--ink-3); }
+  .clear:hover { background: #E4E3DE; color: var(--ink); }
+  .grip { background: none; color: #B5B8BD; }
+  .kind select { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); color: var(--ink-2); }
+  .kind select:hover { color: var(--ink); }
+  .kind select:focus-visible { box-shadow: 0 0 0 3px var(--green); }
+  .kind svg { color: var(--ink-3); }
+  .stay { background: var(--fill); color: var(--ink-3); }
+  .stay:hover { background: #E4E3DE; color: var(--ink); }
+  .stay.set { background: var(--stop); color: #fff; }
+  .stay:focus-within { box-shadow: 0 0 0 3px var(--green); }
+  .suggest { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.22), 0 1px 3px rgba(0,0,0,.08); }
+  .suggest li[aria-selected="true"], .suggest li:hover { background: var(--green-tint); }
+  .suggest svg { color: #8B9098; }
+  .suggest li[aria-selected="true"] svg { color: var(--green); }
+  .suggest .a { color: var(--ink-3); }
+  .suggest .none { color: var(--ink-3); }
+  .hint { color: var(--ink-3); }
+  .select select { background: var(--fill); }
+  .select svg { color: var(--ink-2); }
+  .bring .paste input { background: var(--fill); }
+  .paste input { background: #fff; }
+  .sources { color: #2F4A3A; }
+  .gpx-drop { border: 2px dashed #D3D1CB; border-radius: 16px; background: var(--fill-2); color: var(--ink-3); }
+  .gpx-drop u { color: var(--green); }
+  .gpx-drop:hover, .gpx-drop.over { border-color: var(--green); background: var(--green-tint); color: var(--ink-2); }
+  .figures b span { color: inherit; }
+  .figures span { color: var(--ink-3); }
+  .ok { color: #1D7A3E; }
+  .ok svg { color: #1D7A3E; }
+  .facts { color: #6E6E73; }
+  .facts b { color: #111113; }
+  .facts .sep { border-radius: 50%; background: #8E8E93; }
+  .chip { border-radius: 8px; color: #fff; }
+  .scan { border-radius: 20px; background: #F2F2F7; }
+  .qr { border-radius: 12px; background: #fff; }
+  #link-out { background: #F2F2F7; }
+  #blurb { color: #3A3A3C; }
+  .shimmer i { border-radius: 6px; background: linear-gradient(90deg, #ECECF1 0%, #F7F7FA 40%, #ECECF1 80%); background-size: 200% 100%; }
+  .along-list li { border-bottom: 1px solid var(--line); }
+  .along-list li:last-child { border-bottom: 0; }
+  .near-cards a { color: inherit; }
+  .near-cards img { border-radius: 14px; background: var(--fill); }
+  .near-cards .m { color: var(--ink-3); }
+  .near-cards a:hover .n { color: var(--green); }
+  .curve-bar { border-radius: 6px; }
+  .key { color: #6E6E73; }
+  .key i { border-radius: 3px; background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }
+  .map-hint, .legend, .toast { background: #fff; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,.14); }
+  .dot-start { border-radius: 50%; background: var(--start); color: #fff; }
+  .legend { color: #3A3A3C; }
+  .legend i { color: #fff; }
+  .k-start { border-radius: 50%; background: var(--start); }
+  .k-stop { border-radius: 50%; background: var(--stop); }
+  .k-wp { border-radius: 50%; background: var(--wp); }
+  .k-end { border-radius: 50%; background: var(--ink); }
+  .toast { border-radius: 18px; }
+  .toast.bad { background: #FFF1F0; color: #8A1C12; }
+  .click-menu { border-radius: 18px; background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); }
+  .click-menu button { border: none; border-radius: 12px; background: none; }
+  .click-menu button:hover, .click-menu button:focus-visible, .click-menu button.on { background: var(--green-tint); }
+  .click-menu .cancel { border-top: 1px solid var(--line); border-radius: 0 0 12px 12px; color: var(--ink-3); }
+  .drop { background: rgba(29,91,58,.18); }
+  .drop span { border-radius: 999px; background: #fff; box-shadow: var(--shadow); }
+  .pin { color: #fff; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+  .pin.start { border-radius: 50%; background: var(--start); }
+  .pin.dest { border-radius: 50%; background: var(--ink); }
+  .pin.stop { border-radius: 50%; background: var(--stop); }
+  .pin.wp { border-radius: 50%; background: var(--wp); }
+  .pin-tip { border-radius: 14px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  .pin-tip .pt-start { color: var(--start); }
+  .pin-tip .pt-dest { color: var(--ink); }
+  .pin-tip .pt-stop { color: var(--stop); }
+  .pin-tip .pt-wp { color: var(--wp); }
+  .k-road { border-top: 3px dashed #6A4CFF; }
+  .key-tip { border-radius: 14px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.18); color: var(--ink-2); }
+  .key-tip b { color: var(--ink); }
+  .pin.temp { border-radius: 50%; background: var(--ink); border-width: 4px; }
+  .road-chip { border-radius: 999px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); color: #1660B8; }
+  .maplibregl-ctrl-group { border-radius: 16px !important; box-shadow: 0 6px 18px rgba(0,0,0,.14) !important; }
+  .sheet-dialog { border: none; border-radius: 28px; box-shadow: 0 30px 80px rgba(0,0,0,.3); color: var(--ink); }
+  .sheet-dialog::backdrop { background: rgba(10,28,19,.48); }
+  .sheet-dialog p.dim { color: var(--ink-2); }
+  .error { border-radius: 12px; background: #FFF1F0; color: #8A1C12; }
+  .road-hover { border-radius: 999px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.18), 0 0 0 1.5px #6A4CFF; }
+  .twist { border-radius: 50%; box-shadow: 0 0 0 1.5px #fff inset; }
+  .twist.bare { background: none !important; box-shadow: none; }
+  .road-head { border-bottom: 1px solid var(--line); }
+  .road-head img { background: var(--fill); }
+  .rh-facts { color: var(--ink-2); }
+  .rh-facts .fig + .fig::before { color: var(--ink-3); }
+  .rh-body a { color: var(--green); }
+  .click-menu .badge.whole { background: #EEEBFF; color: #6A4CFF; }
+  .click-menu .two small { color: var(--ink-3); }
+}
+/* end light theme */

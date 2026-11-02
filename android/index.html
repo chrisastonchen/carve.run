@@ -14,11 +14,11 @@
 <meta property="og:url" content="https://carve.run/android/">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Carve", "item": "https://carve.run/"}, {"@type": "ListItem", "position": 2, "name": "Android", "item": "https://carve.run/android/"}]}</script>
-<meta name="theme-color" content="#0E1210">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#1D5B3A"><meta name="theme-color" content="#0E1210">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
-<link rel="stylesheet" href="/styles.css?v=0f4a13aac5">
-<link rel="stylesheet" href="/assets/site-bar.css?v=6130b273c9">
+<link rel="stylesheet" href="/styles.css?v=af53a77dde">
+<link rel="stylesheet" href="/assets/site-bar.css?v=3157d4a37b">
 <style>
   .doc .lede { font-size: 19px; line-height: 1.55; margin-top: 16px; }
   .steps { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 16px; counter-reset: step; }
@@ -39,6 +39,13 @@
     .steps li { padding: 70px 20px 22px; }
     .steps li::before { left: 20px; top: 20px; }
   }
+
+/* light theme (scripts/light_theme.py): the device's light setting */
+@media (prefers-color-scheme: light) {
+  .steps li { background: #fff; }
+  .steps li::before { background: var(--ink); }
+}
+/* end light theme */
 </style>
 </head>
 <body>

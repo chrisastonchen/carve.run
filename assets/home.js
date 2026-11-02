@@ -10,7 +10,10 @@ import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
 import { attachPlaceSearch, placeOf } from "/assets/home-search.js";
 
-const MAP_STYLE = "/assets/map-dark.json?v=2";
+// The map follows the device's theme, dark unless it's set to light (the
+// user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
+const LIGHT_DEVICE = window.matchMedia("(prefers-color-scheme: light)").matches;
+const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=2";
 const WIDE = "(min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine)";
 const HANDOFF_KEY = "carve.plan.handoff";
 const NO_PHOTO = "data:image/svg+xml," + encodeURIComponent(

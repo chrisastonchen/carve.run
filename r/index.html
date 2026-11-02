@@ -21,14 +21,14 @@
 <meta name="twitter:title" content="A Carve route">
 <meta name="twitter:description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
 <meta name="twitter:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
-<meta name="theme-color" content="#0E1210">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#1D5B3A"><meta name="theme-color" content="#0E1210">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=29">
-<link rel="stylesheet" href="/assets/route-view.css?v=b8fecd4319">
-<link rel="stylesheet" href="/assets/explore.css?v=fe633ee428">
+<link rel="stylesheet" href="/assets/route-view.css?v=9e054882f0">
+<link rel="stylesheet" href="/assets/explore.css?v=d8718863dd">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
      route_profile.js or page_parts.py, not this file. -->
 <style>
@@ -46,6 +46,15 @@
   }
   #gmaps-cancel { flex: 0 0 auto; padding: 0 20px; border: none; background: var(--fill); color: var(--ink); }
   #gmaps-open { background: var(--green); color: #fff; }
+
+/* light theme (scripts/light_theme.py): the device's light setting */
+@media (prefers-color-scheme: light) {
+  .gmaps-warning { background: #fff; }
+  .gmaps-warning::backdrop { background: rgba(17,17,19,.45); }
+  #gmaps-cancel { background: var(--fill); }
+  #gmaps-open { background: var(--green); }
+}
+/* end light theme */
 </style>
 </head>
 <body>
@@ -1040,7 +1049,7 @@ const RouteProfile = (() => {
     }
   })();
 </script>
-<script type="module" src="/assets/route-view.js?v=b797ec3150"></script>
+<script type="module" src="/assets/route-view.js?v=40115c735f"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>

@@ -189,3 +189,51 @@
   body:has(#printout:empty) .rv-photo { margin: 0; break-inside: avoid; }
   .rv .sect, .rv .unit { break-inside: avoid; }
 }
+
+/* light theme (scripts/light_theme.py): the device's light setting */
+@media (prefers-color-scheme: light) {
+  .rv .go a svg { fill: #fff; }
+  .rv .platforms svg { fill: currentColor; }
+  .rv .prose p { color: #3A3A3C; }
+  .rv .prose a, .rv .know a, .rv .rv-sources a, .rv .check a { color: var(--green); }
+  .rv .along .badge.place { background: #C7C7CC; }
+  .rv .along .what span { color: var(--ink-3); }
+  .rv .unit .us { color: var(--ink-3); }
+  .rv .unit .us em { color: #C2185B; }
+  .rv .unit .ends { color: var(--ink-3); }
+  .rv .elev .peak { background: #0A84FF; }
+  .rv .elev .stem { background: rgba(60,60,67,.35); }
+  .rv .cbar .twisty span { color: #C2185B; }
+  .rv .know li { color: #3A3A3C; }
+  .rv .check { color: #3A3A3C; }
+  .rv .faq p { color: #3A3A3C; }
+  .rv .cards a { color: inherit; }
+  .rv .cards img { background: var(--fill); }
+  .rv .cards .m { color: var(--ink-3); }
+  .rv .cards a:hover .n { color: var(--green); }
+  .rv .more-link a { color: var(--green); }
+  .rv .feat .ic { background: var(--green-tint); color: var(--green); }
+  .rv .feat .d { color: var(--ink-3); }
+  .rv .apex { color: #13623F; background: #E2F4EA; }
+  .rv .get p { color: var(--ink-3); }
+  .rv .get p a { color: inherit; }
+  .rv .store { background: #000; color: #fff; }
+  .rv .store svg { fill: #fff; }
+  .rv .rv-sources { color: var(--ink-3); }
+  .rv-links a { color: var(--ink-3); }
+  .rv-links a:hover { color: var(--ink); }
+  .rv .missing { color: var(--ink-3); }
+  .gmaps { background: var(--fill); color: var(--ink); }
+  .gmaps:hover { background: #E8E7E3; }
+  @media (max-width: 699px), (max-height: 560px) {
+  body { background: #fff; }
+  }
+  @media ((max-width: 699px) or (max-height: 560px)) and ((max-width: 760px) or (pointer: coarse)) {
+  .rv .app-banner { background: #fff; }
+  .rv .app-banner .x { background: none; color: var(--ink-3); }
+  .rv .app-banner .x svg { fill: none; }
+  .rv .app-banner a { color: var(--ink); }
+  .rv .app-banner .open { background: var(--green); color: #fff; }
+  }
+}
+/* end light theme */

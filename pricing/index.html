@@ -15,13 +15,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Carve Apex", "brand": {"@type": "Brand", "name": "Carve"}, "description": "Carve's subscription: offline maps and turns, Group, 3D previews, unlimited AI route planning, CarPlay and Android Auto, recording drives, road conditions and popular times.", "url": "https://carve.run/pricing/", "offers": [{"@type": "Offer", "name": "Carve Apex (yearly)", "price": "29.99", "priceCurrency": "USD", "description": "Yearly, with a 7-day free trial for new subscribers."}, {"@type": "Offer", "name": "Carve Apex (monthly)", "price": "4.99", "priceCurrency": "USD"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I need Apex to plan on the web?", "acceptedAnswer": {"@type": "Answer", "text": "No. Planning at carve.run is free, and so are sharing the link, the QR code and the printed turns."}}, {"@type": "Question", "name": "How does the free trial work?", "acceptedAnswer": {"@type": "Answer", "text": "New yearly subscribers get 7 days free. Cancel before it ends and you aren't charged."}}, {"@type": "Question", "name": "Who in the group needs Apex?", "acceptedAnswer": {"@type": "Answer", "text": "Anyone can join a group drive for free, and the group sees them on the map. Seeing everyone else on your own map takes Apex."}}, {"@type": "Question", "name": "Can I cancel any time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Subscriptions renew automatically and you cancel in your Apple Account on iPhone or in Google Play on Android; Apex stays on until the period you paid for ends."}}, {"@type": "Question", "name": "Where do I manage my subscription?", "acceptedAnswer": {"@type": "Answer", "text": "In your Apple Account on iPhone, or in Google Play on Android."}}]}</script>
-<meta name="theme-color" content="#0E1210">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#1D5B3A"><meta name="theme-color" content="#0E1210">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=0f4a13aac5">
-<link rel="stylesheet" href="/assets/site-bar.css?v=6130b273c9">
-<link rel="stylesheet" href="/assets/home.css?v=f88bb47660">
+<link rel="stylesheet" href="/styles.css?v=af53a77dde">
+<link rel="stylesheet" href="/assets/site-bar.css?v=3157d4a37b">
+<link rel="stylesheet" href="/assets/home.css?v=b82e647b27">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <style>
   /* carve.run/pricing/ (the user, 2026-10-29: pricing on its own page, not the home page's). */
@@ -58,6 +58,22 @@
     .price-get .stores { flex-direction: column; width: 100%; }
     .price-get .hb { width: 100%; }
   }
+
+/* light theme (scripts/light_theme.py): the device's light setting */
+@media (prefers-color-scheme: light) {
+  .billing button[aria-pressed="true"] { background: #fff; }
+  .plan { background: #fff; }
+  .plan.apex { background: var(--mint); }
+  .plan.apex .note { color: var(--green); }
+  .plan ul { color: var(--ink-2); }
+  .plan li svg { color: var(--green); }
+  .plan li b { color: var(--ink); }
+  .price-get p { color: var(--ink-3); }
+  .price-faq details { background: #fff; }
+  .price-faq details p { color: var(--ink-2); }
+  .fine { color: var(--ink-4); }
+}
+/* end light theme */
 </style>
 </head>
 <body>

@@ -107,3 +107,44 @@
     background: var(--ink); color: #0E1210; font-weight: 700; font-size: 16px; box-shadow: 0 8px 20px rgba(0,0,0,.3);
   }
 }
+
+/* light theme (scripts/light_theme.py): the device's light setting */
+@media (prefers-color-scheme: light) {
+  .rv .rv-back { color: var(--green); }
+  @media (max-width: 699px), (max-height: 560px) {
+  .rv .rv-back { background: #fff; }
+  }
+  .ex-map { background: var(--map); }
+  .ex-search { background: var(--fill); color: var(--ink-3); }
+  .ex-search input { background: none; color: var(--ink); }
+  .ex-chip, .ex-select { background: #fff; color: var(--ink-2); }
+  .ex-chip:hover, .ex-select:hover { border-color: #D6D2C6; }
+  .ex-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .ex-row { border-radius: 16px; color: inherit; }
+  .ex-row:hover, .ex-row.on { background: var(--fill-2); }
+  .ex-row img { border-radius: 12px; background: var(--fill); }
+  .ex-row .m { color: var(--ink-3); }
+  .ex-row .a { color: var(--ink-3); }
+  .ex-empty { color: var(--ink-3); }
+  .ex-static { border-top: 1px solid var(--line); }
+  .ex-static .cards a { color: inherit; }
+  .ex-static .cards img { border-radius: 12px; background: var(--fill); }
+  .ex-static .cards .m { color: var(--ink-3); }
+  .ex-static .states a { color: var(--ink); }
+  .ex-static .states a:hover { color: var(--green); }
+  .ex-static .states span { color: var(--ink-3); }
+  .ex .rv-links a { color: var(--ink-3); }
+  .ex-locate { border: 0; border-radius: 999px; background: #fff; color: var(--ink); }
+  .ex-locate svg { color: var(--route); }
+  .ex-pop .maplibregl-popup-content { border-radius: 16px; }
+  .ex-card { color: var(--ink); }
+  .ex-card img { border-radius: 10px; background: var(--fill); }
+  .ex-card .m { color: var(--ink-3); }
+  .ex-card .go { color: var(--green); }
+  @media (max-width: 699px), (max-height: 560px) {
+  body { background: #fff; }
+  .ex-panel { border-radius: 0; }
+  .ex-toggle { border: 0; border-radius: 999px; background: var(--ink); color: #fff; }
+  }
+}
+/* end light theme */
