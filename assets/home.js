@@ -68,7 +68,7 @@ function renderNear() {
     <span class="ph"><img src="${escapeHTML(r.i || NO_PHOTO)}" alt="" loading="lazy"></span>
     <span class="t"><span class="away">${escapeHTML(awayText(r))}</span><span class="n">${escapeHTML(r.n)}</span>
     <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a></li>`).join("");
-  $("near-title").textContent = place ? `${wide() ? "Great drives" : "Drives"} near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
+  $("near-title").textContent = place ? `${wide() ? "Great roads" : "Roads"} near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
   // The front door's start, from where we think they are: most people only type where to.
   const field = $("door-from");
   if (place && (!field.value || field.value === field.dataset.label)) {
