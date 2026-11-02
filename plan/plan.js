@@ -30,7 +30,7 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAFqn1SkCkqJfDpRa";
 /// served next to the page, so it can be tried before they're deployed.
 const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 const FUNCTIONS = LOCAL ? `${location.origin}/functions/v1` : `${SUPABASE_URL}/functions/v1`;
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
+const MAP_STYLE = "/assets/map-dark.json?v=2";
 const SITE = "https://carve.run";
 const APP_STORE = "https://apps.apple.com/app/carve-route-planner/id6808087716";
 

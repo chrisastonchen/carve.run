@@ -10,7 +10,7 @@ import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
 import { attachPlaceSearch, placeOf } from "/assets/home-search.js";
 
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
+const MAP_STYLE = "/assets/map-dark.json?v=2";
 const WIDE = "(min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine)";
 const HANDOFF_KEY = "carve.plan.handoff";
 const NO_PHOTO = "data:image/svg+xml," + encodeURIComponent(

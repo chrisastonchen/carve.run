@@ -11,7 +11,7 @@ import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
 
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
+const MAP_STYLE = "/assets/map-dark.json?v=2";
 const PHONE = "(max-width: 699px), (max-height: 560px)";
 const VIEW_KEY = "carve.explore.view";
 const LIST_MAX = 60;

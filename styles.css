@@ -122,6 +122,9 @@ nav.top .bar {
   transition: background .18s, transform .18s;
 }
 .btn-primary, .nav-cta { background: var(--sky); }
+/* the app buttons are brand green, iPhone and Android alike (the user, 2026-11-02) */
+.btn-primary, .cmp-cta .btn { background: var(--green); border-color: var(--green); color: #fff; }
+.btn-primary:hover, .cmp-cta .btn:hover { background: #15432A; }
 .btn:hover, .nav-cta:hover { background: var(--sky-deep); }
 .btn:active, .nav-cta:active { transform: translateY(1px); }
 .btn-lg { padding: 18px 28px; font-size: 17px; border-radius: 14px; }
