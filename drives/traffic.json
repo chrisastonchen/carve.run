@@ -4,25 +4,49 @@
    "coverage": 0.55,
    "since": "2026-10-24"
   },
+  "cane-river-la-494": {
+   "coverage": 0.22,
+   "since": "2026-11-01"
+  },
+  "chinook-pass": {
+   "coverage": 0.56,
+   "since": "2026-11-01"
+  },
   "crater-lake-rim-drive": {
    "coverage": 0.52,
    "since": "2026-10-31"
   },
+  "ebbetts-pass": {
+   "coverage": 0.58,
+   "since": "2026-11-01"
+  },
   "going-to-the-sun-road": {
    "coverage": 0.02,
    "since": "2026-10-24"
+  },
+  "guardsman-pass": {
+   "coverage": 0.27,
+   "since": "2026-11-01"
   },
   "highway-131-kickapoo-valley": {
    "coverage": 0.67,
    "since": "2026-10-28"
   },
   "highway-74-whitewater-minnesota": {
-   "coverage": 0.6,
+   "coverage": 0.72,
    "since": "2026-10-24"
   },
-  "klondike-highway-white-pass": {
-   "coverage": 0.48,
-   "since": "2026-10-27"
+  "horseshoe-meadow-road": {
+   "coverage": 0.35,
+   "since": "2026-11-01"
+  },
+  "independence-pass": {
+   "coverage": 0.37,
+   "since": "2026-11-01"
+  },
+  "jackson-to-moran-us-191": {
+   "coverage": 0.53,
+   "since": "2026-11-01"
   },
   "lake-hughes-road": {
    "coverage": 0.51,
@@ -32,28 +56,28 @@
    "coverage": 0.63,
    "since": "2026-10-29"
   },
-  "m-26-keweenaw-shore": {
-   "coverage": 0.2,
-   "since": "2026-10-31"
+  "mckenzie-pass": {
+   "coverage": 0.01,
+   "since": "2026-11-01"
   },
   "monitor-pass": {
-   "coverage": 0.52,
+   "coverage": 0.45,
    "since": "2026-10-30"
   },
   "natchez-trace-tennessee": {
    "coverage": 0.7,
    "since": "2026-10-31"
   },
-  "old-kings-highway-6a": {
-   "coverage": 0.11,
-   "since": "2026-10-31"
+  "onion-valley-road": {
+   "coverage": 0.57,
+   "since": "2026-11-01"
   },
-  "page-mill-to-pescadero": {
-   "coverage": 0.59,
-   "since": "2026-10-31"
+  "smugglers-notch": {
+   "coverage": 0.47,
+   "since": "2026-11-01"
   },
   "sonora-pass": {
-   "coverage": 0.69,
+   "coverage": 0.54,
    "since": "2026-10-30"
   },
   "storm-king-highway": {
@@ -63,12 +87,8 @@
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
-  },
-  "tunnel-of-trees-m-119": {
-   "coverage": 0.21,
-   "since": "2026-10-24"
   }
  },
  "format": 1,
- "updated": "2026-11-01T14:10:09Z"
+ "updated": "2026-11-02T14:15:51Z"
 }
