@@ -85,8 +85,15 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .door .drop svg { width: 26px; height: 26px; color: var(--green-ink); }
 .door .drop b { font-size: 17px; }
 .door .drop span { font-size: 14px; color: var(--ink-3); }
-.door .paste { display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 16px; border-radius: 999px; background: var(--sand); }
-.door .paste input { height: 40px; padding: 0; background: none; font-size: 15px; }
+/* Import, in three clear parts: the file, "or", a link (the user, 2026-11-02:
+   the link's field was cut off and ran into the rest). */
+.door .or { display: flex; align-items: center; gap: 12px; margin: 2px 0; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-4); }
+.door .or::before, .door .or::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.door .paste { display: flex; flex-direction: column; gap: 8px; }
+.door .paste-label { font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
+.door .paste-row { display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 16px; border-radius: 999px; background: #1D2420; box-shadow: inset 0 0 0 1px #2A332E; }
+@media not all and (prefers-color-scheme: dark) { .door .paste-row { background: var(--sand); box-shadow: inset 0 0 0 1px var(--rule); } }
+.door .paste input { flex: 1; min-width: 0; height: 40px; padding: 0; background: none; font-size: 15px; }
 .door .paste input:focus { box-shadow: none; }
 .door .paste .hb { height: 42px; padding: 0 18px; font-size: 15px; }
 .door .err { font-size: 14px; color: #DF837C; }
@@ -480,7 +487,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .collage { height: 400px; } }
 /* the three reasons on one line (the user, 2026-10-29) */
-.proof { flex-wrap: nowrap; gap: 4px 12px; }
+.proof { flex-wrap: wrap; gap: 4px 12px; } /* the longer reasons (11/2) wrap rather than run off the card */
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .proof { gap: 4px 10px; font-size: 13px; } }
 .proof li { white-space: nowrap; }
 @media (max-width: 399px) { .proof { gap: 4px 8px; font-size: 12px; } }
@@ -705,7 +712,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .door .drop.over { border-color: var(--green); background: var(--mint); }
   .door .drop svg { color: var(--green); }
   .door .drop span { color: var(--ink-3); }
-  .door .paste { border-radius: 999px; background: var(--sand); }
+  .door .or { color: var(--ink-4); }
+  .door .or::before, .door .or::after { background: var(--rule); }
+  .door .paste-label { color: var(--ink-3); }
   .door .paste input { background: none; }
   .door .err { color: #B0352B; }
   .hero-map { background: #ECEFE2; }
@@ -807,7 +816,12 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-story .bars i { border-radius: 2px; background: rgba(255,255,255,.35); }
   .hero-story .bars i::after { background: #fff; }
   .near-change2 { border: 0; background: none; color: var(--green); }
-  .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.58) 0%, rgba(8,14,10,.42) 55%, rgba(8,14,10,.28) 100%); }
+  .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.78) 0%, rgba(8,14,10,.62) 55%, rgba(8,14,10,.45) 100%); }
+  .hero { padding-bottom: 64px; }
+  }
+  .home .hb.green.hero-get { background: #fff; color: #1D5B3A; }
+  .home .hb.green.hero-get:hover { background: #EEF1EE; }
+  @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero-car { color: rgba(255,255,255,.85); }
   }
   .door .suggest { background: #fff; border-radius: 14px; }
@@ -840,6 +854,11 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
   @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .feat-phone { border-radius: 40px; }
+  }
+  @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
+  .feat-qr { border-radius: 14px; background: #fff; }
+  }
+  @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .founder-sec .founder { border-radius: 24px; }
   }
 }
