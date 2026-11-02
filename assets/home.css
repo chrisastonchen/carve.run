@@ -742,8 +742,13 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .feat + .feat { border-top: 1px solid var(--rule); }
 .feats h2 { font-size: clamp(40px, 5.4vw, 68px); text-wrap: balance; }
 .feats .sub { margin-top: 18px; font-size: 20px; line-height: 1.45; color: var(--ink-2); max-width: 28em; text-wrap: pretty; }
-.feat-phone { position: relative; width: 300px; aspect-ratio: 660 / 1434; margin-top: 44px; padding: 10px; border-radius: 54px; background: #0C0C0E; box-shadow: 0 30px 60px rgba(21,24,28,.22), inset 0 0 0 1.5px rgba(255,255,255,.12); box-sizing: content-box; }
-.feat-phone video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 44px; background: #1B2027; }
+/* The clips are the whole simulator screen; the app's sheet floats 8 pt in
+   from its sides and bottom, which showed as a strip of map inside the
+   frame (the user, 11/1). The screen crops those 25 px (of 1320) off the
+   sides and 27 off the bottom, and takes the sheet's own corner (55 pt). */
+.feat-phone { position: relative; width: 300px; margin-top: 44px; padding: 9px; border-radius: 46px; background: #0C0C0E; box-shadow: 0 30px 60px rgba(21,24,28,.22), inset 0 0 0 1.5px rgba(255,255,255,.12); }
+.feat-phone .screen { position: relative; display: block; aspect-ratio: 1270 / 2841; overflow: hidden; border-radius: 13% / 5.8%; background: #1B2027; }
+.feat-phone video { position: absolute; left: -1.97%; top: 0; width: 103.94%; height: auto; display: block; }
 .feat-get { margin-top: 40px; height: 56px; padding: 0 34px; font-size: 18px; }
 .badge { display: inline-flex; align-items: center; gap: 10px; width: 200px; height: 58px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; background: #000; color: #fff; text-decoration: none; }
 .home .badge { color: #fff; }
@@ -772,7 +777,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .feat { padding: 56px 0; }
   .feats h2 { font-size: clamp(34px, 10vw, 44px); }
   .feats .sub { margin-top: 14px; font-size: 17px; }
-  .feat-phone { width: min(260px, 66vw); margin-top: 36px; padding: 8px; border-radius: 46px; }
-  .feat-phone video { border-radius: 38px; }
+  .feat-phone { width: min(260px, 66vw); margin-top: 36px; padding: 8px; border-radius: 40px; }
   .feat-get { margin-top: 32px; width: min(280px, 100%); }
 }
