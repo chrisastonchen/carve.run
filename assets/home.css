@@ -771,7 +771,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .get-dialog .x svg { width: 18px; height: 18px; }
 /* The bar: Get the App leads; Sign in steps back beside it. */
 .bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
-@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .feats { margin-top: 40px; } }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .feats { padding: 0 16px; }
   .feat { padding: 56px 0; }
