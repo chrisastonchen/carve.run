@@ -642,7 +642,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .feats { padding: 24px 40px 8px; }
   .feat { max-width: 1040px; padding: 88px 0; display: grid; grid-template-columns: 320px minmax(0, 1fr); column-gap: clamp(56px, 8vw, 120px);
     grid-template-rows: 1fr auto auto auto 1fr; grid-template-areas: "phone ." "phone title" "phone sub" "phone stores" "phone ."; align-items: start; text-align: left; }
-  /* the phone alternates sides, left first (the user, 2026-11-02) */
+  /* the phone alternates sides, left first, then right (the user, 2026-11-02) */
   .feat:nth-of-type(even) { grid-template-columns: minmax(0, 1fr) 320px; grid-template-areas: ". phone" "title phone" "sub phone" "stores phone" ". phone"; }
   .feats h2 { grid-area: title; font-size: clamp(44px, 4.6vw, 64px); }
   .feats .sub { grid-area: sub; max-width: 24em; }
