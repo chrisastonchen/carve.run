@@ -189,7 +189,10 @@ function redo() {
 
 const loops = () => plan.trip === "roundTrip" || plan.trip === "outAndBack";
 const stopCount = () => plan.waypoints.filter((w) => w.type === "stop").length;
-const routable = () => plan.start && (loops() ? plan.waypoints.length > 0 : plan.end);
+/// One way with no destination yet: the road runs from the start through
+/// the stops and waypoints and ends at the last of them (the user, 11/1).
+const openEnded = () => !loops() && !plan.end && plan.waypoints.length > 0;
+const routable = () => plan.start && (plan.waypoints.length > 0 || (!loops() && plan.end));
 
 /// Every edit goes through here: remembered for undo, the frozen road let
 /// go when the geometry moved (FR-7: an edit re-routes), the draft kept.
@@ -1001,12 +1004,14 @@ function scheduleRoute() {
 
 async function route() {
   const ask = ++routeAsk;
-  const end = loops() ? plan.start : plan.end;
+  const open = openEnded();
+  const end = loops() ? plan.start : open ? plan.waypoints[plan.waypoints.length - 1] : plan.end;
+  const via = open ? plan.waypoints.slice(0, -1) : plan.waypoints;
   try {
     const result = await planner("route", {
       start: { lat: plan.start.lat, lon: plan.start.lon },
       end: { lat: end.lat, lon: end.lon },
-      waypoints: plan.waypoints.map((w) => ({ lat: w.lat, lon: w.lon })),
+      waypoints: via.map((w) => ({ lat: w.lat, lon: w.lon })),
       style: plan.style || "balanced",
       trip: plan.trip,
       avoids: [],
@@ -1759,6 +1764,16 @@ async function save() {
   plan.name = madeHere ? suggestedName() : typed;
   plan.nameMade = madeHere;
   plan.madeName = madeHere ? plan.name : null;
+  // A saved route has an end: with none chosen, the last stop or waypoint,
+  // where the road already ends, becomes it.
+  if (openEnded()) {
+    const { type, stayMinutes, road, ...last } = plan.waypoints[plan.waypoints.length - 1];
+    edit(() => {
+      plan.waypoints.pop();
+      plan.end = last;
+    }, { geometry: false });
+    if (madeHere) plan.name = plan.madeName = suggestedName();
+  }
   if (!session || !(await accessToken())) {
     store.set(DRAFT_KEY, { plan, saved });
     openAccount();
