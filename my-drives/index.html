@@ -21,7 +21,9 @@
   .mine-top p { color: var(--ink-3); font-size: 16px; margin-top: 6px; }
   .mine .new { display: inline-flex; align-items: center; height: 46px; padding: 0 22px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; text-decoration: none; }
   .drive-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-  .drive-row { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 18px; background: #fff; border: 1px solid var(--rule); }
+  .drive-row { display: flex; align-items: center; gap: 16px; padding: 14px 20px 14px 14px; border-radius: 18px; background: #fff; border: 1px solid var(--rule); }
+  .drive-row .thumb { width: 132px; aspect-ratio: 4 / 3; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: var(--sand-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 20c4-1 5-5 8-8s6-3 8-8' fill='none' stroke='%23A9A398' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 36px no-repeat; }
+  .drive-row .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .drive-row .what { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .drive-row .name { font-weight: 700; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); text-decoration: none; }
   .drive-row a.name:hover { text-decoration: underline; }
@@ -35,7 +37,10 @@
   @media (max-width: 699px) {
     .mine { padding-top: 28px; }
     .mine .new, .drive-row .acts .edit { display: none; }
-    .drive-row { padding: 16px; }
+    .drive-row { padding: 12px; gap: 12px; }
+    .drive-row .thumb { width: 84px; border-radius: 10px; }
+    .drive-row .name { font-size: 16px; }
+    .drive-row .facts { font-size: 14px; }
   }
 </style>
 </head>
@@ -136,6 +141,6 @@
 
 <script src="/assets/carve-site.js?v=6f5d5cc360" defer></script>
 <script type="module" src="/assets/site-bar.js?v=4f25bc3543"></script>
-<script type="module" src="/assets/my-drives.js?v=b175e05cfd"></script>
+<script type="module" src="/assets/my-drives.js?v=e4d9e2de63"></script>
 </body>
 </html>

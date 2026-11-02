@@ -96,12 +96,38 @@ function when(iso) {
   return date.toLocaleDateString(undefined, { month: "short", day: "numeric", ...(sameYear ? {} : { year: "numeric" }) });
 }
 
+/// The route's picture, as the app shows it: its photo, else its map (the
+/// share link's, drawn by the Worker), else a plain tile.
+const PHOTO_HOSTS = ["carve.run", "uvaabajzkzupecemzsug.supabase.co"];
+function picture(route, share) {
+  const box = document.createElement("div");
+  box.className = "thumb";
+  const photo = route.photo?.url;
+  let src = null;
+  try {
+    const url = new URL(photo);
+    if (url.protocol === "https:" && PHOTO_HOSTS.includes(url.hostname)) src = url.href;
+  } catch {}
+  if (!src && share) src = `/map/${share.token}.png`;
+  if (src) {
+    const img = document.createElement("img");
+    img.alt = "";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.src = src;
+    img.addEventListener("error", () => img.remove(), { once: true });
+    box.append(img);
+  }
+  return box;
+}
+
 function row(route) {
   const share = (route.shares || []).find((s) => s.token && !s.revoked_at);
   const page = share ? `/${share.token}` : null;
   const edit = `/plan/?route=${encodeURIComponent(route.id)}`;
   const li = document.createElement("li");
   li.className = "drive-row";
+  li.append(picture(route, share));
   const what = document.createElement("div");
   what.className = "what";
   const name = document.createElement(narrow && !page ? "span" : "a");
@@ -136,7 +162,7 @@ function row(route) {
 async function load() {
   const token = await accessToken();
   if (!token) return signedOutView();
-  const query = `select=id,name,distance_meters,duration_seconds,stop_count,updated_at,shares(token,revoked_at)&deleted_at=is.null&order=updated_at.desc&limit=${MOST}`;
+  const query = `select=id,name,distance_meters,duration_seconds,stop_count,updated_at,photo:payload->photo,shares(token,revoked_at)&deleted_at=is.null&order=updated_at.desc&limit=${MOST}`;
   let routes;
   try {
     const response = await fetch(`${SUPABASE_URL}/rest/v1/routes?${query}`, {
