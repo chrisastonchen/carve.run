@@ -3,7 +3,7 @@
 // computer, on a map beside a small front door to the planner. The door
 // never plans anything itself: what's typed, dropped or pasted goes to
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
-// address bar). On a phone the three steps play the app's own clips.
+// address bar).
 import "/assets/site-bar.js";
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
@@ -348,76 +348,6 @@ function wireGet() {
   dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
 }
 
-// ── the three steps, played in turn ──────────────────────────────────
-// Each scene rests as a picture; while the section is on screen they play
-// one after another, 1, 2, 3, then rest a moment and go again. A scene is
-// classes added on a timeline (home.css); the drive's cars move along its road.
-
-const SCENES = {
-  1: { length: 6800, cues: [[0, "run"], [500, "a"], [1300, "b"], [2900, "imp"], [3300, "o1"], [3550, "o2"], [3800, "o3"], [4500, "pick"]] },
-  2: { length: 5600, cues: [[0, "run"], [500, "tap"], [700, "copied"], [1500, "send"], [2200, "m1"], [2550, "m2"], [2900, "m3"], [3800, "print"]] },
-  3: { length: 8000, cues: [[0, "run"], [1400, "hz"], [4300, "ns"]] },
-};
-
-function placeCars(box, shift = 0) {
-  const road = box.querySelector(".drive-route");
-  if (!road) return;
-  const length = road.getTotalLength();
-  box.querySelectorAll(".car").forEach((car) => {
-    const at = Math.min(0.97, Number(car.dataset.at) + shift);
-    const p = road.getPointAtLength(at * length);
-    car.setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
-  });
-}
-
-function playScene(box, scene) {
-  return new Promise((done) => {
-    const timers = scene.cues.map(([at, cls]) => setTimeout(() => box.classList.add(cls), at));
-    let frame = 0;
-    if (box.classList.contains("vis-drive")) {
-      const start = performance.now();
-      const tick = (now) => {
-        const f = Math.min(1, (now - start) / scene.length);
-        placeCars(box, 0.22 * Math.sin(f * Math.PI / 2));
-        if (f < 1) frame = requestAnimationFrame(tick);
-      };
-      frame = requestAnimationFrame(tick);
-    }
-    setTimeout(() => {
-      timers.forEach(clearTimeout);
-      cancelAnimationFrame(frame);
-      box.classList.remove(...scene.cues.map(([, cls]) => cls));
-      placeCars(box);
-      done();
-    }, scene.length);
-  });
-}
-
-function wireSteps() {
-  const boxes = [...document.querySelectorAll(".vis[data-step]")];
-  boxes.forEach((box) => placeCars(box));
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
-  let visible = false, running = false;
-  const loop = async () => {
-    if (running) return;
-    running = true;
-    while (visible) {
-      for (const box of boxes) {
-        if (!visible || box.offsetParent === null) continue;
-        await playScene(box, SCENES[box.dataset.step]);
-        await new Promise((r) => setTimeout(r, 500));
-      }
-      await new Promise((r) => setTimeout(r, 2500));
-    }
-    running = false;
-  };
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    if (visible) loop();
-  }, { threshold: 0.35 }).observe(document.querySelector(".steps"));
-}
-
-
 // ── on a phone, the first time: app or browser ───────────────────────
 // The home page only, once per visitor, never on a drive guide people
 // reach from search (the user, 2026-10-29); built here, so it isn't in the
@@ -540,7 +470,6 @@ async function main() {
   // carve-site.js loads deferred, after this module may already have run.
   if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
   wireDoor();
-  wireSteps();
   $("near-change").addEventListener("click", locate);
   $("near-change2").addEventListener("click", locate);
   $("hero-locate").addEventListener("click", locate);

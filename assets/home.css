@@ -1,7 +1,8 @@
 /* Phones in landscape are wider than 900px but short and touch: they keep
    the phone layout (the user, 10/29). WIDE in home.js matches. */
-/* carve.run's home page (the user, 2026-10-29): great roads near you, then
-   the easiest way to organize a drive in three steps, then the app. On a
+/* carve.run's home page (the user, 2026-10-29; reordered 11/1): great roads
+   near you, then the app (plan, share, the group, no signal), the founder,
+   then the roads to explore and the questions. On a
    computer the hero has a small front door to the planner and a map of the
    roads near you; on a phone, no typing up top, just the roads. Figtree
    only. Loaded after /styles.css (base, footer, .rise) and
@@ -128,20 +129,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .cards-near .away { display: none; }
 .cards-near.loading li { height: 260px; border-radius: 18px; background: var(--sand-2); }
 
-/* ═══ THE THREE STEPS ═══ */
-.steps-sec { background: #fff; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 88px clamp(24px, 5vw, 72px) 80px; display: flex; flex-direction: column; gap: 52px; }
-.steps-sec > h2 { text-align: center; font-size: clamp(34px, 3.4vw, 46px); }
-.steps { list-style: none; margin: 0 auto; padding: 0; width: 100%; max-width: 1240px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
-.step { display: flex; flex-direction: column; gap: 20px; }
-.step .num { width: 40px; height: 40px; flex: none; border-radius: 50%; background: var(--green); color: #fff; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-.step .words { display: flex; gap: 14px; align-items: flex-start; }
-.step h3 { font-size: 26px; letter-spacing: -0.01em; margin-bottom: 6px; }
-.step p { font-size: 16px; line-height: 1.5; color: var(--ink-3); }
-.vis { height: 280px; border-radius: 22px; position: relative; overflow: hidden; }
-.vis svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-/* On a phone the steps show the app itself: a phone playing its clips. */
-
 /* ═══ GET THE APP ═══ */
 .get-app { scroll-margin-top: max(104px, calc(50vh - 60px)); align-self: center; display: flex; align-items: center; gap: 32px; padding: 28px 36px; border-radius: 28px; background: var(--sand); }
 .get-app > .qr { width: 112px; height: 112px; flex: none; padding: 10px; box-sizing: border-box; border-radius: 14px; background: #fff; border: 1px solid var(--rule); }
@@ -220,12 +207,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .cards-near .lv { color: #fff !important; padding: 2px 9px; border-radius: 999px; background: rgba(255,255,255,.2); }
   .cards-near .away { display: block; font-size: 13px; font-weight: 700; opacity: .85; order: -1; }
   .near-all { margin: 0 16px; }
-  .steps-sec { margin-top: 30px; padding: 40px 16px 44px; gap: 30px; }
-  .steps-sec > h2 { text-align: left; font-size: 30px; }
-  .steps { grid-template-columns: 1fr; gap: 40px; }
-  .step { flex-direction: column-reverse; gap: 18px; }
-  .step-share .vis { height: 240px; }
-  .step h3 { font-size: 22px; }
   .get-app { flex-direction: column; align-items: stretch; padding: 0; background: none; gap: 10px; }
   .get-app > .qr, .get-app h3, .get-app .side > div > p { display: none; }
   .get-app .stores { flex-direction: column; }
@@ -262,20 +243,15 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
    imposing on big screens): every section's content, the hero's map
    included, sits in the same column with the same side margins. ═══ */
 :root { --page: 1180px; --gutter: clamp(16px, 4vw, 40px); }
-.near, .steps-sec, .wrapx { padding-left: max(var(--gutter), calc((100% - var(--page)) / 2)); padding-right: max(var(--gutter), calc((100% - var(--page)) / 2)); }
+.near, .wrapx { padding-left: max(var(--gutter), calc((100% - var(--page)) / 2)); padding-right: max(var(--gutter), calc((100% - var(--page)) / 2)); }
 .wrapx { max-width: none; }
-.steps { max-width: none; }
 .cards-near .ph { aspect-ratio: 16 / 10; border-radius: 16px; }
 .cards-near .n { font-size: 16px; }
 .cards-near .m { font-size: 13.5px; }
-.vis { height: 230px; }
-.step h3 { font-size: 23px; }
-.step p { font-size: 15.5px; }
 .rail li { flex-basis: 250px; }
 .rail img { height: 160px; }
 .rail .n { font-size: 16px; }
 .legends h2, .anywhere h2, .faq2 h2 { font-size: 30px; }
-.steps-sec > h2 { font-size: clamp(32px, 3vw, 42px); }
 .near-head h2 { font-size: 26px; }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero {
@@ -295,7 +271,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .near { padding-left: 0; padding-right: 0; }
-  .steps-sec { padding-left: 16px; padding-right: 16px; }
 }
 /* The map's layers stay under the sticky bar as the page scrolls. */
 .hero { isolation: isolate; z-index: 0; }
@@ -310,110 +285,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .road-panel .road-card { width: 268px; }
 .road-panel .road-card img { height: 140px; }
 
-/* ═══ The three steps, as small scenes (the user, 2026-10-29): each rests as
-   a picture, and when the section is in view they play in turn, 1, 2, 3
-   (home.js playSteps adds the classes on a timeline; .run starts a scene). ═══ */
-.vis * { box-sizing: border-box; }
-.vis .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-/* 1 · Plan or import */
-.vis-plan { background: #EEF0E3; }
-.vis-plan .route, .vis-plan .route-casing { stroke-dasharray: 1 1; stroke-dashoffset: 0; transition: stroke-dashoffset .9s ease; }
-.vis-plan .pin { transition: opacity .3s, transform .35s cubic-bezier(.3,1.6,.5,1); transform-box: fill-box; transform-origin: center; }
-.vis-plan .mini { position: absolute; left: 14px; top: 14px; bottom: 14px; width: 176px; padding: 10px; border-radius: 16px; background: #fff; box-shadow: 0 8px 22px rgba(21,24,28,.14); display: flex; flex-direction: column; gap: 8px; }
-.vis-plan .seg { position: relative; display: grid; grid-template-columns: 1fr 1fr; padding: 2px; border-radius: 999px; background: var(--sand-2); font-size: 11px; font-weight: 700; text-align: center; }
-.vis-plan .seg .o { position: relative; z-index: 1; padding: 5px 0; color: var(--ink-3); transition: color .3s; }
-.vis-plan .seg .o:nth-of-type(2) { color: var(--ink); }
-.vis-plan .seg .knob { position: absolute; left: 2px; top: 2px; bottom: 2px; width: calc(50% - 2px); border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.14); transition: transform .4s cubic-bezier(.4,0,.2,1); }
-.vis-plan .panes { position: relative; flex: 1; }
-.vis-plan .pane { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 6px; transition: opacity .3s; }
-.vis-plan .pane-i { opacity: 0; }
-.vis-plan .row { display: flex; align-items: center; gap: 7px; padding: 6px 7px; border-radius: 8px; background: var(--sand); font-size: 11.5px; font-weight: 600; transition: opacity .3s, transform .35s; }
-.vis-plan .b { width: 15px; height: 15px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-style: normal; font-weight: 800; color: #fff; }
-.vis-plan .b-start { background: #2E9E52; } .vis-plan .b-stop { background: #E4731C; } .vis-plan .b-dest { background: #15181C; }
-.vis-plan .sum { margin-top: auto; font-size: 11px; color: var(--ink-3); transition: opacity .3s; }
-.vis-plan .sum b { color: var(--ink); }
-.vis-plan .opt { display: flex; align-items: center; gap: 7px; padding: 7px 8px; border-radius: 9px; border: 1.5px solid var(--rule); font-size: 11.5px; font-weight: 700; opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .3s, border-color .3s, background .3s; }
-.vis-plan .opt svg { width: 15px; height: 15px; flex: none; color: var(--ink-3); }
-.vis-plan .paste { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 6px 6px 6px 9px; border-radius: 999px; background: var(--sand); font-size: 10px; color: var(--ink-2); opacity: 0; transition: opacity .3s; }
-.vis-plan .paste span { padding: 3px 8px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; }
-/* the scene: stops added one by one, pins drop, the route draws; then Import */
-.vis-plan.run .r2, .vis-plan.run .r3, .vis-plan.run .sum { opacity: 0; transform: translateX(-8px); }
-.vis-plan.run .pin-2, .vis-plan.run .pin-3 { opacity: 0; transform: translateY(-14px); }
-.vis-plan.run .route, .vis-plan.run .route-casing { stroke-dashoffset: 1; transition-duration: 0s; }
-.vis-plan.run.a .r2 { opacity: 1; transform: none; }
-.vis-plan.run.a .pin-2 { opacity: 1; transform: none; }
-.vis-plan.run.a .route, .vis-plan.run.a .route-casing { stroke-dashoffset: .5; transition-duration: .9s; }
-.vis-plan.run.b .r3, .vis-plan.run.b .sum { opacity: 1; transform: none; }
-.vis-plan.run.b .pin-3 { opacity: 1; transform: none; }
-.vis-plan.run.b .route, .vis-plan.run.b .route-casing { stroke-dashoffset: 0; }
-.vis-plan.imp .knob { transform: translateX(100%); }
-.vis-plan.imp .seg .o:nth-of-type(2) { color: var(--ink-3); }
-.vis-plan.imp .seg .o:nth-of-type(3) { color: var(--ink); }
-.vis-plan.imp .pane-p { opacity: 0; }
-.vis-plan.imp .pane-i { opacity: 1; }
-.vis-plan.o1 .o1, .vis-plan.o2 .o2, .vis-plan.o3 .o3 { opacity: 1; transform: none; }
-.vis-plan.pick .o2 { border-color: var(--green); background: var(--mint); }
-.vis-plan.pick .paste { opacity: 1; }
-
-/* 2 · Share */
-.vis-share { background: var(--green); }
-.vis-share .card { position: absolute; left: 16px; top: 22px; width: 192px; padding: 11px; border-radius: 16px; background: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.28); display: flex; flex-direction: column; gap: 8px; z-index: 2; }
-.vis-share .top { display: flex; gap: 8px; align-items: center; }
-.vis-share .top img { width: 40px; height: 40px; border-radius: 9px; object-fit: cover; }
-.vis-share .top b { display: block; font-size: 12.5px; line-height: 1.2; }
-.vis-share .sub { font-size: 10.5px; color: var(--ink-3); }
-.vis-share .link { padding: 7px 9px; border-radius: 9px; background: var(--sand); font-size: 11px; font-weight: 700; color: var(--green); }
-.vis-share .two { display: flex; gap: 5px; font-size: 10.5px; font-weight: 700; }
-.vis-share .two span { flex: 1; text-align: center; padding: 6px; border-radius: 999px; background: var(--sand-2); transition: transform .15s; }
-.vis-share .two .btn-share { background: var(--green); color: #fff; }
-.vis-share .toast { position: absolute; left: 50%; bottom: -12px; transform: translate(-50%, 6px); padding: 4px 10px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 10px; font-weight: 700; white-space: nowrap; opacity: 0; transition: opacity .25s, transform .25s; }
-.vis-share .paper { position: absolute; left: 30px; top: 40px; width: 160px; height: 150px; padding: 10px; border-radius: 6px; background: #FDFCF8; box-shadow: 0 8px 20px rgba(0,0,0,.25); transform: translate(0, 0) rotate(0); transition: transform .5s cubic-bezier(.3,1.2,.5,1); display: flex; flex-direction: column; gap: 6px; }
-.vis-share .paper b { font-size: 10px; }
-.vis-share .paper i { height: 5px; border-radius: 3px; background: #E5E1D6; }
-.vis-share .paper i:nth-child(odd) { width: 70%; }
-.vis-share .bubble { position: absolute; right: 16px; top: 22px; max-width: 150px; padding: 8px 11px; border-radius: 14px 14px 4px 14px; background: #34C759; color: #fff; font-size: 10.5px; font-weight: 600; line-height: 1.3; box-shadow: 0 6px 16px rgba(0,0,0,.2); }
-.vis-share .crew { list-style: none; margin: 0; padding: 0; position: absolute; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 5px; }
-.vis-share .crew li { display: flex; align-items: center; gap: 6px; padding: 4px 9px 4px 4px; border-radius: 999px; background: #fff; font-size: 11px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,.18); transition: opacity .3s, transform .35s cubic-bezier(.3,1.5,.5,1); }
-.vis-share .crew i { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-style: normal; font-size: 10px; }
-.vis-share .crew span { margin-left: 4px; font-size: 9.5px; font-weight: 700; color: var(--green); }
-.vis-share .crew span::before { content: "✓ "; }
-.vis-share .bubble { transition: opacity .3s, transform .45s cubic-bezier(.3,1.3,.5,1); }
-/* the scene: Share link tapped, the link copied, sent to the group, each opens it, the turns print */
-.vis-share.run .bubble { opacity: 0; transform: translate(-60px, 20px) scale(.6); }
-.vis-share.run .crew li { opacity: 0; transform: translateX(16px); }
-.vis-share.run .paper { transform: none; }
-.vis-share.tap .btn-share { transform: scale(.92); }
-.vis-share.copied .toast { opacity: 1; transform: translate(-50%, 0); }
-.vis-share.send .bubble { opacity: 1; transform: none; }
-.vis-share.m1 .crew .m1, .vis-share.m2 .crew .m2, .vis-share.m3 .crew .m3 { opacity: 1; transform: none; }
-.vis-share.print .btn-print { transform: scale(.92); }
-.vis-share .paper, .vis-share.print .paper { transform: translate(-8px, 58px) rotate(-6deg); }
-.vis-share.run:not(.print) .paper { transform: none; }
-
-/* 3 · Drive together */
-.vis-drive { background: #1F2429; }
-.vis-drive .car { transition: transform .08s linear; }
-.vis-drive .hazard { transform-box: fill-box; transform-origin: center; transition: opacity .3s, transform .4s cubic-bezier(.3,1.6,.5,1); }
-.vis-drive .turn { position: absolute; left: 12px; top: 12px; display: flex; align-items: center; gap: 8px; padding: 7px 11px 7px 9px; border-radius: 12px; background: #1D7A4A; color: #fff; box-shadow: 0 6px 16px rgba(0,0,0,.3); }
-.vis-drive .turn svg { width: 20px; height: 20px; }
-.vis-drive .turn span { font-size: 10.5px; line-height: 1.25; }
-.vis-drive .turn b { display: block; font-size: 14px; }
-.vis-drive .alert { position: absolute; right: 12px; top: 12px; display: flex; align-items: center; gap: 8px; padding: 7px 11px 7px 8px; border-radius: 12px; background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,.35); font-size: 10.5px; color: var(--ink-3); opacity: 0; transform: translateY(-8px); transition: opacity .3s, transform .35s; }
-.vis-drive .alert .ic { width: 22px; height: 22px; flex: none; border-radius: 50%; background: #D64C3B; color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 13px; }
-.vis-drive .alert b { display: block; font-size: 12px; color: var(--ink); }
-.vis-drive .who { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.12); color: #fff; font-size: 11px; font-weight: 700; }
-.vis-drive .who .dot { width: 9px; height: 9px; border-radius: 50%; }
-.vis-drive .who em { font-style: normal; font-weight: 500; opacity: .75; }
-.vis-drive .sig { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.12); color: #fff; font-size: 11px; font-weight: 700; opacity: 0; transition: opacity .3s; }
-.vis-drive .sig svg { width: 15px; height: 15px; }
-/* the scene: the group moves along, a hazard is reported ahead, the signal goes and the turns keep coming */
-.vis-drive.run .hazard { opacity: 0; transform: scale(.3); }
-.vis-drive.hz .hazard { opacity: 1; transform: none; }
-.vis-drive.hz .alert { opacity: 1; transform: none; }
-.vis-drive.ns .sig { opacity: 1; }
-.vis-drive.ns .who { opacity: 0; transition: opacity .3s; }
-@media (prefers-reduced-motion: reduce) { .vis * { transition: none !important; } }
 
 /* ═══ For the organizer (the user, 2026-10-29: is it clear why Carve, and
    what an organizer does here?) ═══ */
@@ -424,8 +295,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .for-org:hover { background: #CDEBD6; }
 .for-org svg { width: 16px; height: 16px; flex: none; }
 .home .for-org { color: var(--green-dark); }
-.step .example { display: inline-block; margin-top: 8px; font-weight: 700; font-size: 15px; text-underline-offset: 3px; }
-.step .example::after { content: " ↗"; }
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .hero-copy { gap: 16px; }
   .for-org { font-size: 13.5px; padding: 9px 12px; }
