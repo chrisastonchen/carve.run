@@ -587,7 +587,7 @@ a { color: var(--green-ink); }
   .bring .paste input { background: var(--fill); }
   .paste input { background: #fff; }
   .sources { color: #2F4A3A; }
-  .gpx-drop { border: 2px dashed #D3D1CB; border-radius: 16px; background: var(--fill-2); color: var(--ink-3); }
+  .gpx-drop { border: 2px dashed #D3D1CB; background: var(--fill-2); color: var(--ink-3); }
   .gpx-drop u { color: var(--green); }
   .gpx-drop:hover, .gpx-drop.over { border-color: var(--green); background: var(--green-tint); color: var(--ink-2); }
   .figures b span { color: inherit; }
@@ -596,60 +596,58 @@ a { color: var(--green-ink); }
   .ok svg { color: #1D7A3E; }
   .facts { color: #6E6E73; }
   .facts b { color: #111113; }
-  .facts .sep { border-radius: 50%; background: #8E8E93; }
-  .chip { border-radius: 8px; color: #fff; }
-  .scan { border-radius: 20px; background: #F2F2F7; }
-  .qr { border-radius: 12px; background: #fff; }
+  .facts .sep { background: #8E8E93; }
+  .chip { color: #fff; }
+  .scan { background: #F2F2F7; }
+  .qr { background: #fff; }
   #link-out { background: #F2F2F7; }
   #blurb { color: #3A3A3C; }
-  .shimmer i { border-radius: 6px; background: linear-gradient(90deg, #ECECF1 0%, #F7F7FA 40%, #ECECF1 80%); background-size: 200% 100%; }
+  .shimmer i { background: linear-gradient(90deg, #ECECF1 0%, #F7F7FA 40%, #ECECF1 80%); }
   .along-list li { border-bottom: 1px solid var(--line); }
   .along-list li:last-child { border-bottom: 0; }
   .near-cards a { color: inherit; }
-  .near-cards img { border-radius: 14px; background: var(--fill); }
+  .near-cards img { background: var(--fill); }
   .near-cards .m { color: var(--ink-3); }
   .near-cards a:hover .n { color: var(--green); }
-  .curve-bar { border-radius: 6px; }
   .key { color: #6E6E73; }
-  .key i { border-radius: 3px; background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }
-  .map-hint, .legend, .toast { background: #fff; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,.14); }
-  .dot-start { border-radius: 50%; background: var(--start); color: #fff; }
+  .key i { background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }
+  .map-hint, .legend, .toast { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.14); }
+  .dot-start { background: var(--start); color: #fff; }
   .legend { color: #3A3A3C; }
   .legend i { color: #fff; }
-  .k-start { border-radius: 50%; background: var(--start); }
-  .k-stop { border-radius: 50%; background: var(--stop); }
-  .k-wp { border-radius: 50%; background: var(--wp); }
-  .k-end { border-radius: 50%; background: var(--ink); }
-  .toast { border-radius: 18px; }
+  .k-start { background: var(--start); }
+  .k-stop { background: var(--stop); }
+  .k-wp { background: var(--wp); }
+  .k-end { background: var(--ink); }
   .toast.bad { background: #FFF1F0; color: #8A1C12; }
-  .click-menu { border-radius: 18px; background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); }
-  .click-menu button { border: none; border-radius: 12px; background: none; }
+  .click-menu { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); }
+  .click-menu button { border: none; background: none; }
   .click-menu button:hover, .click-menu button:focus-visible, .click-menu button.on { background: var(--green-tint); }
-  .click-menu .cancel { border-top: 1px solid var(--line); border-radius: 0 0 12px 12px; color: var(--ink-3); }
+  .click-menu .cancel { border-top: 1px solid var(--line); color: var(--ink-3); }
   .drop { background: rgba(29,91,58,.18); }
-  .drop span { border-radius: 999px; background: #fff; box-shadow: var(--shadow); }
+  .drop span { background: #fff; box-shadow: var(--shadow); }
   .pin { color: #fff; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
-  .pin.start { border-radius: 50%; background: var(--start); }
-  .pin.dest { border-radius: 50%; background: var(--ink); }
-  .pin.stop { border-radius: 50%; background: var(--stop); }
-  .pin.wp { border-radius: 50%; background: var(--wp); }
-  .pin-tip { border-radius: 14px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  .pin.start { background: var(--start); }
+  .pin.dest { background: var(--ink); }
+  .pin.stop { background: var(--stop); }
+  .pin.wp { background: var(--wp); }
+  .pin-tip { background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
   .pin-tip .pt-start { color: var(--start); }
   .pin-tip .pt-dest { color: var(--ink); }
   .pin-tip .pt-stop { color: var(--stop); }
   .pin-tip .pt-wp { color: var(--wp); }
   .k-road { border-top: 3px dashed #6A4CFF; }
-  .key-tip { border-radius: 14px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.18); color: var(--ink-2); }
+  .key-tip { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.18); color: var(--ink-2); }
   .key-tip b { color: var(--ink); }
-  .pin.temp { border-radius: 50%; background: var(--ink); border-width: 4px; }
-  .road-chip { border-radius: 999px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); color: #1660B8; }
-  .maplibregl-ctrl-group { border-radius: 16px !important; box-shadow: 0 6px 18px rgba(0,0,0,.14) !important; }
-  .sheet-dialog { border: none; border-radius: 28px; box-shadow: 0 30px 80px rgba(0,0,0,.3); color: var(--ink); }
+  .pin.temp { background: var(--ink); }
+  .road-chip { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); color: #1660B8; }
+  .maplibregl-ctrl-group { box-shadow: 0 6px 18px rgba(0,0,0,.14) !important; }
+  .sheet-dialog { border: none; box-shadow: 0 30px 80px rgba(0,0,0,.3); color: var(--ink); }
   .sheet-dialog::backdrop { background: rgba(10,28,19,.48); }
   .sheet-dialog p.dim { color: var(--ink-2); }
-  .error { border-radius: 12px; background: #FFF1F0; color: #8A1C12; }
-  .road-hover { border-radius: 999px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.18), 0 0 0 1.5px #6A4CFF; }
-  .twist { border-radius: 50%; box-shadow: 0 0 0 1.5px #fff inset; }
+  .error { background: #FFF1F0; color: #8A1C12; }
+  .road-hover { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.18), 0 0 0 1.5px #6A4CFF; }
+  .twist { box-shadow: 0 0 0 1.5px #fff inset; }
   .twist.bare { background: none !important; box-shadow: none; }
   .road-head { border-bottom: 1px solid var(--line); }
   .road-head img { background: var(--fill); }

@@ -363,6 +363,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
    three reasons, one question, an import link; the place sits on the map. ═══ */
 .door .pane { gap: 10px; }
 .door .field { display: flex; align-items: center; gap: 12px; padding: 5px 6px 5px 12px; border-radius: 14px; background: #1D2420; }
+/* a thin edge, so the fields read on the dark card (the user, 2026-11-02) */
+@media (prefers-color-scheme: dark) { .door .field { box-shadow: inset 0 0 0 1px #3A453F; } }
 .door .field[hidden] { display: none; }
 .door .field .pin { width: 24px; height: 24px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; }
 .door .field .pin svg { width: 14px; height: 14px; }
@@ -461,6 +463,10 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .collage .words > div { display: flex; flex-direction: column; gap: 4px; }
 .collage .words .cta { pointer-events: auto; flex: none; box-shadow: none; }
 .home .collage .words .cta { color: var(--ink); }
+/* Explore drives: white over the photos in both themes (the user, 2026-11-02:
+   the dark button was lost in dark mode) */
+.home .collage .words .cta.hb.light { background: #fff; color: #15181C; }
+.home .collage .words .cta.hb.light:hover { background: #EEF1EE; }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .collage .words { gap: 12px; } .collage .words .cta { height: 42px; padding: 0 16px; font-size: 14px; } }
 /* the button under the words, not beside them (the user, 2026-10-29) */
 .collage .words { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 4px; }
@@ -708,7 +714,7 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .door .tabs button[aria-selected="true"] { background: #fff; color: var(--ink); }
   .door .stops { background: var(--sand); }
   .door input[type="text"], .door input[type="url"] { background: #fff; color: var(--ink); }
-  .door .drop { border: 2px dashed #CFC8B6; border-radius: 16px; background: var(--sand); }
+  .door .drop { border: 2px dashed #CFC8B6; background: var(--sand); }
   .door .drop.over { border-color: var(--green); background: var(--mint); }
   .door .drop svg { color: var(--green); }
   .door .drop span { color: var(--ink-3); }
@@ -718,28 +724,26 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .door .paste input { background: none; }
   .door .err { color: #B0352B; }
   .hero-map { background: #ECEFE2; }
-  .hero-map .label { border-radius: 999px; background: #fff; }
+  .hero-map .label { background: #fff; }
   .hero-map .label i { border-top: 3px dashed var(--violet); }
-  .hero-map .locate { border: 0; border-radius: 999px; background: #fff; color: var(--ink); }
+  .hero-map .locate { border: 0; background: #fff; color: var(--ink); }
   .hero-map .locate svg { color: var(--route); }
-  .road-pop .maplibregl-popup-content { border-radius: 18px; }
-  .road-card img { border-radius: 12px; background: var(--sand-2); }
+  .road-card img { background: var(--sand-2); }
   .road-card .n { color: var(--ink); }
   .road-card .m { color: var(--ink-3); }
   .cards-near a { color: var(--ink); }
-  .cards-near .ph { border-radius: 18px; background: var(--sand-2); }
+  .cards-near .ph { background: var(--sand-2); }
   .cards-near .m { color: var(--ink-3); }
-  .cards-near.loading li { border-radius: 18px; background: var(--sand-2); }
-  .get-app { border-radius: 28px; background: var(--sand); }
-  .get-app > .qr { border-radius: 14px; background: #fff; border: 1px solid var(--rule); }
+  .cards-near.loading li { background: var(--sand-2); }
+  .get-app { background: var(--sand); }
+  .get-app > .qr { background: #fff; border: 1px solid var(--rule); }
   .get-app .side > div > p { color: var(--ink-3); }
-  .founder-sec .founder { border-radius: 28px; background: var(--mint); color: #2B4A37; }
-  .founder-sec img { border-radius: 18px; }
+  .founder-sec .founder { background: var(--mint); color: #2B4A37; }
   .founder-sec blockquote p { color: var(--green-dark); }
   .founder-sec .sig { color: var(--green-dark); }
-  .rail a { border: 1px solid var(--rule); border-radius: 18px; background: #fff; color: var(--ink); }
+  .rail a { border: 1px solid var(--rule); background: #fff; color: var(--ink); }
   .rail .m { color: var(--ink-3); }
-  .rail .chip { border-radius: 999px; color: #fff; }
+  .rail .chip { color: #fff; }
   .anywhere ul a { color: var(--ink-2); }
   .anywhere ul a:hover { color: var(--green); }
   .anywhere ul span { color: var(--ink-4); }
@@ -747,43 +751,32 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .faq2 details p { color: var(--ink-2); }
   @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .cards-near a { color: #fff; }
-  .cards-near .ph { border-radius: 24px; }
-  .cards-near .t { border-radius: 0 0 24px 24px; background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0)); }
+  .cards-near .t { background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0)); }
   .cards-near .m { color: #fff; }
-  .cards-near .lv { color: #fff !important; border-radius: 999px; background: rgba(255,255,255,.2); }
+  .cards-near .lv { color: #fff !important; background: rgba(255,255,255,.2); }
   .get-app { background: none; }
   }
   @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
-  .hero-copy { background: #fff; border-radius: 26px; }
+  .hero-copy { background: #fff; }
   .door { border: 0; background: none; }
   }
-  .cards-near .ph { border-radius: 16px; }
-  @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
-  .hero { border-radius: 28px; }
-  }
   .door .stops .pin { color: #fff; }
-  .road-panel { border-radius: 18px; background: #fff; }
-  .road-panel .x { border: 0; border-radius: 50%; background: rgba(255,255,255,.92); color: var(--ink); }
+  .road-panel { background: #fff; }
+  .road-panel .x { border: 0; background: rgba(255,255,255,.92); color: var(--ink); }
   .proof { color: var(--ink-2); }
-  .proof li::before { border-radius: 50%; background: var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%231D5B3A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px no-repeat; }
-  .for-org { border-radius: 14px; background: var(--mint); color: var(--green-dark); }
+  .proof li::before { background: var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%231D5B3A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px no-repeat; }
+  .for-org { background: var(--mint); color: var(--green-dark); }
   .for-org:hover { background: #CDEBD6; }
   .home .for-org { color: var(--green-dark); }
-  @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
-  .cards-near .ph { border-radius: 24px; }
-  .cards-near .ph { border-radius: 18px; }
-  .cards-near .t { border-radius: 0 0 18px 18px; }
-  }
   .app-sheet .veil { background: rgba(10,14,12,.45); }
-  .app-sheet .sheet-card { border-radius: 26px 26px 0 0; background: #fff; }
+  .app-sheet .sheet-card { background: #fff; }
   .app-sheet .choice { border: 0; background: none; color: var(--ink); }
   .app-sheet .choice + .choice { border-top: 1px solid var(--line, #ECE7DA); }
-  .app-sheet .choice img, .app-sheet .globe { border-radius: 13px; }
   .app-sheet .globe { background: var(--sand); color: var(--ink-3); }
   .app-sheet .choice small { color: var(--ink-3); }
   .app-sheet .choice > svg { color: var(--ink-4); }
-  .door .field { border-radius: 14px; background: var(--sand); }
-  .door .field .pin { border-radius: 50%; color: #fff; }
+  .door .field { background: var(--sand); }
+  .door .field .pin { color: #fff; }
   .door .from { color: var(--ink-3); }
   .door .from strong { color: var(--ink); }
   .door .from .textlink, .door .switch { border: 0; background: none; color: var(--green); }
@@ -801,65 +794,55 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .proof { color: #fff; }
   .proof li::before { background-color: rgba(255,255,255,.9); }
   }
-  .together figure { border-radius: 24px; background: var(--sand-2); }
+  .together figure { background: var(--sand-2); }
   .together figcaption { color: #fff; background: linear-gradient(to top, rgba(0,0,0,.6), rgba(0,0,0,0)); }
-  .collage { border-radius: 28px; background: var(--cream); }
-  .collage figure { border-radius: 0; background: var(--sand-2); }
+  .collage { background: var(--cream); }
+  .collage figure { background: var(--sand-2); }
   .collage .words { color: #fff; background: linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,0)); }
-  @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
-  .collage { border-radius: 22px; }
-  }
   .home .collage .words .cta { color: var(--ink); }
+  .home .collage .words .cta.hb.light { background: #fff; color: #15181C; }
+  .home .collage .words .cta.hb.light:hover { background: #EEF1EE; }
   .collage .words { background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,0) 100%); }
   @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.72) 0%, rgba(8,14,10,.42) 42%, rgba(8,14,10,.05) 70%, rgba(8,14,10,.3) 100%); }
-  .hero-story .bars i { border-radius: 2px; background: rgba(255,255,255,.35); }
+  .hero-story .bars i { background: rgba(255,255,255,.35); }
   .hero-story .bars i::after { background: #fff; }
   .near-change2 { border: 0; background: none; color: var(--green); }
   .hero::before { background: linear-gradient(to bottom, rgba(8,14,10,.78) 0%, rgba(8,14,10,.62) 55%, rgba(8,14,10,.45) 100%); }
-  .hero { padding-bottom: 64px; }
   }
   .home .hb.green.hero-get { background: #fff; color: #1D5B3A; }
   .home .hb.green.hero-get:hover { background: #EEF1EE; }
   @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero-car { color: rgba(255,255,255,.85); }
   }
-  .door .suggest { background: #fff; border-radius: 14px; }
-  .door .suggest li { border-radius: 10px; }
+  .door .suggest { background: #fff; }
   .door .suggest li[aria-selected="true"] { background: var(--sand); }
   .door .suggest .n { color: var(--ink); }
   .door .suggest .a { color: var(--ink-3); }
   .door .suggest li.none { color: var(--ink-3); }
   .door .bot-check { color: var(--ink-3); }
   @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
-  .hero-story.card-story { border-radius: 26px 26px 0 0; background: #17221B; }
-  .card-story .bars i { border-radius: 2px; background: rgba(255,255,255,.4); }
+  .hero-story.card-story { background: #17221B; }
+  .card-story .bars i { background: rgba(255,255,255,.4); }
   .card-story .bars i::after { background: #fff; }
-  .hero > .hero-map { border-radius: inherit; }
   }
-  .door .field.busy::after { border: 2px solid rgba(21,24,28,.14); border-top-color: var(--green); border-radius: 50%; }
+  .door .field.busy::after { border: 2px solid rgba(21,24,28,.14); border-top-color: var(--green); }
   .feats { background: var(--sand-2); }
   .feat + .feat { border-top: 1px solid var(--rule); }
   .feats .sub { color: var(--ink-2); }
-  .feat-phone { border-radius: 46px; background: #0C0C0E; }
-  .feat-phone .screen { border-radius: 13% / 5.8%; background: #1B2027; }
-  .badge { border-radius: 12px; background: #000; color: #fff; }
+  .feat-phone { background: #0C0C0E; }
+  .feat-phone .screen { background: #1B2027; }
+  .badge { background: #000; color: #fff; }
   .home .badge { color: #fff; }
   .badge:hover { background: #22262B; }
-  .get-dialog { border: 0; border-radius: 28px; background: #fff; color: var(--ink); }
+  .get-dialog { border: 0; background: #fff; color: var(--ink); }
   .get-dialog::backdrop { background: rgba(10,14,12,.5); }
   .get-dialog p { color: var(--ink-3); }
   .get-dialog .get-app { background: none; }
-  .get-dialog .x { border: 0; border-radius: 50%; background: var(--sand); color: var(--ink-2); }
+  .get-dialog .x { border: 0; background: var(--sand); color: var(--ink-2); }
   .bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
-  @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
-  .feat-phone { border-radius: 40px; }
-  }
   @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
-  .feat-qr { border-radius: 14px; background: #fff; }
-  }
-  @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
-  .founder-sec .founder { border-radius: 24px; }
+  .feat-qr { background: #fff; }
   }
 }
 /* end light theme */
