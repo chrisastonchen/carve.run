@@ -121,13 +121,29 @@ function picture(route, share) {
   return box;
 }
 
+/// The catalog's share tokens, each to its drive's page (drives/tokens.json).
+let catalog = {};
+
+/// Where See on Map goes, for every route alike (the user, 2026-11-02): a
+/// drive from the catalog to its page; else the route's own link, or the
+/// link it was opened from; else the route on the planner's map.
+function seeOnMap(route, share) {
+  const opened = [route.opened, route.follows].filter(Boolean);
+  const slug = opened.map((t) => catalog[t]).find(Boolean);
+  if (slug) return { href: `/drives/${encodeURIComponent(slug)}/`, token: opened.find((t) => catalog[t]) };
+  const token = share?.token || opened[0];
+  if (token) return { href: `/${token}`, token };
+  return { href: `/plan/?route=${encodeURIComponent(route.id)}`, token: null };
+}
+
 function row(route) {
   const share = (route.shares || []).find((s) => s.token && !s.revoked_at);
+  const map = seeOnMap(route, share);
   // On a phone, Open goes through open.carve.run: Carve opens it if it's
   // installed, else the route's page; never the App Store (the user,
   // 2026-11-01; the Worker's ?then=page). A carve.run link can't open the
   // app from a carve.run page.
-  const page = share ? (narrow ? `https://open.carve.run/${share.token}?then=page&ct=my-drives` : `/${share.token}`) : null;
+  const page = narrow ? (map.token ? `https://open.carve.run/${map.token}?then=page&ct=my-drives` : null) : map.href;
   const edit = `/plan/?route=${encodeURIComponent(route.id)}`;
   const li = document.createElement("li");
   li.className = "drive-row";
@@ -158,7 +174,7 @@ function row(route) {
     acts.append(a);
   };
   link("Edit", edit, "edit");
-  if (page) link(narrow ? "Open" : "View page", page);
+  if (page) link(narrow ? "Open" : "See on Map", page);
   li.append(what, acts);
   return li;
 }
@@ -166,7 +182,8 @@ function row(route) {
 async function load() {
   const token = await accessToken();
   if (!token) return signedOutView();
-  const query = `select=id,name,distance_meters,duration_seconds,stop_count,updated_at,photo:payload->photo,shares(token,revoked_at)&deleted_at=is.null&order=updated_at.desc&limit=${MOST}`;
+  const query = `select=id,name,distance_meters,duration_seconds,stop_count,updated_at,photo:payload->photo,opened:payload->>shareToken,follows:payload->>followsShareToken,shares(token,revoked_at)&deleted_at=is.null&order=updated_at.desc&limit=${MOST}`;
+  const tokens = fetch("/drives/tokens.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
   let routes;
   try {
     const response = await fetch(`${SUPABASE_URL}/rest/v1/routes?${query}`, {
@@ -185,6 +202,7 @@ async function load() {
       : `<p>No drives yet. Plan one here, or in the Carve app, and it shows up on this page.</p><a class="new" href="/plan/">Plan a route</a>`);
   }
   $("mine-sub").textContent = `${routes.length === MOST ? `Your ${MOST} newest routes` : `${routes.length} route${routes.length === 1 ? "" : "s"}`}, from the app and the planner.`;
+  catalog = await tokens;
   const list = $("drive-list");
   list.replaceChildren(...routes.map(row));
   list.hidden = false;
