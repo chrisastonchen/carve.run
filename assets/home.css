@@ -744,9 +744,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .feats .sub { margin-top: 18px; font-size: 20px; line-height: 1.45; color: var(--ink-2); max-width: 28em; text-wrap: pretty; }
 .feat-phone { position: relative; width: 300px; aspect-ratio: 660 / 1434; margin-top: 44px; padding: 10px; border-radius: 54px; background: #0C0C0E; box-shadow: 0 30px 60px rgba(21,24,28,.22), inset 0 0 0 1.5px rgba(255,255,255,.12); box-sizing: content-box; }
 .feat-phone video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 44px; background: #1B2027; }
-/* The simulator can only dim the Wi-Fi, so the clip's no-signal says it here. */
-.feat-phone .nosig { position: absolute; right: -22px; top: 8px; display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 15px; font-weight: 800; box-shadow: 0 10px 24px rgba(21,24,28,.28); }
-.feat-phone .nosig svg { width: 18px; height: 18px; }
 .feat-get { margin-top: 40px; height: 56px; padding: 0 34px; font-size: 18px; }
 .badge { display: inline-flex; align-items: center; gap: 10px; width: 200px; height: 58px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; background: #000; color: #fff; text-decoration: none; }
 .home .badge { color: #fff; }
@@ -777,6 +774,5 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .feats .sub { margin-top: 14px; font-size: 17px; }
   .feat-phone { width: min(260px, 66vw); margin-top: 36px; padding: 8px; border-radius: 46px; }
   .feat-phone video { border-radius: 38px; }
-  .feat-phone .nosig { right: -12px; top: 6px; padding: 8px 13px; font-size: 13px; }
   .feat-get { margin-top: 32px; width: min(280px, 100%); }
 }
