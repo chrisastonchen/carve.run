@@ -259,6 +259,11 @@ async function planner(action, body = {}, retried = false) {
     openAccount("choose", { saving: false });
     throw new Failure("Couldn't check this browser. Sign in to keep planning. It's free.");
   }
+  // Turned away while signed in: refresh once and ask again before asking
+  // them to sign in.
+  if (data.signIn && token && response.status === 401 && !retried) {
+    if (await accessToken({ force: true })) return planner(action, body, true);
+  }
   if (data.signIn) openAccount("choose", { saving: false });
   throw new Failure(data.error || "Something went wrong. Try again.");
 }
@@ -343,8 +348,8 @@ async function turnstileToken() {
   });
 }
 
-async function rest(path, { method = "GET", body, headers = {} } = {}) {
-  const token = await accessToken();
+async function rest(path, { method = "GET", body, headers = {} } = {}, retried = false) {
+  const token = await accessToken({ force: retried });
   const response = await fetch(`${SUPABASE_URL}${path}`, {
     method,
     headers: {
@@ -357,6 +362,7 @@ async function rest(path, { method = "GET", body, headers = {} } = {}) {
   });
   const text = await response.text();
   const data = text ? (() => { try { return JSON.parse(text); } catch { return text; } })() : null;
+  if (response.status === 401 && token && !retried) return rest(path, { method, body, headers }, true);
   if (!response.ok) {
     const failure = new Failure(friendlyRestError(response.status, data));
     failure.status = response.status;
@@ -386,22 +392,43 @@ function keepSession(data) {
   store.set(SESSION_KEY, session);
 }
 
-async function accessToken() {
+/// The sign-in, fresh. Another tab may have refreshed it already: each
+/// refresh token works once, so a tab spending the one it held from before
+/// gets the whole sign-in revoked, and this tab's token with it (the user
+/// was asked to sign in again while signed in, 11/1). So the kept copy
+/// wins, and only Carve saying no to the refresh signs out; a dropped
+/// connection doesn't.
+let refreshing = null;
+async function accessToken({ force = false } = {}) {
+  const kept = store.get(SESSION_KEY);
+  if (kept?.refresh_token && kept.refresh_token !== session?.refresh_token) session = kept;
   if (!session) return null;
-  if (session.expires_at - 60 > Date.now() / 1000) return session.access_token;
-  try {
-    const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
-      method: "POST",
-      headers: { "content-type": "application/json", apikey: SUPABASE_KEY },
-      body: JSON.stringify({ refresh_token: session.refresh_token }),
-    });
-    if (!response.ok) throw new Error();
-    keepSession(await response.json());
-    return session.access_token;
-  } catch {
+  if (!force && session.expires_at - 60 > Date.now() / 1000) return session.access_token;
+  refreshing ??= (async () => {
+    let response;
+    try {
+      response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+        method: "POST",
+        headers: { "content-type": "application/json", apikey: SUPABASE_KEY },
+        body: JSON.stringify({ refresh_token: session.refresh_token }),
+      });
+    } catch {
+      return session.access_token;
+    }
+    if (response.ok) {
+      keepSession(await response.json());
+      return session.access_token;
+    }
+    // Refreshed by another tab while this one asked: theirs is good.
+    const now = store.get(SESSION_KEY);
+    if (now?.refresh_token && now.refresh_token !== session.refresh_token) {
+      session = now;
+      return session.access_token;
+    }
     signedOut();
     return null;
-  }
+  })().finally(() => (refreshing = null));
+  return refreshing;
 }
 
 async function auth(path, body) {
@@ -1661,6 +1688,11 @@ async function importCarve(token) {
   if (epoch !== planEpoch) return;
   const payload = rows?.[0]?.payload;
   if (!payload) throw new Failure("That Carve link couldn't be found.");
+  loadPayload(payload, "a Carve link");
+}
+
+/// A Carve route, as the app saves it, onto the planner.
+function loadPayload(payload, source) {
   settle();
   const all = payload.allWaypoints?.length > (payload.waypoints?.length || 0) ? payload.allWaypoints : payload.waypoints || [];
   remember();
@@ -1684,7 +1716,7 @@ async function importCarve(token) {
       durationSeconds: payload.pathDurationSeconds || 0,
     } : null,
     frozen: !!payload.pathGeometry?.length,
-    imported: { source: "a Carve link", matched: true, turns: payload.turnInstructions?.length || 0 },
+    imported: { source, matched: true, turns: payload.turnInstructions?.length || 0 },
   };
   changed({ reroute: !plan.path });
   fitRoute();
@@ -1718,6 +1750,36 @@ async function editShared(token) {
     } else {
       toast("That's someone else's route. Saving makes a copy of your own.");
     }
+  } catch (failure) {
+    toast(failure.message, true);
+  } finally {
+    busy(false);
+  }
+}
+
+/// From My Drives (/plan/?route=<id>): one of the account's own routes,
+/// made in the app or here, to change and save back (the user, 2026-11-01).
+async function editOwn(id) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return;
+  busy(true, "Opening your route…");
+  try {
+    const rows = await rest(`/rest/v1/routes?id=eq.${id.toLowerCase()}&deleted_at=is.null&select=id,payload,shares(token,revoked_at)`);
+    const row = rows?.[0];
+    if (!row?.payload) throw new Failure("That route couldn't be found.");
+    const payload = row.payload;
+    loadPayload(payload, "My Drives");
+    // Its link stays its link; a route never shared gets one when it's saved.
+    const share = (row.shares || []).find((s) => s.token && !s.revoked_at);
+    plan.id = String(payload.id || row.id).toUpperCase();
+    plan.token = share?.token || newShareToken((n) => crypto.getRandomValues(new Uint8Array(n)));
+    plan.createdAt = payload.createdAt || null;
+    plan.ownerId = session.user.id;
+    plan.imported = null;
+    plan.kept = {
+      ...(payload.photo ? { photo: payload.photo } : {}),
+      ...(payload.author ? { author: payload.author } : {}),
+    };
+    changed();
   } catch (failure) {
     toast(failure.message, true);
   } finally {
@@ -1775,7 +1837,7 @@ async function save() {
     if (madeHere) plan.name = plan.madeName = suggestedName();
   }
   if (!session || !(await accessToken())) {
-    store.set(DRAFT_KEY, { plan, saved });
+    store.set(DRAFT_KEY, { plan, saved, resume: true });
     openAccount();
     return;
   }
@@ -2172,7 +2234,7 @@ function accountError(message) {
 }
 
 function oauth(provider) {
-  store.set(DRAFT_KEY, { plan, saved });
+  store.set(DRAFT_KEY, { plan, saved, resume: true });
   store.set(PENDING_SAVE_KEY, saveAfterSignIn);
   if (!storageWorks) {
     accountError("This browser isn't keeping data, so signing in with " + (provider === "apple" ? "Apple" : "Google") + " would lose your route. Use email instead.");
@@ -2376,7 +2438,7 @@ function wire() {
     $("who-menu").hidden = true;
     // Signed out, the page starts again as a guest's (the user, 2026-10-29);
     // the plan comes back from the draft.
-    store.set(DRAFT_KEY, { plan, saved });
+    store.set(DRAFT_KEY, { plan, saved, resume: true });
     const loggedOut = token
       ? fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: "POST", headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(3000) }).catch(() => {})
       : Promise.resolve();
@@ -2452,8 +2514,13 @@ async function start() {
     narrow.addEventListener("change", (event) => { if (!event.matches) location.reload(); }, { once: true });
     return;
   }
+  // /plan/ opens on a new route (the user, 2026-11-01: not the last one
+  // made; those are on My Drives). A route still being made comes back, and
+  // so does one kept across a sign-in or sign-out.
   const draft = store.get(DRAFT_KEY);
-  if (draft?.plan) {
+  if (draft?.plan && draft.saved && !draft.resume) store.remove(DRAFT_KEY);
+  else if (draft?.plan) {
+    if (draft.resume) store.set(DRAFT_KEY, { plan: draft.plan, saved: draft.saved });
     plan = { ...blankPlan(), ...draft.plan };
     saved = !!draft.saved;
   }
@@ -2485,7 +2552,12 @@ async function start() {
   }
   // From a route's page: its owner's Edit, or the bar's Sign in.
   const editing = new URLSearchParams(location.search).get("edit");
-  if (editing) {
+  const own = new URLSearchParams(location.search).get("route");
+  if (own) {
+    try { window.history.replaceState(null, "", "/plan/"); } catch {}
+    if (session) await editOwn(own);
+    else openAccount("choose", { saving: false, title: "Sign in to edit" });
+  } else if (editing) {
     try { window.history.replaceState(null, "", "/plan/"); } catch {}
     if (!/^[A-Za-z0-9]{10}$/.test(editing)) toast("That edit link isn't a Carve route.", true);
     else if (session) await editShared(editing);

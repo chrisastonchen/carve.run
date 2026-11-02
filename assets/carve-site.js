@@ -195,7 +195,26 @@
     }, href);
   };
 
-  function ready() { tagLinks(); tagBanner(); }
+  // MARK: - My Drives
+
+  // Signed in (the planner's sign-in, kept in this browser), the bar and the
+  // phone's menu get My Drives after Plan a Route (the user, 2026-11-01).
+  function myDrivesLink() {
+    var signedIn = safe(function () { return !!(JSON.parse(localStorage.getItem("carve.plan.session") || "null") || {}).user; }, false);
+    if (!signedIn) return;
+    document.querySelectorAll(".bar nav.links, nav.sheet").forEach(function (nav) {
+      if (nav.querySelector('a[href="/my-drives/"]')) return;
+      var a = document.createElement("a");
+      a.href = "/my-drives/";
+      a.textContent = "My Drives";
+      if (/^\/my-drives\//.test(location.pathname)) a.setAttribute("aria-current", "page");
+      var after = nav.querySelector('a[href="/plan/"]') || nav.querySelector('a[href="/drives/"]');
+      if (after) after.after(a);
+      else nav.prepend(a);
+    });
+  }
+
+  function ready() { tagLinks(); tagBanner(); myDrivesLink(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
   else ready();
 
