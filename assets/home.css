@@ -434,6 +434,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
    the words over all of it (the user, 2026-10-29). Each panel is cut by
    the same slant (--s) with a gap (--g) between. */
 .together { display: block; height: auto; }
+/* room under the collage before the app section (the user, 2026-11-02) */
+.together { margin-bottom: 72px; }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) { .together { margin-bottom: 44px; } }
 .collage { --s: 56px; --g: 10px; position: relative; height: 440px; border-radius: 28px; overflow: hidden; background: var(--cream); }
 .collage figure { position: absolute; top: 0; bottom: 0; margin: 0; border-radius: 0; background: var(--sand-2); }
 .collage img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -620,7 +623,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
    sides and 27 off the bottom, and takes the sheet's own corner (55 pt). */
 .feat-phone { position: relative; width: 300px; margin-top: 44px; padding: 9px; border-radius: 46px; background: #0C0C0E; box-shadow: 0 30px 60px rgba(21,24,28,.22), inset 0 0 0 1.5px rgba(255,255,255,.12); }
 .feat-phone .screen { position: relative; display: block; aspect-ratio: 1270 / 2841; overflow: hidden; border-radius: 13% / 5.8%; background: #1B2027; }
-.feat-phone video { position: absolute; left: -1.97%; top: 0; width: 103.94%; height: auto; display: block; }
+.feat-phone video { position: absolute; left: -1.97%; top: 0; width: 103.94%; height: auto; display: block; opacity: 0; transition: opacity .2s; }
+.feat-phone video.ready { opacity: 1; }
 .feat-get { margin-top: 40px; height: 56px; padding: 0 34px; font-size: 18px; }
 .badge { display: inline-flex; align-items: center; gap: 10px; width: 200px; height: 58px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; background: #000; color: #fff; text-decoration: none; }
 .home .badge { color: #fff; }

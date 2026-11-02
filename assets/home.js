@@ -334,13 +334,29 @@ function locate() {
 // only while it's on screen; with reduced motion, its first frame rests.
 function playClips() {
   const videos = document.querySelectorAll(".feat-phone video");
+  // The still sits behind each clip, and the clip shows only once it's
+  // playing: attaching a source drops the poster for a black frame until
+  // the first one decodes (the user, 2026-11-02: a flash at each phone).
+  videos.forEach((video) => {
+    // cropped as the clip is (home.css .feat-phone video)
+    if (video.poster) Object.assign(video.parentElement.style, { backgroundImage: `url("${video.poster}")`, backgroundSize: "103.94% auto", backgroundPosition: "50% 0", backgroundRepeat: "no-repeat" });
+    video.addEventListener("playing", () => video.classList.add("ready"), { once: true });
+  });
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
-  const io = new IntersectionObserver((entries) => entries.forEach(({ target: video, isIntersecting }) => {
+  // Loaded a screen ahead, so it's ready by the time it's seen...
+  const near = new IntersectionObserver((entries) => entries.forEach(({ target: video, isIntersecting }) => {
+    if (!isIntersecting || video.getAttribute("src")) return;
+    video.preload = "auto";
+    video.src = video.dataset.src;
+    near.unobserve(video);
+  }), { rootMargin: "800px 0px" });
+  // ...and played only while it's on screen.
+  const seen = new IntersectionObserver((entries) => entries.forEach(({ target: video, isIntersecting }) => {
     if (!isIntersecting) { video.pause(); return; }
     if (!video.getAttribute("src")) video.src = video.dataset.src;
     video.play().catch(() => {});
   }), { threshold: 0.25 });
-  videos.forEach((video) => io.observe(video));
+  videos.forEach((video) => { near.observe(video); seen.observe(video); });
 }
 
 // ── Download the app, on a computer ─────────────────────────────────
