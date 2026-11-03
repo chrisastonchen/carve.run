@@ -4,10 +4,6 @@
    "coverage": 0.55,
    "since": "2026-10-24"
   },
-  "cane-river-la-494": {
-   "coverage": 0.22,
-   "since": "2026-11-01"
-  },
   "chinook-pass": {
    "coverage": 0.56,
    "since": "2026-11-01"
@@ -28,6 +24,10 @@
    "coverage": 0.27,
    "since": "2026-11-01"
   },
+  "highway-1-finland-ely": {
+   "coverage": 0.42,
+   "since": "2026-11-02"
+  },
   "highway-131-kickapoo-valley": {
    "coverage": 0.67,
    "since": "2026-10-28"
@@ -45,8 +45,12 @@
    "since": "2026-11-01"
   },
   "jackson-to-moran-us-191": {
-   "coverage": 0.53,
+   "coverage": 0.33,
    "since": "2026-11-01"
+  },
+  "la-rumorosa-grade-baja": {
+   "coverage": 0.62,
+   "since": "2026-11-02"
   },
   "lake-hughes-road": {
    "coverage": 0.51,
@@ -64,13 +68,21 @@
    "coverage": 0.45,
    "since": "2026-10-30"
   },
-  "natchez-trace-tennessee": {
-   "coverage": 0.7,
-   "since": "2026-10-31"
+  "monument-valley-us-163": {
+   "coverage": 0.58,
+   "since": "2026-11-02"
+  },
+  "oak-creek-canyon": {
+   "coverage": 0.01,
+   "since": "2026-11-02"
   },
   "onion-valley-road": {
    "coverage": 0.57,
    "since": "2026-11-01"
+  },
+  "rockefeller-parkway-west-thumb": {
+   "coverage": 0.57,
+   "since": "2026-11-02"
   },
   "smugglers-notch": {
    "coverage": 0.47,
@@ -79,6 +91,10 @@
   "sonora-pass": {
    "coverage": 0.54,
    "since": "2026-10-30"
+  },
+  "stevens-canyon-road": {
+   "coverage": 0.21,
+   "since": "2026-11-02"
   },
   "storm-king-highway": {
    "coverage": 0.57,
@@ -90,5 +106,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-02T14:15:51Z"
+ "updated": "2026-11-03T14:08:45Z"
 }
