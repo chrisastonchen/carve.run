@@ -281,13 +281,13 @@
     ".cs-signin .cs-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}" +
     ".cs-signin .x{position:absolute;right:14px;top:14px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:#F1EEE5;color:#3D434B;cursor:pointer}" +
     ".cs-signin .x svg{width:18px;height:18px}" +
-    ".cs-signin [data-intents-skip]{position:absolute;right:18px;top:18px;font-size:17px;color:#5D636C}" +
+    ".cs-signin [data-intents-skip]{display:block;margin:12px auto 0;font-size:16px;color:#5D636C}.cs-signin h2:focus{outline:none}" +
     ".cs-signin .go:disabled{opacity:.45;cursor:default}" +
     ".cs-signin .err{margin-top:12px;padding:12px 14px;border-radius:12px;background:#FBE9E7;color:#B0352B;font-size:15px;font-weight:600}" +
     // On a phone, sign-in and sign-up are full-screen pages, not a pop-up (the user, 2026-11-04).
     "@media (max-width:699px){.cs-signin{width:100%;max-width:none;height:100%;max-height:none;margin:0;border-radius:0;box-shadow:none;" +
     "padding:calc(env(safe-area-inset-top) + 72px) 22px calc(env(safe-area-inset-bottom) + 28px)}" +
-    ".cs-signin::backdrop{background:Canvas}.cs-signin .x{top:calc(env(safe-area-inset-top) + 14px)}.cs-signin [data-intents-skip]{top:calc(env(safe-area-inset-top) + 18px)}.cs-signin h2{font-size:30px}}" +
+    ".cs-signin::backdrop{background:Canvas}.cs-signin .x{top:calc(env(safe-area-inset-top) + 14px)}.cs-signin [data-intents-skip]{position:absolute;right:18px;top:calc(env(safe-area-inset-top) + 18px);margin:0;font-size:17px}.cs-signin h2{font-size:30px}}" +
     "@media (prefers-color-scheme: dark){" +
     ".cs-signin{background:#161B18;color:#EEF1EE}.cs-signin p{color:#C3CAC5}.cs-signin label,.cs-signin .small{color:#9AA39D}" +
     ".cs-signin .apple{background:#fff;color:#000}.cs-signin .google{background:#1D2420;color:#EEF1EE;box-shadow:inset 0 0 0 1.5px #2A332E}" +
@@ -308,7 +308,7 @@
     '<label for="cs-code">Code</label><input class="code" id="cs-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>' +
     '<button type="submit" class="b go">Continue</button>' +
     '<div class="links"><button type="button" class="link" data-resend>Send a new code</button><button type="button" class="link" data-to="email">Use another email</button></div></form>' +
-    '<form data-step="intents" hidden><h2>What brings you to Carve?</h2><p>Pick any.</p>' +
+    '<form data-step="intents" hidden><h2 tabindex="-1">What brings you to Carve?</h2><p>Pick any.</p>' +
     '<fieldset class="intents"><legend class="cs-vh">What brings you to Carve?</legend>' +
     '<label class="intent"><input type="checkbox" value="invited"><span>Someone invited me to a drive</span></label>' +
     '<label class="intent"><input type="checkbox" value="organize"><span>I organize drives for a club or group</span></label>' +
@@ -401,6 +401,8 @@
       q(".err").hidden = true;
       var field = { email: "#cs-email", code: "#cs-code", username: "#cs-name" }[step];
       if (field) setTimeout(function () { q(field).focus(); }, 30);
+      // The question opens on its heading, not on its first choice (the user, 2026-11-04).
+      if (step === "intents") setTimeout(function () { q('[data-step="intents"] h2').focus(); }, 30);
     };
     // Signed in, the home page is theirs (the user, 2026-11-04; was My Drives).
     var signedIn = function () { location.href = signInThen || "/"; };

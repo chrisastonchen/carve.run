@@ -2243,6 +2243,8 @@ function setStep(step) {
   $("acc-error").hidden = true;
   if (step === "username") prefillName();
   const focus = { email: "email", code: "code", username: "username" }[step];
+  // The question opens on its heading, not with its first choice already focused (the user, 2026-11-04).
+  if (step === "intents") setTimeout(() => $("intents-form").querySelector("h2").focus(), 30);
   if (focus) setTimeout(() => $(focus).focus(), 30);
 }
 

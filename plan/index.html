@@ -23,7 +23,7 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=33">
+<link rel="stylesheet" href="/plan/plan.css?v=34">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -274,7 +274,7 @@
     <div class="row-links"><button type="button" class="linkish" id="resend">Send a new code</button><button type="button" class="linkish" data-back>Use another email</button></div>
   </form>
   <form data-step="intents" id="intents-form" hidden>
-    <h2>What brings you to Carve?</h2>
+    <h2 tabindex="-1">What brings you to Carve?</h2>
     <p class="dim">Pick any.</p>
     <fieldset class="intents">
       <legend class="visually-hidden">What brings you to Carve?</legend>
@@ -303,7 +303,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=53"></script>
-<script src="/assets/carve-site.js?v=002d4e9441" defer></script>
+<script type="module" src="/plan/plan.js?v=54"></script>
+<script src="/assets/carve-site.js?v=98fa2a304d" defer></script>
 </body>
 </html>
