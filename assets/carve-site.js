@@ -550,7 +550,30 @@
     return true;
   };
 
-  function ready() { tagLinks(); tagBanner(); myDrivesLink(); phoneSignIn(); }
+  // The phone menu's first thing, under the logo: Continue in app, full
+  // width (the user, 2026-11-04). An Android phone opens the app as its
+  // icon does, else its early-access page; an iPhone goes to the App Store,
+  // which offers Open when Carve is installed.
+  var SHEET_APP_CSS = ".sheet a.sheet-app { display: flex; align-items: center; justify-content: center; height: 52px; margin: 12px 0 10px; padding: 0 20px;"
+    + " border: 0; border-radius: 999px; background: #fff; color: #1D5B3A; font-size: 17px; font-weight: 800; text-decoration: none; }";
+  function sheetApp() {
+    var sheet = document.getElementById("sheet");
+    if (!sheet || document.getElementById("sheet-app")) return;
+    var style = document.createElement("style");
+    style.textContent = SHEET_APP_CSS;
+    document.head.append(style);
+    var a = document.createElement("a");
+    a.id = "sheet-app";
+    a.className = "sheet-app";
+    a.textContent = "Continue in app";
+    a.href = /android/i.test(navigator.userAgent || "")
+      ? "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=run.carve.app;S.browser_fallback_url="
+        + encodeURIComponent("https://carve.run" + ANDROID_PAGE) + ";end"
+      : storeUrl(APP_STORE_PREFIX + "carve-route-planner/id6808087716");
+    sheet.prepend(a);
+  }
+
+  function ready() { tagLinks(); tagBanner(); myDrivesLink(); phoneSignIn(); sheetApp(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
   else ready();
 
