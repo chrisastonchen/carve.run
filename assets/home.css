@@ -402,6 +402,21 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .org-line { display: none; }
 }
 
+/* A phone's hero: the line under the headline, then Join free, the app, and Sign in (the user, 2026-11-04). */
+.hero-sub, .hero-signin { display: none; }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
+  .hero .hero-sub { display: block !important; margin: 0; font-size: 17px; line-height: 1.45; color: #E6EAE7; }
+  .hero .hero-join { width: 100%; height: 52px; margin-top: 26px; justify-content: center; align-items: center; font-size: 17px; font-weight: 800; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+  .hero .hero-signin { justify-content: center; gap: 4px; margin: 0; font-size: 15px; color: #E6EAE7; }
+  .hero .hero-signin a { color: #fff; font-weight: 700; }
+}
+.hero .hero-join[hidden], .hero .hero-signin[hidden] { display: none !important; }
+/* The words sit at the bottom of the photo, Sign in just above the photos' bars (the user, 2026-11-04). */
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
+  .home .hero { display: flex; flex-direction: column; min-height: min(640px, calc(100svh - 64px)); padding-bottom: 30px; }
+  .home .hero > .hero-copy { margin-top: auto; }
+}
+
 /* ═══ Drive them together: the club's own photos ═══ */
 .together { margin-top: 56px; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 16px; height: 460px; }
 .together figure { position: relative; margin: 0; border-radius: 24px; overflow: hidden; background: var(--sand-2); }

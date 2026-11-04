@@ -352,6 +352,8 @@
       document.body.append(signInDialog);
       wireSignIn(signInDialog);
     }
+    // Join free (the home page's) and Sign in open the same choices under their own name.
+    signInDialog.querySelector("#cs-signin-title").textContent = options && options.join ? "Join for free" : "Sign in";
     signInDialog.step("choose");
     if (!signInDialog.open) signInDialog.showModal();
   }

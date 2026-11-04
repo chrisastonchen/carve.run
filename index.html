@@ -30,7 +30,7 @@
 <link rel="preload" href="/assets/aerial.jpg?v=14ee667752" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css?v=ed35d04584">
 <link rel="stylesheet" href="/assets/site-bar.css?v=afde5806fd">
-<link rel="stylesheet" href="/assets/home.css?v=84229d5a0d">
+<link rel="stylesheet" href="/assets/home.css?v=c8a747865c">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -132,11 +132,13 @@
       <div class="bars"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
     <div class="lead">
-      <h1>Find great roads.<br><span class="em">Drive them together.</span></h1>
-      <ul class="proof"><li>Your route, your way</li><li>Offline navigation</li><li>Live group tracking</li></ul>
+      <h1><span class="wide-only-h">Find great roads.<br><span class="em">Drive them together.</span></span><span class="phone-only-h">The ultimate app for car clubs and group drives.</span></h1>
+      <ul class="proof wide-only-h"><li>Your route, your way</li><li>Offline navigation</li><li>Live group tracking</li></ul>
+      <p class="hero-sub phone-only-h">Plan or import a route, see your group live on the map, and follow the exact roads you chose – even without a signal.</p>
     </div>
-    <a class="hb green hero-get phone-only-h" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use data-get-icon href="#i-apple"/></svg><span>Get Carve on iPhone</span></a>
-    <p class="hero-car phone-only-h"><svg aria-hidden="true"><use data-car-icon href="#carplay"/></svg><span data-car-name>Also on CarPlay</span></p>
+    <!-- On a phone, joining is the one button (the user, 2026-11-04); the app is offered by the sheet at the bottom. -->
+    <a class="hb green hero-join phone-only-h" id="hero-join" href="/plan/#sign-in">Join for free</a>
+    <p class="hero-signin phone-only-h" id="hero-signin-line">Already have an account? <a href="/plan/#sign-in" id="hero-signin">Sign in</a></p>
     <div class="door" id="door">
       <form id="pane-plan" class="pane">
         <p class="from" id="door-from-line" hidden>From <strong id="door-from-name"></strong> · <button type="button" class="textlink" id="door-from-change">change</button></p>
@@ -429,7 +431,7 @@
   // Old links to the home page's pricing go to its own page now.
   if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
-<script src="/assets/carve-site.js?v=7485d4c477" defer></script>
-<script type="module" src="/assets/home.js?v=824838bd22"></script>
+<script src="/assets/carve-site.js?v=9c273ca8d6" defer></script>
+<script type="module" src="/assets/home.js?v=2cff40fd55"></script>
 </body>
 </html>

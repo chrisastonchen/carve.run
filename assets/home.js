@@ -490,8 +490,22 @@ function riseIn() {
   items.forEach((el) => io.observe(el));
 }
 
+// ── a phone's Join free and Sign in: the site's sign-in, over the page ────
+function wireJoin() {
+  let signedIn = false;
+  try { signedIn = !!JSON.parse(localStorage.getItem("carve.plan.session") || "null")?.refresh_token; } catch {}
+  // Someone signed in already has an account: no Join or Sign in.
+  if (signedIn) { $("hero-join").hidden = true; $("hero-signin-line").hidden = true; return; }
+  for (const [id, join] of [["hero-join", true], ["hero-signin", false]]) {
+    $(id).addEventListener("click", (event) => {
+      if (window.carveSignIn && window.carveSignIn({ join })) event.preventDefault();
+    });
+  }
+}
+
 async function main() {
   riseIn();
+  wireJoin();
   offerApp();
   heroStory();
   // carve-site.js loads deferred, after this module may already have run.
