@@ -2254,10 +2254,24 @@ function oauth(provider) {
   location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(back)}`;
 }
 
+/// A page that sent the visitor here to sign in with Apple or Google, to
+/// go back to (carve-site.js carveSignIn: a route's plan). Only a shared
+/// route's address on this site, and only once.
+function signInReturn() {
+  let to = null;
+  try {
+    to = sessionStorage.getItem("carve.signin.return");
+    sessionStorage.removeItem("carve.signin.return");
+  } catch {}
+  return to && /^\/([A-Za-z0-9]{10}|[0-9a-fA-F]{32})(\?a=(yes|no|maybe))?$/.test(to) ? to : null;
+}
+
 async function afterSignIn() {
   renderWho();
   const found = await loadProfile().catch(() => null);
   if (!found) return setStep("username");
+  const back = signInReturn();
+  if (back) return location.replace(back);
   if (onPhone) return location.replace("/my-drives/");
   $("account").close();
   const pendingEdit = store.get(PENDING_EDIT_KEY);
@@ -2502,6 +2516,8 @@ function wire() {
         headers: { Prefer: "return=representation" },
       });
       profile = rows?.[0] || { username };
+      const back = signInReturn();
+      if (back) return location.replace(back);
       if (onPhone) return location.replace("/my-drives/");
       renderWho();
       $("account").close();
@@ -2526,7 +2542,7 @@ async function start() {
     session = store.get(SESSION_KEY);
     const cameBack = await readOAuthReturn().catch(() => false);
     if (cameBack) {
-      if (await loadProfile().catch(() => null)) return location.replace("/my-drives/");
+      if (await loadProfile().catch(() => null)) return location.replace(signInReturn() || "/my-drives/");
       return openAccount("username", { saving: false, title: "Sign in" });
     }
     // The bar's Sign in, here or (already on this page) the same address again.

@@ -3,52 +3,12 @@
 // routes you made live here). On a computer each one opens in the planner
 // to change; on a phone, its page, which opens it in the app.
 
-const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
-const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
-const SESSION_KEY = "carve.plan.session";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js";
+
 const MOST = 500;
 
 const $ = (id) => document.getElementById(id);
 const narrow = window.matchMedia("(max-width: 699px)").matches;
-
-const store = {
-  get(key) {
-    try { return JSON.parse(localStorage.getItem(key) || "null"); } catch { return null; }
-  },
-  set(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
-  },
-};
-
-/// The planner's sign-in, fresh: the same rules as plan.js accessToken
-/// (another tab's refresh wins; only Carve saying no signs out).
-async function accessToken() {
-  const session = store.get(SESSION_KEY);
-  if (!session?.refresh_token) return null;
-  if (session.expires_at - 60 > Date.now() / 1000) return session.access_token;
-  let response;
-  try {
-    response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
-      method: "POST",
-      headers: { "content-type": "application/json", apikey: SUPABASE_KEY },
-      body: JSON.stringify({ refresh_token: session.refresh_token }),
-    });
-  } catch {
-    return session.access_token;
-  }
-  if (!response.ok) {
-    const now = store.get(SESSION_KEY);
-    return now?.refresh_token && now.refresh_token !== session.refresh_token ? now.access_token : null;
-  }
-  const data = await response.json();
-  store.set(SESSION_KEY, {
-    ...session,
-    access_token: data.access_token,
-    refresh_token: data.refresh_token,
-    expires_at: data.expires_at || Math.floor(Date.now() / 1000) + (data.expires_in || 3600),
-  });
-  return data.access_token;
-}
 
 function status(text) {
   $("mine-status").textContent = text;

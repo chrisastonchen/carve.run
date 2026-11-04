@@ -442,6 +442,8 @@ async function start() {
   wireLink(token, "carve-route");
   const row = window.carveRouteRow || (await routeRow(token, host.dataset.wait ? 5 : 1));
   if (!row) return;
+  // Kept for scripts that load after the event (share-plan.js, the note).
+  window.carveRouteRow = row;
   window.dispatchEvent(new CustomEvent("carve:row", { detail: row }));
   const payload = row.payload || {};
   drawMap(host, payload);

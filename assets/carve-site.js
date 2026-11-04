@@ -325,7 +325,13 @@
   }
 
   var signInDialog = null;
-  function openSignIn() {
+  // Where a sign-in goes on to: My Drives, or back to the page that asked
+  // (window.carveSignIn, a route plan's buttons). Apple and Google come
+  // back through /plan/, which reads RETURN_KEY (plan.js signInReturn).
+  var RETURN_KEY = "carve.signin.return";
+  var signInThen = null;
+  function openSignIn(options) {
+    signInThen = (options && options.returnTo) || null;
     if (!signInDialog) {
       var style = document.createElement("style");
       style.textContent = SIGN_IN_CSS;
@@ -355,7 +361,7 @@
       var field = { email: "#cs-email", code: "#cs-code", username: "#cs-username" }[step];
       if (field) setTimeout(function () { q(field).focus(); }, 30);
     };
-    var signedIn = function () { location.href = "/my-drives/"; };
+    var signedIn = function () { location.href = signInThen || "/my-drives/"; };
     q("[data-close]").addEventListener("click", function () { dialog.close(); });
     dialog.addEventListener("click", function (event) { if (event.target === dialog) dialog.close(); });
     dialog.querySelectorAll("[data-to]").forEach(function (button) {
@@ -367,6 +373,10 @@
         // The planner takes the return only in the browser that set it off,
         // within a quarter hour (plan.js readOAuthReturn).
         safe(function () { localStorage.setItem(OAUTH_STATE_KEY, JSON.stringify(Date.now())); });
+        safe(function () {
+          if (signInThen) sessionStorage.setItem(RETURN_KEY, signInThen);
+          else sessionStorage.removeItem(RETURN_KEY);
+        });
         location.href = SUPABASE_URL + "/auth/v1/authorize?provider=" + button.getAttribute("data-provider") +
           "&redirect_to=" + encodeURIComponent(location.origin + "/plan/");
       });
@@ -433,6 +443,13 @@
       openSignIn();
     });
   }
+
+  /// Sign in over the page and come back to it: { returnTo: "/<token>?a=yes" }.
+  window.carveSignIn = function (options) {
+    if (typeof HTMLDialogElement === "undefined") return false;
+    openSignIn(options);
+    return true;
+  };
 
   function ready() { tagLinks(); tagBanner(); myDrivesLink(); phoneSignIn(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);

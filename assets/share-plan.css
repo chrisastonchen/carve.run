@@ -1,0 +1,39 @@
+/* A shared route's plan (share-plan.js): its card, at the top of the route's card. */
+.sp { padding: 18px; margin: 0 0 18px; border-radius: 18px; border: 1px solid var(--line); display: grid; gap: 6px; min-width: 0; }
+.sp p { margin: 0; }
+.sp-lead { font-size: 15.5px; font-weight: 700; color: var(--ink-2); }
+/* The host's own, as the app labels it: YOUR DRIVE. */
+.sp-lead.mine { font-size: 12.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--green-ink); }
+.sp-when { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.01em; line-height: 1.2; color: var(--green-ink); }
+.sp-note { font-size: 15.5px; line-height: 1.45; white-space: pre-line; overflow-wrap: anywhere; font-style: italic; }
+.sp-who { display: flex; align-items: center; gap: 10px; min-width: 0; margin-top: 4px; }
+.sp-faces { display: flex; flex: none; }
+.sp-face {
+  width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex: none;
+  display: grid; place-items: center; font-size: 12px; font-weight: 800;
+  background: var(--fill); color: var(--ink-2); box-shadow: 0 0 0 2px var(--fill-2);
+}
+.sp-face + .sp-face { margin-left: -7px; }
+.sp-names, .sp-count { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+.sp-going { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.sp-going > span { font-weight: 700; font-size: 15px; margin-right: 2px; }
+/* Small and quiet: nothing like the foot's big Download / Drive It buttons. */
+.sp-pick {
+  display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 14px; border-radius: 999px;
+  font: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+  background: #fff; color: #111; border: 1px solid rgba(0, 0, 0, .14);
+}
+.sp-pick.on { background: var(--green); color: #fff; border-color: var(--green); }
+.sp-pick:disabled { opacity: .6; cursor: default; }
+.sp-small { font-size: 13.5px; color: var(--ink-3); }
+.sp-state { font-weight: 700; font-size: 15.5px; color: var(--ink-2); margin-top: 4px; }
+.sp-error { margin-top: 4px; padding: 10px 12px; border-radius: 12px; background: #371715; color: #EC796F; font-size: 14.5px; font-weight: 600; }
+/* The note alone, with no plan on: no card around it. */
+.sp.bare { padding: 10px 12px; border: 0; background: var(--fill); border-radius: 12px; }
+@media not all and (prefers-color-scheme: dark) {
+  .sp-error { background: #FBE9E7; color: #B0352B; }
+}
+/* On a phone the route's card reorders its parts (route-view.css): the plan stays first. */
+@media (max-width: 699px), (max-height: 560px) {
+  .rv .scroll > .sp { order: -1; }
+}
