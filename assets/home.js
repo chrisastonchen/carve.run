@@ -17,6 +17,8 @@ import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
 import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=367b958bf8";
+import { heartButton, wireHearts } from "/assets/hearts.js?v=5f1f204eb8";
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=517867446e";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
@@ -75,7 +77,9 @@ function renderNear() {
   list.innerHTML = picks.map((r) => `<li><a href="/drives/${encodeURIComponent(r.s)}/">
     <span class="ph">${photoHTML(r.i, "(max-width: 899px) 82vw, 300px")}</span>
     <span class="t"><span class="away">${escapeHTML(awayText(r))}</span><span class="n">${escapeHTML(r.n)}</span>
-    <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a></li>`).join("");
+    <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a>
+    ${r.t ? heartButton(r.t, r.n) : ""}</li>`).join("");
+  wireHearts(list, { onSaved: (on, problem) => note(problem || (on ? "Saved. You'll find this road in My Drives and in Carve." : "Removed from My Drives.")) });
   $("near-title").textContent = place ? `${wide() ? "Great roads" : "Roads"} near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
   // The front door's start, from where we think they are: most people only type where to.
   const field = $("door-from");
@@ -91,6 +95,14 @@ function renderNear() {
   chip.hidden = !place;
   $("near-change2").hidden = !place;
   if (place) $("near-name").textContent = place.label === "you" ? "you" : place.label;
+}
+
+let noteTimer = 0;
+function note(text) {
+  $("near-note").textContent = text;
+  $("near-note").hidden = false;
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(() => { $("near-note").hidden = true; }, 3500);
 }
 
 // ── the map, on a computer ───────────────────────────────────────────
@@ -576,8 +588,12 @@ function riseIn() {
 function wireJoin() {
   let signedIn = false;
   try { signedIn = !!JSON.parse(localStorage.getItem("carve.plan.session") || "null")?.refresh_token; } catch {}
-  // Someone signed in already has an account: no Join or Sign in.
-  if (signedIn) { $("hero-join").hidden = true; $("hero-signin-line").hidden = true; return; }
+  // Signed in (index.html swapped Join for Get the app before the page drew): the greeting's name.
+  if (signedIn) {
+    $("hero-get").addEventListener("click", (event) => { if (!wide()) { event.preventDefault(); openApp(); } });
+    greet();
+    return;
+  }
   for (const [id, join] of [["hero-join", true], ["hero-signin", false]]) {
     $(id).addEventListener("click", (event) => {
       if (window.carveSignIn && window.carveSignIn({ join })) event.preventDefault();
@@ -585,16 +601,34 @@ function wireJoin() {
   }
 }
 
-async function main() {
-  // Signed in, the home page is theirs (home-signed.js; the user, 2026-11-04):
-  // marked in the head before it drew. A sign-in Carve refuses shows the public page after all.
-  if (document.documentElement.classList.contains("signed-in")) {
-    wireGet();
-    if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
-    // A failed load counts as a refusal too: a blank page is worse than the public one.
-    if (await import("/assets/home-signed.js?v=9be2de2fca").then((m) => m.startSignedHome()).catch(() => false)) return;
-    document.documentElement.classList.remove("signed-in");
+// The hero's headline, theirs (the user, 2026-11-04): "Ray, let's hit the road."
+// The first name is kept (carve.first-name, by account) so the next visit draws it at once.
+const PUBLIC_TITLE = "The ultimate app for car clubs and group drives.";
+async function greet() {
+  const token = await accessToken();
+  if (!token) {
+    // Carve refused the sign-in: the page as anyone sees it.
+    $("hero-title").textContent = PUBLIC_TITLE;
+    $("hero-get").hidden = true;
+    $("hero-join").hidden = false;
+    $("hero-signin-line").hidden = false;
+    return wireJoin();
   }
+  const id = String(store.get(SESSION_KEY)?.user?.id || "").toLowerCase();
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${id}&select=display_name`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) return;
+    const first = String((await response.json())[0]?.display_name || "").trim().split(/\s+/)[0];
+    $("hero-title").textContent = first ? `${first}, let\u2019s hit the road.` : "Let\u2019s hit the road.";
+    try { localStorage.setItem("carve.first-name", JSON.stringify({ id, name: first })); } catch {}
+  } catch {
+    // The greeting stays as drawn.
+  }
+}
+
+async function main() {
   riseIn();
   wireJoin();
   offerApp();

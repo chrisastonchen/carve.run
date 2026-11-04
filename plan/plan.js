@@ -2640,6 +2640,8 @@ function wire() {
       });
       profile = rows?.[0] || { username };
       saveIntents();
+      // The home page's greeting has the name at once (home.js greet).
+      try { localStorage.setItem("carve.first-name", JSON.stringify({ id: session.user.id.toLowerCase(), name: displayName.split(/\s+/)[0] || "" })); } catch {}
       const back = signInReturn();
       if (back) return location.replace(back);
       if (onPhone) return location.replace("/");

@@ -502,7 +502,12 @@
         headers: Object.assign({ Prefer: "return=representation" }, headers),
         body: JSON.stringify(body)
       }).then(function (response) {
-        if (response.ok) { saveIntents(); return signedIn(); }
+        if (response.ok) {
+          saveIntents();
+          // The home page's greeting has the name at once (home.js greet).
+          safe(function () { localStorage.setItem("carve.first-name", JSON.stringify({ id: body.id, name: name.split(/\s+/)[0] || "" })); });
+          return signedIn();
+        }
         if (response.status !== 409) return error("Couldn't save that. Try again.");
         // Usernames are unique whatever their case: ilike without wildcards.
         var base = username.replace(/\d+$/, "").slice(0, 18) || username.slice(0, 18);
