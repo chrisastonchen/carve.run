@@ -882,6 +882,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 
 /* A photo's AVIF copies (scripts/images/responsive.py): the <picture> adds no box of its own. */
 picture.pic { display: contents; }
+/* ...nor its AVIF <source>, which otherwise took a grid cell (the founder's photo pushed right, 11/4). */
+picture.pic > source { display: none; }
 
 /* A road card's heart, top right (assets/hearts.js; the user, 2026-11-04). */
 .cards-near li { position: relative; }
