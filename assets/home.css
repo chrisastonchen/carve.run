@@ -894,14 +894,15 @@ html.signed-in .me:not([hidden]) { display: flex; flex-direction: column; gap: 3
 .me-head a { font-weight: 700; color: var(--green-ink); text-decoration: none; white-space: nowrap; }
 .me-head a:hover { text-decoration: underline; }
 
-.me-app { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); border-radius: 26px; overflow: hidden; background: #15181C; color: #fff; }
-.me-app-ph { display: block; grid-area: 1 / 2; min-height: 300px; position: relative; }
+/* No card of its own: on the page's own theme, the photo beside (the user, 2026-11-04). */
+.me-app { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 36px; align-items: center; color: var(--ink); }
+.me-app-ph { display: block; grid-area: 1 / 2; min-height: 320px; position: relative; border-radius: 26px; overflow: hidden; }
 .me-app-ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
-.me-app-b { grid-area: 1 / 1; padding: 30px 32px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
-.me-app h1 { margin: 0; font-size: clamp(26px, 3vw, 34px); line-height: 1.12; font-weight: 800; letter-spacing: -.02em; color: #fff; }
-.me-why { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; color: #E6EAE7; font-size: 16px; }
+.me-app-b { grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+.me-app h1 { margin: 0; font-size: clamp(26px, 3vw, 34px); line-height: 1.12; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+.me-why { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; color: var(--ink-dim); font-size: 16px; }
 .me-why li { display: flex; align-items: center; gap: 10px; }
-.me-why svg { flex: none; width: 20px; height: 20px; fill: none; stroke: #7FD3A0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.me-why svg { flex: none; width: 20px; height: 20px; fill: none; stroke: var(--green-ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 /* Get the app on a phone; on a computer, the code to scan and both stores
    in its place (the user, 2026-11-04), as the public home's features have. */
 .me .me-get.feat-get { align-self: flex-start; min-width: 220px; margin-top: 4px; }
@@ -936,14 +937,18 @@ html.signed-in .me:not([hidden]) { display: flex; flex-direction: column; gap: 3
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   html.signed-in .me:not([hidden]) { gap: 28px; padding: 16px 0 44px; }
   .me-mod { padding: 0 16px; }
-  .me-app { margin: 0 16px; padding: 0; grid-template-columns: 1fr; border-radius: 22px; }
-  .me-app-ph { grid-area: auto; min-height: 0; height: 160px; }
-  .me-app-b { grid-area: auto; padding: 20px 18px 22px; gap: 14px; }
-  .me .me-get.feat-get { align-self: stretch; width: auto; }
+  /* Edge to edge on a phone; Get the app and Plan a drive the same width, one on the other (the user, 2026-11-04). */
+  html.signed-in .me:not([hidden]) { padding-top: 0; }
+  .me-app { padding: 0; grid-template-columns: 1fr; gap: 0; }
+  .me-app-ph { grid-area: auto; min-height: 0; height: 220px; border-radius: 0; }
+  .me-app-b { grid-area: auto; padding: 20px 16px 0; gap: 14px; }
+  .me .me-get.feat-get, .me .me-plan-go { align-self: stretch; width: auto; height: 54px; margin-top: 0; font-size: 17px; }
+  .me-plan { margin-top: -16px; }
   .me h2 { font-size: 22px; }
   /* On a phone, just the button: it opens the planner's page for phones (the user, 2026-11-04). */
   .me-plan h2, .me-map-box { display: none; }
-  .me .hb.line { width: 100%; }
+  .me .hb.line { width: 100%; box-sizing: border-box; }
+  .me .hb.line.me-plan-go { margin-top: 0; }
   .me-tiles { gap: 10px; }
   .me-tile { padding: 14px 12px; }
   .me-tile b { font-size: 26px; }

@@ -592,7 +592,7 @@ async function main() {
     wireGet();
     if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
     // A failed load counts as a refusal too: a blank page is worse than the public one.
-    if (await import("/assets/home-signed.js?v=c2bfb8fc9b").then((m) => m.startSignedHome()).catch(() => false)) return;
+    if (await import("/assets/home-signed.js?v=9be2de2fca").then((m) => m.startSignedHome()).catch(() => false)) return;
     document.documentElement.classList.remove("signed-in");
   }
   riseIn();

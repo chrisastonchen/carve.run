@@ -71,8 +71,10 @@ async function savedIntents() {
 }
 
 function arrange() {
-  const picked = WEIGHT.filter((w) => intents().includes(w)).map((w) => LEADS[w]);
-  const order = ["app", ...picked, ...ORDER.filter((m) => m !== "app" && !picked.includes(m))];
+  // On a phone, Plan a drive sits right under Get the app (the user, 2026-11-04).
+  const first = phone() ? ["app", "plan"] : ["app"];
+  const picked = WEIGHT.map((w) => LEADS[w]).filter((m, i) => intents().includes(WEIGHT[i]) && !first.includes(m));
+  const order = [...first, ...picked, ...ORDER.filter((m) => !first.includes(m) && !picked.includes(m))];
   for (const module of document.querySelectorAll("#me [data-mod]")) module.style.order = String(order.indexOf(module.dataset.mod));
 }
 
