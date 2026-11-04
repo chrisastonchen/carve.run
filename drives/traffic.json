@@ -1,5 +1,9 @@
 {
  "flagged": {
+  "allegany-state-park-route-1": {
+   "coverage": 0.63,
+   "since": "2026-11-03"
+  },
   "beartooth-highway": {
    "coverage": 0.55,
    "since": "2026-10-24"
@@ -32,6 +36,10 @@
    "coverage": 0.67,
    "since": "2026-10-28"
   },
+  "highway-35-mount-hood": {
+   "coverage": 0.64,
+   "since": "2026-11-03"
+  },
   "highway-74-whitewater-minnesota": {
    "coverage": 0.72,
    "since": "2026-10-24"
@@ -44,9 +52,9 @@
    "coverage": 0.37,
    "since": "2026-11-01"
   },
-  "jackson-to-moran-us-191": {
-   "coverage": 0.33,
-   "since": "2026-11-01"
+  "klondike-highway-white-pass": {
+   "coverage": 0.48,
+   "since": "2026-11-03"
   },
   "la-rumorosa-grade-baja": {
    "coverage": 0.62,
@@ -59,6 +67,10 @@
   "little-tujunga-canyon-road": {
    "coverage": 0.63,
    "since": "2026-10-29"
+  },
+  "m-26-keweenaw-shore": {
+   "coverage": 0.2,
+   "since": "2026-11-03"
   },
   "mckenzie-pass": {
    "coverage": 0.01,
@@ -106,5 +118,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-03T14:08:45Z"
+ "updated": "2026-11-04T14:09:32Z"
 }
