@@ -905,3 +905,9 @@ picture.pic { display: contents; }
   /* the words' scrim, from the bottom up, so the rest of the photo is lit */
   .bar.over ~ .home .hero::before { background: linear-gradient(to top, rgba(8,14,10,.88) 0%, rgba(8,14,10,.7) 28%, rgba(8,14,10,.3) 50%, rgba(8,14,10,0) 66%); }
 }
+
+/* The hero's main buttons, brighter than the bar's green (the user, 2026-11-04:
+   too dim): Join for free on a phone, Plan my drive on a computer. White on
+   #23874A is 4.5:1. */
+.home .hero .hb.green.hero-join, .home .door .hb.green.go { background: #23874A; color: #fff; }
+.home .hero .hb.green.hero-join:hover, .home .door .hb.green.go:hover { background: #1E7741; }
