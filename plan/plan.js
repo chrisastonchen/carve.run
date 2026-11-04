@@ -2310,7 +2310,9 @@ function oauth(provider) {
   // exactly the one allowed in Supabase.
   store.set(OAUTH_STATE_KEY, Date.now());
   const back = `${location.origin}/plan/`;
-  location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(back)}`;
+  // Google asks which account every time (the user, 2026-11-04).
+  const choose = provider === "google" ? "&prompt=select_account" : "";
+  location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${provider}${choose}&redirect_to=${encodeURIComponent(back)}`;
 }
 
 /// A page that sent the visitor here to sign in with Apple or Google, to

@@ -419,7 +419,11 @@
           if (signInThen) sessionStorage.setItem(RETURN_KEY, signInThen);
           else sessionStorage.removeItem(RETURN_KEY);
         });
-        location.href = SUPABASE_URL + "/auth/v1/authorize?provider=" + button.getAttribute("data-provider") +
+        // Google asks which account every time, rather than signing in with
+        // whichever one the browser last used (the user, 2026-11-04).
+        var provider = button.getAttribute("data-provider");
+        location.href = SUPABASE_URL + "/auth/v1/authorize?provider=" + provider +
+          (provider === "google" ? "&prompt=select_account" : "") +
           "&redirect_to=" + encodeURIComponent(location.origin + "/plan/");
       });
     });
@@ -555,7 +559,8 @@
   // icon does, else its early-access page; an iPhone goes to the App Store,
   // which offers Open when Carve is installed.
   var SHEET_APP_CSS = ".sheet a.sheet-app { display: flex; align-items: center; justify-content: center; height: 52px; margin: 12px 0 10px; padding: 0 20px;"
-    + " border: 0; border-radius: 999px; background: #fff; color: #1D5B3A; font-size: 17px; font-weight: 800; text-decoration: none; }";
+    + " border: 0; border-radius: 999px; background: #fff; color: #1D5B3A; font-size: 17px; font-weight: 800; text-decoration: none; gap: 10px; }"
+    + " .sheet a.sheet-app svg { width: 20px; height: 20px; flex: none; }";
   function sheetApp() {
     var sheet = document.getElementById("sheet");
     if (!sheet || document.getElementById("sheet-app")) return;
@@ -565,7 +570,8 @@
     var a = document.createElement("a");
     a.id = "sheet-app";
     a.className = "sheet-app";
-    a.textContent = "Continue in app";
+    // a phone beside the words (the user, 2026-11-04)
+    a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.5 18.2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Continue in app</span>';
     a.href = /android/i.test(navigator.userAgent || "")
       ? "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=run.carve.app;S.browser_fallback_url="
         + encodeURIComponent("https://carve.run" + ANDROID_PAGE) + ";end"
