@@ -887,3 +887,21 @@ picture.pic { display: contents; }
 .cards-near li { position: relative; }
 .cards-near .heart { position: absolute; top: 12px; right: 12px; z-index: 2; }
 .near-note { margin: 12px 0 0; padding: 12px 14px; border-radius: 14px; background: #15181C; color: #fff; font-weight: 600; }
+
+/* ═══ The home page's bar (the user, 2026-11-04): green in both themes; on
+   a phone the hero's photo runs up under it, the bar only a scrim at the
+   top until the page scrolls (the script after the bar in index.html sets
+   .top), then solid green. Other pages keep their own bar: the rules are the
+   home bar's (.over), as My Drives and Pricing load this sheet too. ═══ */
+.bar.over { background: #1D5B3A; box-shadow: none; transition: background-color .2s ease; }
+.bar.over .pill { color: #1D5B3A; }
+.bar.over ~ .sheet { background: #1D5B3A; }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
+  .bar.over::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: calc(var(--bar) + 36px); z-index: -1; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(8,14,10,.55), rgba(8,14,10,0)); opacity: 0; transition: opacity .2s ease; }
+  .bar.over.top:not(:has([aria-expanded="true"])) { background-color: transparent; }
+  .bar.over.top:not(:has([aria-expanded="true"]))::before { opacity: 1; }
+  .bar.over ~ .home .hero { margin-top: calc(-1 * var(--bar)); padding-top: var(--bar); min-height: min(704px, 100svh); }
+  /* the words' scrim, from the bottom up, so the rest of the photo is lit */
+  .bar.over ~ .home .hero::before { background: linear-gradient(to top, rgba(8,14,10,.88) 0%, rgba(8,14,10,.7) 28%, rgba(8,14,10,.3) 50%, rgba(8,14,10,0) 66%); }
+}
