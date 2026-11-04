@@ -570,6 +570,24 @@ function heroStory() {
   show(0);
 }
 
+// ── Plan your first drive (a phone) ──────────────────────────────────
+// The place search is the planner's; its arrow opens the sign-up, or, signed
+// in, the app (the user, 2026-11-04).
+function wireFirstDrive() {
+  const form = $("fd-form");
+  if (!form) return;
+  // The search's one-time check shows here on a phone (the front door it sits in is a computer's).
+  if (!wide()) form.after($("bot-check"));
+  attachPlaceSearch($("fd-where"), () => (place ? { lat: place.lat, lon: place.lon } : null));
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    let signedIn = false;
+    try { signedIn = !!JSON.parse(localStorage.getItem(SESSION_KEY) || "null")?.user; } catch {}
+    if (signedIn) return openApp();
+    if (!(window.carveSignIn && window.carveSignIn({ join: true }))) location.href = "/plan/#sign-in";
+  });
+}
+
 // ── start ────────────────────────────────────────────────────────────
 
 function riseIn() {
@@ -640,6 +658,7 @@ async function main() {
   $("near-change2").addEventListener("click", locate);
   $("hero-locate").addEventListener("click", locate);
   wireGet();
+  wireFirstDrive();
   playClips();
   const [data, guess] = await Promise.all([
     fetch("/drives/roads.json").then((r) => r.json()).catch(() => []),

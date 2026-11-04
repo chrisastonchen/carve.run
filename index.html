@@ -29,7 +29,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css?v=ed35d04584">
 <link rel="stylesheet" href="/assets/site-bar.css?v=afde5806fd">
-<link rel="stylesheet" href="/assets/home.css?v=cc16d7ae7f">
+<link rel="stylesheet" href="/assets/home.css?v=c6bae53e41">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -196,6 +196,38 @@
      the organizer first, so the planning and the navigation come right
      after the hero, then the founder (a club member), then the roads to
      find, for everyone else, then the regions and the questions. -->
+<!-- ═══ PLAN YOUR FIRST DRIVE (a phone; the user, 2026-11-04, after Ride with
+     GPS's "Discover great routes"): a map with two real drives on it (their
+     length, climb and twistiness from the app's own routes, the map rendered
+     once, see the commit), a line on what Carve does, and a place search whose
+     arrow opens the sign-up (home.js wireFirstDrive). ═══ -->
+<section class="first-drive phone-only-h" aria-labelledby="first-title">
+  <div class="fd-art">
+    <picture class="pic"><source type="image/avif" srcset="/assets/people/first-drive-map.w640.avif?v=95a9a3d7a0 640w, /assets/people/first-drive-map.w1200.avif?v=4daf1cbb93 1200w" sizes="(max-width: 899px) 100vw, 50vw"><img decoding="async" class="fd-map" src="/assets/people/first-drive-map.jpg?v=9aa872f066" alt="A map of Skyline Boulevard through the Santa Cruz Mountains, from Highway 92 to Saratoga Gap" loading="lazy" width="1200" height="1200"></picture>
+    <div class="fd-cards" aria-hidden="true">
+      <div class="fd-card on">
+        <b>Skyline Boulevard</b>
+        <span class="fd-m">26.3 mi · 3,400 ft up <span class="chip" style="background:#D2591F"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Twisty</span></span>
+        <svg class="fd-elev" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><path class="a" d="M0.0 22.0 L1.7 20.7 L3.4 19.1 L5.1 18.0 L6.8 16.6 L8.5 15.2 L10.2 14.1 L11.9 12.9 L13.6 11.2 L15.3 9.9 L16.9 9.2 L18.6 9.4 L20.3 9.0 L22.0 9.5 L23.7 9.6 L25.4 9.0 L27.1 8.1 L28.8 7.3 L30.5 6.1 L32.2 6.9 L33.9 6.9 L35.6 7.9 L37.3 7.7 L39.0 8.2 L40.7 9.8 L42.4 11.3 L44.1 13.1 L45.8 14.4 L47.5 15.4 L49.2 14.7 L50.8 13.0 L52.5 12.5 L54.2 12.1 L55.9 11.9 L57.6 11.4 L59.3 11.3 L61.0 10.1 L62.7 9.3 L64.4 9.9 L66.1 9.8 L67.8 8.4 L69.5 6.9 L71.2 5.9 L72.9 6.0 L74.6 6.6 L76.3 7.8 L78.0 8.9 L79.7 8.1 L81.4 9.2 L83.1 8.4 L84.7 6.8 L86.4 6.6 L88.1 6.2 L89.8 6.8 L91.5 5.2 L93.2 3.5 L94.9 4.1 L96.6 3.3 L98.3 3.0 L100.0 3.0 L100 24 L0 24Z"/><path class="l" d="M0.0 22.0 L1.7 20.7 L3.4 19.1 L5.1 18.0 L6.8 16.6 L8.5 15.2 L10.2 14.1 L11.9 12.9 L13.6 11.2 L15.3 9.9 L16.9 9.2 L18.6 9.4 L20.3 9.0 L22.0 9.5 L23.7 9.6 L25.4 9.0 L27.1 8.1 L28.8 7.3 L30.5 6.1 L32.2 6.9 L33.9 6.9 L35.6 7.9 L37.3 7.7 L39.0 8.2 L40.7 9.8 L42.4 11.3 L44.1 13.1 L45.8 14.4 L47.5 15.4 L49.2 14.7 L50.8 13.0 L52.5 12.5 L54.2 12.1 L55.9 11.9 L57.6 11.4 L59.3 11.3 L61.0 10.1 L62.7 9.3 L64.4 9.9 L66.1 9.8 L67.8 8.4 L69.5 6.9 L71.2 5.9 L72.9 6.0 L74.6 6.6 L76.3 7.8 L78.0 8.9 L79.7 8.1 L81.4 9.2 L83.1 8.4 L84.7 6.8 L86.4 6.6 L88.1 6.2 L89.8 6.8 L91.5 5.2 L93.2 3.5 L94.9 4.1 L96.6 3.3 L98.3 3.0 L100.0 3.0"/></svg>
+      </div>
+      <div class="fd-card">
+        <b>La Honda Road</b>
+        <span class="fd-m">20.6 mi · 1,300 ft up <span class="chip" style="background:#9B1C1C"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21L17 17.5L7 14L17 10.5L7 7L17 3.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Intense</span></span>
+        <svg class="fd-elev" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><path class="a" d="M0.0 17.6 L1.7 17.4 L3.4 17.5 L5.1 16.6 L6.8 15.9 L8.5 16.3 L10.2 16.7 L11.9 16.0 L13.6 14.3 L15.3 13.3 L16.9 11.7 L18.6 9.9 L20.3 9.0 L22.0 7.6 L23.7 5.9 L25.4 4.6 L27.1 3.0 L28.8 3.6 L30.5 3.8 L32.2 4.4 L33.9 5.4 L35.6 5.9 L37.3 7.0 L39.0 7.5 L40.7 7.8 L42.4 8.9 L44.1 9.9 L45.8 11.3 L47.5 12.9 L49.2 14.1 L50.8 15.0 L52.5 15.4 L54.2 16.0 L55.9 16.8 L57.6 17.3 L59.3 17.8 L61.0 17.9 L62.7 18.5 L64.4 18.9 L66.1 19.0 L67.8 19.1 L69.5 19.3 L71.2 19.7 L72.9 19.8 L74.6 19.2 L76.3 19.8 L78.0 20.2 L79.7 20.7 L81.4 20.5 L83.1 20.1 L84.7 20.5 L86.4 20.8 L88.1 20.9 L89.8 20.9 L91.5 21.0 L93.2 21.2 L94.9 21.5 L96.6 21.8 L98.3 21.9 L100.0 22.0 L100 24 L0 24Z"/><path class="l" d="M0.0 17.6 L1.7 17.4 L3.4 17.5 L5.1 16.6 L6.8 15.9 L8.5 16.3 L10.2 16.7 L11.9 16.0 L13.6 14.3 L15.3 13.3 L16.9 11.7 L18.6 9.9 L20.3 9.0 L22.0 7.6 L23.7 5.9 L25.4 4.6 L27.1 3.0 L28.8 3.6 L30.5 3.8 L32.2 4.4 L33.9 5.4 L35.6 5.9 L37.3 7.0 L39.0 7.5 L40.7 7.8 L42.4 8.9 L44.1 9.9 L45.8 11.3 L47.5 12.9 L49.2 14.1 L50.8 15.0 L52.5 15.4 L54.2 16.0 L55.9 16.8 L57.6 17.3 L59.3 17.8 L61.0 17.9 L62.7 18.5 L64.4 18.9 L66.1 19.0 L67.8 19.1 L69.5 19.3 L71.2 19.7 L72.9 19.8 L74.6 19.2 L76.3 19.8 L78.0 20.2 L79.7 20.7 L81.4 20.5 L83.1 20.1 L84.7 20.5 L86.4 20.8 L88.1 20.9 L89.8 20.9 L91.5 21.0 L93.2 21.2 L94.9 21.5 L96.6 21.8 L98.3 21.9 L100.0 22.0"/></svg>
+      </div>
+    </div>
+  </div>
+  <h2 id="first-title">Start anywhere</h2>
+  <p class="fd-sub">1,200+ hand-picked roads, from coastal highways to mountain passes.</p>
+  <form class="fd-search" id="fd-form" role="search">
+    <label class="field">
+      <svg class="fd-glass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <input type="text" id="fd-where" placeholder="Where to?" aria-label="Where to?" enterkeyhint="go">
+      <button type="submit" class="fd-go" aria-label="Go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </label>
+  </form>
+</section>
+
 <!-- ═══ THE APP ═════════════════════════════════════════════════════════
      The user, 2026-11-01, after AllTrails: three of the app's best, each a
      big centered line, one sentence, the 1.5 app in a phone and a Download
@@ -427,6 +459,6 @@
   if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
 <script src="/assets/carve-site.js?v=002d4e9441" defer></script>
-<script type="module" src="/assets/home.js?v=e422611255"></script>
+<script type="module" src="/assets/home.js?v=4bbbba6245"></script>
 </body>
 </html>
