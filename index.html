@@ -31,7 +31,7 @@
 <script>try { var s = JSON.parse(localStorage.getItem("carve.plan.session") || "null"); if (s && s.refresh_token) document.documentElement.classList.add("signed-in"); } catch (e) {}</script>
 <link rel="stylesheet" href="/styles.css?v=ed35d04584">
 <link rel="stylesheet" href="/assets/site-bar.css?v=afde5806fd">
-<link rel="stylesheet" href="/assets/home.css?v=28bda05f6d">
+<link rel="stylesheet" href="/assets/home.css?v=7581f5a7a7">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -118,6 +118,13 @@
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9a13 13 0 0 1 18 0M6.5 12.5a8 8 0 0 1 11 0M10 16a3 3 0 0 1 4 0M4 4l16 16"/></svg>Works where there's no signal</li>
       </ul>
       <a class="hb green me-get feat-get" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716">Get the app</a>
+      <div class="me-stores">
+        <svg class="feat-qr" viewBox="0 0 37 37" shape-rendering="crispEdges" role="img" aria-label="QR code: scan with your phone's camera to get Carve"><use href="#qr-app"/></svg>
+        <div class="stores">
+          <a class="badge" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg aria-hidden="true"><use href="#apple"/></svg><span><small>Download on the</small>App Store</span></a>
+          <a class="badge" href="/android/"><svg aria-hidden="true"><use href="#android"/></svg><span><small>Get it on</small>Google Play</span></a>
+        </div>
+      </div>
       <p class="me-fine">Sign in with the same account.</p>
     </div>
   </div>
