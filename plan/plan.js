@@ -2559,6 +2559,9 @@ function wire() {
     if (!$("who").contains(event.target)) $("who-menu").hidden = true;
   });
   $("sign-out").addEventListener("click", async () => {
+    // Asked first (the user, 2026-11-04): carve-site.js's dialog.
+    $("who-menu").hidden = true;
+    if (window.carveConfirmSignOut && !(await window.carveConfirmSignOut())) return;
     const token = session?.access_token;
     signedOut();
     $("who-menu").hidden = true;

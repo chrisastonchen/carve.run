@@ -214,6 +214,9 @@
       out.textContent = "Sign out";
       out.addEventListener("click", function (event) {
         event.preventDefault();
+        window.carveConfirmSignOut().then(function (yes) { if (yes) signOutNow(); });
+      });
+      var signOutNow = function () {
         safe(function () { localStorage.removeItem("carve.plan.session"); });
         // Carve ends the sign-in too, as the planner's Sign out does; a slow
         // answer doesn't hold the page up.
@@ -225,8 +228,13 @@
             headers: { apikey: "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U", Authorization: "Bearer " + session.access_token }
           }).then(done, done);
         });
-      });
-      sheet.append(out);
+      };
+      // Their profile, before Sign out (the user, 2026-11-04).
+      var mine = document.createElement("a");
+      mine.href = "/profile/";
+      mine.textContent = "Profile";
+      if (/^\/profile\//.test(location.pathname)) mine.setAttribute("aria-current", "page");
+      sheet.append(mine, out);
     }
     document.querySelectorAll(".bar nav.links, nav.sheet").forEach(function (nav) {
       if (nav.querySelector('a[href="/my-drives/"]')) return;
@@ -581,7 +589,63 @@
     sheet.prepend(a);
   }
 
-  function ready() { tagLinks(); tagBanner(); myDrivesLink(); phoneSignIn(); sheetApp(); }
+  // MARK: - The name's menu
+
+  // The name at the top right opens Profile and Sign out (the user,
+  // 2026-11-04); site-bar.js and the planner wire Sign out, through this
+  // confirmation.
+  var WHO_CSS = ".who-menu a.who-profile{display:flex;align-items:center;box-sizing:border-box;width:100%;height:44px;padding:0 14px;border-radius:10px;" +
+    "font-weight:700;font-size:16px;color:inherit;text-decoration:none}.who-menu a.who-profile:hover{background:#1D2420}" +
+    "@media not all and (prefers-color-scheme: dark){.who-menu a.who-profile:hover{background:#F1F1EF}}" +
+    ".cs-confirm{border:0;border-radius:22px;padding:24px;width:min(360px,calc(100% - 32px));box-sizing:border-box;background:#fff;color:#15181C;" +
+    "font-family:Figtree,-apple-system,system-ui,sans-serif;box-shadow:0 24px 60px rgba(0,0,0,.25)}" +
+    ".cs-confirm::backdrop{background:rgba(10,14,12,.5)}.cs-confirm h2{margin:0 0 6px;font-size:22px;font-weight:800}" +
+    ".cs-confirm p{margin:0 0 20px;font-size:16px;line-height:1.45;color:#5D636C}.cs-confirm .row{display:flex;gap:10px}" +
+    ".cs-confirm button{flex:1;height:48px;border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:700;cursor:pointer}" +
+    ".cs-confirm .no{background:#F1EEE5;color:#15181C}.cs-confirm .yes{background:#B0352B;color:#fff}" +
+    "@media (prefers-color-scheme: dark){.cs-confirm{background:#161B18;color:#EEF1EE}.cs-confirm p{color:#9AA39D}.cs-confirm .no{background:#232A26;color:#EEF1EE}}";
+  var whoStyled = false;
+  function whoStyle() {
+    if (whoStyled) return;
+    whoStyled = true;
+    var style = document.createElement("style");
+    style.textContent = WHO_CSS;
+    document.head.append(style);
+  }
+  function whoProfile() {
+    var menu = document.getElementById("who-menu");
+    if (!menu || document.getElementById("who-profile")) return;
+    whoStyle();
+    var a = document.createElement("a");
+    a.id = "who-profile";
+    a.className = "who-profile";
+    a.setAttribute("role", "menuitem");
+    a.href = "/profile/";
+    a.textContent = "Profile";
+    menu.prepend(a);
+  }
+
+  /// "Sign out?" with Cancel and Sign out; resolves true to go ahead.
+  window.carveConfirmSignOut = function () {
+    if (typeof HTMLDialogElement === "undefined") return Promise.resolve(window.confirm("Sign out of Carve?"));
+    whoStyle();
+    return new Promise(function (resolve) {
+      var dialog = document.createElement("dialog");
+      dialog.className = "cs-confirm";
+      dialog.setAttribute("aria-labelledby", "cs-confirm-title");
+      dialog.innerHTML = '<h2 id="cs-confirm-title">Sign out?</h2><p>Your routes stay on your account, ready when you sign in again.</p>' +
+        '<div class="row"><button type="button" class="no">Cancel</button><button type="button" class="yes">Sign out</button></div>';
+      var answer = false;
+      dialog.querySelector(".no").addEventListener("click", function () { dialog.close(); });
+      dialog.querySelector(".yes").addEventListener("click", function () { answer = true; dialog.close(); });
+      dialog.addEventListener("close", function () { dialog.remove(); resolve(answer); });
+      document.body.append(dialog);
+      dialog.showModal();
+      dialog.querySelector(".no").focus();
+    });
+  };
+
+  function ready() { tagLinks(); tagBanner(); myDrivesLink(); phoneSignIn(); sheetApp(); whoProfile(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
   else ready();
 

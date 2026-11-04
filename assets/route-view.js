@@ -9,7 +9,7 @@
 // and the apps redeem it; a page without one (no token, no network, no
 // WebGL) keeps its picture of the road and still reads.
 import { markerLabels, turnKind, formatDistance, formatDuration, usesMiles } from "/plan/route-wire.js";
-import { session, signedIn } from "/assets/site-bar.js?v=9286dec569";
+import { session, signedIn } from "/assets/site-bar.js?v=7ba2c7c7a9";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";

@@ -1,7 +1,9 @@
 # carve.run — open to search engines and AI assistants. Shared-route pages
 # carry their own noindex: they're people's routes, found by their link.
+# Profiles (/profile/) are people's, signed in only: kept out of search and AI (2026-11-04).
 User-agent: *
 Content-Signal: search=yes, ai-input=yes
 Allow: /
+Disallow: /profile/
 
 Sitemap: https://carve.run/sitemap.xml

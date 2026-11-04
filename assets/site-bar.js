@@ -64,7 +64,10 @@ function wireBar() {
     menu.hidden = !menu.hidden;
     $("who-btn").setAttribute("aria-expanded", String(!menu.hidden));
   });
-  $("sign-out")?.addEventListener("click", () => {
+  $("sign-out")?.addEventListener("click", async () => {
+    // Asked first (the user, 2026-11-04): carve-site.js's dialog.
+    $("who-menu").hidden = true;
+    if (window.carveConfirmSignOut && !(await window.carveConfirmSignOut())) return;
     try { localStorage.removeItem(SESSION_KEY); } catch {}
     location.reload();
   });
