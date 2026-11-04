@@ -2591,7 +2591,7 @@ function wire() {
       accountError(failure.message);
     }
   });
-  // What brings you to Carve today? Pick any, or skip; then the name.
+  // What brings you to Carve? Pick any, or skip; then the name.
   const picks = () => [...$("intents-form").querySelectorAll("input:checked")].map((box) => box.value);
   $("intents-form").addEventListener("change", () => { $("intents-go").disabled = !picks().length; });
   $("intents-form").addEventListener("submit", (event) => {

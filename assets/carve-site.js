@@ -306,8 +306,8 @@
     '<label for="cs-code">Code</label><input class="code" id="cs-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>' +
     '<button type="submit" class="b go">Continue</button>' +
     '<div class="links"><button type="button" class="link" data-resend>Send a new code</button><button type="button" class="link" data-to="email">Use another email</button></div></form>' +
-    '<form data-step="intents" hidden><h2>What brings you to Carve today?</h2><p>Pick any.</p>' +
-    '<fieldset class="intents"><legend class="cs-vh">What brings you to Carve today?</legend>' +
+    '<form data-step="intents" hidden><h2>What brings you to Carve?</h2><p>Pick any.</p>' +
+    '<fieldset class="intents"><legend class="cs-vh">What brings you to Carve?</legend>' +
     '<label class="intent"><input type="checkbox" value="invited"><span>Someone invited me to a drive</span></label>' +
     '<label class="intent"><input type="checkbox" value="organize"><span>I organize drives for a club or group</span></label>' +
     '<label class="intent"><input type="checkbox" value="roads"><span>I\'m looking for new roads to drive</span></label>' +
@@ -454,7 +454,7 @@
         dialog.step(storedIntents(session.user.id) ? "username" : "intents");
       }, function (failure) { error(failure.message); });
     });
-    // What brings you to Carve today? Pick any, or skip; then the name.
+    // What brings you to Carve? Pick any, or skip; then the name.
     var intentsForm = q('[data-step="intents"]');
     var picks = function () { return Array.prototype.map.call(intentsForm.querySelectorAll("input:checked"), function (box) { return box.value; }); };
     intentsForm.addEventListener("change", function () { q("[data-intents-go]").disabled = !picks().length; });
