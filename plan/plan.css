@@ -144,15 +144,15 @@ a { color: var(--green-ink); }
 @media (min-width: 700px) { .narrow-only { display: none !important; } .sheet { display: none !important; } }
 
 /* ── phone gate ── */
-.phone-gate { padding: calc(var(--bar) + 32px) 24px 32px; display: flex; flex-direction: column; gap: 18px; background: #1D2420; min-height: 100%; }
-.gate-art { height: 300px; border-radius: 24px; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; padding-top: 28px;
-  background: radial-gradient(120% 90% at 50% 0%, #2B5A3E 0%, #14301F 60%, #0B1C12 100%); }
-/* The app's own plan screen, cut off at the card's foot like a phone held up */
-.gate-phone { width: 210px; flex: none; border-radius: 34px 34px 0 0; padding: 7px 7px 0; background: #0A0C0E;
-  box-shadow: 0 0 0 1.5px #3A3F45, 0 24px 48px rgba(0,0,0,.45); }
-.gate-phone img { display: block; width: 100%; height: auto; border-radius: 28px 28px 0 0; }
-.phone-gate h1 { font-size: 30px; }
-.phone-gate p { font-size: 18px; color: var(--ink-2); }
+.phone-gate { padding: calc(var(--bar) + 24px) 24px 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; background: #1D2420; min-height: 100%; box-sizing: border-box; }
+/* A tile of the app's map, tipped back like a table top (orthographic, so no perspective). */
+.gate-art { width: 100%; height: 250px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+.gate-tile { width: 200px; height: 200px; border-radius: 22px; overflow: hidden; transform: rotateX(56deg) rotateZ(-45deg);
+  box-shadow: -9px 9px 0 #A9BC9E, -34px 34px 46px rgba(0,0,0,.35); }
+.gate-tile svg { display: block; width: 100%; height: 100%; }
+.phone-gate h1 { font-size: 26px; }
+.phone-gate p { max-width: 22em; font-size: 17px; color: var(--ink-2); }
+.phone-gate .gate-open { width: auto; margin-top: 8px; padding: 0 34px; }
 
 /* ── the planner ── */
 .app { position: fixed; inset: var(--bar) 0 0 0; }
@@ -553,8 +553,7 @@ a { color: var(--green-ink); }
   .sheet { background: var(--green); }
   .sheet a { color: #fff; }
   .phone-gate { background: #FBF8EF; }
-  .gate-art { background: radial-gradient(120% 90% at 50% 0%, #2B5A3E 0%, #14301F 60%, #0B1C12 100%); }
-  .gate-phone { background: #0A0C0E; box-shadow: 0 0 0 1.5px #3A3F45, 0 24px 48px rgba(0,0,0,.45); }
+  .gate-tile { box-shadow: -9px 9px 0 #A9BC9E, -34px 34px 46px rgba(0,0,0,.18); }
   .phone-gate p { color: var(--ink-2); }
   .no-map p { background: #fff; box-shadow: var(--shadow); color: var(--ink-2); }
   .panel { background: #fff; box-shadow: var(--shadow); }

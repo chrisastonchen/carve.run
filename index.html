@@ -31,7 +31,7 @@
 <script>try { var s = JSON.parse(localStorage.getItem("carve.plan.session") || "null"); if (s && s.refresh_token) document.documentElement.classList.add("signed-in"); } catch (e) {}</script>
 <link rel="stylesheet" href="/styles.css?v=ed35d04584">
 <link rel="stylesheet" href="/assets/site-bar.css?v=afde5806fd">
-<link rel="stylesheet" href="/assets/home.css?v=d72c5de418">
+<link rel="stylesheet" href="/assets/home.css?v=8ed3ad7200">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -125,7 +125,6 @@
           <a class="badge" href="/android/"><svg aria-hidden="true"><use href="#android"/></svg><span><small>Get it on</small>Google Play</span></a>
         </div>
       </div>
-      <p class="me-fine">Sign in with the same account.</p>
     </div>
   </div>
   <div class="me-mod me-plan" data-mod="plan">
@@ -150,12 +149,6 @@
     <div class="me-head"><h2 id="me-events-title">Events near you</h2><a href="/events/">See all ›</a></div>
     <ol class="me-rail ev-rail" id="me-events"></ol>
   </div>
-  <dialog class="me-sheet" id="me-plan-sheet" aria-labelledby="me-plan-title">
-    <h2 id="me-plan-title">Plan your drive in Carve</h2>
-    <p>Choose your roads and stops, or import a route from Google Maps, Ride with GPS, or GPX. Share one link with your group.</p>
-    <a class="hb green" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716">Get the app</a>
-    <button type="button" class="me-later" data-close>Not now</button>
-  </dialog>
 </section>
 <!-- ═══ GREAT ROADS NEAR YOU ═══════════════════════════════════════════
      The user, 2026-10-29: the hook is the great roads near you, and the
@@ -485,6 +478,6 @@
   if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
 <script src="/assets/carve-site.js?v=a30f251841" defer></script>
-<script type="module" src="/assets/home.js?v=c3e6a6dcfb"></script>
+<script type="module" src="/assets/home.js?v=72807427a3"></script>
 </body>
 </html>

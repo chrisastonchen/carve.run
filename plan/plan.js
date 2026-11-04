@@ -2432,6 +2432,21 @@ function planAnother() {
   showPlan();
 }
 
+/// The phone page's Continue in app: Carve if it's installed, else its store (home.js openApp).
+function wireGateOpen() {
+  $("gate-open").addEventListener("click", (event) => {
+    event.preventDefault();
+    if (isAndroid) {
+      location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=run.carve.app;S.browser_fallback_url="
+        + encodeURIComponent("https://carve.run/android/") + ";end";
+      return;
+    }
+    // Not carve://open: without the app Safari stops on "the address is invalid";
+    // the App Store page offers Open when Carve is installed.
+    location.href = window.carveStoreUrl ? carveStoreUrl() : event.currentTarget.href;
+  });
+}
+
 function osAwareGetApp() {
   if (!isAndroid) return;
   document.querySelectorAll("[data-get-app]").forEach((a) => (a.href = "/android/"));
@@ -2660,6 +2675,7 @@ async function start() {
   const narrow = window.matchMedia("(max-width: 699px)");
   if (narrow.matches) {
     wire();
+    wireGateOpen();
     // A window opened narrow and then widened gets the planner.
     narrow.addEventListener("change", (event) => { if (!event.matches) location.reload(); }, { once: true });
     // A phone plans in the app, but signs in here: the bar's Sign in on every

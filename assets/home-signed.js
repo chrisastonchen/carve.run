@@ -117,18 +117,6 @@ async function drawMap() {
   $("me-map-label").textContent = place && place.label !== "you" ? `Good roads around ${place.label}` : "Good roads near you";
 }
 
-/// Plan a drive: the planner on a computer; on a phone, the app (the web planner is for big screens).
-function wirePlan() {
-  $("me-plan").addEventListener("click", (event) => {
-    if (!phone()) return;
-    event.preventDefault();
-    $("me-plan-sheet").showModal();
-  });
-  $("me-plan-sheet").addEventListener("click", (event) => {
-    if (event.target === $("me-plan-sheet") || event.target.closest("[data-close]")) $("me-plan-sheet").close();
-  });
-}
-
 // ── their own: upcoming drives, saved routes, saved events ───────────
 
 async function counts(events) {
@@ -224,7 +212,6 @@ export async function startSignedHome() {
   $("me").hidden = false;
   arrange();
   if (!keptIntents()) savedIntents();
-  wirePlan();
   greet();
   const [data, guess] = await Promise.all([
     fetch("/drives/roads.json").then((r) => r.json()).catch(() => []),
@@ -233,7 +220,8 @@ export async function startSignedHome() {
   roads = data.map((r, k) => Object.assign(r, { k, lv: level(r.b) })).filter((r) => lineOf(r).length > 1);
   place = guess;
   renderRoads();
-  drawMap();
+  // On a phone the map isn't shown (home.css): Plan a drive is the whole module there.
+  if (!phone()) drawMap();
   const events = await renderEvents();
   counts(events);
   return true;
