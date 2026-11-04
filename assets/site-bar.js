@@ -47,6 +47,14 @@ function wireBar() {
   const who = $("who");
   if (!signedIn) {
     if (signIn) signIn.hidden = false;
+    // The home page's Join for free: the site's sign-in, under that name.
+    const join = $("join");
+    if (join) {
+      join.hidden = false;
+      join.addEventListener("click", (event) => {
+        if (window.carveSignIn && window.carveSignIn({ join: true })) event.preventDefault();
+      });
+    }
     return;
   }
   if (who) who.hidden = false;

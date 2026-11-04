@@ -403,7 +403,11 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 }
 
 /* A phone's hero: the line under the headline, then Join free, the app, and Sign in (the user, 2026-11-04). */
-.hero-sub, .hero-signin { display: none; }
+.hero-signin { display: none; }
+.hero-sub { margin: 0; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+/* The bar on a computer (the user, 2026-11-04): Get the app and Sign in as words, Join for free the one button. */
+.bar .barlink { padding: 10px 12px; border-radius: 999px; color: rgba(255,255,255,.86); font-size: 16px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.bar .barlink:hover { color: #fff; background: rgba(255,255,255,.08); }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero .hero-sub { display: block !important; margin: 0; font-size: 17px; line-height: 1.45; color: #E6EAE7; }
   .hero .hero-join { width: 100%; height: 52px; margin-top: 26px; justify-content: center; align-items: center; font-size: 17px; font-weight: 800; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
@@ -660,8 +664,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .get-dialog .badge span { font-size: 19px; }
 .get-dialog .x { position: absolute; right: 14px; top: 14px; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: var(--sand); color: var(--ink-2); display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .get-dialog .x svg { width: 18px; height: 18px; }
-/* The bar: Get the App leads; Sign in steps back beside it. */
-.bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .feats { padding: 0 16px; }
   .feat { padding: 56px 0; }
@@ -859,7 +861,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .get-dialog p { color: var(--ink-3); }
   .get-dialog .get-app { background: none; }
   .get-dialog .x { border: 0; background: var(--sand); color: var(--ink-2); }
-  .bar .pill.get-wide + #sign-in { background: rgba(255,255,255,.14); color: #fff; }
   @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
   .feat-qr { background: #fff; }
   }
