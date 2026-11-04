@@ -273,6 +273,7 @@
     ".cs-signin .links{display:flex;justify-content:space-between}" +
     ".cs-signin .link{padding:6px 2px;border:0;background:none;color:#1D5B3A;font:inherit;font-size:15px;font-weight:700;cursor:pointer}" +
     ".cs-signin .small{font-size:14px;text-align:center;color:#5D636C}" +
+    ".cs-signin form .small{text-align:left;margin-top:-4px}" +
     ".cs-signin .x{position:absolute;right:14px;top:14px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:#F1EEE5;color:#3D434B;cursor:pointer}" +
     ".cs-signin .x svg{width:18px;height:18px}" +
     ".cs-signin .err{margin-top:12px;padding:12px 14px;border-radius:12px;background:#FBE9E7;color:#B0352B;font-size:15px;font-weight:600}" +
@@ -296,8 +297,10 @@
     '<label for="cs-code">Code</label><input class="code" id="cs-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>' +
     '<button type="submit" class="b go">Continue</button>' +
     '<div class="links"><button type="button" class="link" data-resend>Send a new code</button><button type="button" class="link" data-to="email">Use another email</button></div></form>' +
-    '<form data-step="username" hidden><h2>Pick a username</h2><p>It\'s shown on the routes you share. Letters, numbers and _, 3 to 20 characters.</p>' +
+    '<form data-step="username" hidden><h2>Your name on Carve</h2><p>It\'s shown on the routes you share and the drives you join.</p>' +
+    '<label for="cs-name">Name (optional)</label><input id="cs-name" autocomplete="name" maxlength="40">' +
     '<label for="cs-username">Username</label><input id="cs-username" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" maxlength="20" required>' +
+    '<p class="small">Letters, numbers and _, 3 to 20 characters.</p>' +
     '<button type="submit" class="b go">Continue</button></form>' +
     '<p class="err" role="alert" hidden></p>';
 
@@ -322,6 +325,12 @@
         throw new Error(data.msg || data.error_description || "Couldn't send the code. Check the address.");
       });
     });
+  }
+
+  // "Ray Chen" → "raychen" (plan.js usernameFrom is the same); "" without 3 letters or numbers.
+  function usernameFrom(name) {
+    var plain = String(name || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    return plain.length >= 3 ? plain.slice(0, 18) : "";
   }
 
   var signInDialog = null;
@@ -358,7 +367,7 @@
     dialog.step = function (step) {
       dialog.querySelectorAll("[data-step]").forEach(function (node) { node.hidden = node.getAttribute("data-step") !== step; });
       q(".err").hidden = true;
-      var field = { email: "#cs-email", code: "#cs-code", username: "#cs-username" }[step];
+      var field = { email: "#cs-email", code: "#cs-code", username: "#cs-name" }[step];
       if (field) setTimeout(function () { q(field).focus(); }, 30);
     };
     var signedIn = function () { location.href = signInThen || "/my-drives/"; };
@@ -415,16 +424,36 @@
         dialog.step("username");
       }, function (failure) { error(failure.message); });
     });
+    // The username follows the name as it's typed ("Ray Chen" → raychen) until they change it
+    // themselves (the user, 2026-11-04: one field to fill in, not three).
+    var suggested = "";
+    q("#cs-name").addEventListener("input", function () {
+      var field = q("#cs-username");
+      if (field.value && field.value !== suggested) return;
+      suggested = usernameFrom(q("#cs-name").value);
+      field.value = suggested;
+    });
     q('[data-step="username"]').addEventListener("submit", function (event) {
       event.preventDefault();
-      fetch(SUPABASE_URL + "/rest/v1/profiles", {
-        method: "POST",
-        headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token, "content-type": "application/json", Prefer: "return=representation" },
-        body: JSON.stringify({ id: String(session.user.id).toLowerCase(), username: q("#cs-username").value.trim() })
-      }).then(function (response) {
-        if (response.ok) return signedIn();
-        error(response.status === 409 ? "That username is taken. Try another." : "Couldn't save that. Try again.");
-      }, function () { error("Couldn't save that. Check the connection and try again."); });
+      var typed = q("#cs-username").value.trim();
+      var name = q("#cs-name").value.trim().slice(0, 40);
+      // A suggestion that's taken becomes raychen2, raychen3…; one they typed is theirs to change.
+      var tries = [typed];
+      if (typed === suggested) for (var n = 2; n <= 9; n++) tries.push(typed + n);
+      var attempt = function (i) {
+        var body = { id: String(session.user.id).toLowerCase(), username: tries[i] };
+        if (name) body.display_name = name;
+        return fetch(SUPABASE_URL + "/rest/v1/profiles", {
+          method: "POST",
+          headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token, "content-type": "application/json", Prefer: "return=representation" },
+          body: JSON.stringify(body)
+        }).then(function (response) {
+          if (response.ok) return signedIn();
+          if (response.status === 409 && i + 1 < tries.length) return attempt(i + 1);
+          error(response.status === 409 ? "That username is taken. Try another." : "Couldn't save that. Try again.");
+        });
+      };
+      attempt(0).catch(function () { error("Couldn't save that. Check the connection and try again."); });
     });
   }
 

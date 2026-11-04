@@ -2233,8 +2233,26 @@ function openAccount(step = "choose", { saving = true, title } = {}) {
 function setStep(step) {
   for (const node of $("account").querySelectorAll("[data-step]")) node.hidden = node.dataset.step !== step;
   $("acc-error").hidden = true;
+  if (step === "username") prefillName();
   const focus = { email: "email", code: "code", username: "username" }[step];
   if (focus) setTimeout(() => $(focus).focus(), 30);
+}
+
+/// The name Google (or Apple) gave at sign-in, and a username made from it,
+/// filled in to keep or change (the user, 2026-11-04: Ride with GPS does).
+/// Email sign-ups start empty.
+let suggestedUsername = "";
+function prefillName() {
+  const meta = session?.user?.user_metadata || {};
+  const name = String(meta.full_name || meta.name || "").trim().slice(0, 40);
+  if (name && !$("display-name").value) $("display-name").value = name;
+  suggestedUsername = usernameFrom(name);
+  if (suggestedUsername && !$("username").value) $("username").value = suggestedUsername;
+}
+/// "Ray Chen" → "raychen"; "" when there aren't 3 letters or numbers to make one from.
+function usernameFrom(name) {
+  const plain = String(name || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  return plain.length >= 3 ? plain.slice(0, 18) : "";
 }
 function accountError(message) {
   $("acc-error").textContent = message;
@@ -2535,16 +2553,33 @@ function wire() {
       accountError(failure.message);
     }
   });
+  // The username follows the name as it's typed, until they change it themselves.
+  $("display-name").addEventListener("input", () => {
+    if ($("username").value && $("username").value !== suggestedUsername) return;
+    suggestedUsername = usernameFrom($("display-name").value);
+    $("username").value = suggestedUsername;
+  });
   $("username-form").addEventListener("submit", async (event) => {
     event.preventDefault();
-    const username = $("username").value.trim();
+    const typed = $("username").value.trim();
+    const displayName = $("display-name").value.trim().slice(0, 40);
+    // The username we suggested, if taken, becomes raychen2, raychen3…; one they typed is theirs to change.
+    const tries = typed === suggestedUsername ? [typed, ...Array.from({ length: 8 }, (_, i) => `${typed}${i + 2}`)] : [typed];
     try {
-      const rows = await rest("/rest/v1/profiles", {
-        method: "POST",
-        body: { id: session.user.id.toLowerCase(), username },
-        headers: { Prefer: "return=representation" },
-      });
-      profile = rows?.[0] || { username };
+      let rows;
+      for (const [i, username] of tries.entries()) {
+        try {
+          rows = await rest("/rest/v1/profiles", {
+            method: "POST",
+            body: { id: session.user.id.toLowerCase(), username, ...(displayName ? { display_name: displayName } : {}) },
+            headers: { Prefer: "return=representation" },
+          });
+          profile = rows?.[0] || { username };
+          break;
+        } catch (failure) {
+          if (failure.status !== 409 || i === tries.length - 1) throw failure;
+        }
+      }
       const back = signInReturn();
       if (back) return location.replace(back);
       if (onPhone) return location.replace("/my-drives/");

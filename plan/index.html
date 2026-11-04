@@ -256,10 +256,13 @@
     <div class="row-links"><button type="button" class="linkish" id="resend">Send a new code</button><button type="button" class="linkish" data-back>Use another email</button></div>
   </form>
   <form data-step="username" id="username-form" hidden>
-    <h2>Pick a username</h2>
-    <p class="dim">It's shown on the routes you share. Letters, numbers and _, 3 to 20 characters.</p>
+    <h2>Your name on Carve</h2>
+    <p class="dim">It's shown on the routes you share and the drives you join.</p>
+    <label class="eyebrow" for="display-name">Name (optional)</label>
+    <input class="field" id="display-name" autocomplete="name" maxlength="40">
     <label class="eyebrow" for="username">Username</label>
     <input class="field" id="username" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" maxlength="20" required>
+    <p class="dim small">Letters, numbers and _, 3 to 20 characters.</p>
     <button type="submit" class="pill green big">Save the drive</button>
   </form>
   <p class="error" id="acc-error" role="alert" hidden></p>
@@ -270,6 +273,6 @@
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
 <script type="module" src="/plan/plan.js?v=45"></script>
-<script src="/assets/carve-site.js?v=810f650613" defer></script>
+<script src="/assets/carve-site.js?v=7485d4c477" defer></script>
 </body>
 </html>
