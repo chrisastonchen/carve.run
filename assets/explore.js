@@ -6,16 +6,16 @@
 // The drives are /drives/roads.json (build_area_pages.py write_roads), the
 // same lines the planner draws as good roads. The map starts where the
 // visitor likely is (where.js); without a guess, the whole map, legends first.
-import "/assets/site-bar.js";
+import "/assets/site-bar.js?v=9286dec569";
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
-import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
-import { heartButton, wireHearts } from "/assets/hearts.js";
+import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
+import { heartButton, wireHearts } from "/assets/hearts.js?v=5f1f204eb8";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
 const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
-const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=3";
+const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=d7241baa0e";
 const PHONE = "(max-width: 699px), (max-height: 560px)";
 const VIEW_KEY = "carve.explore.view";
 const LIST_MAX = 60;

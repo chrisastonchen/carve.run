@@ -7,7 +7,7 @@
 // page and comes back with the answer (?a=), which is sent then. With no
 // plan on, only the note shows, if there is one. plan_view and
 // plan_answer: migration 0046.
-import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=517867446e";
 
 const TOKEN_SHAPE = /^([A-Za-z0-9]{10}|[0-9a-fA-F]{32})$/;
 const ANSWERS = [["yes", "Yes"], ["no", "No"], ["maybe", "Maybe"]];

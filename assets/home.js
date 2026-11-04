@@ -4,7 +4,7 @@
 // never plans anything itself: what's typed, dropped or pasted goes to
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
 // address bar).
-import "/assets/site-bar.js";
+import "/assets/site-bar.js?v=9286dec569";
 
 // The hero's car screen: CarPlay on an iPhone, Android Auto on Android (the
 // user, 2026-11-02). Here, not in site-bar.js: that file's import isn't
@@ -15,13 +15,13 @@ if (/android/i.test(navigator.userAgent || "")) {
 }
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
-import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
-import { attachPlaceSearch, placeOf } from "/assets/home-search.js";
+import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
+import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=367b958bf8";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
 const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
-const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=3";
+const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=d7241baa0e";
 const WIDE = "(min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine)";
 const HANDOFF_KEY = "carve.plan.handoff";
 const NO_PHOTO = "data:image/svg+xml," + encodeURIComponent(
@@ -485,7 +485,7 @@ function offerApp() {
   wrap.className = "app-sheet";
   wrap.innerHTML = `<div class="veil"></div>
     <div class="sheet-card" role="dialog" aria-modal="true" aria-label="Open Carve">
-      <button type="button" class="choice app"><img src="/assets/icon-128.png" alt="" width="52" height="52"><span><b>Continue in the app</b><small>Free · offline turns, your group on the map</small></span>${chevron}</button>
+      <button type="button" class="choice app"><img src="/assets/icon-128.png?v=87d1534580" alt="" width="52" height="52"><span><b>Continue in the app</b><small>Free · offline turns, your group on the map</small></span>${chevron}</button>
       <button type="button" class="choice web"><span class="globe"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.6 2.8 2.6 15.2 0 18M12 3c-2.6 2.8-2.6 15.2 0 18" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><span><b>Continue in the browser</b></span>${chevron}</button>
     </div>`;
   const close = () => {
@@ -592,7 +592,7 @@ async function main() {
     wireGet();
     if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
     // A failed load counts as a refusal too: a blank page is worse than the public one.
-    if (await import("/assets/home-signed.js").then((m) => m.startSignedHome()).catch(() => false)) return;
+    if (await import("/assets/home-signed.js?v=3152d5c6cb").then((m) => m.startSignedHome()).catch(() => false)) return;
     document.documentElement.classList.remove("signed-in");
   }
   riseIn();

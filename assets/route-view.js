@@ -9,14 +9,14 @@
 // and the apps redeem it; a page without one (no token, no network, no
 // WebGL) keeps its picture of the road and still reads.
 import { markerLabels, turnKind, formatDistance, formatDuration, usesMiles } from "/plan/route-wire.js";
-import { session, signedIn } from "/assets/site-bar.js";
+import { session, signedIn } from "/assets/site-bar.js?v=9286dec569";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
 const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
-const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=3";
+const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=d7241baa0e";
 const PANEL_GAP = 30;
 
 const $ = (id) => document.getElementById(id);

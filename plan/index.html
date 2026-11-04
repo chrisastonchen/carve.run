@@ -18,7 +18,12 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471">
-<link rel="stylesheet" href="/plan/plan.css?v=30">
+<script>
+  // A phone coming back from Apple or Google, or here to sign in, sees the
+  // sign-in's full-screen pages only, never this page for computers under them.
+  try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
+</script>
+<link rel="stylesheet" href="/plan/plan.css?v=31">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -276,7 +281,7 @@
     <label class="eyebrow" for="username">Username</label>
     <input class="field" id="username" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" maxlength="20" required>
     <p class="dim small">Letters, numbers and _, 3 to 20 characters.</p>
-    <button type="submit" class="pill green big">Save the drive</button>
+    <button type="submit" class="pill green big" id="username-go">Save the drive</button>
   </form>
   <p class="error" id="acc-error" role="alert" hidden></p>
 </dialog>
@@ -285,7 +290,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=46"></script>
-<script src="/assets/carve-site.js?v=c9cf7d37b5" defer></script>
+<script type="module" src="/plan/plan.js?v=47"></script>
+<script src="/assets/carve-site.js?v=9c40add422" defer></script>
 </body>
 </html>

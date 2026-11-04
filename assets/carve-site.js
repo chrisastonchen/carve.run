@@ -282,6 +282,10 @@
     ".cs-signin .x{position:absolute;right:14px;top:14px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:#F1EEE5;color:#3D434B;cursor:pointer}" +
     ".cs-signin .x svg{width:18px;height:18px}" +
     ".cs-signin .err{margin-top:12px;padding:12px 14px;border-radius:12px;background:#FBE9E7;color:#B0352B;font-size:15px;font-weight:600}" +
+    // On a phone, sign-in and sign-up are full-screen pages, not a pop-up (the user, 2026-11-04).
+    "@media (max-width:699px){.cs-signin{width:100%;max-width:none;height:100%;max-height:none;margin:0;border-radius:0;box-shadow:none;" +
+    "padding:calc(env(safe-area-inset-top) + 72px) 22px calc(env(safe-area-inset-bottom) + 28px)}" +
+    ".cs-signin::backdrop{background:Canvas}.cs-signin .x{top:calc(env(safe-area-inset-top) + 14px)}.cs-signin h2{font-size:30px}}" +
     "@media (prefers-color-scheme: dark){" +
     ".cs-signin{background:#161B18;color:#EEF1EE}.cs-signin p{color:#C3CAC5}.cs-signin label,.cs-signin .small{color:#9AA39D}" +
     ".cs-signin .apple{background:#fff;color:#000}.cs-signin .google{background:#1D2420;color:#EEF1EE;box-shadow:inset 0 0 0 1.5px #2A332E}" +
@@ -478,25 +482,35 @@
     });
     q('[data-step="username"]').addEventListener("submit", function (event) {
       event.preventDefault();
-      var typed = q("#cs-username").value.trim();
+      var username = q("#cs-username").value.trim();
       var name = q("#cs-name").value.trim().slice(0, 40);
-      // A suggestion that's taken becomes raychen2, raychen3…; one they typed is theirs to change.
-      var tries = [typed];
-      if (typed === suggested) for (var n = 2; n <= 9; n++) tries.push(typed + n);
-      var attempt = function (i) {
-        var body = { id: String(session.user.id).toLowerCase(), username: tries[i] };
-        if (name) body.display_name = name;
-        return fetch(SUPABASE_URL + "/rest/v1/profiles", {
-          method: "POST",
-          headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token, "content-type": "application/json", Prefer: "return=representation" },
-          body: JSON.stringify(body)
-        }).then(function (response) {
-          if (response.ok) { saveIntents(); return signedIn(); }
-          if (response.status === 409 && i + 1 < tries.length) return attempt(i + 1);
-          error(response.status === 409 ? "That username is taken. Try another." : "Couldn't save that. Try again.");
-        });
-      };
-      attempt(0).catch(function () { error("Couldn't save that. Check the connection and try again."); });
+      var headers = { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token, "content-type": "application/json" };
+      var body = { id: String(session.user.id).toLowerCase(), username: username };
+      if (name) body.display_name = name;
+      // A taken username is said, with a free one like it to pick; never changed
+      // for them (the user, 2026-11-04: chris became chris2 unasked).
+      fetch(SUPABASE_URL + "/rest/v1/profiles", {
+        method: "POST",
+        headers: Object.assign({ Prefer: "return=representation" }, headers),
+        body: JSON.stringify(body)
+      }).then(function (response) {
+        if (response.ok) { saveIntents(); return signedIn(); }
+        if (response.status !== 409) return error("Couldn't save that. Try again.");
+        // Usernames are unique whatever their case: ilike without wildcards.
+        var base = username.replace(/\d+$/, "").slice(0, 18) || username.slice(0, 18);
+        var options = [];
+        for (var n = 2; n <= 9; n++) options.push(base + n);
+        var filter = options.map(function (o) { return "username.ilike." + o; }).join(",");
+        return fetch(SUPABASE_URL + "/rest/v1/profiles?select=username&or=(" + filter + ")", { headers: headers })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .catch(function () { return null; })
+          .then(function (rows) {
+            var taken = (rows || []).map(function (r) { return String(r.username).toLowerCase(); });
+            var free = rows ? options.filter(function (o) { return taken.indexOf(o.toLowerCase()) < 0; })[0] : null;
+            error("@" + username + " is taken. Try another" + (free ? ", like @" + free : "") + ".");
+            q("#cs-username").focus();
+          });
+      }).catch(function () { error("Couldn't save that. Check the connection and try again."); });
     });
   }
 

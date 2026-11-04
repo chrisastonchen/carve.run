@@ -433,6 +433,15 @@ a { color: var(--green-ink); }
 .sheet-dialog h2 { font-size: 30px; padding-right: 40px; }
 .sheet-dialog p.dim { font-size: 18px; color: var(--ink-2); }
 .x-top { position: absolute; right: 16px; top: 16px; }
+/* On a phone, sign-in and sign-up are full-screen pages, not a pop-up (the user, 2026-11-04). */
+@media (max-width: 699px) {
+  html.phone-account body > :not(dialog) { visibility: hidden; }
+  #account.sheet-dialog { width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; box-sizing: border-box; overflow-y: auto;
+    padding: calc(env(safe-area-inset-top) + 72px) 22px calc(env(safe-area-inset-bottom) + 28px); border-radius: 0; box-shadow: none; background: Canvas; }
+  #account.sheet-dialog::backdrop { background: Canvas; }
+  #account .x-top { top: calc(env(safe-area-inset-top) + 14px); }
+  #account h2 { font-size: 30px; }
+}
 .field.code { font-size: 28px; letter-spacing: .4em; text-align: center; font-weight: 800; }
 .row-links { display: flex; justify-content: space-between; }
 .error { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: #371715; color: #EC796F; font-weight: 600; }

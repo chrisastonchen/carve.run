@@ -5,7 +5,7 @@
 // token, and no share token of its own, so the app shows it hearted too.
 // Taking the heart off tombstones it (deleted_at), as the app's sync does.
 import { appleDate, newUUID, routeRow } from "/plan/route-wire.js";
-import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js";
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=517867446e";
 
 export const HEART_PATH = "M12 20.3s-7.6-4.6-7.6-10.2A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.6 2.7c0 5.6-7.6 10.2-7.6 10.2z";
 

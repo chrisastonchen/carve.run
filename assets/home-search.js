@@ -3,7 +3,7 @@
 // session per pick. Guests need the planner's pass, kept in the same place
 // the planner keeps it, so a browser checks once for both pages.
 
-import { session } from "/assets/site-bar.js";
+import { session } from "/assets/site-bar.js?v=9286dec569";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";

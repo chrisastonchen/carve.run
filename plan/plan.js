@@ -33,7 +33,7 @@ const FUNCTIONS = LOCAL ? `${location.origin}/functions/v1` : `${SUPABASE_URL}/f
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
 const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
-const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=3";
+const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=d7241baa0e";
 const SITE = "https://carve.run";
 const APP_STORE = "https://apps.apple.com/app/carve-route-planner/id6808087716";
 
@@ -384,8 +384,13 @@ function friendlyRestError(status, data) {
 
 // ── auth (GoTrue over plain fetch) ───────────────────────────────────
 
+/// The name Google or Apple gave at sign-in (user_metadata), for the name
+/// step; the kept session holds only the id and email.
+let signInName = "";
 function keepSession(data) {
   if (!data?.access_token) return;
+  const meta = data.user?.user_metadata || {};
+  signInName = String(meta.full_name || meta.name || "").trim().slice(0, 40) || signInName;
   session = {
     access_token: data.access_token,
     refresh_token: data.refresh_token,
@@ -2226,6 +2231,7 @@ function openAccount(step = "choose", { saving = true, title } = {}) {
   $("acc-sub").textContent = saving
     ? "Then it will be ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and live group tracking."
     : "Then your routes will be ready to drive in the Carve app with turn-by-turn, offline maps, CarPlay and Android Auto, and live group tracking.";
+  $("username-go").textContent = saving ? "Save the drive" : "Continue";
   const dialog = $("account");
   setStep(step);
   if (!dialog.open) dialog.showModal();
@@ -2243,8 +2249,7 @@ function setStep(step) {
 /// Email sign-ups start empty.
 let suggestedUsername = "";
 function prefillName() {
-  const meta = session?.user?.user_metadata || {};
-  const name = String(meta.full_name || meta.name || "").trim().slice(0, 40);
+  const name = signInName;
   if (name && !$("display-name").value) $("display-name").value = name;
   suggestedUsername = usernameFrom(name);
   if (suggestedUsername && !$("username").value) $("username").value = suggestedUsername;
@@ -2597,26 +2602,18 @@ function wire() {
   });
   $("username-form").addEventListener("submit", async (event) => {
     event.preventDefault();
-    const typed = $("username").value.trim();
+    const username = $("username").value.trim();
     const displayName = $("display-name").value.trim().slice(0, 40);
-    // The username we suggested, if taken, becomes raychen2, raychen3…; one they typed is theirs to change.
-    const tries = typed === suggestedUsername ? [typed, ...Array.from({ length: 8 }, (_, i) => `${typed}${i + 2}`)] : [typed];
+    // A taken username is said, with a free one like it to pick; never
+    // changed for them (the user, 2026-11-04: chris became chris2 unasked).
     try {
-      let rows;
-      for (const [i, username] of tries.entries()) {
-        try {
-          rows = await rest("/rest/v1/profiles", {
-            method: "POST",
-            body: { id: session.user.id.toLowerCase(), username, ...(displayName ? { display_name: displayName } : {}) },
-            headers: { Prefer: "return=representation" },
-          });
-          profile = rows?.[0] || { username };
-          saveIntents();
-          break;
-        } catch (failure) {
-          if (failure.status !== 409 || i === tries.length - 1) throw failure;
-        }
-      }
+      const rows = await rest("/rest/v1/profiles", {
+        method: "POST",
+        body: { id: session.user.id.toLowerCase(), username, ...(displayName ? { display_name: displayName } : {}) },
+        headers: { Prefer: "return=representation" },
+      });
+      profile = rows?.[0] || { username };
+      saveIntents();
       const back = signInReturn();
       if (back) return location.replace(back);
       if (onPhone) return location.replace("/");
@@ -2624,9 +2621,27 @@ function wire() {
       $("account").close();
       await save();
     } catch (failure) {
-      accountError(failure.status === 409 ? "That username is taken. Try another." : failure.message);
+      if (failure.status !== 409) return accountError(failure.message);
+      const free = await freeUsernameLike(username);
+      accountError(`@${username} is taken. Try another${free ? `, like @${free}` : ""}.`);
+      $("username").focus();
     }
   });
+}
+
+/// A free username like a taken one (name2…name9), to offer; null when none is.
+async function freeUsernameLike(name) {
+  const base = name.replace(/\d+$/, "").slice(0, 18) || name.slice(0, 18);
+  const options = Array.from({ length: 8 }, (_, i) => `${base}${i + 2}`);
+  try {
+    // Usernames are unique whatever their case (lower(username)): ilike without wildcards
+    // (an _ matches anything, which only ever passes over a free one).
+    const rows = await rest(`/rest/v1/profiles?select=username&or=(${options.map((o) => `username.ilike.${o}`).join(",")})`);
+    const taken = new Set((rows || []).map((r) => String(r.username).toLowerCase()));
+    return options.find((o) => !taken.has(o.toLowerCase())) || null;
+  } catch {
+    return null;
+  }
 }
 
 async function start() {
@@ -2640,6 +2655,8 @@ async function start() {
     // page comes to /plan/#sign-in, and a signed-in phone goes on to the home
     // page, which is theirs once signed in (the user, 2026-11-04; was My Drives).
     onPhone = true;
+    // Closing the sign-in leaves for the home page, not this page for computers.
+    $("account").addEventListener("close", () => location.replace(signInReturn() || "/"));
     session = store.get(SESSION_KEY);
     if (readOAuthFailure()) return signInFailed();
     const cameBack = await readOAuthReturn().catch(() => false);
@@ -2656,6 +2673,8 @@ async function start() {
     };
     window.addEventListener("hashchange", signInHere);
     signInHere();
+    // No sign-in to show after all: the page itself (index.html hid it while there might be).
+    if (!$("account").open) document.documentElement.classList.remove("phone-account");
     return;
   }
   // /plan/ opens on a new route (the user, 2026-11-01: not the last one
