@@ -2257,13 +2257,39 @@ function oauth(provider) {
 /// A page that sent the visitor here to sign in with Apple or Google, to
 /// go back to (carve-site.js carveSignIn: a route's plan). Only a shared
 /// route's address on this site, and only once.
-function signInReturn() {
+function signInReturn({ keep = false } = {}) {
   let to = null;
   try {
     to = sessionStorage.getItem("carve.signin.return");
-    sessionStorage.removeItem("carve.signin.return");
+    if (!keep) sessionStorage.removeItem("carve.signin.return");
   } catch {}
   return to && /^\/([A-Za-z0-9]{10}|[0-9a-fA-F]{32})(\?a=(yes|no|maybe))?$/.test(to) ? to : null;
+}
+
+/// Apple or Google sent the visitor back without signing them in (the
+/// provider refused, or Carve's settings for it are wrong): true once, and
+/// the address cleaned. Supabase puts the error in the hash or the query.
+function readOAuthFailure() {
+  const failed = /(^|[#&?])error=/.test(location.hash) || /(^|[?&])error=/.test(location.search);
+  if (!failed) return false;
+  store.remove(OAUTH_STATE_KEY);
+  try { window.history.replaceState(null, "", location.pathname); } catch {}
+  return true;
+}
+const SIGN_IN_FAILED = "Sign-in didn't finish. Try again, or sign in another way.";
+
+/// After a failed sign-in: back to the page that asked, which says so
+/// (share-plan.js reads the flag), or the sign-in again here.
+function signInFailed() {
+  const back = signInReturn();
+  if (back) {
+    try { sessionStorage.setItem("carve.signin.failed", "1"); } catch {}
+    location.replace(back.replace(/\?.*$/, ""));
+    return true;
+  }
+  openAccount("choose", { saving: false, title: "Sign in" });
+  accountError(SIGN_IN_FAILED);
+  return false;
 }
 
 async function afterSignIn() {
@@ -2540,6 +2566,7 @@ async function start() {
     // Drives (the user, 2026-11-01).
     onPhone = true;
     session = store.get(SESSION_KEY);
+    if (readOAuthFailure()) return signInFailed();
     const cameBack = await readOAuthReturn().catch(() => false);
     if (cameBack) {
       if (await loadProfile().catch(() => null)) return location.replace(signInReturn() || "/my-drives/");
@@ -2567,13 +2594,26 @@ async function start() {
     saved = !!draft.saved;
   }
   session = store.get(SESSION_KEY);
+  const failed = readOAuthFailure();
   const cameBack = await readOAuthReturn().catch(() => false);
+  // Signed in from another page (a route's plan): straight back to it, once
+  // there's a username; without one, the username step sends them on.
+  if (cameBack && signInReturn({ keep: true })) {
+    if (await loadProfile().catch(() => null)) return location.replace(signInReturn());
+  }
+  if (failed && signInReturn({ keep: true })) return signInFailed();
   wire();
   renderWho();
   setUpMap();
   render();
   // A guest's check runs while they look at the map, not when they search.
   if (!session) fetchPass();
+  if (failed) {
+    openAccount("choose", { saving: false, title: "Sign in" });
+    accountError(SIGN_IN_FAILED);
+  } else if (cameBack && !profile && signInReturn({ keep: true })) {
+    openAccount("username", { saving: false, title: "Sign in" });
+  }
   if (LOCAL) window.__planner = { get plan() { return plan; }, suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
     showSaved();

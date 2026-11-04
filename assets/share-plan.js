@@ -238,7 +238,13 @@ async function start() {
     history.replaceState(null, "", location.pathname + (rest ? `?${rest}` : ""));
   }
   if (!current) return renderNote();
-  render(current);
+  // Back from a sign-in that didn't finish (plan.js signInFailed).
+  let failed = false;
+  try {
+    failed = sessionStorage.getItem("carve.signin.failed") === "1";
+    sessionStorage.removeItem("carve.signin.failed");
+  } catch {}
+  render(current, failed ? "Sign-in didn't finish. Try again, or sign in another way." : "");
   if (asked && Array.isArray(current.people)
       && !current.is_host && !current.mine?.removed && current.mine?.answer !== asked) {
     await answer(current, asked);
