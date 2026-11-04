@@ -866,3 +866,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   }
 }
 /* end light theme */
+
+/* A photo's AVIF copies (scripts/images/responsive.py): the <picture> adds no box of its own. */
+picture.pic { display: contents; }

@@ -73,7 +73,7 @@ function renderNear() {
   const picks = nearest(wide() ? 4 : 8);
   list.classList.remove("loading");
   list.innerHTML = picks.map((r) => `<li><a href="/drives/${encodeURIComponent(r.s)}/">
-    <span class="ph"><img src="${escapeHTML(r.i || NO_PHOTO)}" alt="" loading="lazy"></span>
+    <span class="ph">${photoHTML(r.i, "(max-width: 899px) 82vw, 300px")}</span>
     <span class="t"><span class="away">${escapeHTML(awayText(r))}</span><span class="n">${escapeHTML(r.n)}</span>
     <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a></li>`).join("");
   $("near-title").textContent = place ? `${wide() ? "Great roads" : "Roads"} near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
@@ -109,15 +109,25 @@ function loadMapLibre() {
   });
 }
 
+// A famous drive's photo is big: its AVIF copies (scripts/images/responsive.py --copies),
+// so the browser takes the size it needs. The others are small already.
+const BIG_PHOTO = /^\/assets\/drives\/[a-z0-9-]+\.jpg$/;
+function photoHTML(src, sizes, lazy = true) {
+  const img = `<img src="${escapeHTML(src || NO_PHOTO)}" alt=""${lazy ? ' loading="lazy"' : ""} decoding="async">`;
+  if (!BIG_PHOTO.test(src || "")) return img;
+  const base = src.slice(0, -4);
+  return `<picture class="pic"><source type="image/avif" srcset="${base}.w640.avif 640w, ${base}.w1280.avif 1280w" sizes="${sizes}">${img}</picture>`;
+}
+
 function bigCard(r) {
-  return `<div class="road-card"><img src="${escapeHTML(r.i || NO_PHOTO)}" alt="">
+  return `<div class="road-card">${photoHTML(r.i, "360px", false)}
     <div><div class="n">${escapeHTML(r.n)}</div><div class="m">${(r.e || []).map(escapeHTML).join(" to ")} · ${lengthText(r)}${r.lv ? ` · <b style="color:${r.lv.colour}">${r.lv.title}</b>` : ""}</div></div>
     <a class="hb green" href="/plan/" data-plan="${escapeHTML(r.t)}">Plan a drive on this road</a>
     <a class="guide" href="/drives/${encodeURIComponent(r.s)}/">Read the drive guide</a></div>`;
 }
 
 function smallCard(r) {
-  return `<div class="road-card small"><img src="${escapeHTML(r.i || NO_PHOTO)}" alt="">
+  return `<div class="road-card small">${photoHTML(r.i, "120px", false)}
     <div><div class="n">${escapeHTML(r.n)}</div><div class="m">${lengthText(r)}${r.lv ? ` · ${r.lv.title}` : ""}</div></div></div>`;
 }
 
