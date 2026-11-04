@@ -343,11 +343,15 @@
     });
   }
 
-  // Sign-up's answer, kept in this browser (plan.js keepIntents is the same key):
-  // the signed-in home orders itself by it.
+  // Sign-up's answer, kept in this browser as { id, intents } (plan.js keepIntents is the
+  // same): the signed-in home orders itself by it. It's the account's, so another account
+  // made here (or this one deleted and made again) is asked afresh (the user, 2026-11-04).
   var INTENTS_KEY = "carve.intents";
-  function keepIntents(list) { safe(function () { localStorage.setItem(INTENTS_KEY, JSON.stringify(list)); }); }
-  function hasIntents() { return Array.isArray(safe(function () { return JSON.parse(localStorage.getItem(INTENTS_KEY) || "null"); }, null)); }
+  function keepIntents(id, list) { safe(function () { localStorage.setItem(INTENTS_KEY, JSON.stringify({ id: String(id).toLowerCase(), intents: list })); }); }
+  function storedIntents(id) {
+    var kept = safe(function () { return JSON.parse(localStorage.getItem(INTENTS_KEY) || "null"); }, null);
+    return kept && kept.id === String(id).toLowerCase() && Array.isArray(kept.intents) ? kept.intents : null;
+  }
 
   // "Ray Chen" → "raychen" (plan.js usernameFrom is the same); "" without 3 letters or numbers.
   function usernameFrom(name) {
@@ -447,20 +451,20 @@
       }).then(function (rows) {
         if (rows && rows.length) return signedIn();
         // A new account: the one question, then its name (the user, 2026-11-04).
-        dialog.step(hasIntents() ? "username" : "intents");
+        dialog.step(storedIntents(session.user.id) ? "username" : "intents");
       }, function (failure) { error(failure.message); });
     });
     // What brings you to Carve today? Pick any, or skip; then the name.
     var intentsForm = q('[data-step="intents"]');
     var picks = function () { return Array.prototype.map.call(intentsForm.querySelectorAll("input:checked"), function (box) { return box.value; }); };
     intentsForm.addEventListener("change", function () { q("[data-intents-go]").disabled = !picks().length; });
-    intentsForm.addEventListener("submit", function (event) { event.preventDefault(); keepIntents(picks()); dialog.step("username"); });
-    q("[data-intents-skip]").addEventListener("click", function () { keepIntents([]); dialog.step("username"); });
+    intentsForm.addEventListener("submit", function (event) { event.preventDefault(); keepIntents(session.user.id, picks()); dialog.step("username"); });
+    q("[data-intents-skip]").addEventListener("click", function () { keepIntents(session.user.id, []); dialog.step("username"); });
     // The answer goes on the account too, once there's a profile (profile_intents, 0053);
     // until that table is live the browser's copy is all there is.
     var saveIntents = function () {
-      var list = safe(function () { return JSON.parse(localStorage.getItem(INTENTS_KEY) || "null"); }, null);
-      if (!Array.isArray(list) || !session) return;
+      var list = session && storedIntents(session.user.id);
+      if (!list) return;
       // Their own table (0053), not a profiles column: profiles are readable by every account.
       fetch(SUPABASE_URL + "/rest/v1/profile_intents", {
         method: "POST",

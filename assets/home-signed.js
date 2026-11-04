@@ -48,22 +48,25 @@ async function mine(path, { method = "GET", body, count = false } = {}) {
 
 // ── the order: the app first, then what brought them ────────────────
 
-function intents() {
+const myId = () => String(store.get(SESSION_KEY)?.user?.id || "").toLowerCase();
+
+/// This account's answer in this browser ({ id, intents }, plan.js keepIntents), or null.
+function keptIntents() {
   try {
-    const list = JSON.parse(localStorage.getItem(INTENTS_KEY) || "null");
-    return Array.isArray(list) ? list : [];
+    const kept = JSON.parse(localStorage.getItem(INTENTS_KEY) || "null");
+    return kept && kept.id === myId() && Array.isArray(kept.intents) ? kept.intents : null;
   } catch {
-    return [];
+    return null;
   }
 }
+const intents = () => keptIntents() || [];
 
-/// Another device's answer, when this browser has none (profile_intents, 0053; kept here once read).
+/// Another device's answer, when this browser has none for them (profile_intents, 0053; kept here once read).
 async function savedIntents() {
-  const session = store.get(SESSION_KEY);
-  const rows = await mine(`/rest/v1/profile_intents?select=intents&id=eq.${String(session?.user?.id || "").toLowerCase()}`);
+  const rows = await mine(`/rest/v1/profile_intents?select=intents&id=eq.${myId()}`);
   const list = rows?.[0]?.intents;
   if (!Array.isArray(list)) return;
-  try { localStorage.setItem(INTENTS_KEY, JSON.stringify(list)); } catch {}
+  try { localStorage.setItem(INTENTS_KEY, JSON.stringify({ id: myId(), intents: list })); } catch {}
   arrange();
 }
 
@@ -220,7 +223,7 @@ export async function startSignedHome() {
   if (!(await accessToken())) return false;
   $("me").hidden = false;
   arrange();
-  try { if (localStorage.getItem(INTENTS_KEY) === null) savedIntents(); } catch {}
+  if (!keptIntents()) savedIntents();
   wirePlan();
   greet();
   const [data, guess] = await Promise.all([

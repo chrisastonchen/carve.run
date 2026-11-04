@@ -2259,17 +2259,26 @@ function prefillName() {
 /// app doesn't ask again (profile_intents, 0053). Until that table is live a
 /// refused write leaves the browser's copy.
 const INTENTS_KEY = "carve.intents";
-/// A new account's first step: the question, unless this browser has its answer already.
+/// Kept as { id, intents }: the answer is the account's, so another account made
+/// in this browser (or this one deleted and made again) is asked afresh (the user, 2026-11-04).
+function storedIntents() {
+  try {
+    const kept = JSON.parse(localStorage.getItem(INTENTS_KEY) || "null");
+    return kept && kept.id === session?.user?.id?.toLowerCase() && Array.isArray(kept.intents) ? kept.intents : null;
+  } catch {
+    return null;
+  }
+}
+/// A new account's first step: the question, unless it has answered in this browser already.
 function nameStep() {
-  try { return Array.isArray(JSON.parse(localStorage.getItem(INTENTS_KEY) || "null")) ? "username" : "intents"; } catch { return "intents"; }
+  return storedIntents() ? "username" : "intents";
 }
 function keepIntents(list) {
-  try { localStorage.setItem(INTENTS_KEY, JSON.stringify(list)); } catch {}
+  try { localStorage.setItem(INTENTS_KEY, JSON.stringify({ id: session.user.id.toLowerCase(), intents: list })); } catch {}
 }
 function saveIntents() {
-  let list = null;
-  try { list = JSON.parse(localStorage.getItem(INTENTS_KEY) || "null"); } catch {}
-  if (!Array.isArray(list) || !session) return;
+  const list = storedIntents();
+  if (!list || !session) return;
   // Their own table (0053), not a profiles column: profiles are readable by every account.
   rest("/rest/v1/profile_intents", {
     method: "POST", body: { id: session.user.id.toLowerCase(), intents: list },
