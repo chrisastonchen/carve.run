@@ -426,8 +426,9 @@
         // within a quarter hour (plan.js readOAuthReturn).
         safe(function () { localStorage.setItem(OAUTH_STATE_KEY, JSON.stringify(Date.now())); });
         safe(function () {
-          if (signInThen) sessionStorage.setItem(RETURN_KEY, signInThen);
-          else sessionStorage.removeItem(RETURN_KEY);
+          // Nowhere in particular to go back to: the home page, not the
+          // planner the sign-in comes back through (the user, 2026-11-04).
+          sessionStorage.setItem(RETURN_KEY, signInThen || "/");
         });
         // Google asks which account every time, rather than signing in with
         // whichever one the browser last used (the user, 2026-11-04).

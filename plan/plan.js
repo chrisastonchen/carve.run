@@ -2326,7 +2326,8 @@ function signInReturn({ keep = false } = {}) {
     to = sessionStorage.getItem("carve.signin.return");
     if (!keep) sessionStorage.removeItem("carve.signin.return");
   } catch {}
-  return to && /^\/([A-Za-z0-9]{10}|[0-9a-fA-F]{32})(\?a=(yes|no|maybe))?$/.test(to) ? to : null;
+  // A route plan's page, or the home page (a sign-up from the site's Join; the user, 2026-11-04).
+  return to && (to === "/" || /^\/([A-Za-z0-9]{10}|[0-9a-fA-F]{32})(\?a=(yes|no|maybe))?$/.test(to)) ? to : null;
 }
 
 /// Apple or Google sent the visitor back without signing them in (the
@@ -2344,8 +2345,10 @@ const SIGN_IN_FAILED = "Sign-in didn't finish. Try again, or sign in another way
 /// After a failed sign-in: back to the page that asked, which says so
 /// (share-plan.js reads the flag), or the sign-in again here.
 function signInFailed() {
-  const back = signInReturn();
-  if (back) {
+  // A route plan's page says so itself; from the home page, the error shows here.
+  const back = signInReturn({ keep: true });
+  if (back && back !== "/") {
+    signInReturn();
     try { sessionStorage.setItem("carve.signin.failed", "1"); } catch {}
     location.replace(back.replace(/\?.*$/, ""));
     return true;
@@ -2731,7 +2734,7 @@ async function start() {
   if (cameBack && signInReturn({ keep: true })) {
     if (await loadProfile().catch(() => null)) return location.replace(signInReturn());
   }
-  if (failed && signInReturn({ keep: true })) return signInFailed();
+  if (failed && signInReturn({ keep: true }) && signInReturn({ keep: true }) !== "/") return signInFailed();
   wire();
   renderWho();
   setUpMap();
