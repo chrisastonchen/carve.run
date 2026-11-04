@@ -32,7 +32,13 @@ export async function accessToken() {
   }
   if (!response.ok) {
     const now = store.get(SESSION_KEY);
-    return now?.refresh_token && now.refresh_token !== session.refresh_token ? now.access_token : null;
+    if (now?.refresh_token && now.refresh_token !== session.refresh_token) return now.access_token;
+    // Carve said no (signed out elsewhere, e.g. the app's Sign Out ends every
+    // session): forget it, so the site bar offers Sign in, not Sign out.
+    if (response.status >= 400 && response.status < 500) {
+      try { localStorage.removeItem(SESSION_KEY); } catch {}
+    }
+    return null;
   }
   const data = await response.json();
   store.set(SESSION_KEY, {
