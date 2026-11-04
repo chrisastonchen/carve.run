@@ -2757,6 +2757,10 @@ async function start() {
       else save();
     }
   }
+  // A new account back from Google or Apple that came from anywhere else (the
+  // home page's Join for free): the question, then its name. A computer showed
+  // neither (the user, 2026-11-04).
+  if (cameBack && session && !profile && !$("account").open) openAccount(nameStep(), { saving: false, title: "Create an account" });
   // From a route's page: its owner's Edit, or the bar's Sign in.
   const editing = new URLSearchParams(location.search).get("edit");
   const own = new URLSearchParams(location.search).get("route");
