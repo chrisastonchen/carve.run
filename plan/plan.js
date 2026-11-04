@@ -428,6 +428,9 @@ async function accessToken({ force = false } = {}) {
       session = now;
       return session.access_token;
     }
+    // Carve's own trouble (a 5xx, 2026-11-03 18:41) isn't a no: keep the
+    // sign-in and try again on the next call.
+    if (response.status >= 500) return session.access_token;
     signedOut();
     return null;
   })().finally(() => (refreshing = null));
