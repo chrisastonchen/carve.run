@@ -2732,7 +2732,7 @@ async function start() {
 
 // What the home page's front door sent along (assets/home.js handOff; the
 // user, 2026-10-29): a link (Google Maps, Ride with GPS, a Carve drive), a
-// GPX file's text, or a start and destination as typed. Kept in this tab's
+// GPX file's text, a start and destination as typed, or a spot clicked on its map. Kept in this tab's
 // sessionStorage, never the address bar, and used once.
 const HANDOFF_KEY = "carve.plan.handoff";
 
@@ -2747,6 +2747,14 @@ async function takeHandoff() {
   if (!handoff || !(Date.now() - handoff.at < 10 * 60 * 1000)) return;
   if (handoff.kind === "link" && handoff.url) return importLink(handoff.url);
   if (handoff.kind === "gpx" && handoff.text) return importFile(new File([handoff.text], handoff.name || "route.gpx"));
+  // A spot clicked on the home page's map, as this map's own menu places one
+  // (the user, 2026-11-04), seen the way the home page's map showed it.
+  if (handoff.kind === "place") {
+    if (!Number.isFinite(handoff.lat) || !Number.isFinite(handoff.lon) || !["start", "wp", "stop", "end"].includes(handoff.role)) return;
+    const view = handoff.view;
+    if (view && Number.isFinite(view.lat) && Number.isFinite(view.lon) && Number.isFinite(view.zoom)) map.jumpTo({ center: [view.lon, view.lat], zoom: view.zoom });
+    return placeAt(handoff.role === "end" && loops() ? "wp" : handoff.role, { lat: round(handoff.lat), lon: round(handoff.lon) });
+  }
   if (handoff.kind !== "stops") return;
   // Each typed place becomes the search's best answer near the map; one it
   // can't find stays typed in its row, to search from there.

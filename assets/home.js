@@ -201,6 +201,7 @@ async function buildMap() {
     event.preventDefault();
     handOff({ kind: "link", url: `https://carve.run/${link.dataset.plan}` });
   });
+  wireMapClick();
   map.on("load", () => {
     map.addSource("home-roads", { type: "geojson", data: {
       type: "FeatureCollection",
@@ -247,6 +248,77 @@ async function buildMap() {
       map.on("click", layer, (event) => choose(roads[event.features[0].properties.k]));
     }
   });
+}
+
+// ── a click on the map: the planner's own menu (the user, 2026-11-04) ──
+// Anywhere off a road: Start here, Add a waypoint, Add a stop or End here,
+// as the planner offers; the pick opens the planner with it placed, at
+// this map's view. A road keeps its own click (its card).
+
+const FLAG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4h11l-2 4 2 4H8v9z" fill="currentColor"/></svg>';
+const CHECKERED = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4h12v9H8v8z" fill="#fff"/><path d="M8 4h3v3H8zm6 0h3v3h-3zm-3 3h3v3h-3zm-3 3h3v3H8zm6 0h3v3h-3z" fill="#15181C"/></svg>';
+const PLACES = [
+  { key: "start", label: "Start here", badge: `<span class="mc-badge start">${FLAG}</span>` },
+  { key: "wp", label: "Add a waypoint", badge: '<span class="mc-badge wp">1</span>' },
+  { key: "stop", label: "Add a stop", badge: '<span class="mc-badge stop">A</span>' },
+  { key: "end", label: "End here", badge: `<span class="mc-badge dest">${CHECKERED}</span>` },
+];
+
+let clickMenu = null;
+let clickPin = null;
+
+function closeMapMenu() {
+  if (clickMenu) clickMenu.hidden = true;
+  clickPin?.remove();
+  clickPin = null;
+}
+
+function wireMapClick() {
+  clickMenu = document.createElement("div");
+  clickMenu.className = "map-menu";
+  clickMenu.setAttribute("role", "menu");
+  clickMenu.hidden = true;
+  $("hero-map").append(clickMenu);
+  clickMenu.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMapMenu(); });
+  map.on("click", (event) => {
+    // A click away from an open menu only closes it.
+    if (!clickMenu.hidden) return closeMapMenu();
+    const layers = ["home-hit", "home-dot-hit"].filter((id) => map.getLayer(id));
+    if (layers.length && map.queryRenderedFeatures(event.point, { layers }).length) return;
+    const { lng, lat } = event.lngLat;
+    clickMenu.innerHTML = "";
+    for (const place of PLACES) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("role", "menuitem");
+      button.innerHTML = `${place.badge}<span>${place.label}</span>`;
+      if (place.key === "start") button.classList.add("on");
+      button.addEventListener("click", () => {
+        const center = map.getCenter();
+        handOff({ kind: "place", role: place.key, lat, lon: lng, view: { lat: center.lat, lon: center.lng, zoom: map.getZoom() } });
+      });
+      clickMenu.append(button);
+    }
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.className = "cancel";
+    cancel.textContent = "Cancel";
+    cancel.addEventListener("click", closeMapMenu);
+    clickMenu.append(cancel);
+    clickMenu.hidden = false;
+    // Beside the spot, kept on the map.
+    const box = map.getContainer().getBoundingClientRect();
+    const { x, y } = event.point;
+    const width = clickMenu.offsetWidth, height = clickMenu.offsetHeight;
+    clickMenu.style.left = `${x + 18 + width <= box.width - 8 ? x + 18 : Math.max(8, x - 18 - width)}px`;
+    clickMenu.style.top = `${Math.max(12, Math.min(y - 110, box.height - height - 12))}px`;
+    clickPin?.remove();
+    const dot = document.createElement("span");
+    dot.className = "map-menu-pin";
+    clickPin = new maplibregl.Marker({ element: dot }).setLngLat([lng, lat]).addTo(map);
+    clickMenu.querySelector("button").focus();
+  });
+  map.on("movestart", (event) => { if (event.originalEvent) closeMapMenu(); });
 }
 
 // ── the front door to the planner ────────────────────────────────────
