@@ -514,6 +514,15 @@ function wireJoin() {
 }
 
 async function main() {
+  // Signed in, the home page is theirs (home-signed.js; the user, 2026-11-04):
+  // marked in the head before it drew. A sign-in Carve refuses shows the public page after all.
+  if (document.documentElement.classList.contains("signed-in")) {
+    wireGet();
+    if (document.readyState === "complete") tagAppCode(); else window.addEventListener("load", tagAppCode, { once: true });
+    // A failed load counts as a refusal too: a blank page is worse than the public one.
+    if (await import("/assets/home-signed.js").then((m) => m.startSignedHome()).catch(() => false)) return;
+    document.documentElement.classList.remove("signed-in");
+  }
   riseIn();
   wireJoin();
   offerApp();

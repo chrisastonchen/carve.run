@@ -274,6 +274,11 @@
     ".cs-signin .link{padding:6px 2px;border:0;background:none;color:#1D5B3A;font:inherit;font-size:15px;font-weight:700;cursor:pointer}" +
     ".cs-signin .small{font-size:14px;text-align:center;color:#5D636C}" +
     ".cs-signin form .small{text-align:left;margin-top:-4px}" +
+    ".cs-signin .intents{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}" +
+    ".cs-signin .intent{display:flex;align-items:center;gap:14px;min-height:56px;padding:10px 14px;border-radius:14px;border:1.5px solid #D9D2C0;font-size:16px;font-weight:700;letter-spacing:0;text-transform:none;color:inherit;cursor:pointer}" +
+    ".cs-signin .intent input{flex:none;width:22px;height:22px;margin:0;accent-color:#1D5B3A}" +
+    ".cs-signin .intent:has(input:checked){border-color:#1D5B3A;box-shadow:inset 0 0 0 1px #1D5B3A}" +
+    ".cs-signin .cs-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}" +
     ".cs-signin .x{position:absolute;right:14px;top:14px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:#F1EEE5;color:#3D434B;cursor:pointer}" +
     ".cs-signin .x svg{width:18px;height:18px}" +
     ".cs-signin .err{margin-top:12px;padding:12px 14px;border-radius:12px;background:#FBE9E7;color:#B0352B;font-size:15px;font-weight:600}" +
@@ -297,6 +302,13 @@
     '<label for="cs-code">Code</label><input class="code" id="cs-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>' +
     '<button type="submit" class="b go">Continue</button>' +
     '<div class="links"><button type="button" class="link" data-resend>Send a new code</button><button type="button" class="link" data-to="email">Use another email</button></div></form>' +
+    '<form data-step="intents" hidden><h2>What brings you to Carve today?</h2><p>Pick any.</p>' +
+    '<fieldset class="intents"><legend class="cs-vh">What brings you to Carve today?</legend>' +
+    '<label class="intent"><input type="checkbox" value="invited"><span>Someone invited me to a drive</span></label>' +
+    '<label class="intent"><input type="checkbox" value="organize"><span>I organize drives for a club or group</span></label>' +
+    '<label class="intent"><input type="checkbox" value="roads"><span>I\'m looking for new roads to drive</span></label>' +
+    '<label class="intent"><input type="checkbox" value="events"><span>I\'m looking for car events near me</span></label></fieldset>' +
+    '<button type="submit" class="b go" data-intents-go disabled>Continue</button><button type="button" class="link" data-intents-skip>Skip</button></form>' +
     '<form data-step="username" hidden><h2>Your name on Carve</h2><p>It\'s shown on the routes you share and the drives you join.</p>' +
     '<label for="cs-name">Name (optional)</label><input id="cs-name" autocomplete="name" maxlength="40">' +
     '<label for="cs-username">Username</label><input id="cs-username" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" maxlength="20" required>' +
@@ -326,6 +338,12 @@
       });
     });
   }
+
+  // Sign-up's answer, kept in this browser (plan.js keepIntents is the same key):
+  // the signed-in home orders itself by it.
+  var INTENTS_KEY = "carve.intents";
+  function keepIntents(list) { safe(function () { localStorage.setItem(INTENTS_KEY, JSON.stringify(list)); }); }
+  function hasIntents() { return Array.isArray(safe(function () { return JSON.parse(localStorage.getItem(INTENTS_KEY) || "null"); }, null)); }
 
   // "Ray Chen" → "raychen" (plan.js usernameFrom is the same); "" without 3 letters or numbers.
   function usernameFrom(name) {
@@ -372,7 +390,8 @@
       var field = { email: "#cs-email", code: "#cs-code", username: "#cs-name" }[step];
       if (field) setTimeout(function () { q(field).focus(); }, 30);
     };
-    var signedIn = function () { location.href = signInThen || "/my-drives/"; };
+    // Signed in, the home page is theirs (the user, 2026-11-04; was My Drives).
+    var signedIn = function () { location.href = signInThen || "/"; };
     q("[data-close]").addEventListener("click", function () { dialog.close(); });
     dialog.addEventListener("click", function (event) { if (event.target === dialog) dialog.close(); });
     dialog.querySelectorAll("[data-to]").forEach(function (button) {
@@ -423,9 +442,31 @@
         }).then(function (response) { return response.ok ? response.json() : []; });
       }).then(function (rows) {
         if (rows && rows.length) return signedIn();
-        dialog.step("username");
+        // A new account: the one question, then its name (the user, 2026-11-04).
+        dialog.step(hasIntents() ? "username" : "intents");
       }, function (failure) { error(failure.message); });
     });
+    // What brings you to Carve today? Pick any, or skip; then the name.
+    var intentsForm = q('[data-step="intents"]');
+    var picks = function () { return Array.prototype.map.call(intentsForm.querySelectorAll("input:checked"), function (box) { return box.value; }); };
+    intentsForm.addEventListener("change", function () { q("[data-intents-go]").disabled = !picks().length; });
+    intentsForm.addEventListener("submit", function (event) { event.preventDefault(); keepIntents(picks()); dialog.step("username"); });
+    q("[data-intents-skip]").addEventListener("click", function () { keepIntents([]); dialog.step("username"); });
+    // The answer goes on the account too, once there's a profile (profile_intents, 0053);
+    // until that table is live the browser's copy is all there is.
+    var saveIntents = function () {
+      var list = safe(function () { return JSON.parse(localStorage.getItem(INTENTS_KEY) || "null"); }, null);
+      if (!Array.isArray(list) || !session) return;
+      // Their own table (0053), not a profiles column: profiles are readable by every account.
+      fetch(SUPABASE_URL + "/rest/v1/profile_intents", {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token, "content-type": "application/json",
+          Prefer: "resolution=merge-duplicates,return=minimal"
+        },
+        body: JSON.stringify({ id: String(session.user.id).toLowerCase(), intents: list })
+      }).catch(function () {});
+    };
     // The username follows the name as it's typed ("Ray Chen" → raychen) until they change it
     // themselves (the user, 2026-11-04: one field to fill in, not three).
     var suggested = "";
@@ -450,7 +491,7 @@
           headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token, "content-type": "application/json", Prefer: "return=representation" },
           body: JSON.stringify(body)
         }).then(function (response) {
-          if (response.ok) return signedIn();
+          if (response.ok) { saveIntents(); return signedIn(); }
           if (response.status === 409 && i + 1 < tries.length) return attempt(i + 1);
           error(response.status === 409 ? "That username is taken. Try another." : "Couldn't save that. Try again.");
         });

@@ -1848,7 +1848,7 @@ async function save() {
     return;
   }
   if (!profile && !(await loadProfile().catch(() => null))) {
-    openAccount("username");
+    openAccount(nameStep());
     return;
   }
   $("save").disabled = true;
@@ -2249,6 +2249,28 @@ function prefillName() {
   suggestedUsername = usernameFrom(name);
   if (suggestedUsername && !$("username").value) $("username").value = suggestedUsername;
 }
+/// The sign-up question's answer: kept in this browser (the signed-in home
+/// reads it to order itself) and on the account once it has a profile, so the
+/// app doesn't ask again (profile_intents, 0053). Until that table is live a
+/// refused write leaves the browser's copy.
+const INTENTS_KEY = "carve.intents";
+/// A new account's first step: the question, unless this browser has its answer already.
+function nameStep() {
+  try { return Array.isArray(JSON.parse(localStorage.getItem(INTENTS_KEY) || "null")) ? "username" : "intents"; } catch { return "intents"; }
+}
+function keepIntents(list) {
+  try { localStorage.setItem(INTENTS_KEY, JSON.stringify(list)); } catch {}
+}
+function saveIntents() {
+  let list = null;
+  try { list = JSON.parse(localStorage.getItem(INTENTS_KEY) || "null"); } catch {}
+  if (!Array.isArray(list) || !session) return;
+  // Their own table (0053), not a profiles column: profiles are readable by every account.
+  rest("/rest/v1/profile_intents", {
+    method: "POST", body: { id: session.user.id.toLowerCase(), intents: list },
+    headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+  }).catch(() => {});
+}
 /// "Ray Chen" → "raychen"; "" when there aren't 3 letters or numbers to make one from.
 function usernameFrom(name) {
   const plain = String(name || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -2316,10 +2338,12 @@ function signInFailed() {
 async function afterSignIn() {
   renderWho();
   const found = await loadProfile().catch(() => null);
-  if (!found) return setStep("username");
+  // A new account: the one question, then its name (the user, 2026-11-04).
+  if (!found) return setStep(nameStep());
   const back = signInReturn();
   if (back) return location.replace(back);
-  if (onPhone) return location.replace("/my-drives/");
+  // A phone's resting place, signed in: the home page, which is theirs now.
+  if (onPhone) return location.replace("/");
   $("account").close();
   const pendingEdit = store.get(PENDING_EDIT_KEY);
   if (pendingEdit) {
@@ -2553,6 +2577,18 @@ function wire() {
       accountError(failure.message);
     }
   });
+  // What brings you to Carve today? Pick any, or skip; then the name.
+  const picks = () => [...$("intents-form").querySelectorAll("input:checked")].map((box) => box.value);
+  $("intents-form").addEventListener("change", () => { $("intents-go").disabled = !picks().length; });
+  $("intents-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    keepIntents(picks());
+    setStep("username");
+  });
+  $("intents-skip").addEventListener("click", () => {
+    keepIntents([]);
+    setStep("username");
+  });
   // The username follows the name as it's typed, until they change it themselves.
   $("display-name").addEventListener("input", () => {
     if ($("username").value && $("username").value !== suggestedUsername) return;
@@ -2575,6 +2611,7 @@ function wire() {
             headers: { Prefer: "return=representation" },
           });
           profile = rows?.[0] || { username };
+          saveIntents();
           break;
         } catch (failure) {
           if (failure.status !== 409 || i === tries.length - 1) throw failure;
@@ -2582,7 +2619,7 @@ function wire() {
       }
       const back = signInReturn();
       if (back) return location.replace(back);
-      if (onPhone) return location.replace("/my-drives/");
+      if (onPhone) return location.replace("/");
       renderWho();
       $("account").close();
       await save();
@@ -2600,21 +2637,21 @@ async function start() {
     // A window opened narrow and then widened gets the planner.
     narrow.addEventListener("change", (event) => { if (!event.matches) location.reload(); }, { once: true });
     // A phone plans in the app, but signs in here: the bar's Sign in on every
-    // page comes to /plan/#sign-in, and a signed-in phone goes on to My
-    // Drives (the user, 2026-11-01).
+    // page comes to /plan/#sign-in, and a signed-in phone goes on to the home
+    // page, which is theirs once signed in (the user, 2026-11-04; was My Drives).
     onPhone = true;
     session = store.get(SESSION_KEY);
     if (readOAuthFailure()) return signInFailed();
     const cameBack = await readOAuthReturn().catch(() => false);
     if (cameBack) {
-      if (await loadProfile().catch(() => null)) return location.replace(signInReturn() || "/my-drives/");
-      return openAccount("username", { saving: false, title: "Sign in" });
+      if (await loadProfile().catch(() => null)) return location.replace(signInReturn() || "/");
+      return openAccount(nameStep(), { saving: false, title: "Sign in" });
     }
     // The bar's Sign in, here or (already on this page) the same address again.
     const signInHere = () => {
       if (location.hash !== "#sign-in") return;
       history_replace();
-      if (session) return location.replace("/my-drives/");
+      if (session) return location.replace("/");
       openAccount("choose", { saving: false, title: "Sign in" });
     };
     window.addEventListener("hashchange", signInHere);
@@ -2650,7 +2687,7 @@ async function start() {
     openAccount("choose", { saving: false, title: "Sign in" });
     accountError(SIGN_IN_FAILED);
   } else if (cameBack && !profile && signInReturn({ keep: true })) {
-    openAccount("username", { saving: false, title: "Sign in" });
+    openAccount(nameStep(), { saving: false, title: "Sign in" });
   }
   if (LOCAL) window.__planner = { get plan() { return plan; }, suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
@@ -2666,7 +2703,7 @@ async function start() {
       store.remove(PENDING_EDIT_KEY);
       if (profile) await editShared(pendingEdit);
     } else if (cameBack && store.get(PENDING_SAVE_KEY)) {
-      if (!profile) openAccount("username");
+      if (!profile) openAccount(nameStep());
       else save();
     }
   }

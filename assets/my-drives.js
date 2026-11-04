@@ -169,4 +169,104 @@ async function load() {
   status("");
 }
 
-load();
+// ── their drive plans and saved events (the user, 2026-11-04) ───────
+
+async function account(path, body) {
+  const token = await accessToken();
+  if (!token) return null;
+  const response = await fetch(SUPABASE_URL + path, {
+    method: body ? "POST" : "GET",
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: body ? JSON.stringify(body) : undefined,
+  }).catch(() => null);
+  return response?.ok ? response.json() : null;
+}
+
+/// A date's tile, where a route has its picture: the weekday over the day.
+function dayTile(iso) {
+  const date = new Date(iso);
+  const box = document.createElement("div");
+  box.className = "day";
+  box.innerHTML = `<span>${date.toLocaleDateString(undefined, { weekday: "short" })}</span><b>${date.getDate()}</b>`;
+  return box;
+}
+
+function at(iso) {
+  const date = new Date(iso);
+  return `${date.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })} at ${date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}`;
+}
+
+const ANSWERS = { yes: "You're going", maybe: "You might go", no: "You're not going" };
+
+/// Upcoming drives: plans they host or answered (plans_mine), soonest first, each to its route's page.
+async function loadPlans() {
+  const plans = await account("/rest/v1/rpc/plans_mine", {});
+  if (!Array.isArray(plans) || !plans.length) return;
+  $("plan-list").replaceChildren(...plans.map((plan) => {
+    const li = document.createElement("li");
+    li.className = "drive-row";
+    li.append(dayTile(plan.starts_at));
+    const what = document.createElement("div");
+    what.className = "what";
+    const name = document.createElement("a");
+    name.className = "name";
+    name.textContent = plan.route_name || "A drive";
+    name.href = narrow ? `https://open.carve.run/${encodeURIComponent(plan.share_token)}?then=page&ct=my-drives` : `/${encodeURIComponent(plan.share_token)}`;
+    const facts = document.createElement("span");
+    facts.className = "facts";
+    const host = plan.host?.display_name || plan.host?.username || "";
+    facts.textContent = [at(plan.starts_at), plan.is_host ? "You're hosting" : host ? `Hosted by ${host}` : null, `${plan.yes || 0} going`].filter(Boolean).join(" · ");
+    what.append(name, facts);
+    if (!plan.is_host && ANSWERS[plan.mine?.answer]) {
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = ANSWERS[plan.mine.answer];
+      what.append(tag);
+    }
+    li.append(what);
+    return li;
+  }));
+  $("upcoming").hidden = false;
+}
+
+/// Saved events (the app's bell): once the site has its events pages (events.js), each to its page.
+async function loadSavedEvents() {
+  let events;
+  try {
+    events = await import("/assets/events.js");
+  } catch {
+    return;
+  }
+  const now = new Date().toISOString();
+  const [saved, data] = await Promise.all([
+    account(`/rest/v1/event_saves?select=event_id,name,kind,place,starts_at&hidden=is.false&starts_at=gt.${encodeURIComponent(now)}&order=starts_at.asc`),
+    fetch(events.EVENTS_URL).then((r) => (r.ok ? r.json() : { events: [] })).catch(() => ({ events: [] })),
+  ]);
+  if (!Array.isArray(saved) || !saved.length) return;
+  const tokens = new Map((data.events || []).map((ev) => [String(ev.id), ev.token]));
+  $("event-list").replaceChildren(...saved.map((save) => {
+    const li = document.createElement("li");
+    li.className = "drive-row";
+    li.append(dayTile(save.starts_at));
+    const what = document.createElement("div");
+    what.className = "what";
+    const token = tokens.get(String(save.event_id));
+    const name = document.createElement(token ? "a" : "span");
+    name.className = "name";
+    name.textContent = save.name || "A car event";
+    if (token) name.href = `/e/${encodeURIComponent(token)}/`;
+    const facts = document.createElement("span");
+    facts.className = "facts";
+    facts.textContent = [at(save.starts_at), save.place].filter(Boolean).join(" · ");
+    what.append(name, facts);
+    li.append(what);
+    return li;
+  }));
+  $("events").hidden = false;
+}
+
+// The home page's tiles link here by section: the browser's own jump comes before these load.
+Promise.allSettled([load(), loadPlans(), loadSavedEvents()]).then(() => {
+  const section = location.hash && document.getElementById(location.hash.slice(1));
+  if (section && !section.hidden) section.scrollIntoView();
+});

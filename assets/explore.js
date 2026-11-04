@@ -10,6 +10,7 @@ import "/assets/site-bar.js";
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js";
+import { heartButton, wireHearts } from "/assets/hearts.js";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
@@ -102,8 +103,10 @@ function render() {
     <img src="${escapeHTML(r.photo)}" alt="" loading="lazy">
     <span class="t"><span class="n">${escapeHTML(r.n)}</span>
     <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}</span>
-    <span class="a">${escapeHTML(awayText(r) || r.p || "")}</span></span></a></li>`).join("")
+    <span class="a">${escapeHTML(awayText(r) || r.p || "")}</span></span></a>${r.t ? heartButton(r.t, r.n) : ""}</li>`).join("")
     || `<li class="ex-empty">${searching ? "Try a road's name, a town or a state." : "No drives here yet. Zoom out, or search a state."}</li>`;
+  // A road's heart keeps it in My Drives, as the app's does (the user, 2026-11-04).
+  wireHearts(list);
   const more = pool.length - shown.length;
   $("ex-more").hidden = more <= 0;
   $("ex-more").textContent = more > 0 ? `${more} more on the map: zoom in, or narrow it down with the filters.` : "";

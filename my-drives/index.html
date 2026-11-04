@@ -11,7 +11,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css?v=ed35d04584">
 <link rel="stylesheet" href="/assets/site-bar.css?v=afde5806fd">
-<link rel="stylesheet" href="/assets/home.css?v=d81f4bb75a">
+<link rel="stylesheet" href="/assets/home.css?v=28bda05f6d">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <style>
   /* carve.run/my-drives/: the account's routes, from the app and the planner (the user, 2026-11-01). */
@@ -19,6 +19,13 @@
   .mine-top { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .mine-top h1 { font-size: clamp(32px, 4vw, 44px); }
   .mine-top p { color: var(--ink-3); font-size: 16px; margin-top: 6px; }
+  /* Upcoming drives, saved routes, saved events (the user, 2026-11-04). */
+  .mine-sect { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 80px; }
+  .mine-sect h2 { font-size: 22px; font-weight: 800; }
+  .drive-row .day { width: 132px; aspect-ratio: 4 / 3; flex-shrink: 0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: var(--sand-2); line-height: 1; }
+  .drive-row .day b { font-size: 30px; font-weight: 800; }
+  .drive-row .day span { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: var(--ink-3); text-transform: uppercase; }
+  .drive-row .tag { align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: var(--mint); color: var(--green-ink); font-size: 13px; font-weight: 700; }
   .mine .new { display: inline-flex; align-items: center; height: 46px; padding: 0 22px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; text-decoration: none; }
   .drive-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
   .drive-row { display: flex; align-items: center; gap: 16px; padding: 14px 20px 14px 14px; border-radius: 18px; background: #161B18; border: 1px solid var(--rule); }
@@ -38,7 +45,8 @@
     .mine { padding-top: 28px; }
     .mine .new, .drive-row .acts .edit { display: none; }
     .drive-row { padding: 12px; gap: 12px; }
-    .drive-row .thumb { width: 84px; border-radius: 10px; }
+    .drive-row .thumb, .drive-row .day { width: 84px; border-radius: 10px; }
+    .drive-row .day b { font-size: 24px; }
     .drive-row .name { font-size: 16px; }
     .drive-row .facts { font-size: 14px; }
   }
@@ -129,9 +137,21 @@
     </div>
     <a class="new" href="/plan/">Plan a new route</a>
   </div>
-  <p class="note" id="mine-status" role="status">Loading your drives…</p>
-  <ul class="drive-list" id="drive-list" hidden></ul>
-  <div class="empty" id="mine-empty" hidden></div>
+  <!-- Their drive plans and saved events too (the user, 2026-11-04), above and below their routes. -->
+  <section class="mine-sect" id="upcoming" aria-labelledby="upcoming-title" hidden>
+    <h2 id="upcoming-title">Upcoming drives</h2>
+    <ul class="drive-list" id="plan-list"></ul>
+  </section>
+  <section class="mine-sect" id="routes" aria-labelledby="routes-title">
+    <h2 id="routes-title">Saved routes</h2>
+    <p class="note" id="mine-status" role="status">Loading your drives…</p>
+    <ul class="drive-list" id="drive-list" hidden></ul>
+    <div class="empty" id="mine-empty" hidden></div>
+  </section>
+  <section class="mine-sect" id="events" aria-labelledby="events-title" hidden>
+    <h2 id="events-title">Saved events</h2>
+    <ul class="drive-list" id="event-list"></ul>
+  </section>
 </main>
 
 <footer>
@@ -149,8 +169,8 @@
   </div>
 </footer>
 
-<script src="/assets/carve-site.js?v=9c273ca8d6" defer></script>
+<script src="/assets/carve-site.js?v=c9cf7d37b5" defer></script>
 <script type="module" src="/assets/site-bar.js?v=9286dec569"></script>
-<script type="module" src="/assets/my-drives.js?v=9f0d3f423d"></script>
+<script type="module" src="/assets/my-drives.js?v=b0a216215b"></script>
 </body>
 </html>

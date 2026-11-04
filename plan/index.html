@@ -255,6 +255,19 @@
     <button type="submit" class="pill green big">Continue</button>
     <div class="row-links"><button type="button" class="linkish" id="resend">Send a new code</button><button type="button" class="linkish" data-back>Use another email</button></div>
   </form>
+  <form data-step="intents" id="intents-form" hidden>
+    <h2>What brings you to Carve today?</h2>
+    <p class="dim">Pick any.</p>
+    <fieldset class="intents">
+      <legend class="visually-hidden">What brings you to Carve today?</legend>
+      <label class="intent"><input type="checkbox" name="intent" value="invited"><span>Someone invited me to a drive</span></label>
+      <label class="intent"><input type="checkbox" name="intent" value="organize"><span>I organize drives for a club or group</span></label>
+      <label class="intent"><input type="checkbox" name="intent" value="roads"><span>I'm looking for new roads to drive</span></label>
+      <label class="intent"><input type="checkbox" name="intent" value="events"><span>I'm looking for car events near me</span></label>
+    </fieldset>
+    <button type="submit" class="pill green big" id="intents-go" disabled>Continue</button>
+    <button type="button" class="linkish grey" id="intents-skip">Skip</button>
+  </form>
   <form data-step="username" id="username-form" hidden>
     <h2>Your name on Carve</h2>
     <p class="dim">It's shown on the routes you share and the drives you join.</p>
@@ -273,6 +286,6 @@
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
 <script type="module" src="/plan/plan.js?v=45"></script>
-<script src="/assets/carve-site.js?v=9c273ca8d6" defer></script>
+<script src="/assets/carve-site.js?v=c9cf7d37b5" defer></script>
 </body>
 </html>
