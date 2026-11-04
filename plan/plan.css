@@ -433,6 +433,8 @@ a { color: var(--green-ink); }
 .sheet-dialog h2 { font-size: 30px; padding-right: 40px; }
 .sheet-dialog p.dim { font-size: 18px; color: var(--ink-2); }
 .x-top { position: absolute; right: 16px; top: 16px; }
+/* The question's Skip, where the close is on the other steps (the user, 2026-11-04). */
+#intents-skip { position: absolute; right: 22px; top: 18px; }
 /* On a phone, sign-in and sign-up are full-screen pages, not a pop-up (the user, 2026-11-04). */
 @media (max-width: 699px) {
   html.phone-account body > :not(dialog) { visibility: hidden; }
@@ -440,6 +442,7 @@ a { color: var(--green-ink); }
     padding: calc(env(safe-area-inset-top) + 72px) 22px calc(env(safe-area-inset-bottom) + 28px); border-radius: 0; box-shadow: none; background: Canvas; }
   #account.sheet-dialog::backdrop { background: Canvas; }
   #account .x-top { top: calc(env(safe-area-inset-top) + 14px); }
+  #account #intents-skip { top: calc(env(safe-area-inset-top) + 16px); }
   #account h2 { font-size: 30px; }
 }
 .field.code { font-size: 28px; letter-spacing: .4em; text-align: center; font-weight: 800; }

@@ -2238,6 +2238,8 @@ function openAccount(step = "choose", { saving = true, title } = {}) {
 }
 function setStep(step) {
   for (const node of $("account").querySelectorAll("[data-step]")) node.hidden = node.dataset.step !== step;
+  // The question has Skip at the top right instead of a close (the user, 2026-11-04).
+  $("acc-close").hidden = step === "intents";
   $("acc-error").hidden = true;
   if (step === "username") prefillName();
   const focus = { email: "email", code: "code", username: "username" }[step];

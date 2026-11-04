@@ -281,16 +281,18 @@
     ".cs-signin .cs-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}" +
     ".cs-signin .x{position:absolute;right:14px;top:14px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:#F1EEE5;color:#3D434B;cursor:pointer}" +
     ".cs-signin .x svg{width:18px;height:18px}" +
+    ".cs-signin [data-intents-skip]{position:absolute;right:18px;top:18px;font-size:17px;color:#5D636C}" +
+    ".cs-signin .go:disabled{opacity:.45;cursor:default}" +
     ".cs-signin .err{margin-top:12px;padding:12px 14px;border-radius:12px;background:#FBE9E7;color:#B0352B;font-size:15px;font-weight:600}" +
     // On a phone, sign-in and sign-up are full-screen pages, not a pop-up (the user, 2026-11-04).
     "@media (max-width:699px){.cs-signin{width:100%;max-width:none;height:100%;max-height:none;margin:0;border-radius:0;box-shadow:none;" +
     "padding:calc(env(safe-area-inset-top) + 72px) 22px calc(env(safe-area-inset-bottom) + 28px)}" +
-    ".cs-signin::backdrop{background:Canvas}.cs-signin .x{top:calc(env(safe-area-inset-top) + 14px)}.cs-signin h2{font-size:30px}}" +
+    ".cs-signin::backdrop{background:Canvas}.cs-signin .x{top:calc(env(safe-area-inset-top) + 14px)}.cs-signin [data-intents-skip]{top:calc(env(safe-area-inset-top) + 18px)}.cs-signin h2{font-size:30px}}" +
     "@media (prefers-color-scheme: dark){" +
     ".cs-signin{background:#161B18;color:#EEF1EE}.cs-signin p{color:#C3CAC5}.cs-signin label,.cs-signin .small{color:#9AA39D}" +
     ".cs-signin .apple{background:#fff;color:#000}.cs-signin .google{background:#1D2420;color:#EEF1EE;box-shadow:inset 0 0 0 1.5px #2A332E}" +
     ".cs-signin .email,.cs-signin .x{background:#242C27;color:#EEF1EE}.cs-signin input{background:#1D2420;border-color:#2A332E}" +
-    ".cs-signin .link{color:#6FD39A}.cs-signin .err{background:#371715;color:#EC796F}}";
+    ".cs-signin .link{color:#6FD39A}.cs-signin [data-intents-skip]{color:#9AA39D}.cs-signin .err{background:#371715;color:#EC796F}}";
   var SIGN_IN_HTML =
     '<button type="button" class="x" data-close aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>' +
     '<div data-step="choose"><h2 id="cs-signin-title">Sign in</h2>' +
@@ -394,6 +396,8 @@
     };
     dialog.step = function (step) {
       dialog.querySelectorAll("[data-step]").forEach(function (node) { node.hidden = node.getAttribute("data-step") !== step; });
+      // The question has Skip at the top right instead of a close (the user, 2026-11-04).
+      q(".x").hidden = step === "intents";
       q(".err").hidden = true;
       var field = { email: "#cs-email", code: "#cs-code", username: "#cs-name" }[step];
       if (field) setTimeout(function () { q(field).focus(); }, 30);
