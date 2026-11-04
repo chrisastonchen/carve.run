@@ -80,7 +80,6 @@ function renderNear() {
     <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a>
     ${r.t ? heartButton(r.t, r.n) : ""}</li>`).join("");
   wireHearts(list, { onSaved: (on, problem) => note(problem || (on ? "Saved. You'll find this road in My Drives and in Carve." : "Removed from My Drives.")) });
-  $("near-title").textContent = place ? `${wide() ? "Great roads" : "Roads"} near ${place.label === "you" ? "you" : place.label}` : "Legendary drives to start with";
   // The front door's start, from where we think they are: most people only type where to.
   const field = $("door-from");
   if (place && (!field.value || field.value === field.dataset.label)) {
@@ -93,8 +92,9 @@ function renderNear() {
   }
   const chip = $("near-chip");
   chip.hidden = !place;
-  $("near-change2").hidden = !place;
-  if (place) $("near-name").textContent = place.label === "you" ? "you" : place.label;
+  // Under "Find your next great drive": Near <place> · Change.
+  $("near-where").hidden = !place;
+  if (place) $("near-name").textContent = $("near-where-name").textContent = place.label === "you" ? "you" : place.label;
 }
 
 let noteTimer = 0;

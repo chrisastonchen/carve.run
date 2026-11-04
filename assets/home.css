@@ -911,3 +911,15 @@ picture.pic { display: contents; }
    #23874A is 4.5:1. */
 .home .hero .hb.green.hero-join, .home .door .hb.green.go { background: #23874A; color: #fff; }
 .home .hero .hb.green.hero-join:hover, .home .door .hb.green.go:hover { background: #1E7741; }
+
+/* Find your next great drive, and under it Near <place> · Change (the user, 2026-11-04). */
+.home .near-head { align-items: flex-end; }
+.near-titles { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.near-where { margin: 0; font-size: 16px; color: var(--ink-3); }
+.near-where strong { color: var(--ink); }
+.near-where[hidden] { display: none; }
+.near-where .near-change2 { display: inline; border: 0; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--green-ink); cursor: pointer; }
+.near-where .near-change2:hover { text-decoration: underline; }
+@media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
+  .near-where { font-size: 15px; }
+}
