@@ -606,17 +606,16 @@ function riseIn() {
 function wireJoin() {
   let signedIn = false;
   try { signedIn = !!JSON.parse(localStorage.getItem("carve.plan.session") || "null")?.refresh_token; } catch {}
-  // Signed in (index.html swapped Join for Get the app before the page drew): the greeting's name.
+  // Get the app, signed in or not (the user, 2026-11-05): the store on iPhone, the app or its page on Android.
+  $("hero-get").addEventListener("click", (event) => { if (!wide()) { event.preventDefault(); openApp(); } });
+  // Signed in (index.html hid Sign in before the page drew): the greeting's name.
   if (signedIn) {
-    $("hero-get").addEventListener("click", (event) => { if (!wide()) { event.preventDefault(); openApp(); } });
     greet();
     return;
   }
-  for (const [id, join] of [["hero-join", true], ["hero-signin", false]]) {
-    $(id).addEventListener("click", (event) => {
-      if (window.carveSignIn && window.carveSignIn({ join })) event.preventDefault();
-    });
-  }
+  $("hero-signin").addEventListener("click", (event) => {
+    if (window.carveSignIn && window.carveSignIn({ join: false })) event.preventDefault();
+  });
 }
 
 // The hero's headline, theirs (the user, 2026-11-04): "Ray, let's hit the road."
@@ -627,10 +626,11 @@ async function greet() {
   if (!token) {
     // Carve refused the sign-in: the page as anyone sees it.
     $("hero-title").textContent = PUBLIC_TITLE;
-    $("hero-get").hidden = true;
-    $("hero-join").hidden = false;
     $("hero-signin-line").hidden = false;
-    return wireJoin();
+    $("hero-signin").addEventListener("click", (event) => {
+      if (window.carveSignIn && window.carveSignIn({ join: false })) event.preventDefault();
+    });
+    return;
   }
   const id = String(store.get(SESSION_KEY)?.user?.id || "").toLowerCase();
   try {

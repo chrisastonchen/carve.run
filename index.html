@@ -147,12 +147,12 @@
       <h1 id="hero-title">The ultimate app for car clubs and group drives.</h1>
       <p class="hero-sub">Plan or import a route, see your group live on the map, and follow the exact roads you chose – even without a signal.</p>
     </div>
-    <!-- On a phone, joining is the one button (the user, 2026-11-04); the app is offered by the sheet at the bottom. -->
-    <a class="hb green hero-join phone-only-h" id="hero-join" href="/plan/#sign-in">Join for free</a>
+    <!-- On a phone, Get the app is the one button again (the user, 2026-11-05; Join for free from 11/4 retired). -->
+    <a class="hb green hero-join phone-only-h" id="hero-join" href="/plan/#sign-in" hidden>Join for free</a>
+    <a class="hb green hero-join phone-only-h" id="hero-get" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716">Get the app</a>
     <p class="hero-signin phone-only-h" id="hero-signin-line">Already have an account? <a href="/plan/#sign-in" id="hero-signin">Sign in</a></p>
-    <a class="hb green hero-join phone-only-h" id="hero-get" data-get-app href="https://apps.apple.com/app/carve-route-planner/id6808087716" hidden>Get the app</a>
     <!-- Signed in, the same page with its headline theirs (the user, 2026-11-04: not a page of its
-         own), and Get the app for Join; set before the page draws. home.js greet() keeps the name current. -->
+         own), without the Sign in line; set before the page draws. home.js greet() keeps the name current. -->
     <script>try {
       var s = JSON.parse(localStorage.getItem("carve.plan.session") || "null");
       if (s && s.refresh_token && s.user) {
@@ -459,6 +459,6 @@
   if (location.hash === "#pricing") location.replace("/pricing/");
 </script>
 <script src="/assets/carve-site.js?v=8eba86ef7f" defer></script>
-<script type="module" src="/assets/home.js?v=9422f4ac2f"></script>
+<script type="module" src="/assets/home.js?v=24c2b884d0"></script>
 </body>
 </html>
