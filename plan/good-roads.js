@@ -483,9 +483,11 @@ const ON_U_TURN = 150;
 /// A trimmed end goes this far short of where the out-and-back begins.
 const TRIM_BACK = 200;
 /// Routed, a road that adds more than this share of what was said, plus
-/// this, doesn't go in (the QA, 2026-11-04: +20 min said, +55 driven).
-export const PROMISE_SHARE = 1.5;
-export const PROMISE_SLACK = 5 * 60;
+/// this, doesn't go in (the QA, 2026-11-04: +20 min said, +55 driven). A
+/// backstop only (the user, 2026-11-04: Skyline, +15 said and +30 driven,
+/// refused at 1.5 and 5 min; the app's 975963ede): +15 said goes in up to +45.
+export const PROMISE_SHARE = 2;
+export const PROMISE_SLACK = 15 * 60;
 
 /// A flat frame about a line's first point, both ways.
 function flatAbout(origin) {
