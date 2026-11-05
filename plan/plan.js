@@ -2541,7 +2541,11 @@ function planAnother() {
 }
 
 /// The phone page's Continue in app: Carve if it's installed, else its store (home.js openApp).
+/// carve-site.js counts the tap (Store Tap, with ct and landing) as it sees the link: the App
+/// Store on an iPhone, /android/ on an Android phone. So this only goes; counting here too
+/// counted each tap twice (2026-11-05).
 function wireGateOpen() {
+  if (isAndroid) $("gate-open").href = "/android/";
   $("gate-open").addEventListener("click", (event) => {
     event.preventDefault();
     if (isAndroid) {
@@ -2550,8 +2554,8 @@ function wireGateOpen() {
       return;
     }
     // Not carve://open: without the app Safari stops on "the address is invalid";
-    // the App Store page offers Open when Carve is installed.
-    location.href = window.carveStoreUrl ? carveStoreUrl() : event.currentTarget.href;
+    // the App Store page offers Open when Carve is installed. The link is already tagged.
+    location.href = event.currentTarget.href;
   });
 }
 

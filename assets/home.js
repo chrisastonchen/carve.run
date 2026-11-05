@@ -475,7 +475,9 @@ function wireGet() {
 // page search engines read.
 const SHEET_KEY = "carve.home.appsheet";
 
-function openApp() {
+/// From a store link carve-site.js has already counted and tagged (the hero's
+/// Get the app), that link; from a button (the sheet), the store, counted here.
+function openApp(link) {
   const ua = navigator.userAgent || "";
   if (/android/i.test(ua)) {
     // Opened as its home-screen icon does (no link for it to read), else its early-access page.
@@ -485,6 +487,7 @@ function openApp() {
   }
   // Not carve://open: without the app, Safari stops on "the address is
   // invalid". The App Store page offers Open when Carve is installed.
+  if (link?.href?.startsWith("https://apps.apple.com/")) { location.href = link.href; return; }
   location.href = window.carveStoreUrl ? carveStoreUrl() : "https://apps.apple.com/app/carve-route-planner/id6808087716";
 }
 
@@ -607,7 +610,7 @@ function wireJoin() {
   let signedIn = false;
   try { signedIn = !!JSON.parse(localStorage.getItem("carve.plan.session") || "null")?.refresh_token; } catch {}
   // Get the app, signed in or not (the user, 2026-11-05): the store on iPhone, the app or its page on Android.
-  $("hero-get").addEventListener("click", (event) => { if (!wide()) { event.preventDefault(); openApp(); } });
+  $("hero-get").addEventListener("click", (event) => { if (!wide()) { event.preventDefault(); openApp(event.currentTarget); } });
   // Signed in (index.html hid Sign in before the page drew): the greeting's name.
   if (signedIn) {
     greet();

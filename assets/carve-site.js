@@ -158,7 +158,7 @@
   // The App Store URL a script goes to by itself (the "open in the app,
   // else the store" fallbacks); counts as a store tap when it is used.
   window.carveStoreUrl = function (fallback) {
-    send("Store Tap", { store: "app_store", ct: ct });
+    window.carveTrack("Store Tap", { store: "app_store" });
     return storeUrl(fallback || APP_STORE_PREFIX + "carve-route-planner/id6808087716");
   };
 
@@ -173,12 +173,14 @@
 
   // A tap on a store button. Capture phase, and the link read as it is when
   // tapped, because the share page writes its store buttons in after load.
+  // Counted with the visit's campaign and landing page (carveTrack; Growth,
+  // 2026-11-05), like every other goal.
   document.addEventListener("click", function (event) {
     var a = event.target && event.target.closest ? event.target.closest("a") : null;
-    if (isAppStore(a)) { a.href = storeUrl(a.href); send("Store Tap", { store: "app_store", ct: ct }); }
-    else if (isAndroidBeta(a)) send("Store Tap", { store: "play_beta", ct: ct });
+    if (isAppStore(a)) { a.href = storeUrl(a.href); window.carveTrack("Store Tap", { store: "app_store" }); }
+    else if (isAndroidBeta(a)) window.carveTrack("Store Tap", { store: "play_beta" });
     // The Android page's steps: the group, the test's opt-in, the Play listing.
-    else if (a && a.getAttribute("data-beta-step")) send("Beta Step", { step: a.getAttribute("data-beta-step"), ct: ct });
+    else if (a && a.getAttribute("data-beta-step")) window.carveTrack("Beta Step", { step: a.getAttribute("data-beta-step") });
   }, true);
 
   // For the site's own scripts: a goal counted with this visit's campaign
