@@ -1,12 +1,12 @@
 {
  "flagged": {
-  "allegany-state-park-route-1": {
-   "coverage": 0.63,
-   "since": "2026-11-03"
-  },
   "beartooth-highway": {
    "coverage": 0.55,
    "since": "2026-10-24"
+  },
+  "cane-river-la-494": {
+   "coverage": 0.22,
+   "since": "2026-11-04"
   },
   "chinook-pass": {
    "coverage": 0.56,
@@ -49,7 +49,7 @@
    "since": "2026-11-01"
   },
   "independence-pass": {
-   "coverage": 0.37,
+   "coverage": 0.32,
    "since": "2026-11-01"
   },
   "klondike-highway-white-pass": {
@@ -68,10 +68,6 @@
    "coverage": 0.63,
    "since": "2026-10-29"
   },
-  "m-26-keweenaw-shore": {
-   "coverage": 0.2,
-   "since": "2026-11-03"
-  },
   "mckenzie-pass": {
    "coverage": 0.01,
    "since": "2026-11-01"
@@ -80,12 +76,8 @@
    "coverage": 0.45,
    "since": "2026-10-30"
   },
-  "monument-valley-us-163": {
-   "coverage": 0.58,
-   "since": "2026-11-02"
-  },
   "oak-creek-canyon": {
-   "coverage": 0.01,
+   "coverage": 0.27,
    "since": "2026-11-02"
   },
   "onion-valley-road": {
@@ -118,5 +110,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-04T14:09:32Z"
+ "updated": "2026-11-05T14:14:41Z"
 }
