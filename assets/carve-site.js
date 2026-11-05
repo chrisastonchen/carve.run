@@ -77,15 +77,20 @@
   };
   var externalRef = safe(function () {
     var host = document.referrer ? new URL(document.referrer).host : "";
+    // Coming back from Apple or Google sign-in isn't where the visit came from.
+    if (/(^|\.)(supabase\.co|accounts\.google\.com|appleid\.apple\.com)$/.test(host)) return "";
     return host && host !== location.host ? host : "";
   }, "");
 
   var visit = safe(function () { return JSON.parse(sessionStorage.getItem(STORE_KEY) || "null"); }, null) || {};
   if (fromLink.source || fromLink.campaign || fromLink.ct) {
-    visit = { source: fromLink.source, campaign: fromLink.campaign, ct: fromLink.ct, ref: externalRef || visit.ref || "" };
+    visit = { source: fromLink.source, campaign: fromLink.campaign, ct: fromLink.ct, ref: externalRef || visit.ref || "", landing: path };
   } else if (!visit.ref && externalRef) {
     visit.ref = externalRef;
   }
+  // The page the visit began on (the counted path, so a share page is /r/),
+  // kept with the campaign for the goals below.
+  if (!visit.landing) visit.landing = path;
   safe(function () { sessionStorage.setItem(STORE_KEY, JSON.stringify(visit)); });
 
   var ct = visit.ct
@@ -182,9 +187,29 @@
   // ?ct=…-qr), so App Store Connect can tell which campaign a computer
   // visit that ended in an install on a phone came from.
   window.carveTrack = function (name, props) {
-    var all = { ct: ct };
+    var all = { ct: ct, landing: String(visit.landing || path).slice(0, 100) };
     for (var key in props || {}) all[key] = props[key];
     send(name, all);
+  };
+  // A brand-new account, at the sign-in that made it (the site's email code,
+  // or Apple and Google back through the planner): Account Created, once per
+  // account in this browser. New means the account's first sign-in came
+  // within half an hour of its making — both the server's clock (GoTrue's
+  // created_at, last_sign_in_at), so a wrong clock here can't count a
+  // returning sign-in. Only how they signed in goes with it, never who.
+  var COUNTED_KEY = "carve.signup.counted";
+  window.carveCountSignUp = function (user) {
+    safe(function () {
+      if (!user || !user.id || !user.created_at || !user.last_sign_in_at) return;
+      var gap = Date.parse(user.last_sign_in_at) - Date.parse(user.created_at);
+      if (!(gap >= 0 && gap < 30 * 60 * 1000)) return;
+      var id = String(user.id).toLowerCase();
+      var counted = JSON.parse(localStorage.getItem(COUNTED_KEY) || "[]");
+      if (!Array.isArray(counted) || counted.indexOf(id) >= 0) return;
+      localStorage.setItem(COUNTED_KEY, JSON.stringify(counted.concat(id).slice(-5)));
+      var provider = String((user.app_metadata && user.app_metadata.provider) || "");
+      window.carveTrack("Account Created", { method: /^(email|apple|google)$/.test(provider) ? provider : "other" });
+    });
   };
   window.carveCampaign = ct;
   window.carveCampaignLink = function (href) {
@@ -464,6 +489,7 @@
           user: { id: data.user && data.user.id, email: data.user && data.user.email }
         };
         localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        window.carveCountSignUp(data.user);
         return fetch(SUPABASE_URL + "/rest/v1/profiles?id=eq." + String(session.user.id).toLowerCase() + "&select=id", {
           headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token }
         }).then(function (response) { return response.ok ? response.json() : []; });

@@ -165,7 +165,25 @@ function setTrip(next) {
     }
   });
 }
+/// Plan Started, for the site's counting (carve-site.js): the first change
+/// someone makes to a new route on this visit to the page (an edit, an
+/// import, the home page's hand-off), never a page load, a draft coming
+/// back or an edit to a saved route.
+/// A goal for the site's counting. carve-site.js loads after this module, so
+/// one sent while the page is still loading (a hand-off placed at once) waits for it.
+function track(name, props) {
+  if (window.carveTrack || document.readyState === "complete") return window.carveTrack?.(name, props);
+  window.addEventListener("load", () => window.carveTrack?.(name, props), { once: true });
+}
+let planStarted = false;
+let openingSaved = false;
+function countPlanStart() {
+  if (planStarted || openingSaved || plan.id) return;
+  planStarted = true;
+  track("Plan Started");
+}
 function remember() {
+  countPlanStart();
   history.back.push(snapshot());
   if (history.back.length > HISTORY_LIMIT) history.back.shift();
   history.forward.length = 0;
@@ -491,6 +509,7 @@ async function readOAuthReturn() {
     expires_in: Number(params.get("expires_in")) || 3600,
     user,
   });
+  window.carveCountSignUp?.(user);
   return true;
 }
 function history_replace() {
@@ -1822,7 +1841,10 @@ async function editShared(token) {
     // The share keeps its owner private: the routes table answers its owner.
     const owned = session ? await rest(`/rest/v1/routes?id=eq.${encodeURIComponent(String(row.id).toLowerCase())}&select=owner_id`).catch(() => null) : null;
     const mine = !!owned?.[0] && String(owned[0].owner_id).toLowerCase() === String(session.user.id).toLowerCase();
-    await importCarve(token);
+    // Someone else's route opened to edit is a new route of theirs (Plan Started); their own isn't.
+    openingSaved = true;
+    try { await importCarve(token); } finally { openingSaved = false; }
+    if (!mine) countPlanStart();
     if (mine) {
       const payload = row.payload || {};
       plan.id = String(payload.id || row.id).toUpperCase();
@@ -1855,7 +1877,8 @@ async function editOwn(id) {
     const row = rows?.[0];
     if (!row?.payload) throw new Failure("That route couldn't be found.");
     const payload = row.payload;
-    loadPayload(payload, "My Drives");
+    openingSaved = true;
+    try { loadPayload(payload, "My Drives"); } finally { openingSaved = false; }
     // Its link stays its link; a route never shared gets one when it's saved.
     const share = (row.shares || []).find((s) => s.token && !s.revoked_at);
     plan.id = String(payload.id || row.id).toUpperCase();
@@ -1936,7 +1959,8 @@ async function save() {
   $("save").disabled = true;
   busy(true, "Saving…");
   try {
-    if (!plan.id || plan.ownerId !== session.user.id) {
+    const first = !plan.id || plan.ownerId !== session.user.id;
+    if (first) {
       plan.id = newUUID(() => crypto.randomUUID());
       plan.token = newShareToken((n) => crypto.getRandomValues(new Uint8Array(n)));
       plan.createdAt = appleDate();
@@ -1953,7 +1977,7 @@ async function save() {
     saveDraft();
     showSaved();
     // The planner's goal for the site's counting (carve-site.js), with the visit's campaign.
-    window.carveTrack?.("Route Saved");
+    window.carveTrack?.("Route Saved", { kind: first ? "new" : "update" });
     enrich();
   } catch (failure) {
     toast(failure.message, true);
@@ -2689,7 +2713,10 @@ function wire() {
   $("code-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     try {
-      keepSession(await auth("verify", { type: "email", email: emailForCode, token: $("code").value.trim() }));
+      const verified = await auth("verify", { type: "email", email: emailForCode, token: $("code").value.trim() });
+      keepSession(verified);
+      // A brand-new account, counted for the site (carve-site.js carveCountSignUp).
+      window.carveCountSignUp?.(verified?.user);
       await afterSignIn();
     } catch (failure) {
       accountError(failure.message);
