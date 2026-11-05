@@ -184,6 +184,24 @@ const ADDED_WEIGHT = 0.6;
 /// The road is tried in about this many pieces, each at least PIECE long.
 const PIECES = 40;
 const PIECE = 500;
+/// The stretch's ends don't run on away from the route (the app's
+/// 9d8666788; the user, 2026-11-04: Skyline added to the Page Mill
+/// junction, and the trip drove on to Saratoga Gap to turn round). Over its
+/// last LOOK metres the stretch keeps closing on the route or making
+/// headway along it: its distance off, less how far along, rises no more
+/// than this above its least; its first LOOK metres, mirrored (distance off
+/// plus how far along). The router carries straight on through a waypoint,
+/// so an exit past the place the trip leaves the road is a U-turn.
+const OVERSHOOT = 150;
+/// The road is looked at about this often for that.
+const OVERSHOOT_STEP = 100;
+/// Where the road meets the route (comes within SHORT_HOP of it, anywhere
+/// on it), the stretch's exit is at least CLEARANCE short of the meeting
+/// and its entry at least that past one: the catalog's line is coarse
+/// (Skyline's points are a kilometre apart), so a point at the junction can
+/// land past it. The meeting is where it's closest, give or take MEET_SLACK.
+const CLEARANCE = 300;
+const MEET_SLACK = 50;
 /// The app's NearbyDrive.within: legs this near the road are tried.
 const WITHIN = 3 * 1609.344;
 
@@ -278,7 +296,7 @@ function frameOf({ path, chain, metersPerSecond, pathIsRoad }) {
     legs.push({ index: i, track, box: box(track.points, 0) });
   }
   const pace = Number.isFinite(metersPerSecond) && metersPerSecond > 0 ? Math.max(metersPerSecond, 1) : DEFAULT_SPEED;
-  return { path: thin, xy, legs, pace, pathFactor: pathIsRoad ? 1 : DETOUR };
+  return { path: thin, xy, line: new Track(flat), legs, pace, pathFactor: pathIsRoad ? 1 : DETOUR };
 }
 
 /// Metres from a point to the nearest place on a line, both [lon, lat].
@@ -330,6 +348,47 @@ export function fitRoad(road, plan) {
   const roadBox = box(track.points, WITHIN);
   const turn = Math.cos(SHARPEST_TURN * Math.PI / 180);
   const turns = (a, b) => !!(a && b) && dot(a, b) < turn;
+  // Finer places along the road, SUB to a piece, for the ends' overshoot:
+  // piece j is fine[j * SUB].
+  const SUB = Math.max(1, Math.min(5, Math.floor(total / count / OVERSHOOT_STEP)));
+  const fine = Array.from({ length: count * SUB + 1 }, (_, i) => total * i / (count * SUB));
+  const fineAt = fine.map((s) => track.point(s));
+  const reach = Math.ceil(LOOK / (total / (count * SUB)));
+
+  // Where the road meets the route (within a short hop), anywhere on it: a
+  // leg's own, or one before or after (the QA, 2026-11-04: La Honda Road
+  // driven back down the road the trip set off on). Each run of such
+  // places, and the first and last of its closest.
+  const off = fineAt.map((p) => frame.line.nearest(p).meters);
+  const meetings = [];
+  for (let i = 0; i < fine.length;) {
+    if (off[i] > SHORT_HOP) { i++; continue; }
+    let j = i;
+    while (j + 1 < fine.length && off[j + 1] <= SHORT_HOP) j++;
+    const closest = Math.min(...off.slice(i, j + 1)) + MEET_SLACK;
+    const nearest = [];
+    for (let k = i; k <= j; k++) if (off[k] <= closest) nearest.push(k);
+    meetings.push({ lo: i, hi: j, first: nearest[0], last: nearest[nearest.length - 1] });
+    i = j + 1;
+  }
+  /// Whether a stretch from piece a to piece b keeps clear of where it
+  /// meets the route: its exit CLEARANCE short of the last meeting it
+  /// reaches (unless that's where it was entered), its entry CLEARANCE past
+  /// the first (unless that's where it's left).
+  const clearOfMeetings = (a, b) => {
+    const entry = a * SUB, exit = b * SUB;
+    const lo = Math.min(entry, exit), hi = Math.max(entry, exit);
+    const on = meetings.filter((m) => m.hi >= lo && m.lo <= hi);
+    if (!on.length) return true;
+    const forward = exit > entry;
+    // Metres from one place to another the way it's driven.
+    const ahead = (from, to) => (forward ? fine[to] - fine[from] : fine[from] - fine[to]);
+    const last = forward ? on[on.length - 1] : on[0], first = forward ? on[0] : on[on.length - 1];
+    const holds = (m, i) => m.lo <= i && i <= m.hi;
+    if (!holds(last, entry) && ahead(forward ? last.first : last.last, exit) > -CLEARANCE) return false;
+    if (!holds(first, exit) && ahead(forward ? first.last : first.first, entry) < CLEARANCE) return false;
+    return true;
+  };
 
   let best = null;
   for (const leg of frame.legs) {
@@ -339,6 +398,21 @@ export function fitRoad(road, plan) {
     const way = foot.map((f) => route.heading(f.along - 500, f.along + 500));
     const hopIn = q.map((p, j) => (foot[j].meters < SHORT_HOP ? null : unit(sub(p, route.point(foot[j].along - foot[j].meters)))));
     const hopOut = q.map((p, j) => (foot[j].meters < SHORT_HOP ? null : unit(sub(route.point(foot[j].along + foot[j].meters), p))));
+    // Off the route less along it (the exit's last stretch must bring it
+    // down), and off plus along (the entry's first must not): an end past a
+    // junction the route turns at runs away from it with no headway.
+    const fineFoot = fineAt.map((p) => route.nearest(p));
+    const closing = fineFoot.map((f) => f.meters - f.along);
+    const opening = fineFoot.map((f) => f.meters + f.along);
+    /// Whether the end at piece j, its stretch on the side `inward` (+1:
+    /// further along the road), keeps `value` within OVERSHOOT of its least
+    /// over the stretch's LOOK metres.
+    const clear = (j, inward, value) => {
+      const end = j * SUB;
+      const other = Math.min(Math.max(end + inward * reach, 0), fine.length - 1);
+      const least = Math.min(...value.slice(Math.min(end, other), Math.max(end, other) + 1));
+      return value[end] - least <= OVERSHOOT;
+    };
     const near = [0];
     for (const f of foot) near.push(near[near.length - 1] + (f.meters <= ON_ROUTE ? 1 : 0));
     const legSeconds = route.length * frame.pathFactor / frame.pace;
@@ -346,11 +420,11 @@ export function fitRoad(road, plan) {
     for (const forward of [true, false]) {
       const entering = q.map((_, j) => {
         const r = forward ? ahead[j] : neg(behind[j]);
-        return !!r && !turns(r, way[j]) && !turns(hopIn[j], r);
+        return !!r && !turns(r, way[j]) && !turns(hopIn[j], r) && clear(j, forward ? 1 : -1, opening);
       });
       const leaving = q.map((_, j) => {
         const r = forward ? behind[j] : neg(ahead[j]);
-        return !!r && !turns(r, way[j]) && !turns(r, hopOut[j]);
+        return !!r && !turns(r, way[j]) && !turns(r, hopOut[j]) && clear(j, forward ? -1 : 1, closing);
       });
       for (let a = 0; a < q.length; a++) {
         if (!entering[a]) continue;
@@ -361,7 +435,7 @@ export function fitRoad(road, plan) {
           const headway = foot[b].along - foot[a].along;
           if (headway < SPAN_HEADWAY * len(sub(q[b], q[a])) || headway < LENGTH_HEADWAY * stretch) continue;
           const lo = Math.min(a, b), hi = Math.max(a, b);
-          if (near[hi + 1] - near[lo] >= ON_ROUTE_SHARE * (hi - lo + 1)) continue;
+          if (near[hi + 1] - near[lo] >= ON_ROUTE_SHARE * (hi - lo + 1) || !clearOfMeetings(a, b)) continue;
           const stretchSeconds = roadSeconds * stretch / total;
           const added = (foot[a].meters + foot[b].meters) * DETOUR / frame.pace - headway * frame.pathFactor / frame.pace + stretchSeconds;
           if (added > most) continue;
@@ -381,4 +455,129 @@ export function fitRoad(road, plan) {
     share: (at[hi] - at[lo]) / total, startsAtEnd: lo === 0, endsAtEnd: hi === count, score: best.score,
     addAt: addPoint(stretch, frame.path),
   };
+}
+
+/// Whether the route runs along the road already: both its ends by the
+/// route, or ON_ROUTE_SHARE of it within ON_ROUTE of it (PlanRoads.isOnRoute).
+export function isOnRoute(road, plan) {
+  const frame = frameOf(plan);
+  const line = lineOf(road);
+  if (!frame || line.length < 2) return false;
+  if (distanceTo(line[0], frame.path) <= ON_ROUTE && distanceTo(line[line.length - 1], frame.path) <= ON_ROUTE) return true;
+  const track = new Track(line.map(frame.xy)), path = new Track(frame.path.map(frame.xy));
+  let near = 0;
+  for (let i = 0; i <= 50; i++) if (path.nearest(track.point(track.length * i / 50)).meters <= ON_ROUTE) near++;
+  return near >= ON_ROUTE_SHARE * 51;
+}
+
+// ── A U-turn on the routed line (the app's 9d8666788; the user,
+// 2026-11-04: adding a road must never make a U-turn) ────────────────────
+
+/// Two passes this near are the same road driven back.
+const RETRACE_MATCH = 80;
+/// Driven back at least this far each way, it's a U-turn: less is the two
+/// sides of a sharp junction.
+const SHORTEST_RETRACE = 150;
+/// A road's end this near the out-and-back is on it.
+const ON_U_TURN = 150;
+/// A trimmed end goes this far short of where the out-and-back begins.
+const TRIM_BACK = 200;
+/// Routed, a road that adds more than this share of what was said, plus
+/// this, doesn't go in (the QA, 2026-11-04: +20 min said, +55 driven).
+export const PROMISE_SHARE = 1.5;
+export const PROMISE_SLACK = 5 * 60;
+
+/// A flat frame about a line's first point, both ways.
+function flatAbout(origin) {
+  const scale = 111320 * Math.max(0.2, Math.cos(origin[1] * Math.PI / 180));
+  return {
+    xy: (c) => [(c[0] - origin[0]) * scale, (c[1] - origin[1]) * 111320],
+    lonLat: (p) => [origin[0] + p[0] / scale, origin[1] + p[1] / 111320],
+  };
+}
+
+/// Whether the routed line drives out and back through the added stretch's
+/// entry or exit (the router carries on past a waypoint and turns round
+/// wherever it can), and if so, where that end goes instead: short of where
+/// the out-and-back begins (an exit) or past where it ends (an entry). Null:
+/// no U-turn at either end (PlanRoads.uTurnEnds).
+export function uTurnEnds(path, entry, exit) {
+  if (!Array.isArray(path) || path.length < 3) return null;
+  const { xy, lonLat } = flatAbout(path[0]);
+  const track = new Track(path.map(xy));
+  const together = (s, d) => s - d >= 0 && s + d <= track.length && len(sub(track.point(s - d), track.point(s + d))) < RETRACE_MATCH;
+  // Each out-and-back, from where it leaves the road it came by to where
+  // it's back: metres along the line.
+  const runs = [];
+  for (const s of track.along) {
+    if (!together(s, SHORTEST_RETRACE)) continue;
+    let d = SHORTEST_RETRACE;
+    while (together(s, d + 25)) d += 25;
+    const last = runs[runs.length - 1];
+    if (last && s - d <= last.hi) runs[runs.length - 1] = { lo: Math.min(last.lo, s - d), hi: Math.max(last.hi, s + d) };
+    else runs.push({ lo: s - d, hi: s + d });
+  }
+  const through = (point) => {
+    const p = xy(point);
+    return runs.find((run) => {
+      for (let s = run.lo; s <= run.hi; s += 25) if (len(sub(track.point(s), p)) < ON_U_TURN) return true;
+      return false;
+    });
+  };
+  const inRun = through(entry), outRun = through(exit);
+  const back = inRun ? lonLat(track.point(inRun.hi + TRIM_BACK)) : null;
+  const short = outRun ? lonLat(track.point(outRun.lo - TRIM_BACK)) : null;
+  return back || short ? { entry: back, exit: short } : null;
+}
+
+/// The fitted road with its stretch cut to a new entry or exit (in the
+/// order it's driven), each on the stretch. Null: not on it, or what's left
+/// is shorter than a stretch can be (PlanRoads.trimmed).
+export function trimmed(found, entry, exit) {
+  const driven = found.reversed ? [...found.line].reverse() : found.line;
+  if (driven.length < 2) return null;
+  const { xy } = flatAbout(driven[0]);
+  const track = new Track(driven.map(xy));
+  let from = 0, to = track.length;
+  if (entry) {
+    const at = track.nearest(xy(entry));
+    if (!(at.meters < ON_U_TURN)) return null;
+    from = at.along;
+  }
+  if (exit) {
+    const at = track.nearest(xy(exit));
+    if (!(at.meters < ON_U_TURN)) return null;
+    to = at.along;
+  }
+  const whole = length(lineOf(found.road));
+  if (to - from < Math.max(SHORTEST_STRETCH, Math.min(SHORTEST_SHARE * whole, ENOUGH_STRETCH))) return null;
+  const cut = track.slice(driven, from, to);
+  const share = (to - from) / Math.max(track.length, 1);
+  // A cut end no longer reaches the catalog's end there.
+  const [cutsFirst, cutsLast] = found.reversed ? [!!exit, !!entry] : [!!entry, !!exit];
+  return {
+    ...found, line: found.reversed ? cut.reverse() : cut,
+    share: (Number.isFinite(found.share) ? found.share : 1) * share,
+    roadSeconds: Number.isFinite(found.roadSeconds) ? found.roadSeconds * share : found.roadSeconds,
+    startsAtEnd: found.startsAtEnd !== false && !cutsFirst, endsAtEnd: found.endsAtEnd !== false && !cutsLast,
+  };
+}
+
+/// What to do once the plan with a just-added road is routed (HomePlan's
+/// checkRouted): "keep" it; "retry" with `road`, its U-turning end cut back
+/// (once, while `trying`); or "remove" it, saying `why`. `promised` is the
+/// seconds it was said to add, `before` the routed trip's seconds before it
+/// went in (none: no promise check), `now` the trip's now.
+export function routedVerdict(found, { path, promised, before, now, trying, duration }) {
+  const points = roadPoints(found);
+  const ends = uTurnEnds(path, points[0].at, points[points.length - 1].at);
+  const name = found.road.n;
+  if (ends) {
+    const cut = trying ? trimmed(found, ends.entry, ends.exit) : null;
+    return cut ? { action: "retry", road: cut } : { action: "remove", why: `${name} needs a U-turn on this route, so it wasn't added.` };
+  }
+  if (Number.isFinite(before) && Number.isFinite(now) && now - before > PROMISE_SHARE * promised + PROMISE_SLACK) {
+    return { action: "remove", why: `${name} would add ${duration(now - before)} here, not ${duration(promised)}, so it wasn't added.` };
+  }
+  return { action: "keep" };
 }

@@ -19,7 +19,7 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js";
-import { fitRoad, level, lineOf, roadPoints, wholeRoad } from "./good-roads.js?v=4";
+import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=5";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -728,26 +728,35 @@ function roadShape() {
   return JSON.stringify([at(plan.start), at(plan.end), plan.waypoints.map((w) => [w.lat, w.lon, w.type, w.stayMinutes || 0]), plan.trip, plan.name || ""]);
 }
 
+/// Roads taken back out after routing, for each plan: not offered again on it.
+const turnedBack = new WeakMap();
+const turnedBackOf = () => turnedBack.get(plan) || turnedBack.set(plan, new Set()).get(plan);
+
 /// How a road joins the plan as it is now: with a start and an end, the
 /// stretch of it that fits the route, driven the route's way (the app's
 /// PlanRoads.fit; the user, 2026-11-04: a road added whole meant driving to
-/// one end, all of it, and back); one with no stretch that fits, or a plan
-/// with only a start, the whole road where it adds least.
+/// one end, all of it, and back); a plan with only a start, or none, the
+/// whole road where it adds least. One with no stretch that fits doesn't go
+/// in (the app's 9d8666788: placed whole, it doubled a road the route
+/// drives, or went in the wrong way round): `{ why }` says which.
 function joinRoad(road) {
   const chain = chainPoints();
+  if (chain.length < 2) return wholeRoad(road, chain, routePace());
   const routed = plan.path?.geometry?.length >= 2;
-  const fitted = chain.length >= 2
-    ? fitRoad(road, { path: routed ? plan.path.geometry : chainLine(), chain, metersPerSecond: routePace(), pathIsRoad: routed })
-    : null;
-  return fitted || wholeRoad(road, chain, routePace());
+  const input = { path: routed ? plan.path.geometry : chainLine(), chain, metersPerSecond: routePace(), pathIsRoad: routed };
+  const fitted = turnedBackOf().has(road.t) ? null : fitRoad(road, input);
+  if (fitted) return fitted;
+  return isOnRoute(road, input)
+    ? { why: `${road.n} is on your route already.`, note: "It's on your route already" }
+    : { why: `${road.n} doesn't fit this route.`, note: "Doesn't fit this route" };
 }
 
 /// A road into the plan: the stretch that fits (or the whole road), its
 /// first end named for the road, points along it to keep the router on it,
 /// its far end by the catalog's name when it reaches it (PlanRoads.points).
 /// With no route yet, it is the route: its ends the start and the end.
-function driveWholeRoad(road) {
-  const placed = joinRoad(road);
+function driveWholeRoad(road, placed = joinRoad(road), check = { trying: true }) {
+  if (placed.why) return toast(placed.why, true);
   const points = roadPoints(placed);
   const spot = (p) => ({ id: newUUID(() => crypto.randomUUID()), lat: round(p.at[1]), lon: round(p.at[0]), label: p.label ? clip(p.label, MOST_LABEL_CHARACTERS) : null });
   const fresh = !plan.start && !plan.end;
@@ -755,6 +764,9 @@ function driveWholeRoad(road) {
   if (plan.waypoints.length + added.length > MAX_WAYPOINTS) {
     return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
   }
+  // What it said it adds, and the trip's time before (the first try's).
+  const promised = check.promised ?? placed.seconds;
+  const before = "before" in check ? check.before : plan.path?.geometry?.length >= 2 ? plan.path.durationSeconds : undefined;
   edit(() => {
     if (fresh) {
       plan.start = spot(points[0]);
@@ -769,6 +781,35 @@ function driveWholeRoad(road) {
   const share = Number.isFinite(placed.share) ? placed.share : 1;
   const length = Number.isFinite(road.m) ? formatDistance(road.m * share * 1609.344, miles) : null;
   toast(`Added ${road.n}${length ? `: +${length.value} ${length.unit}, about ${formatDuration(fresh ? placed.roadSeconds : placed.seconds)}` : ""}.`);
+  // Into a route, it's looked over once it's routed.
+  roadCheck = fresh ? null : { placed, promised, before, trying: check.trying, shape: roadShape() };
+}
+
+/// The road just added, to look over once the plan's routed with it.
+let roadCheck = null;
+
+/// Once the road with the new road's points is in, it's held to what was
+/// promised (the app's HomePlan.checkRouted; the user, 2026-11-04: adding a
+/// road must never make a U-turn). A U-turn through either end of the
+/// stretch (the router carries on past a waypoint and turns round where it
+/// can) has that end cut back and the road asked for again, once; still
+/// there, the road comes out again. Adding far more time than it said, it
+/// comes out again. Out, it's not offered again on this plan, and the
+/// driver's told why. A change in between leaves it be.
+function checkAddedRoad() {
+  const check = roadCheck;
+  roadCheck = null;
+  if (!check || check.shape !== roadShape() || !plan.path?.geometry?.length) return;
+  const verdict = routedVerdict(check.placed, {
+    path: plan.path.geometry, promised: check.promised, before: check.before, now: plan.path.durationSeconds,
+    trying: check.trying, duration: formatDuration,
+  });
+  if (verdict.action === "keep") return;
+  // The add taken back for good: undone, with nothing to redo.
+  restore(history.back.pop());
+  if (verdict.action === "retry") return driveWholeRoad(check.placed.road, verdict.road, { trying: false, promised: check.promised, before: check.before });
+  turnedBackOf().add(check.placed.road.t);
+  toast(verdict.why, true);
 }
 
 /// Straight lines between the points while the road is on its way.
@@ -944,13 +985,16 @@ function onMapClick(event) {
   }
   if (road) {
     // The stretch that fits the route, when one does: "Add this road" and
-    // how much of it; else the whole road.
+    // how much of it; a plan with no route yet, the whole road; one with no
+    // stretch that fits, why not, greyed.
     const joined = joinRoad(road);
     const part = Number.isFinite(joined.share) && joined.share < 0.99;
     const length = Number.isFinite(road.m) ? formatDistance(road.m * (Number.isFinite(joined.share) ? joined.share : 1) * 1609.344, miles) : null;
     const time = chainPoints().length ? `adds about ${formatDuration(joined.seconds)}` : `about ${formatDuration(joined.roadSeconds)}`;
-    const title = Number.isFinite(joined.share) ? "Add this road" : "Drive the whole road";
-    item(`<span class="badge whole"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20C5 13 19 15 19 8V4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3.2 3"/></svg></span><span class="two"><span>${title}</span><small>${length ? `${length.value} ${length.unit}${part ? " of it" : ""} · ` : ""}${time}</small></span>`, () => driveWholeRoad(road), "whole");
+    const title = Number.isFinite(joined.share) || joined.why ? "Add this road" : "Drive the whole road";
+    const detail = joined.why ? escapeHTML(joined.note) : `${length ? `${length.value} ${length.unit}${part ? " of it" : ""} · ` : ""}${time}`;
+    const row = item(`<span class="badge whole"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20C5 13 19 15 19 8V4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3.2 3"/></svg></span><span class="two"><span>${title}</span><small>${detail}</small></span>`, () => driveWholeRoad(road, joined), "whole");
+    row.disabled = !!joined.why;
   }
   item("Cancel", () => {}, "cancel");
   const box = map.getContainer().getBoundingClientRect();
@@ -1080,6 +1124,7 @@ async function route() {
     saveDraft();
     render({ keepTyping: true });
     if (!routeInView()) fitRoute();
+    checkAddedRoad();
   } catch (failure) {
     if (ask !== routeAsk) return;
     toast(failure.message, true);

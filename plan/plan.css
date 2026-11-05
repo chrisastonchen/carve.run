@@ -506,6 +506,8 @@ a { color: var(--green-ink); }
 .click-menu .badge.whole { background: #1A1537; color: #775CFF; }
 .click-menu .badge.whole svg { width: 18px; height: 18px; }
 .click-menu button.whole { height: auto; min-height: 56px; padding-top: 6px; padding-bottom: 6px; }
+/* A road with no stretch that fits: why, greyed. */
+.click-menu button.whole:disabled, .click-menu button.whole:disabled:hover { background: none; font-weight: 600; opacity: 0.55; cursor: default; }
 .click-menu .two { display: flex; flex-direction: column; line-height: 1.25; }
 .click-menu .two small { font-size: 13.5px; font-weight: 500; color: var(--ink-3); }
 
