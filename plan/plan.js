@@ -19,7 +19,7 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js";
-import { level, lineOf, roadPoints, wholeRoad } from "./good-roads.js?v=3";
+import { fitRoad, level, lineOf, roadPoints, wholeRoad } from "./good-roads.js?v=4";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -728,12 +728,26 @@ function roadShape() {
   return JSON.stringify([at(plan.start), at(plan.end), plan.waypoints.map((w) => [w.lat, w.lon, w.type, w.stayMinutes || 0]), plan.trip, plan.name || ""]);
 }
 
-/// "Drive the whole road": in where it adds least, from the nearer end;
-/// its first end named for the road, points along it to keep the router
-/// on it, its far end by the catalog's name (the app's PlanRoads.points).
+/// How a road joins the plan as it is now: with a start and an end, the
+/// stretch of it that fits the route, driven the route's way (the app's
+/// PlanRoads.fit; the user, 2026-11-04: a road added whole meant driving to
+/// one end, all of it, and back); one with no stretch that fits, or a plan
+/// with only a start, the whole road where it adds least.
+function joinRoad(road) {
+  const chain = chainPoints();
+  const routed = plan.path?.geometry?.length >= 2;
+  const fitted = chain.length >= 2
+    ? fitRoad(road, { path: routed ? plan.path.geometry : chainLine(), chain, metersPerSecond: routePace(), pathIsRoad: routed })
+    : null;
+  return fitted || wholeRoad(road, chain, routePace());
+}
+
+/// A road into the plan: the stretch that fits (or the whole road), its
+/// first end named for the road, points along it to keep the router on it,
+/// its far end by the catalog's name when it reaches it (PlanRoads.points).
 /// With no route yet, it is the route: its ends the start and the end.
 function driveWholeRoad(road) {
-  const placed = wholeRoad(road, chainPoints(), routePace());
+  const placed = joinRoad(road);
   const points = roadPoints(placed);
   const spot = (p) => ({ id: newUUID(() => crypto.randomUUID()), lat: round(p.at[1]), lon: round(p.at[0]), label: p.label ? clip(p.label, MOST_LABEL_CHARACTERS) : null });
   const fresh = !plan.start && !plan.end;
@@ -752,7 +766,8 @@ function driveWholeRoad(road) {
   // The whole plan is this drive: Save opens its page while it stays so.
   plan.fromRoad = fresh ? { slug: road.s, shape: roadShape() } : null;
   saveDraft();
-  const length = Number.isFinite(road.m) ? formatDistance(road.m * 1609.344, miles) : null;
+  const share = Number.isFinite(placed.share) ? placed.share : 1;
+  const length = Number.isFinite(road.m) ? formatDistance(road.m * share * 1609.344, miles) : null;
   toast(`Added ${road.n}${length ? `: +${length.value} ${length.unit}, about ${formatDuration(fresh ? placed.roadSeconds : placed.seconds)}` : ""}.`);
 }
 
@@ -928,10 +943,14 @@ function onMapClick(event) {
     if (choice.key === likeliest) (lit = button).classList.add("on");
   }
   if (road) {
-    const whole = wholeRoad(road, chainPoints(), routePace());
-    const length = Number.isFinite(road.m) ? formatDistance(road.m * 1609.344, miles) : null;
-    const time = chainPoints().length ? `adds about ${formatDuration(whole.seconds)}` : `about ${formatDuration(whole.roadSeconds)}`;
-    item(`<span class="badge whole"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20C5 13 19 15 19 8V4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3.2 3"/></svg></span><span class="two"><span>Drive the whole road</span><small>${length ? `${length.value} ${length.unit} · ` : ""}${time}</small></span>`, () => driveWholeRoad(road), "whole");
+    // The stretch that fits the route, when one does: "Add this road" and
+    // how much of it; else the whole road.
+    const joined = joinRoad(road);
+    const part = Number.isFinite(joined.share) && joined.share < 0.99;
+    const length = Number.isFinite(road.m) ? formatDistance(road.m * (Number.isFinite(joined.share) ? joined.share : 1) * 1609.344, miles) : null;
+    const time = chainPoints().length ? `adds about ${formatDuration(joined.seconds)}` : `about ${formatDuration(joined.roadSeconds)}`;
+    const title = Number.isFinite(joined.share) ? "Add this road" : "Drive the whole road";
+    item(`<span class="badge whole"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20C5 13 19 15 19 8V4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3.2 3"/></svg></span><span class="two"><span>${title}</span><small>${length ? `${length.value} ${length.unit}${part ? " of it" : ""} · ` : ""}${time}</small></span>`, () => driveWholeRoad(road), "whole");
   }
   item("Cancel", () => {}, "cancel");
   const box = map.getContainer().getBoundingClientRect();
