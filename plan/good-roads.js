@@ -114,20 +114,21 @@ export function wholeRoad(road, chain, metersPerSecond) {
 const viaCount = (m) => Math.min(5, Math.max(2, Math.floor(m / 30000)));
 
 /// The points a road adds, in the order they're driven: the stretch's first
-/// end, named for the road; points along it so the router keeps to it; its
-/// far end, by the catalog's name for it only when the stretch reaches that
-/// end of the road (PlanRoads.points).
+/// end, named for the road; points along it so the router keeps to it,
+/// named for the road too; its far end, by the catalog's name for it when
+/// the stretch reaches that end of the road, else the road's (PlanRoads.points;
+/// the QA, 2026-11-04: named for their towns, "Woodside" three times).
 export function roadPoints(found) {
   const line = found.reversed ? [...found.line].reverse() : found.line;
   const count = viaCount(length(line));
   const vias = [];
   for (let i = 1; i <= count; i++) {
     const point = shaping(i / (count + 1), line, 0.25 / (count + 1));
-    if (point) vias.push({ at: point, label: null });
+    if (point) vias.push({ at: point, label: found.road.n });
   }
   const reaches = found.reversed ? found.startsAtEnd !== false : found.endsAtEnd !== false;
   const ends = Array.isArray(found.road.e) && found.road.e.length === 2 ? found.road.e : null;
-  const exit = reaches && ends ? (found.reversed ? ends[0] : ends[1]) || null : null;
+  const exit = (reaches && ends ? (found.reversed ? ends[0] : ends[1]) : null) || found.road.n;
   return [{ at: line[0], label: found.road.n }, ...vias, { at: line[line.length - 1], label: exit }];
 }
 
@@ -413,6 +414,19 @@ export function fitRoad(road, plan) {
       const least = Math.min(...value.slice(Math.min(end, other), Math.max(end, other) + 1));
       return value[end] - least <= OVERSHOOT;
     };
+    // How far along the leg each piece is, the leg run on straight past its
+    // ends: one nearest its first (or last) LOOK metres is behind its start
+    // (or past its end) by as far as it lies back along the leg's way over
+    // them (the app's 824e7db72; the QA, 2026-11-04: La Honda Road from
+    // Woodside, behind the start, the trip driving there first).
+    const startWay = route.heading(0, LOOK), endWay = route.heading(route.length - LOOK, route.length);
+    const legStart = route.point(0), legEnd = route.point(route.length);
+    const legAlong = q.map((p, j) => {
+      let s = foot[j].along;
+      if (s < LOOK && startWay) s = Math.min(s, dot(sub(p, legStart), startWay));
+      if (s > route.length - LOOK && endWay) s = Math.max(s, route.length + dot(sub(p, legEnd), endWay));
+      return s;
+    });
     const near = [0];
     for (const f of foot) near.push(near[near.length - 1] + (f.meters <= ON_ROUTE ? 1 : 0));
     const legSeconds = route.length * frame.pathFactor / frame.pace;
@@ -432,6 +446,9 @@ export function fitRoad(road, plan) {
           if (!(forward ? b > a : b < a) || !leaving[b]) continue;
           const stretch = Math.abs(at[b] - at[a]);
           if (stretch < shortest) continue;
+          // In the leg's order: not entered behind where it starts, nor left
+          // past where it ends.
+          if (legAlong[a] < -CLEARANCE || legAlong[b] > route.length + CLEARANCE) continue;
           const headway = foot[b].along - foot[a].along;
           if (headway < SPAN_HEADWAY * len(sub(q[b], q[a])) || headway < LENGTH_HEADWAY * stretch) continue;
           const lo = Math.min(a, b), hi = Math.max(a, b);
@@ -476,8 +493,10 @@ export function isOnRoute(road, plan) {
 /// Two passes this near are the same road driven back.
 const RETRACE_MATCH = 80;
 /// Driven back at least this far each way, it's a U-turn: less is the two
-/// sides of a sharp junction.
+/// sides of a sharp junction. Looked for this far out from the turn first,
+/// then any of RETRACE_FROM.
 const SHORTEST_RETRACE = 150;
+const RETRACE_FROM = [SHORTEST_RETRACE, 300, 500, 750, 1000];
 /// A road's end this near the out-and-back is on it.
 const ON_U_TURN = 150;
 /// A trimmed end goes this far short of where the out-and-back begins.
@@ -510,10 +529,14 @@ export function uTurnEnds(path, entry, exit) {
   const together = (s, d) => s - d >= 0 && s + d <= track.length && len(sub(track.point(s - d), track.point(s + d))) < RETRACE_MATCH;
   // Each out-and-back, from where it leaves the road it came by to where
   // it's back: metres along the line.
+  // Looked for every 25 m, not only at the line's points, and as far out as
+  // a kilometre: a turn round a block (Directions loops one rather than turn
+  // at a waypoint; the app's 824e7db72) has its two passes apart until
+  // they're back on the road they came by.
   const runs = [];
-  for (const s of track.along) {
-    if (!together(s, SHORTEST_RETRACE)) continue;
-    let d = SHORTEST_RETRACE;
+  for (let s = 0; s <= track.length; s += 25) {
+    let d = RETRACE_FROM.find((from) => together(s, from));
+    if (d === undefined) continue;
     while (together(s, d + 25)) d += 25;
     const last = runs[runs.length - 1];
     if (last && s - d <= last.hi) runs[runs.length - 1] = { lo: Math.min(last.lo, s - d), hi: Math.max(last.hi, s + d) };

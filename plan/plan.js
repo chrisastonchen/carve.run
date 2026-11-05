@@ -19,7 +19,7 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js";
-import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=6";
+import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=7";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
