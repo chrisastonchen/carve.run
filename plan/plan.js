@@ -796,6 +796,18 @@ let roadCheck = null;
 /// there, the road comes out again. Adding far more time than it said, it
 /// comes out again. Out, it's not offered again on this plan, and the
 /// driver's told why. A change in between leaves it be.
+/// A road just added that the plan can't be routed with, when it was routed
+/// before: out again as it went in, still offered (it may route later), the
+/// driver told (the app's abcc4ed56). A plan with no road before is left be.
+function unroutedRoad() {
+  const check = roadCheck;
+  roadCheck = null;
+  if (!check || check.shape !== roadShape() || !Number.isFinite(check.before)) return false;
+  restore(history.back.pop());
+  toast(`${check.placed.road.n} couldn't be routed, so it wasn't added.`, true);
+  return true;
+}
+
 function checkAddedRoad() {
   const check = roadCheck;
   roadCheck = null;
@@ -1127,6 +1139,7 @@ async function route() {
     checkAddedRoad();
   } catch (failure) {
     if (ask !== routeAsk) return;
+    if (unroutedRoad()) return;
     toast(failure.message, true);
   }
 }
