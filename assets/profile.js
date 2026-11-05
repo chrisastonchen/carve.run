@@ -8,7 +8,8 @@ import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/ca
 import { usesMiles } from "/plan/route-wire.js";
 
 const $ = (id) => document.getElementById(id);
-const metric = !usesMiles();
+// The browser's language and country, as the rest of the site reads it.
+const metric = !usesMiles(navigator.language || "en-US");
 
 function escapeHTML(text) {
   return String(text ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
