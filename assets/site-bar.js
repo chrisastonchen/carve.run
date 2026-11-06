@@ -57,7 +57,11 @@ function wireBar() {
     }
     return;
   }
-  if (who) who.hidden = false;
+  // A bar with no account in it (the /go/ ad pages' wordmark-only bar): this
+  // module runs on import, so a throw here stopped home.js for anyone signed
+  // in and left those pages blank below the hero (11/6).
+  if (!who || !$("who-name")) return;
+  who.hidden = false;
   $("who-name").textContent = session.user.email ? session.user.email.split("@")[0] : "Account";
   $("who-btn")?.addEventListener("click", () => {
     const menu = $("who-menu");

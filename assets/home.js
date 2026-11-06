@@ -4,7 +4,7 @@
 // never plans anything itself: what's typed, dropped or pasted goes to
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
 // address bar).
-import "/assets/site-bar.js?v=7ba2c7c7a9";
+import "/assets/site-bar.js?v=bfd0517f5a";
 
 // The hero's car screen: CarPlay on an iPhone, Android Auto on Android (the
 // user, 2026-11-02). Here, not in site-bar.js: that file's import isn't
@@ -16,7 +16,7 @@ if (/android/i.test(navigator.userAgent || "")) {
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
-import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=05846f9529";
+import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=c9ddd2b545";
 import { heartButton, wireHearts } from "/assets/hearts.js?v=5f1f204eb8";
 import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=517867446e";
 import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=bb6f2616de";
@@ -617,6 +617,9 @@ function riseIn() {
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
   }), { rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
+  // .rise hides only under html.rising (styles.css), set here once the
+  // observer exists to show them again.
+  document.documentElement.classList.add("rising");
   items.forEach((el) => io.observe(el));
 }
 

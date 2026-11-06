@@ -144,12 +144,14 @@ footer .links a { color: var(--ink-dim); text-decoration: none; }
 footer .links a:hover { color: var(--ink); }
 
 /* ── motion ── */
-.rise { opacity: 0; transform: translateY(16px);
-        transition: opacity .7s ease, transform .7s cubic-bezier(.22,.61,.36,1); }
-.rise.in { opacity: 1; transform: none; }
+/* Hidden only once home.js is running and has set html.rising, so a script
+   that fails to load leaves the page visible, not blank (11/6). */
+.rise { transition: opacity .7s ease, transform .7s cubic-bezier(.22,.61,.36,1); }
+.rising .rise { opacity: 0; transform: translateY(16px); }
+.rising .rise.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .rise { opacity: 1; transform: none; transition: none; }
+  .rise, .rising .rise { opacity: 1; transform: none; transition: none; }
 }
 
 /* ── long-form pages ── */
