@@ -141,10 +141,12 @@
             + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
           return;
         }
-        // Not carve://: without the app, Safari stops on "the address is
-        // invalid". The store offers Open when Carve is installed, and
-        // Safari's own banner (app-argument) opens this drive in it.
-        location.href = window.carveStoreUrl ? carveStoreUrl("https://apps.apple.com/app/carve-route-planner/id6808087716") : "https://apps.apple.com/app/carve-route-planner/id6808087716";
+        // Through open.carve.run, another host than this page's, so iOS
+        // opens the app at this drive where it's installed (the store's Open
+        // loses the drive); without the app, the Worker offers the App Store
+        // and comes back (QA, 2026-11-06). Not carve://: without the app,
+        // Safari stops on "the address is invalid".
+        location.href = "https://open.carve.run/" + t;
       });
     });
   })();
