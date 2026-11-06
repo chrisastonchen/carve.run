@@ -600,6 +600,14 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .door .bot-check { font-size: 13px; color: var(--ink-3); }
 .door .bot-check[hidden] { display: none; }
 .door .bot-check p { margin: 0 0 6px; }
+/* Import on a computer fits the card (the user via Growth, 2026-11-05: the
+   drop box, "or", the link and "Plan a drive instead" ran past its foot): the
+   drop box is one row, and the photo gives up the rest of the height. */
+@media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) {
+  .door .drop { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 2px; align-items: center; justify-items: start; padding: 14px 18px; text-align: left; }
+  .door .drop svg { grid-row: span 2; }
+  .hero-copy:has(#pane-bring:not([hidden])) .hero-story.card-story { min-height: 56px; }
+}
 /* the card lets the suggestions hang below it */
 @media (min-width: 900px) and (min-height: 501px), (min-width: 900px) and (pointer: fine) { .hero-copy { overflow: visible; } }
 
