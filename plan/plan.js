@@ -1146,6 +1146,8 @@ async function route() {
       start: { lat: plan.start.lat, lon: plan.start.lon },
       end: { lat: end.lat, lon: end.lon },
       waypoints: via.map((w) => ({ lat: w.lat, lon: w.lon })),
+      // planner v6 (1.8): markers go to the router as via points, stops as stops
+      waypointTypes: via.map((w) => (w.type === "stop" ? "stop" : "marker")),
       style: plan.style || "balanced",
       trip: plan.trip,
       avoids: [],
