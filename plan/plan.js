@@ -20,6 +20,7 @@ import {
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js";
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=7";
+import { addPins } from "/assets/events.js?v=bb6f2616de";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -592,6 +593,7 @@ function setUpMap() {
     map.on("mouseleave", "good-roads-hit", () => hoverRoad(null));
     showGoodRoads();
     mapReady = true;
+    addPins(map, { newTab: true });
     syncRoadsKey();
     drawRoute();
     drawPins();
@@ -1878,7 +1880,7 @@ async function editOwn(id) {
     if (!row?.payload) throw new Failure("That route couldn't be found.");
     const payload = row.payload;
     openingSaved = true;
-    try { loadPayload(payload, "My Drives"); } finally { openingSaved = false; }
+    try { loadPayload(payload, "Saved"); } finally { openingSaved = false; }
     // Its link stays its link; a route never shared gets one when it's saved.
     const share = (row.shares || []).find((s) => s.token && !s.revoked_at);
     plan.id = String(payload.id || row.id).toUpperCase();

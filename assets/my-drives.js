@@ -28,7 +28,7 @@ const isAndroid = /android/i.test(navigator.userAgent || "");
 function signedOutView() {
   $("mine-sub").textContent = "Your routes, from the app and the planner.";
   if (narrow) {
-    empty(`<p>Your drives are in the Carve app, under My Drives. Sign in to the planner on a computer to see them here too.</p>
+    empty(`<p>Your routes are in the Carve app, under Saved. Sign in to the planner on a computer to see them here too.</p>
       <a class="new" style="display:inline-flex" href="${isAndroid ? "/android/" : APP_STORE}">Get the App</a>`);
   } else {
     empty(`<p>Sign in to see the routes you've made in the app and the planner.</p>
@@ -233,7 +233,7 @@ async function loadPlans() {
 async function loadSavedEvents() {
   let events;
   try {
-    events = await import("/assets/events.js");
+    events = await import("/assets/events.js?v=bb6f2616de");
   } catch {
     return;
   }
@@ -254,7 +254,7 @@ async function loadSavedEvents() {
     const name = document.createElement(token ? "a" : "span");
     name.className = "name";
     name.textContent = save.name || "A car event";
-    if (token) name.href = `/e/${encodeURIComponent(token)}/`;
+    if (token) name.href = `/e/${encodeURIComponent(token)}`;
     const facts = document.createElement("span");
     facts.className = "facts";
     facts.textContent = [at(save.starts_at), save.place].filter(Boolean).join(" · ");

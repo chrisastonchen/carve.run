@@ -57,6 +57,11 @@
 /* ── the guide's sections, sized for the card ── */
 .rv .sect { padding-top: 18px; border-top: 1px solid var(--line); }
 .rv .sect > h2 { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 10px; }
+/* A guide's "Car events near this road" (build_event_pages.py, each morning). */
+.rv .rv-events ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 8px; }
+.rv .rv-events li a { font-weight: 700; color: var(--ink); }
+.rv .rv-events li span { display: block; font-size: 14px; color: var(--ink-3); }
+.rv .rv-events p a { font-weight: 700; color: var(--ink); }
 .rv .prose p { font-size: 16px; line-height: 1.55; color: #C3CAC5; }
 .rv .prose p + p { margin-top: 10px; }
 .rv .prose a, .rv .know a, .rv .rv-sources a, .rv .check a { color: var(--green-ink); font-weight: 700; text-decoration: none; }

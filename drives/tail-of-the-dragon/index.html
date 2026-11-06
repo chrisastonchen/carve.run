@@ -21,7 +21,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=30">
-<link rel="stylesheet" href="/assets/route-view.css?v=d31e104c72">
+<link rel="stylesheet" href="/assets/route-view.css?v=b688721c1e">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <meta name="apple-itunes-app" content="app-id=6808087716, app-argument=https://carve.run/BhjjKjECeg">
 </head>
@@ -60,6 +60,7 @@
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
     <a href="/drives/" aria-current="page">Explore</a>
+    <a href="/events/" class="wide-only">Events</a>
     <a href="/plan/" class="wide-only">Plan a Route</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
@@ -80,6 +81,7 @@
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
   <a href="/drives/">Explore</a>
+  <a href="/events/">Events</a>
   <a href="/plan/">Plan a Route</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
@@ -146,8 +148,9 @@
     <ul class="cards nearby"><li><a href="/drives/cherohala-skyway/"><img src="https://carve.run/assets/drives/cherohala-skyway.jpg?v=28d37cd457" width="1200" height="750" loading="lazy" alt=""><span class="n">Cherohala Skyway</span><span class="m"><span class="mark" style="background:#D2591F"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Twisty · TN-165 and NC-143, Tellico Plains to Robbinsville · 51 mi</span></a></li><li><a href="/drives/blue-ridge-parkway/"><img src="https://carve.run/assets/drives/blue-ridge-parkway.jpg?v=a102c87ede" width="1200" height="750" loading="lazy" alt=""><span class="n">Blue Ridge Parkway</span><span class="m"><span class="mark" style="background:#D2591F"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Twisty · Mileposts 384 to 451, Asheville to Waterrock Knob · 68 mi</span></a></li><li><a href="/drives/angeles-crest-highway/"><img src="https://carve.run/assets/drives/angeles-crest-highway.jpg?v=1141f0482d" width="1200" height="750" loading="lazy" alt=""><span class="n">Angeles Crest Highway</span><span class="m"><span class="mark" style="background:#D2591F"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12Q4.5 3 7 12Q9.5 21 12 12Q14.5 3 17 12Q19.5 21 22 12" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Twisty · CA-2, La Cañada Flintridge to Newcomb&#x27;s Ranch · 26 mi</span></a></li></ul>
   </section>
   <p class="rv-sources">Sources: <a href="https://en.wikipedia.org/wiki/Deals_Gap,_North_Carolina" rel="noopener">Wikipedia: Deals Gap</a>, <a href="https://en.wikipedia.org/wiki/U.S._Route_129_in_North_Carolina" rel="noopener">Wikipedia: US-129 in North Carolina</a>, <a href="https://tailofthedragon.com/plan-your-trip/" rel="noopener">Tail of the Dragon: plan your trip</a>, <a href="https://www.tn.gov/tdot/news/2024/10/2/special-traffic-alert-us-129-the-dragon-blount-county.html" rel="noopener">TDOT traffic alert</a>, <a href="https://roadtrippers.com/magazine/tail-of-the-dragon-stops/" rel="noopener">Roadtrippers</a>. Distance, time, elevation, curves and intensity are from Carve's route. Checked 2026-10-06.</p>
+<!--EV:NEAR--><section class="sect rv-events"><h2>Car events near this road</h2><ul><li><a href="/e/F2jjAyw">2026 HSCC Event #9</a> <span>Sun, Nov 8 · Franklin · 35 mi from the road</span></li></ul><p><a href="/events/north-carolina/">More car events in North Carolina</a></p></section><!--/EV:NEAR-->
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 <div class="foot quiet"><a class="linkish grey" href="/plan/">+ Plan a new route</a></div>
@@ -197,6 +200,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=e70a979f56" defer></script>
+<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>

@@ -267,7 +267,7 @@
       if (nav.querySelector('a[href="/my-drives/"]')) return;
       var a = document.createElement("a");
       a.href = "/my-drives/";
-      a.textContent = "My Drives";
+      a.textContent = "Saved";
       if (/^\/my-drives\//.test(location.pathname)) a.setAttribute("aria-current", "page");
       var after = nav.querySelector('a[href="/plan/"]') || nav.querySelector('a[href="/drives/"]');
       if (after) after.after(a);

@@ -11,6 +11,7 @@ import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
 import { heartButton, wireHearts } from "/assets/hearts.js?v=5f1f204eb8";
+import { MAP_DAYS, addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby, nextOn, within } from "/assets/events.js?v=bb6f2616de";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
@@ -35,7 +36,8 @@ let place = null;
 let map = null;
 let pointed = null;
 let popup = null;
-const filters = { levels: new Set(), length: "", query: "" };
+const filters = { query: "" };
+let events = [];
 
 function prepare(list) {
   list.forEach((road, k) => {
@@ -67,11 +69,6 @@ function awayText(road) {
 }
 
 function passes(road) {
-  if (filters.levels.size && !(road.lv && filters.levels.has(road.lv.key))) return false;
-  if (filters.length) {
-    const [lo, hi] = filters.length.split("-").map(Number);
-    if (!(road.m >= lo && road.m < hi)) return false;
-  }
   if (filters.query) return filters.query.split(/\s+/).every((word) => road.text.includes(word));
   return true;
 }
@@ -97,8 +94,8 @@ function render() {
   pool.sort(anywhere ? (a, b) => (b.f || 0) - (a.f || 0) || (b.b || 0) - (a.b || 0)
     : (a, b) => km(from, lineOf(a)[0]) - km(from, lineOf(b)[0]));
   shown = pool.slice(0, LIST_MAX);
-  $("ex-title").textContent = searching ? (pool.length ? `${pool.length} ${pool.length === 1 ? "drive" : "drives"} found` : "No drives found")
-    : place && !moved ? `Drives near ${place.label || "you"}` : anywhere ? "Legendary drives and more" : "Drives on the map";
+  $("ex-title").textContent = searching ? (pool.length ? `${pool.length} ${pool.length === 1 ? "route" : "routes"} found` : "No routes found")
+    : anywhere ? "Legendary Roads" : "Best Roads in the Area";
   list.innerHTML = shown.map((r) => `<li><a class="ex-row" href="/drives/${encodeURIComponent(r.s)}/" data-k="${r.k}">
     <img src="${escapeHTML(r.photo)}" alt="" loading="lazy">
     <span class="t"><span class="n">${escapeHTML(r.n)}</span>
@@ -109,8 +106,65 @@ function render() {
   wireHearts(list);
   const more = pool.length - shown.length;
   $("ex-more").hidden = more <= 0;
-  $("ex-more").textContent = more > 0 ? `${more} more on the map: zoom in, or narrow it down with the filters.` : "";
+  $("ex-more").textContent = more > 0 ? `${more} more on the map: zoom in, or search.` : "";
   if (map?.getLayer("ex-hidden")) map.setFilter("ex-hidden", ["!", ["in", ["get", "k"], ["literal", passing.map((r) => r.k)]]]);
+  renderEvents();
+}
+
+// ── the events: the next two weeks', near the visitor, or in the map's view once it's moved ──
+
+function renderEvents() {
+  let list = [];
+  if (!filters.query) {
+    if (map && moved) {
+      const b = map.getBounds();
+      const c = map.getCenter();
+      list = events.filter((ev) => within(ev, MAP_DAYS) && b.contains([ev.lon, ev.lat]))
+        .sort((a, z) => nextOn(a).start - nextOn(z).start).slice(0, 12);
+      list = list.length ? list : nearby(events, { lat: c.lat, lon: c.lng });
+    } else {
+      list = nearby(events, place);
+    }
+  }
+  $("ex-events").hidden = !list.length;
+  $("ex-ev").innerHTML = list.map((ev) => `<li>${eventCard(ev, place)}</li>`).join("");
+  $("ex-ev").scrollLeft = 0;
+  finishPictures($("ex-ev"));
+  railArrows();
+}
+
+// Back and forward arrows over the events, for a mouse (the user, 2026-11-04);
+// a phone or trackpad swipes. A press moves by the cards that fit, so none is skipped.
+const ARROW = (d) => `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function wireRailArrows() {
+  const rail = $("ex-ev");
+  const arrows = document.createElement("div");
+  arrows.className = "ev-arrows";
+  arrows.id = "ex-ev-arrows";
+  arrows.innerHTML = `<button type="button" class="ev-arrow" data-step="-1" aria-label="Back" aria-controls="ex-ev">${ARROW("M15 5l-7 7 7 7")}</button>`
+    + `<button type="button" class="ev-arrow" data-step="1" aria-label="Forward" aria-controls="ex-ev">${ARROW("M9 5l7 7-7 7")}</button>`;
+  $("ex-ev-title").after(arrows);
+  arrows.addEventListener("click", (event) => {
+    const button = event.target.closest(".ev-arrow");
+    const card = rail.firstElementChild;
+    if (!button || !card) return;
+    const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+    const fit = Math.max(1, Math.floor((rail.clientWidth + gap) / (card.offsetWidth + gap)));
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    rail.scrollBy({ left: Number(button.dataset.step) * fit * (card.offsetWidth + gap), behavior: still ? "auto" : "smooth" });
+  });
+  rail.addEventListener("scroll", railArrows, { passive: true });
+  window.addEventListener("resize", railArrows);
+}
+
+function railArrows() {
+  const rail = $("ex-ev");
+  const [back, forward] = $("ex-ev-arrows").children;
+  const end = rail.scrollWidth - rail.clientWidth;
+  $("ex-ev-arrows").hidden = end <= 1;
+  back.disabled = rail.scrollLeft <= 1;
+  forward.disabled = rail.scrollLeft >= end - 1;
 }
 
 // ── the map ──────────────────────────────────────────────────────────
@@ -156,7 +210,7 @@ function remember() {
   if (!map) return;
   const c = map.getCenter();
   store.set(VIEW_KEY, { lon: c.lng, lat: c.lat, zoom: map.getZoom(), moved, scroll: $("ex-scroll").scrollTop || window.scrollY,
-    levels: [...filters.levels], length: filters.length, query: $("ex-q").value }, sessionStorage);
+    query: $("ex-q").value }, sessionStorage);
 }
 
 function open(k) {
@@ -217,6 +271,7 @@ function buildMap(saved) {
     map.addLayer({ id: "ex-hidden", type: "line", source: "ex-roads", minzoom: 6, filter: ["==", ["get", "k"], -1], paint: { "line-color": LIGHT_DEVICE ? "#EFEDE6" : "#0E1210", "line-width": 6, "line-opacity": 0.85 } });
     map.addLayer({ id: "ex-hit", type: "line", source: "ex-roads", minzoom: 6, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
     map.addLayer({ id: "ex-dot-hit", type: "circle", source: "ex-mids", maxzoom: 6, paint: { "circle-radius": 12, "circle-opacity": 0.01 } });
+    addPins(map);
     if (view.near) fitTo(view.near, 10);
     else if (view.bounds) map.fitBounds(view.bounds, { padding: padding(), duration: 0 });
     render();
@@ -278,13 +333,6 @@ function wire() {
       if (filters.query && shown.length) fitTo(roads.filter(passes).slice(0, 300), 10);
     }, 180);
   });
-  document.querySelectorAll(".ex-chip").forEach((chip) => chip.addEventListener("click", () => {
-    const key = chip.dataset.level;
-    filters.levels.has(key) ? filters.levels.delete(key) : filters.levels.add(key);
-    chip.setAttribute("aria-pressed", String(filters.levels.has(key)));
-    render();
-  }));
-  $("ex-length").addEventListener("change", (event) => { filters.length = event.target.value; render(); });
 
   const locate = () => {
     if (!navigator.geolocation) return;
@@ -313,20 +361,19 @@ function wire() {
 
 async function main() {
   wire();
+  wireRailArrows();
   const saved = store.get(VIEW_KEY, sessionStorage);
   if (saved) {
-    filters.levels = new Set(saved.levels || []);
-    filters.length = saved.length || "";
     filters.query = (saved.query || "").trim().toLowerCase();
     $("ex-q").value = saved.query || "";
-    $("ex-length").value = filters.length;
-    document.querySelectorAll(".ex-chip").forEach((c) => c.setAttribute("aria-pressed", String(filters.levels.has(c.dataset.level))));
     moved = !!saved.moved;
   }
-  const [data, guess] = await Promise.all([
+  const [data, guess, evs] = await Promise.all([
     fetch("/drives/roads.json").then((r) => r.json()).catch(() => []),
     guessPlace(),
+    loadEvents(),
   ]);
+  events = evs;
   roads = prepare(data);
   place = guess;
   $("ex-where").hidden = !place;

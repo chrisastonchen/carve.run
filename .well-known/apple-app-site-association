@@ -41,6 +41,15 @@
                         "exclude": true
                     },
                     {
+                        "/": "/my-drives*",
+                        "exclude": true,
+                        "comment": "Ten characters with its slash: a page, not a route"
+                    },
+                    {
+                        "/": "/e/*",
+                        "comment": "An event's page, carve.run/e/<token> (before the ten-character rule, which some /e/ paths also fit)"
+                    },
+                    {
                         "/": "/??????????",
                         "comment": "Short links: carve.run/<ten-character token>"
                     },

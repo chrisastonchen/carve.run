@@ -1,0 +1,148 @@
+/* Car events (assets/events.js): the map pins, the square cards, the
+   pictures, the date tile, and an event's page (/e/<token>). Shared by the
+   home page, Explore, the planner and Saved; colours come from each page's
+   own tokens (--ink, --ink-3), so they follow its light and dark. */
+
+/* A pin: the kind's colour, a white edge, its white icon. */
+.evpin { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; border: 2px solid #fff; box-sizing: border-box;
+  color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35); cursor: pointer; transition: transform .12s; }
+.evpin svg { width: 15px; height: 15px; }
+.evpin.big { width: 38px; height: 38px; border-radius: 11px; border-width: 3px; cursor: default; }
+.evpin.big svg { width: 21px; height: 21px; }
+.evpin:hover, .evpin:focus-visible { transform: scale(1.18); z-index: 2; }
+
+/* The pictures, filling whatever holds them. */
+.evp { position: absolute; inset: 0; display: block; overflow: hidden; }
+.evp-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.evp-credit { position: absolute; left: 8px; bottom: 6px; font-size: 11px; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.7); }
+.evp-credit a { color: inherit; }
+.evp-credit.sm { left: 8px; right: 44px; bottom: 5px; font-size: 9px; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.evp-logo { display: grid; place-items: center; }
+.evp-trim { position: relative; overflow: hidden; visibility: hidden; }
+.evp-trim.on { visibility: visible; }
+.evp-trim img { position: absolute; max-width: none; height: auto; display: block; }
+.evp-circuit svg { width: 100%; height: 100%; display: block; }
+.evp-poster { background: linear-gradient(180deg, color-mix(in srgb, var(--k) 88%, #fff), color-mix(in srgb, var(--k) 85%, #000));
+  color: #fff; display: grid; place-items: center; align-content: center; gap: 8px; text-align: center; }
+.evp-poster .evp-icon { width: 30%; height: auto; opacity: .95; }
+.evp-town { font-weight: 700; font-size: 14px; padding: 0 12px; }
+
+/* The cards: square, rounded, the kind top left and the bell bottom right. */
+.evc .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+a.evc, .home a.evc { color: var(--ink); }
+.evc { display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: var(--ink); min-width: 0; }
+.evc-pic { position: relative; aspect-ratio: 1; border-radius: 16px; overflow: hidden; background: #1D2420; margin-bottom: 6px; }
+.evc-kind { position: absolute; top: 8px; left: 8px; padding: 3px 9px; border-radius: 99px; color: #fff; font-size: 12px; font-weight: 700; }
+.evc-bell { position: absolute; right: 8px; bottom: 8px; width: 30px; height: 30px; border-radius: 50%; background: #fff; color: #15181C;
+  display: grid; place-items: center; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.evc-bell svg { width: 16px; height: 16px; display: block; }
+.evc-n { font-weight: 700; font-size: 15px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.evc-m { font-size: 13px; color: var(--ink-3); line-height: 1.3; }
+.evc:hover .evc-n { text-decoration: underline; }
+
+/* A sideways row of cards. */
+.ev-rail { display: grid; grid-auto-flow: column; grid-auto-columns: 168px; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 2px 0 10px; margin: 0; list-style: none; scrollbar-width: thin; }
+.ev-rail > li { scroll-snap-align: start; }
+
+/* Explore's Nearby Events, over its list of roads. */
+.ex-events h2 { font-size: 21px; margin: 0 0 10px; }
+.ex-events .ev-rail { grid-auto-columns: 150px; margin: 0 -2px; }
+/* Its back and forward arrows, beside the heading: a mouse only. */
+.ex-events { display: grid; grid-template-columns: 1fr auto; align-items: center; }
+.ex-events .ev-rail { grid-column: 1 / -1; }
+.ex-ev-all { grid-column: 1 / -1; justify-self: start; margin: 2px 0 6px; font-size: 14.5px; font-weight: 700; color: var(--ink); }
+.ev-arrows { display: none; gap: 8px; margin: 0 0 10px; }
+.ev-arrow { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--ink);
+  display: grid; place-items: center; padding: 0; cursor: pointer; }
+.ev-arrow svg { width: 18px; height: 18px; display: block; }
+.ev-arrow:hover:not(:disabled) { background: var(--fill, var(--paper-2)); }
+.ev-arrow:disabled { opacity: .35; cursor: default; }
+@media (hover: hover) and (pointer: fine) and (min-width: 700px) { .ev-arrows { display: flex; } }
+.ev-arrows[hidden] { display: none; }
+
+/* The home page's row, above Explore drives by region. */
+.ev-home { margin: 48px 0 64px; }
+.ev-home .near-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.ev-home h2 { font-size: 26px; }
+.ev-home .ev-rail { grid-auto-columns: 200px; gap: 18px; }
+@media (max-width: 699px) { .ev-home { margin-bottom: 44px; } .ev-home .ev-rail { grid-auto-columns: 158px; gap: 12px; } .ev-home h2 { font-size: 22px; } }
+
+/* A date tile, where a route shows its photo. */
+.ev-tile { display: grid; place-items: center; align-content: center; border-radius: 12px; background: color-mix(in srgb, var(--k) 14%, transparent);
+  line-height: 1; gap: 3px; }
+.ev-tile .wd { color: var(--k); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.ev-tile .d { font-weight: 800; font-size: 22px; color: var(--ink); }
+
+/* An event's page. */
+.evx-pic { position: relative; aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden; background: #1D2420; margin: 4px 0 14px; }
+.evx-kind { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 99px; color: #fff; font-weight: 700; font-size: 13px; }
+.evx-kind svg { width: 15px; height: 15px; }
+/* Closed to the public: said beside the kind and again above the words. */
+.evx-members { display: inline-flex; align-items: center; margin-left: 8px; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line); font-weight: 700; font-size: 13px; color: var(--ink); }
+.evx-closed { margin: 10px 0 0; font-weight: 700; font-size: 15px; }
+.evx dd a { color: inherit; }
+.evx h1 { margin: 10px 0 4px; }
+.evx .sub { color: var(--ink-3); margin: 0 0 14px; }
+.evx-when { border: 1px solid var(--line, #2A332E); border-radius: 14px; padding: 12px 14px; margin: 0 0 14px; }
+.evx-when b { display: block; font-size: 17px; }
+.evx-when span { color: var(--ink-3); font-size: 14px; }
+.evx-off { color: var(--ink-3); }
+.evx dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0 0 16px; font-size: 14.5px; }
+.evx dt { color: var(--ink-3); }
+.evx dd { margin: 0; }
+.evx-about { font-size: 14.5px; line-height: 1.5; margin: 0 0 6px; }
+/* Carve's own words first, then Getting there and From the organizer under their headings. */
+.evx-summary { font-size: 15.5px; line-height: 1.5; margin: 0 0 14px; }
+.evx h2 { font-size: 18px; margin: 22px 0 8px; }
+.evx-near { font-size: 14.5px; line-height: 1.5; margin: 0 0 6px; }
+.evx-roads { list-style: none; margin: 0 0 6px; padding: 0; display: grid; gap: 6px; font-size: 14.5px; }
+.evx-roads a { font-weight: 700; color: var(--ink); }
+.evx-roads span { color: var(--ink-3); }
+.evx-from { font-size: 12.5px; color: var(--ink-3); margin: 0 0 16px; }
+.evx-from a, .evx-checked a { color: inherit; }
+.evx-actions { display: grid; gap: 10px; margin: 0 0 14px; }
+.evx-actions .pill { justify-content: center; }
+.evx-checked { font-size: 12.5px; color: var(--ink-3); margin: 0 0 6px; }
+.evx-report { font-size: 12.5px; color: var(--ink-3); }
+.evx-gone { padding: 30px 4px; }
+
+/* A region's events (/events/<region>/), on the drives' state page. */
+.evr-answers { margin-top: 26px; }
+.evr-answers h2 { font-size: 16.5px; font-weight: 700; letter-spacing: -.01em; }
+.evr-answers h2 + p + h2 { margin-top: 16px; }
+.evr-kinds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+.evr-kinds button { font: inherit; font-size: 14px; font-weight: 700; padding: 7px 13px; border-radius: 99px; border: 1px solid var(--line);
+  background: transparent; color: var(--ink); cursor: pointer; }
+.evr-kinds button span { color: var(--ink-3); font-weight: 600; margin-left: 2px; }
+.evr-kinds button[aria-pressed="true"] { background: var(--fill); border-color: var(--ink); }
+.evr-kinds button[aria-pressed="true"] span { color: var(--ink-2); }
+.evr .sect { margin-top: 26px; padding-top: 22px; }
+.evl-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+.evl a { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: center; padding: 8px 0; text-decoration: none; color: var(--ink); }
+.evl .ev-tile { width: 56px; height: 56px; }
+.evl-t { display: grid; gap: 2px; min-width: 0; }
+.evl-n { font-weight: 700; font-size: 16px; line-height: 1.3; }
+.evl a:hover .evl-n { text-decoration: underline; }
+.evl-m, .evl-r { font-size: 14px; color: var(--ink-3); line-height: 1.35; }
+.evr-none { margin-top: 24px; color: var(--ink-2); }
+.evr-regions { list-style: none; padding: 0; margin: 0; columns: 2 220px; column-gap: 24px; }
+.evr-regions li { padding: 6px 0; break-inside: avoid; }
+.evr-regions a { font-weight: 700; color: var(--ink); }
+.evr-regions span { color: var(--ink-3); font-size: 14px; margin-left: 4px; }
+.evx-more { margin: 18px 0 0; font-weight: 700; }
+
+/* The hub's events near the visitor (event-region.js): a grid of the cards. */
+.evr-near { margin-top: 28px; }
+.evr-near-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.evr-near-head h2 { font-size: 24px; }
+.evr-near .evr-kinds { margin-top: 14px; }
+.ev-grid { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 22px 16px; }
+@media (max-width: 699px) { .ev-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; } }
+.evr-near-more { margin: 18px 0 0; font-weight: 700; }
+.evr-near-more a { color: var(--ink); }
+/* drives.css's .bar is a drive's curve strip; on these pages the site's bar has the name too. */
+body > header.bar { margin-top: 0; border-radius: 0; }
+.evr-near-head .textlink { border: 0; background: none; padding: 0; font: inherit; font-size: 15px; font-weight: 700; color: var(--green-ink); cursor: pointer; }
+.evr-near-head .textlink:hover { text-decoration: underline; }
+.evr-near-head .textlink:disabled { opacity: .5; cursor: default; }

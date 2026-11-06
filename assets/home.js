@@ -19,6 +19,7 @@ import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8"
 import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=05846f9529";
 import { heartButton, wireHearts } from "/assets/hearts.js?v=5f1f204eb8";
 import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=517867446e";
+import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=bb6f2616de";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
@@ -70,7 +71,18 @@ function nearest(count) {
   return (pictured.length >= count ? pictured : ranked).slice(0, count);
 }
 
+// Events near the visitor, in the next two weeks: the row hides when there are none.
+let events = [];
+function renderEvents() {
+  if (!$("ev-home")) return; // not on the ad pages
+  const list = nearby(events, place, { count: 10 });
+  $("ev-home").hidden = !list.length;
+  $("ev-home-list").innerHTML = list.map((ev) => `<li>${eventCard(ev, place)}</li>`).join("");
+  finishPictures($("ev-home-list"));
+}
+
 function renderNear() {
+  renderEvents();
   const list = $("near-list");
   const picks = nearest(wide() ? 4 : 8);
   list.classList.remove("loading");
@@ -79,7 +91,7 @@ function renderNear() {
     <span class="t"><span class="away">${escapeHTML(awayText(r))}</span><span class="n">${escapeHTML(r.n)}</span>
     <span class="m">${lengthText(r)}${r.lv ? ` · <span class="lv" style="color:${r.lv.colour}">${r.lv.title}</span>` : ""}${wide() ? ` · ${escapeHTML(awayText(r))}` : ""}</span></span></a>
     ${r.t ? heartButton(r.t, r.n) : ""}</li>`).join("");
-  wireHearts(list, { onSaved: (on, problem) => note(problem || (on ? "Saved. You'll find this road in My Drives and in Carve." : "Removed from My Drives.")) });
+  wireHearts(list, { onSaved: (on, problem) => note(problem || (on ? "Saved. You'll find this road under Saved, here and in Carve." : "Removed from Saved.")) });
   // The front door's start, from where we think they are: most people only type where to.
   const field = $("door-from");
   if (place && (!field.value || field.value === field.dataset.label)) {
@@ -242,6 +254,7 @@ async function buildMap() {
     map.addLayer({ id: "home-hit", type: "line", source: "home-roads", minzoom: 7, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
     map.addLayer({ id: "home-dot-hit", type: "circle", source: "home-mids", maxzoom: 7, paint: { "circle-radius": 12, "circle-opacity": 0.01 } });
     fitNear();
+    if (!AD) addPins(map);
     for (const layer of ["home-hit", "home-dot-hit"]) {
       map.on("mousemove", layer, (event) => {
         map.getCanvas().style.cursor = "pointer";
@@ -671,10 +684,12 @@ async function main() {
   wireGet();
   wireFirstDrive();
   playClips();
-  const [data, guess] = await Promise.all([
+  const [data, guess, evs] = await Promise.all([
     fetch("/drives/roads.json").then((r) => r.json()).catch(() => []),
     guessPlace(),
+    AD ? [] : loadEvents(), // the ad pages keep to their one action
   ]);
+  events = evs;
   roads = data.map((r, k) => Object.assign(r, { k, lv: level(r.b) })).filter((r) => lineOf(r).length > 1);
   roads.forEach((r, k) => { r.k = k; });
   place = guess;
