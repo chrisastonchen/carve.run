@@ -346,13 +346,15 @@ function handOff(what) {
 
 function wireDoor() {
   // Planning is the card; importing is a link away, not a second tab.
-  const show = (importing) => {
+  const show = (importing, focus = true) => {
     $("pane-plan").hidden = importing;
     $("pane-bring").hidden = !importing;
-    (importing ? $("door-link") : $("door-to")).focus();
+    if (focus) (importing ? $("door-link") : $("door-to")).focus();
   };
   $("door-import").addEventListener("click", () => show(true));
   $("door-plan").addEventListener("click", () => show(false));
+  // An ad's page opens on Import when it's about bringing a route (scripts/go/build_ads.py).
+  if (document.body.dataset.door === "import") show(true, false);
   // The start we filled in is one line; "change" opens the field.
   $("door-from-change").addEventListener("click", () => {
     $("door-from-line").hidden = true;
@@ -492,7 +494,7 @@ function openApp(link) {
 }
 
 function offerApp() {
-  if (wide()) return;
+  if (wide() || AD) return;
   try { if (localStorage.getItem(SHEET_KEY)) return; } catch { return; }
   if ((document.referrer || "").startsWith(location.origin + "/")) return;
   const chevron = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -605,6 +607,10 @@ function riseIn() {
   items.forEach((el) => io.observe(el));
 }
 
+// An ad's landing page, made from this page (scripts/go/build_ads.py; Growth for
+// the user, 2026-11-05): its own headline, one action, no app sheet.
+const AD = document.body.dataset.ad !== undefined;
+
 // ── a phone's Join free and Sign in: the site's sign-in, over the page ────
 function wireJoin() {
   let signedIn = false;
@@ -612,6 +618,8 @@ function wireJoin() {
   // Get the app, signed in or not (the user, 2026-11-05): the store on iPhone, the app or its page on Android.
   $("hero-get").addEventListener("click", (event) => { if (!wide()) { event.preventDefault(); openApp(event.currentTarget); } });
   // Signed in (index.html hid Sign in before the page drew): the greeting's name.
+  // An ad's page keeps its headline, and has no Sign in.
+  if (AD) return;
   if (signedIn) {
     greet();
     return;
