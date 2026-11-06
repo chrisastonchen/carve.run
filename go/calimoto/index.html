@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="/assets/site-bar.css?v=afde5806fd">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <link rel="stylesheet" href="/assets/home.css?v=60ce784503">
-<link rel="stylesheet" href="/assets/ads.css?v=75d1daf815">
+<link rel="stylesheet" href="/assets/landing.css?v=676cf9b765">
 <!-- Safari's own "Get the app" bar, from the App Store listing's id. -->
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <noscript><style>.rise { opacity: 1; transform: none; }</style></noscript>
@@ -45,7 +45,7 @@
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
 </svg>
-<header class="bar over ad-bar">
+<header class="bar over lp-bar">
   <span class="brand"><svg class="wordmark" role="img" aria-label="Carve"><use href="#i-wordmark"/></svg></span>
 </header>
 <!-- The bar is a scrim over the hero's photo until the page scrolls (home.css). -->
@@ -91,8 +91,8 @@
 <section class="hero" aria-label="Find great roads">
   <!-- On a phone, six photos play behind the words; on a computer, in the card (home.js). -->
   <div class="hero-story" aria-hidden="true">
-    <picture class="pic"><source type="image/avif" srcset="/assets/ads/moto-forest-road.w640.avif?v=6c0702a746 640w, /assets/ads/moto-forest-road.w1280.avif?v=378768012a 1280w" sizes="100vw"><img decoding="async" class="on" fetchpriority="high" src="/assets/ads/moto-forest-road.jpg?v=360cef9ea7" alt="" style="--p:54% 62%;--w:50% 58%"></picture>
-    <picture class="pic"><source type="image/avif" srcset="/assets/ads/moto-mountain-road.w640.avif?v=a63f8c7aad 640w, /assets/ads/moto-mountain-road.w1280.avif?v=107fed7569 1280w" sizes="100vw"><img decoding="async" loading="lazy" src="/assets/ads/moto-mountain-road.jpg?v=2a99f26b5b" alt="" style="--p:80% 72%;--w:70% 70%"></picture>
+    <picture class="pic"><source type="image/avif" srcset="/assets/vs/moto-forest-road.w640.avif?v=6c0702a746 640w, /assets/vs/moto-forest-road.w1280.avif?v=378768012a 1280w" sizes="100vw"><img decoding="async" class="on" fetchpriority="high" src="/assets/vs/moto-forest-road.jpg?v=360cef9ea7" alt="" style="--p:54% 62%;--w:50% 58%"></picture>
+    <picture class="pic"><source type="image/avif" srcset="/assets/vs/moto-mountain-road.w640.avif?v=a63f8c7aad 640w, /assets/vs/moto-mountain-road.w1280.avif?v=107fed7569 1280w" sizes="100vw"><img decoding="async" loading="lazy" src="/assets/vs/moto-mountain-road.jpg?v=2a99f26b5b" alt="" style="--p:80% 72%;--w:70% 70%"></picture>
     <picture class="pic"><source type="image/avif" srcset="/assets/people/story-ferrari.w640.avif?v=1e6ba09dfc 640w, /assets/people/story-ferrari.w1280.avif?v=912693e3fa 1280w" sizes="100vw"><img decoding="async" src="/assets/people/story-ferrari.jpg?v=0c4858bb05" alt="" loading="lazy" style="--p:24% 50%;--w:50% 52%"></picture>
     <picture class="pic"><source type="image/avif" srcset="/assets/people/story-bmw.w640.avif?v=42a328adb1 640w, /assets/people/story-bmw.w1280.avif?v=28ae06c6de 1280w" sizes="100vw"><img decoding="async" src="/assets/people/story-bmw.jpg?v=2d40a7b813" alt="" loading="lazy" style="--p:0% 50%;--w:50% 45%"></picture>
     <picture class="pic"><source type="image/avif" srcset="/assets/people/story-aston.w640.avif?v=673f1fe90b 640w, /assets/people/story-aston.w1280.avif?v=43a83b7f8d 1280w" sizes="100vw"><img decoding="async" src="/assets/people/story-aston.jpg?v=a63f49ff51" alt="" loading="lazy" style="--p:60% 50%;--w:50% 62%"></picture>
@@ -104,8 +104,8 @@
   <div class="near-chip" id="near-chip" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></svg><span>Near <strong id="near-name">you</strong></span><span aria-hidden="true">·</span><button type="button" id="near-change">Change</button></div>
   <div class="hero-copy">
     <div class="hero-story card-story" aria-hidden="true">
-      <picture class="pic"><source type="image/avif" srcset="/assets/ads/moto-forest-road.w640.avif?v=6c0702a746 640w, /assets/ads/moto-forest-road.w1280.avif?v=378768012a 1280w" sizes="460px"><img decoding="async" class="on" fetchpriority="high" src="/assets/ads/moto-forest-road.jpg?v=360cef9ea7" alt="" style="--p:54% 62%;--w:50% 58%"></picture>
-      <picture class="pic"><source type="image/avif" srcset="/assets/ads/moto-mountain-road.w640.avif?v=a63f8c7aad 640w, /assets/ads/moto-mountain-road.w1280.avif?v=107fed7569 1280w" sizes="460px"><img decoding="async" loading="lazy" src="/assets/ads/moto-mountain-road.jpg?v=2a99f26b5b" alt="" style="--p:80% 72%;--w:70% 70%"></picture>
+      <picture class="pic"><source type="image/avif" srcset="/assets/vs/moto-forest-road.w640.avif?v=6c0702a746 640w, /assets/vs/moto-forest-road.w1280.avif?v=378768012a 1280w" sizes="460px"><img decoding="async" class="on" fetchpriority="high" src="/assets/vs/moto-forest-road.jpg?v=360cef9ea7" alt="" style="--p:54% 62%;--w:50% 58%"></picture>
+      <picture class="pic"><source type="image/avif" srcset="/assets/vs/moto-mountain-road.w640.avif?v=a63f8c7aad 640w, /assets/vs/moto-mountain-road.w1280.avif?v=107fed7569 1280w" sizes="460px"><img decoding="async" loading="lazy" src="/assets/vs/moto-mountain-road.jpg?v=2a99f26b5b" alt="" style="--p:80% 72%;--w:70% 70%"></picture>
       <picture class="pic"><source type="image/avif" srcset="/assets/people/story-ferrari.w640.avif?v=1e6ba09dfc 640w, /assets/people/story-ferrari.w1280.avif?v=912693e3fa 1280w" sizes="460px"><img decoding="async" src="/assets/people/story-ferrari.jpg?v=0c4858bb05" alt="" loading="lazy" style="--p:24% 50%;--w:50% 52%"></picture>
       <picture class="pic"><source type="image/avif" srcset="/assets/people/story-bmw.w640.avif?v=42a328adb1 640w, /assets/people/story-bmw.w1280.avif?v=28ae06c6de 1280w" sizes="460px"><img decoding="async" src="/assets/people/story-bmw.jpg?v=2d40a7b813" alt="" loading="lazy" style="--p:0% 50%;--w:50% 45%"></picture>
       <picture class="pic"><source type="image/avif" srcset="/assets/people/story-aston.w640.avif?v=673f1fe90b 640w, /assets/people/story-aston.w1280.avif?v=43a83b7f8d 1280w" sizes="460px"><img decoding="async" src="/assets/people/story-aston.jpg?v=a63f49ff51" alt="" loading="lazy" style="--p:60% 50%;--w:50% 62%"></picture>
@@ -155,13 +155,13 @@
      after the hero, then the founder (a club member), then the roads to
      find, for everyone else, then the regions and the questions. -->
 <!-- ═══ CARVE VS CALIMOTO: an ad's page only (scripts/go/build_ads.py) ═══ -->
-<section class="ad-vs" aria-labelledby="ad-vs-title">
-  <h2 id="ad-vs-title">Carve vs calimoto</h2>
-  <p class="ad-vs-line">Free turn-by-turn on the route you planned, and one link for the whole group.</p>
-  <table class="ad-t">
+<section class="lp-vs" aria-labelledby="lp-vs-title">
+  <h2 id="lp-vs-title">Carve vs calimoto</h2>
+  <p class="lp-vs-line">Free turn-by-turn on the route you planned, and one link for the whole group.</p>
+  <table class="lp-table">
     <thead><tr><th scope="col"><span class="vh">Feature</span></th>
       <th scope="col"><span class="app"><img src="/assets/icon-128.png?v=87d1534580" alt="" width="40" height="40">Carve</span></th>
-      <th scope="col"><span class="app"><img src="/assets/ads/calimoto.png?v=e2d85030ed" alt="" width="40" height="40">calimoto</span></th></tr></thead>
+      <th scope="col"><span class="app"><img src="/assets/vs/calimoto.png?v=e2d85030ed" alt="" width="40" height="40">calimoto</span></th></tr></thead>
     <tbody>
       <tr class="made"><th scope="row">Made for</th><td>Cars and motorcycles</td><td>Motorcycles</td></tr>
       <tr><th scope="row">Custom Route Planning</th><td class="c-yes"><span class="ck"><span class="mk" aria-hidden="true">✓</span><span class="vh">Yes. </span><small class="free">Free on the web</small></span></td><td class="c-yes"><span class="ck"><span class="mk" aria-hidden="true">✓</span><span class="vh">Yes. </span><small class="free">Free</small></span></td></tr>
@@ -176,7 +176,7 @@
       <tr><th scope="row">Road Conditions</th><td class="c-yes"><span class="ck"><span class="mk" aria-hidden="true">✓</span><span class="vh">Yes. </span><small class="paid">Paid</small></span></td><td class="c-dash"><span class="dash" aria-hidden="true">–</span><span class="vh">No</span></td></tr>
     </tbody>
   </table>
-  <p class="ad-key">Carve's paid plan is Carve Apex: $49.99 a year with a 14-day free trial, or $5.99 a month.</p>
+  <p class="lp-key">Carve's paid plan is Carve Apex: $49.99 a year with a 14-day free trial, or $5.99 a month.</p>
 </section>
 
 <!-- ═══ PLAN YOUR FIRST DRIVE (a phone; the user, 2026-11-04, after Ride with
@@ -385,7 +385,7 @@
   <div class="wrap">
     <span>© 2026 Carve</span>
     <div class="links"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></div>
-    <span class="ad-fine">Carve is independent. calimoto is a trademark of its owner, and its icon is shown only to identify the app; Carve isn't affiliated with or endorsed by calimoto GmbH. Photos: <a href="https://commons.wikimedia.org/wiki/File:WTK_20260703_Maria_Lankowitz_5092.jpg">Forest road, Styria</a> by Z thomas, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, cropped; <a href="https://commons.wikimedia.org/wiki/File:High_mountain_road,_Tibetan_flowers_(11622428664).jpg">High mountain road</a> by Matt Ming, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>, cropped.</span>
+    <span class="lp-fine">Carve is independent. calimoto is a trademark of its owner, and its icon is shown only to identify the app; Carve isn't affiliated with or endorsed by calimoto GmbH. Photos: <a href="https://commons.wikimedia.org/wiki/File:WTK_20260703_Maria_Lankowitz_5092.jpg">Forest road, Styria</a> by Z thomas, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, cropped; <a href="https://commons.wikimedia.org/wiki/File:High_mountain_road,_Tibetan_flowers_(11622428664).jpg">High mountain road</a> by Matt Ming, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>, cropped.</span>
   </div>
 </footer>
 
