@@ -19,7 +19,7 @@ Carve at carve.run is separate from other apps called Carve: it is for cars and 
 - Find great driving roads: 1,100+ hand-picked drives in the US, Canada, Australia, New Zealand, the UAE and Baja California, rated Leisurely, Sweeping, Twisty or Intense, on a map of the roads near you
 - Plan routes stop by stop, by search or by tapping the map, in the app or on a computer at carve.run/plan; choose scenic, balanced or shortest roads
 - Import a GPX file (Ride with GPS, Garmin and others), a Ride with GPS link or a Google Maps link, matched to the same roads
-- Describe a drive in your own words and Carve plans it (5 a day free); or roll the dice for a scenic loop from where you are
+- Describe a drive in your own words and Carve plans it (2 a day free); or roll the dice for a scenic loop from where you are
 - See distance, drive time, elevation and the weather along the way before you leave
 - Share one link or QR code; recipients open the route in Carve or any browser, edits keep the same link, and turn-by-turn directions print
 - Spoken turn-by-turn directions with live traffic, on the route you planned, never rerouted; after a wrong turn, directions forward to where you rejoin the route
