@@ -549,6 +549,12 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero-story .bars i.done::after { transform: scaleX(1); }
   .hero-story .bars i.on::after { animation: storyfill 8s linear forwards; }
   .hero-story.still .bars { display: none; }
+  /* the home page's drive video, ahead of the photos (the user, 2026-11-06; home.js heroStory):
+     over the first photo once it plays; its bar follows the video, not a clock */
+  .hero-story video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s ease; }
+  .hero-story video.on { opacity: 1; }
+  .hero-story .bars i.clip::after, .hero-story .bars i.clip.on::after { animation: none; transform: scaleX(var(--f, 0)); }
+  .hero-story .bars i.clip.done::after { transform: scaleX(1); }
 }
 @keyframes storyfill { to { transform: scaleX(1); } }
 /* On a phone: the app button under the reasons; the place moves to the drives below (the user, 10/29) */

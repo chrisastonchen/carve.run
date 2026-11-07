@@ -565,17 +565,28 @@ function heroStory() {
   const story = document.querySelector(wide() ? ".card-story" : ".hero-story:not(.card-story)");
   if (!story) return;
   const imgs = [...story.querySelectorAll("img")];
-  const bars = [...story.querySelectorAll(".bars i")];
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { story.classList.add("still"); return; }
   imgs.forEach((img) => { img.loading = "eager"; });
+  // the slides: the clip (when there is one, with its own bar first) and then the photos, round and round
+  const clip = heroClip(story);
+  const bars = [...story.querySelectorAll(".bars i")];
+  const count = imgs.length + (clip ? 1 : 0);
+  const photo = (n) => n - (clip ? 1 : 0);
   let at = 0, timer = 0;
   const show = (n) => {
-    at = (n + imgs.length) % imgs.length;
-    imgs.forEach((img, i) => img.classList.toggle("on", i === at));
+    at = (n + count) % count;
+    if (clip && at === 0 && !clip.usable()) at = 1;
+    clearTimeout(timer);
     bars.forEach((b, i) => { b.classList.toggle("done", i < at); b.classList.remove("on"); });
     void bars[at].offsetWidth; // restart the fill
     bars[at].classList.add("on");
-    clearTimeout(timer);
+    if (clip && at === 0) {
+      // the photo underneath stays until the clip plays over it
+      clip.play(() => show(1));
+      return;
+    }
+    clip?.stop();
+    imgs.forEach((img, i) => img.classList.toggle("on", i === photo(at)));
     timer = setTimeout(() => show(at + 1), 8000);
   };
   // tap the photo (not the words or links) to skip ahead
@@ -583,9 +594,93 @@ function heroStory() {
     if (wide() ? e.target.closest(".card-story") : !e.target.closest("a, button, input, form, .hero-copy")) show(at + 1);
   });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) clearTimeout(timer); else show(at);
+    if (document.hidden) { clearTimeout(timer); clip?.stop(); } else show(at);
   });
   show(0);
+}
+
+// The home page's drive video, first on a phone (the user, 2026-11-06), or
+// null: not on a computer, the ad pages (their own photos lead), a phone on
+// its side (a 9:16 clip would be cropped to a strip), or with Save-Data on.
+// It loads once the page has, over the first photo, which shows at once. A
+// clip that won't start in 6 s (a slow line, Low Power Mode, autoplay off),
+// fails or stalls for 3 s gives way to the photos for the rest of the visit.
+const CLIP = "/assets/people/hero-drive.mp4?v=82ad9f5f3e";
+function heroClip(story) {
+  if (wide() || document.body.dataset.ad || navigator.connection?.saveData) return null;
+  const upright = window.matchMedia("(max-width: 599px) and (orientation: portrait)");
+  if (!upright.matches) return null;
+  const video = document.createElement("video");
+  Object.assign(video, { muted: true, playsInline: true, preload: "auto", disablePictureInPicture: true });
+  video.setAttribute("muted", "");
+  video.setAttribute("playsinline", "");
+  const row = story.querySelector(".bars");
+  row.before(video);
+  const bar = document.createElement("i");
+  bar.className = "clip";
+  row.prepend(bar);
+  // set when the clip is the slide showing: what comes after it
+  let next = null, started = false, failed = false, watch = 0, frame = 0, last = -1, since = 0;
+  const finish = () => { const then = next; stop(); then?.(); };
+  const give = () => {
+    if (failed) return;
+    failed = true;
+    bar.hidden = true;
+    video.removeAttribute("src");
+    video.load(); // stops the download
+    finish();
+  };
+  const go = () => {
+    clearTimeout(watch);
+    watch = setTimeout(give, 6000);
+    // a pause of ours (a tap ahead, the tab hidden) isn't the clip failing
+    video.play().catch((e) => { if (e.name !== "AbortError") give(); });
+  };
+  // the bar follows the clip, not a clock
+  const tick = () => {
+    if (video.duration) bar.style.setProperty("--f", Math.min(1, video.currentTime / video.duration));
+    if (video.currentTime !== last) { last = video.currentTime; since = performance.now(); }
+    else if (performance.now() - since > 3000) return give();
+    // Chrome can sit on the last frame without an "ended" (carve-home-redesign)
+    if (video.duration && video.currentTime >= video.duration - 0.1) return finish();
+    frame = requestAnimationFrame(tick);
+  };
+  function stop() {
+    next = null;
+    cancelAnimationFrame(frame);
+    clearTimeout(watch);
+    video.classList.remove("on");
+    if (!video.paused) video.pause();
+  }
+  video.addEventListener("ended", finish);
+  video.addEventListener("error", give);
+  video.addEventListener("playing", () => {
+    if (!next) return void video.pause();
+    clearTimeout(watch);
+    video.classList.add("on");
+    last = -1;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(tick);
+  });
+  upright.addEventListener("change", () => { if (!upright.matches && next) finish(); });
+  // after the page's own loading, so the first photo and the words never wait on it
+  const start = () => {
+    started = true;
+    video.src = CLIP;
+    if (next) go();
+  };
+  if (document.readyState === "complete") start(); else window.addEventListener("load", start, { once: true });
+  return {
+    usable: () => !failed && upright.matches,
+    play(then) {
+      next = then;
+      bar.style.setProperty("--f", 0);
+      if (!started) return; // start() plays it
+      if (video.currentTime > 0) video.currentTime = 0;
+      go();
+    },
+    stop,
+  };
 }
 
 // ── Plan your first drive (a phone) ──────────────────────────────────
