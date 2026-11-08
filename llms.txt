@@ -106,14 +106,12 @@ Upcoming car events in the US — cars and coffee, cruises, car shows, track day
 - [Car events in Michigan](https://carve.run/events/michigan/)
 - [Car events in Nevada](https://carve.run/events/nevada/)
 - [Car events in New Jersey](https://carve.run/events/new-jersey/)
-- [Car events in New York](https://carve.run/events/new-york/)
 - [Car events in North Carolina](https://carve.run/events/north-carolina/)
 - [Car events in South Carolina](https://carve.run/events/south-carolina/)
 - [Car events in Tennessee](https://carve.run/events/tennessee/)
 - [Car events in Texas](https://carve.run/events/texas/)
 - [Car events in Virginia](https://carve.run/events/virginia/)
 - [Car events in Washington](https://carve.run/events/washington/)
-- [Car events in West Virginia](https://carve.run/events/west-virginia/)
 <!-- /events -->
 
 ## More

@@ -2107,11 +2107,18 @@ function choosePlace(role, index, place) {
 // typeahead: three letters and a pause, then up to six places near the map.
 // Suggestions say where they are only once picked: the pair is one Search
 // Box session, which a pick ends.
+/// Search asks for places with where they are (the planner's `places`,
+/// Search Box /forward) and shows them as numbered pins on the map too
+/// (the user, 11/7: free, in Plan a route and the group flow). A planner
+/// function from before `places` gets today's suggestions instead.
+let placesAction = true;
+
 function attachSearch(li, input, onPick, onLeave) {
   let timer = 0;
   let results = [];
   let active = 0;
   let list = null;
+  let pins = [];
   let session = crypto.randomUUID();
   const original = input.value;
   const pick = async (suggestion) => {
@@ -2125,10 +2132,50 @@ function attachSearch(li, input, onPick, onLeave) {
       toast(failure.message, true);
     }
   };
+  const clearPins = () => {
+    for (const pin of pins) pin.remove();
+    pins = [];
+  };
   const close = () => {
     list?.remove();
     list = null;
     li.classList.remove("searching");
+    clearPins();
+  };
+  const setActive = (i) => {
+    active = i;
+    if (list) [...list.children].forEach((item, n) => item.setAttribute("aria-selected", String(n === active)));
+    for (const pin of pins) pin.getElement().classList.toggle("on", Number(pin.getElement().dataset.n) === active);
+  };
+  const located = () => results.map((place, i) => ({ place, i })).filter(({ place }) => Number.isFinite(place.lat) && Number.isFinite(place.lon));
+  // The results on the map, numbered as in the list; out of view, the map
+  // comes to them.
+  const drawPins = () => {
+    clearPins();
+    if (!map || !mapReady) return;
+    const here = located();
+    for (const { place, i } of here) {
+      const node = el("button", `search-pin${i === active ? " on" : ""}`, String(i + 1));
+      node.type = "button";
+      node.tabIndex = -1;
+      node.dataset.n = String(i);
+      node.setAttribute("aria-label", `${i + 1}: ${place.name}`);
+      node.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        close();
+        pick(place);
+      });
+      node.addEventListener("mouseenter", () => setActive(i));
+      pins.push(new maplibregl.Marker({ element: node, anchor: "center" }).setLngLat([place.lon, place.lat]).addTo(map));
+    }
+    const view = map.getBounds();
+    if (here.length && !here.some(({ place }) => view.contains([place.lon, place.lat]))) {
+      const bounds = here.reduce((b, { place }) => b.extend([place.lon, place.lat]), new maplibregl.LngLatBounds([here[0].place.lon, here[0].place.lat], [here[0].place.lon, here[0].place.lat]));
+      // Clear of the hint at the top and the edges, with room for the pins.
+      const pad = fitPadding();
+      map.fitBounds(bounds, { padding: { top: pad.top + 50, bottom: pad.bottom + 40, left: pad.left + 30, right: pad.right + 30 }, maxZoom: 12, duration: 500 });
+    }
   };
   const show = (query) => {
     close();
@@ -2138,11 +2185,14 @@ function attachSearch(li, input, onPick, onLeave) {
     if (!results.length) {
       list.append(el("li", "none", "No places found"));
     }
+    const numbered = located().length > 0;
     results.forEach((place, i) => {
       const item = el("li");
       item.setAttribute("role", "option");
       item.setAttribute("aria-selected", String(i === active));
-      item.innerHTML = '<svg aria-hidden="true"><use href="#i-pin"/></svg>';
+      // With pins on the map, each result's number matches its pin.
+      if (numbered && Number.isFinite(place.lat)) item.append(el("span", "num", String(i + 1)));
+      else item.innerHTML = '<svg aria-hidden="true"><use href="#i-pin"/></svg>';
       const text = el("span");
       const name = el("span", "n");
       const lower = place.name.toLowerCase();
@@ -2161,9 +2211,11 @@ function attachSearch(li, input, onPick, onLeave) {
         close();
         pick(place);
       });
+      item.addEventListener("mouseenter", () => setActive(i));
       list.append(item);
     });
     li.append(list);
+    drawPins();
   };
   input.addEventListener("input", () => {
     clearTimeout(timer);
@@ -2171,8 +2223,19 @@ function attachSearch(li, input, onPick, onLeave) {
     if (query.length < SEARCH_MIN_CHARS) return close();
     timer = setTimeout(async () => {
       try {
-        const near = mapReady ? map.getCenter() : null;
-        const data = await planner("search", { query, session, ...(near ? { near: { lat: near.lat, lon: near.lng } } : {}) });
+        const center = mapReady ? map.getCenter() : null;
+        const near = center ? { near: { lat: center.lat, lon: center.lng } } : {};
+        let data = null;
+        if (placesAction) {
+          try {
+            data = await planner("places", { query, ...near });
+          } catch (failure) {
+            // A planner from before `places`: suggestions from now on.
+            if (!/Expected an action/.test(failure.message)) throw failure;
+            placesAction = false;
+          }
+        }
+        data ||= await planner("search", { query, session, ...near });
         if (input.value.trim() !== query) return;
         results = data.places || [];
         active = 0;
@@ -2192,8 +2255,7 @@ function attachSearch(li, input, onPick, onLeave) {
     if (!list || !results.length) return;
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
-      active = (active + (event.key === "ArrowDown" ? 1 : results.length - 1)) % results.length;
-      [...list.children].forEach((item, i) => item.setAttribute("aria-selected", String(i === active)));
+      setActive((active + (event.key === "ArrowDown" ? 1 : results.length - 1)) % results.length);
     } else if (event.key === "Enter") {
       event.preventDefault();
       const place = results[active];

@@ -767,3 +767,8 @@ a { color: var(--green-ink); }
   .tg input { background: #D5D4CF; }
   .closures li b { color: #9A5B00; }
 }
+/* Search results as numbered pins (attachSearch), numbered in the list too */
+.search-pin { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; background: #1D5B3A; color: #fff; font: 800 13px/1 "Figtree", system-ui, sans-serif; display: grid; place-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.3); cursor: pointer; padding: 0; transition: transform .12s; }
+.search-pin.on { transform: scale(1.25); background: #2E9E52; z-index: 2; }
+.suggest li .num { width: 22px; height: 22px; flex: none; border-radius: 50%; background: #1D5B3A; color: #fff; font-size: 12px; font-weight: 800; display: grid; place-items: center; }
+.suggest li[aria-selected="true"] .num { background: #2E9E52; }
