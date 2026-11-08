@@ -422,8 +422,16 @@ a { color: var(--green-ink); }
 .road-chip { padding: 4px 10px; border-radius: 999px; background: #161B18; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); font-size: 13px; font-weight: 800; color: #6DA8EE; white-space: nowrap; pointer-events: none; }
 .maplibregl-ctrl-group { border-radius: 16px !important; box-shadow: 0 6px 18px rgba(0,0,0,.14) !important; overflow: hidden; }
 .maplibregl-ctrl-group button { width: 44px !important; height: 44px !important; }
+/* The map's buttons, easy to find (the user, 2026-11-07: they didn't see the
+   zoom buttons): off the corner, one stack (zoom, locate, whole route), bold
+   + and − glyphs, an edge that holds on a pale map, and a focus ring inside. */
+.maplibregl-ctrl-top-right { padding: 14px 14px 0 0; }
+.maplibregl-ctrl-top-right .maplibregl-ctrl { margin: 0 0 8px 0; }
+.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='%2315181C' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 22px no-repeat !important; }
+.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h14' stroke='%2315181C' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 22px no-repeat !important; }
+.maplibregl-ctrl-group button:focus-visible { outline: 3px solid var(--green) !important; outline-offset: -3px; box-shadow: none !important; }
 .whole-route-ctrl[hidden] { display: none; }
-.whole-route { display: grid !important; place-items: center; color: #333; }
+.whole-route { display: grid !important; place-items: center; color: #15181C; }
 .whole-route svg { width: 20px; height: 20px; }
 
 /* ── dialog ── */
@@ -665,7 +673,7 @@ a { color: var(--green-ink); }
   .key-tip b { color: var(--ink); }
   .pin.temp { background: var(--ink); }
   .road-chip { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); color: #1660B8; }
-  .maplibregl-ctrl-group { box-shadow: 0 6px 18px rgba(0,0,0,.14) !important; }
+  .maplibregl-ctrl-group { box-shadow: 0 0 0 1px rgba(21,24,28,.16), 0 6px 18px rgba(0,0,0,.18) !important; }
   .sheet-dialog { border: none; box-shadow: 0 30px 80px rgba(0,0,0,.3); color: var(--ink); }
   .sheet-dialog::backdrop { background: rgba(10,28,19,.48); }
   .sheet-dialog p.dim { color: var(--ink-2); }
