@@ -753,6 +753,9 @@ a { color: var(--green-ink); }
 .faces > * { width: 30px; height: 30px; border-radius: 50%; margin-left: -8px; border: 2px solid #161B18; display: grid; place-items: center; font-weight: 800; font-size: 12px; color: #fff; object-fit: cover; background: #2E92FF; }
 .faces > *:first-child { margin-left: 0; }
 .scan .ics { width: 100%; margin-top: 8px; }
+.closures li.forecast { color: var(--ink); font-weight: 600; }
+.closures li.forecast[hidden], .s-forecast[hidden] { display: none; }
+.s-forecast { margin: 0; color: var(--ink-2); font-size: 14.5px; }
 @media not all and (prefers-color-scheme: dark) {
   .cal button:disabled { color: #B9BCB6; }
   .faces > * { border-color: #fff; }

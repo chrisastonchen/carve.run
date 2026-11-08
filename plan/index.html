@@ -23,7 +23,7 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=39">
+<link rel="stylesheet" href="/plan/plan.css?v=40">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -161,7 +161,7 @@
         </div>
         <div class="closures" id="closures" hidden>
           <p class="eyebrow">Along the way</p>
-          <ul id="closure-list"></ul>
+          <ul id="closure-list"><li class="forecast" id="forecast" hidden></li></ul>
         </div>
       </div>
       <div class="foot" id="foot">
@@ -198,6 +198,7 @@
         <button type="button" class="textlink s-when-add" id="s-when-add" aria-haspopup="dialog" hidden>Add a time to drive it together</button>
         <p class="s-note" id="s-note" hidden></p>
         <div class="going" id="s-going" hidden><span class="faces" id="s-faces"></span><span id="s-going-text"></span></div>
+        <p class="s-forecast" id="s-forecast" hidden></p>
         <div class="facts" id="s-facts"></div>
         <div class="scan">
           <div class="scan-top">
@@ -351,7 +352,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=70"></script>
+<script type="module" src="/plan/plan.js?v=71"></script>
 <script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>

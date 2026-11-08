@@ -883,6 +883,9 @@ async function applyLeave(ms) {
   closeLeave({ focus: true });
   if (ms === plan.leaveAt) return;
   edit(() => (plan.leaveAt = ms), { geometry: false });
+  forecastText = null;
+  renderForecast();
+  if (ms) askForecast();
   // Saved already: the route and its plan change now.
   if (saved && plan.token && session && plan.ownerId === session.user.id) {
     busy(true, "Saving…");
@@ -1035,6 +1038,86 @@ function downloadICS() {
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
 
+// ── the forecast at the leave time (the weather function, as Android) ──
+// At the start when you leave and at the end when you'd get there: the
+// hour's when it's within the function's day and a half, the day's high
+// and low within about a week, else not yet. Asked only when a leave time
+// is set or the route is saved (DevOps, 11/7: WeatherKit's daily budget is
+// shared with Android). Off until the function answers carve.run (its CORS
+// deploy); ?forecast turns it on to try.
+
+const FORECAST = (() => { try { return new URLSearchParams(location.search).has("forecast"); } catch { return false; } })();
+const CONDITIONS = {
+  Clear: ["☀︎", "clear"], MostlyClear: ["☀︎", "mostly clear"], PartlyCloudy: ["⛅︎", "partly cloudy"], MostlyCloudy: ["☁︎", "mostly cloudy"],
+  Cloudy: ["☁︎", "cloudy"], Foggy: ["🌫︎", "fog"], Haze: ["🌫︎", "haze"], Drizzle: ["☂︎", "drizzle"], Rain: ["☂︎", "rain"],
+  HeavyRain: ["☂︎", "heavy rain"], Showers: ["☂︎", "showers"], ScatteredThunderstorms: ["⚡︎", "scattered storms"],
+  Thunderstorms: ["⚡︎", "thunderstorms"], Snow: ["❄︎", "snow"], Flurries: ["❄︎", "flurries"], HeavySnow: ["❄︎", "heavy snow"],
+  Sleet: ["❄︎", "sleet"], FreezingRain: ["❄︎", "freezing rain"], Windy: ["≋", "windy"], Breezy: ["≋", "breezy"],
+};
+const conditionOf = (code) => CONDITIONS[code] || ["", String(code || "").replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()];
+const inUnits = (c) => Math.round(miles ? c * 9 / 5 + 32 : c);
+const degrees = (c) => `${inUnits(c)}°`;
+let forecastText = null;
+let forecastAsk = 0;
+
+/// What the forecast says at `at` (ms) for the area nearest `point`.
+function forecastAt(areas, point, at) {
+  if (!areas?.length) return null;
+  const area = areas.reduce((best, a) => (Math.hypot(a.lat - point.lat, a.lon - point.lon) < Math.hypot(best.lat - point.lat, best.lon - point.lon) ? a : best));
+  const hour = (area.hours || []).find((h) => { const t = Date.parse(h.date); return at >= t && at < t + 3_600_000; });
+  if (hour) return { kind: "hour", temp: hour.temperatureCelsius, condition: hour.condition };
+  const zone = area.timeZone || undefined;
+  const dayOf = (ms) => new Date(ms).toLocaleDateString("en-CA", { timeZone: zone });
+  const day = (area.days || []).find((d) => dayOf(Date.parse(d.date) + 12 * 3_600_000) === dayOf(at));
+  if (day) return { kind: "day", high: day.highCelsius, low: day.lowCelsius, condition: day.condition };
+  return null;
+}
+
+function forecastWords(start, end, endName) {
+  const say = (f) => (f.kind === "hour" ? degrees(f.temp) : `${inUnits(f.low)}–${degrees(f.high)}`);
+  const [icon, words] = conditionOf(start.condition);
+  const there = end ? `, ${say(end)} ${endName ? `in ${endName}` : "at the end"}` : "";
+  return `${icon ? icon + " " : ""}${say(start)} at the start${there}, ${words}`.replace(/\s+,/g, ",");
+}
+
+async function askForecast() {
+  if (!FORECAST || !plan.path || !plan.start) return;
+  const ask = ++forecastAsk;
+  const leave = upcoming(plan.leaveAt) ? plan.leaveAt : Date.now();
+  const stays = plan.waypoints.reduce((sum, w) => sum + (w.type === "stop" ? w.stayMinutes || 0 : 0), 0);
+  const arrive = leave + ((plan.path.durationSeconds || 0) + stays * 60) * 1000;
+  const endPoint = loops() ? null : plan.end;
+  const points = [plan.start, ...(endPoint ? [endPoint] : [])].map((p) => ({ lat: p.lat, lon: p.lon }));
+  let text = null;
+  try {
+    const response = await fetch(`${FUNCTIONS}/weather`, {
+      method: "POST",
+      headers: { "content-type": "application/json", apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      body: JSON.stringify({ points, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
+    });
+    const data = response.ok ? await response.json() : null;
+    const start = forecastAt(data?.areas, plan.start, leave);
+    const end = endPoint ? forecastAt(data?.areas, endPoint, arrive) : null;
+    text = start ? forecastWords(start, end, endPoint ? town(endPoint) : null)
+      : "The forecast for that day comes about a week before.";
+  } catch {
+    text = null;
+  }
+  if (ask !== forecastAsk) return;
+  forecastText = text;
+  renderForecast();
+}
+
+function renderForecast() {
+  const on = FORECAST && !!forecastText;
+  $("forecast").hidden = !on;
+  $("forecast").textContent = on ? forecastText : "";
+  const at = upcoming(plan.leaveAt) ? new Date(plan.leaveAt) : null;
+  $("s-forecast").hidden = !on;
+  $("s-forecast").textContent = on ? `${at ? `Forecast for ${dayText(at)} at ${timeText(at)}` : "Forecast now"}: ${forecastText}` : "";
+  if (on) $("closures").hidden = false;
+}
+
 // ── along the way: closures on the route (the app's RoadClosures) ─────
 
 let catalogRoads = [];
@@ -1063,7 +1146,7 @@ function renderClosures() {
   const month = driveMonth();
   const key = path && catalogRoads.length && flaggedSlugs ? `${month}` : null;
   if (!key) {
-    $("closures").hidden = true;
+    $("closures").hidden = $("forecast").hidden;
     return;
   }
   if (closuresFor?.path === path && closuresFor.key === key) return;
@@ -1071,7 +1154,7 @@ function renderClosures() {
   const itself = plan.fromRoad ? catalogRoads.find((r) => r.s === plan.fromRoad.slug)?.t : null;
   const hints = closures(path, catalogRoads, flaggedSlugs, month, itself);
   const list = $("closure-list");
-  list.replaceChildren(...hints.map((hint) => {
+  list.replaceChildren($("forecast"), ...hints.map((hint) => {
     const li = el("li");
     const later = month !== new Date().getMonth() + 1 ? month : null;
     li.append(el("b", "", closureTitle(hint, later)), el("span", "", closureWords(hint) + " "));
@@ -1084,7 +1167,7 @@ function renderClosures() {
     }
     return li;
   }));
-  $("closures").hidden = !hints.length;
+  $("closures").hidden = !hints.length && $("forecast").hidden;
 }
 
 // ── good roads: Carve's drives on the map ────────────────────────────
@@ -2476,6 +2559,7 @@ async function save() {
     store.remove(PENDING_SAVE_KEY);
     saveDraft();
     showSaved();
+    askForecast();
     // The planner's goal for the site's counting (carve-site.js), with the visit's campaign.
     window.carveTrack?.("Route Saved", { kind: first ? "new" : "update" });
     enrich();
@@ -2589,6 +2673,7 @@ function showSaved() {
   drawQR();
   renderSavedFacts();
   renderWhen();
+  renderForecast();
   renderBlurb(true);
   renderAlong();
   renderNearby();
