@@ -1,5 +1,9 @@
 {
  "flagged": {
+  "allegany-state-park-route-1": {
+   "coverage": 0.63,
+   "since": "2026-11-07"
+  },
   "arthur-highway-sorell-port-arthur": {
    "coverage": 0.72,
    "since": "2026-11-06"
@@ -39,6 +43,10 @@
   "guardsman-pass": {
    "coverage": 0.27,
    "since": "2026-11-01"
+  },
+  "highway-1-marin": {
+   "coverage": 0.55,
+   "since": "2026-11-07"
   },
   "highway-131-kickapoo-valley": {
    "coverage": 0.67,
@@ -88,6 +96,10 @@
    "coverage": 0.56,
    "since": "2026-11-06"
   },
+  "natchez-trace-tennessee": {
+   "coverage": 0.7,
+   "since": "2026-11-07"
+  },
   "north-cape-coastal-drive": {
    "coverage": 0.61,
    "since": "2026-11-06"
@@ -96,9 +108,21 @@
    "coverage": 0.01,
    "since": "2026-11-02"
   },
+  "old-kings-highway-6a": {
+   "coverage": 0.11,
+   "since": "2026-11-07"
+  },
   "onion-valley-road": {
    "coverage": 0.57,
    "since": "2026-11-01"
+  },
+  "page-mill-to-pescadero": {
+   "coverage": 0.59,
+   "since": "2026-11-07"
+  },
+  "qu-appelle-highway-56": {
+   "coverage": 0.61,
+   "since": "2026-11-07"
   },
   "rockefeller-parkway-west-thumb": {
    "coverage": 0.57,
@@ -115,8 +139,12 @@
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
+  },
+  "tunnel-of-trees-m-119": {
+   "coverage": 0.54,
+   "since": "2026-11-07"
   }
  },
  "format": 1,
- "updated": "2026-11-07T14:08:48Z"
+ "updated": "2026-11-08T14:08:31Z"
 }
