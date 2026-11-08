@@ -570,6 +570,7 @@ function setUpMap() {
     fitBoundsOptions: { maxZoom: 11 },
     trackUserLocation: false,
   }), "top-right");
+  map.addControl(new WholeRouteControl(), "top-right");
   if (!remembered && !plan.start && !plan.end) startNearVisitor();
   map.on("load", () => {
     const firstLabel = map.getStyle().layers.find((layer) => layer.type === "symbol")?.id;
@@ -597,7 +598,9 @@ function setUpMap() {
     syncRoadsKey();
     drawRoute();
     drawPins();
-    if (routable()) fitRoute();
+    // A road kept from last time is the plan's first look; a plan still
+    // waiting for its road fits again when the road comes.
+    if (routable() && fitRoute() && plan.path) fitOnRoute = false;
   });
   map.on("click", onMapClick);
   map.on("moveend", placeChips);
@@ -634,6 +637,8 @@ function drawRoute() {
     ? { type: "Feature", geometry: { type: "LineString", coordinates: line }, properties: {} }
     : emptyLine());
   map.setPaintProperty("route-line", "line-dasharray", plan.path ? null : ["literal", [1.5, 1.5]]);
+  const whole = $("whole-route");
+  if (whole) whole.hidden = line.length < 2;
   placeChips();
 }
 
@@ -920,28 +925,50 @@ function markBadge(kind) {
   return badge;
 }
 
+// The map shows the whole route only for a plan's first road (a new plan,
+// an import, a shared link, Start over) and when asked, with the Whole
+// route button. Adding, moving or removing a point, or changing the roads,
+// keeps the view the planner chose, even when the new road runs off it
+// (the user, 2026-11-07: it zoomed back out on every added stop).
+let fitOnRoute = true;
+
+/// Whether it moved.
 function fitRoute() {
-  if (!mapReady) return;
+  if (!mapReady) return false;
   const line = plan.path?.geometry?.length ? plan.path.geometry : chainLine();
-  if (!line.length) return;
+  if (!line.length) return false;
   if (line.length === 1) {
     map.easeTo({ center: line[0], zoom: 11, padding: fitPadding() });
-    return;
+    return true;
   }
   const bounds = line.reduce((b, c) => b.extend(c), new maplibregl.LngLatBounds(line[0], line[0]));
   map.fitBounds(bounds, { padding: fitPadding(), maxZoom: 13, duration: 600 });
+  return true;
 }
 
-/// Whether the whole road shows beside the panel; if not, the map moves.
-function routeInView() {
-  if (!mapReady || !plan.path?.geometry?.length) return true;
+/// Whether a place shows on the map beside the panel.
+function inView(lon, lat) {
   const box = map.getContainer().getBoundingClientRect();
-  const left = panelRight() - box.left;
-  return plan.path.geometry.every((c, i) => {
-    if (i % 20) return true;
-    const p = map.project(c);
-    return p.x > left && p.x < box.width && p.y > 0 && p.y < box.height;
-  });
+  const p = map.project([lon, lat]);
+  return p.x > panelRight() - box.left && p.x < box.width && p.y > 0 && p.y < box.height;
+}
+
+/// The map's Whole route button: the route fitted beside the panel, on request.
+class WholeRouteControl {
+  onAdd() {
+    this.box = el("div", "maplibregl-ctrl maplibregl-ctrl-group whole-route-ctrl");
+    this.box.id = "whole-route";
+    this.box.hidden = true;
+    const button = el("button", "whole-route");
+    button.type = "button";
+    button.title = "Show the whole route";
+    button.setAttribute("aria-label", "Show the whole route");
+    button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    button.addEventListener("click", () => fitRoute());
+    this.box.append(button);
+    return this.box;
+  }
+  onRemove() { this.box.remove(); }
 }
 
 /// Road names along the line, where they don't sit on a pin, each other
@@ -1158,7 +1185,7 @@ async function route() {
     nameWaypointsByRoad();
     saveDraft();
     render({ keepTyping: true });
-    if (!routeInView()) fitRoute();
+    if (fitOnRoute && fitRoute()) fitOnRoute = false;
     checkAddedRoad();
   } catch (failure) {
     if (ask !== routeAsk) return;
@@ -1514,6 +1541,7 @@ function choosePlace(role, index, place) {
     return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
   }
   const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS), ...(place.town ? { town: place.town } : {}) };
+  const settingUp = !routable();
   edit(() => {
     if (role === "start") plan.start = spot;
     else if (role === "end") plan.end = spot;
@@ -1525,7 +1553,10 @@ function choosePlace(role, index, place) {
       plan.waypoints.splice(bestSlot(spot), 0, { ...spot, type });
     }
   });
-  if (mapReady) map.easeTo({ center: [spot.lon, spot.lat], zoom: Math.max(map.getZoom(), 9), padding: fitPadding() });
+  // Setting up the ends, the map goes to the place; after that, a place found
+  // by search is only brought into view, at the zoom the planner chose.
+  if (mapReady && settingUp) map.easeTo({ center: [spot.lon, spot.lat], zoom: Math.max(map.getZoom(), 9), padding: fitPadding() });
+  else if (mapReady && !inView(spot.lon, spot.lat)) map.easeTo({ center: [spot.lon, spot.lat], padding: fitPadding() });
   if (role === "add") {
     adding = true;
     focusAfterRender = '[data-focus="add"]';
@@ -1767,7 +1798,7 @@ async function importTrack(track, source) {
   }
   nameWaypointsByRoad();
   changed();
-  fitRoute();
+  fitOnRoute = !fitRoute();
   // Ends with no name of their own: look them up for the list.
   if (!plan.start.label) nameSpot(plan.start);
   if (plan.end && !plan.end.label) nameSpot(plan.end);
@@ -1788,6 +1819,7 @@ function loadStops(route, source) {
   toast(`Brought in from ${source}.`);
   changed({ reroute: true });
   fitRoute();
+  fitOnRoute = true; // and again when its road comes
 }
 
 const spotFrom = (p) => (p ? { id: newUUID(() => crypto.randomUUID()), lat: p.lat ?? p.latitude, lon: p.lon ?? p.longitude, label: clip(p.name ?? p.label, MOST_LABEL_CHARACTERS) } : null);
@@ -1830,7 +1862,7 @@ function loadPayload(payload, source) {
     imported: { source, matched: true, turns: payload.turnInstructions?.length || 0 },
   };
   changed({ reroute: !plan.path });
-  fitRoute();
+  fitOnRoute = !(fitRoute() && plan.path);
 }
 
 /// Edit from a route's page (/plan/?edit=<token>): the owner's route, to
@@ -2537,6 +2569,7 @@ function planAnother() {
   // Anything still on its way belongs to the plan being cleared.
   settle();
   plan = blankPlan();
+  fitOnRoute = true;
   saved = false;
   history.back.length = 0;
   history.forward.length = 0;
