@@ -1043,10 +1043,10 @@ function downloadICS() {
 // hour's when it's within the function's day and a half, the day's high
 // and low within about a week, else not yet. Asked only when a leave time
 // is set or the route is saved (DevOps, 11/7: WeatherKit's daily budget is
-// shared with Android). Off until the function answers carve.run (its CORS
-// deploy); ?forecast turns it on to try.
+// shared with Android). On since the weather function answers carve.run
+// (v24, CORS, deployed 2026-11-08 with the user's yes).
 
-const FORECAST = (() => { try { return new URLSearchParams(location.search).has("forecast"); } catch { return false; } })();
+const FORECAST = true;
 const CONDITIONS = {
   Clear: ["☀︎", "clear"], MostlyClear: ["☀︎", "mostly clear"], PartlyCloudy: ["⛅︎", "partly cloudy"], MostlyCloudy: ["☁︎", "mostly cloudy"],
   Cloudy: ["☁︎", "cloudy"], Foggy: ["🌫︎", "fog"], Haze: ["🌫︎", "haze"], Drizzle: ["☂︎", "drizzle"], Rain: ["☂︎", "rain"],
