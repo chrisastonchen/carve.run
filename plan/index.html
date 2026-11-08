@@ -193,11 +193,8 @@
           <h1 id="s-name"></h1>
           <p class="dim" id="s-sub"></p>
         </div>
-        <!-- A scheduled drive: when, the note, who's going (0046's plan; the user, 2026-11-07). -->
-        <div class="when" id="s-when" hidden><svg aria-hidden="true"><use href="#i-clock"/></svg><b id="s-when-text"></b><button type="button" class="textlink" id="s-when-change" aria-haspopup="dialog">Change</button></div>
-        <button type="button" class="textlink s-when-add" id="s-when-add" aria-haspopup="dialog" hidden>Add a time to drive it together</button>
+        <!-- The route's note. Free no longer schedules a drive or asks Going (the user, 11/8). -->
         <p class="s-note" id="s-note" hidden></p>
-        <div class="going" id="s-going" hidden><span class="faces" id="s-faces"></span><span id="s-going-text"></span></div>
         <p class="s-forecast" id="s-forecast" hidden></p>
         <div class="facts" id="s-facts"></div>
         <div class="scan">
@@ -254,8 +251,9 @@
   <div class="pin-tip" id="pin-tip" aria-hidden="true" hidden></div>
   <div class="click-menu" id="click-menu" role="menu" aria-label="Add this spot" hidden></div>
   <!-- When you're leaving, as the app's Leave picker: a month, half-hour times (the user, 2026-11-07). -->
-  <div class="pop leave" id="leave" role="dialog" aria-label="When you're leaving" hidden>
-    <p class="pop-title">Leave</p>
+  <div class="pop leave" id="leave" role="dialog" aria-label="When you'll drive" hidden>
+    <p class="pop-title">When you'll drive</p>
+    <p class="dim small">For the forecast and road closures. Only you see it.</p>
     <div class="cal-head"><button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">‹</button><b id="cal-month" aria-live="polite"></b><button type="button" class="cal-nav" id="cal-next" aria-label="Next month">›</button></div>
     <div class="cal" id="cal" role="grid" aria-labelledby="cal-month"></div>
     <label class="time-row"><span>Time</span><span class="select small"><select id="leave-time" aria-label="Time"></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span></label>
@@ -352,7 +350,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=74"></script>
+<script type="module" src="/plan/plan.js?v=75"></script>
 <script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>

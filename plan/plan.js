@@ -727,11 +727,12 @@ function wireOptions() {
   addEventListener("resize", () => closeOptions());
 }
 
-// ── leave: when you're leaving (the app's Leave picker, 0046's plan) ──
-// A time makes the route a scheduled drive: saved, the link shows it and
-// asks Going?, and the saved panel says who's in. Times in half hours,
-// from now to a year ahead, in the browser's own time zone (as the app
-// uses the phone's). Leave Now takes the plan off.
+// ── leave: when you'll drive (private; the user, 11/8) ───────────────
+// Free no longer schedules a drive or asks Going (~/Carve/backlog/
+// Free-Plans-Removal.md): the time is yours alone and only times the
+// forecast and the closures' month. It's kept in the draft, never written
+// to the route or a plan. Times in half hours, from now to a year ahead,
+// in the browser's own time zone (as the app uses the phone's).
 
 const APPLE_EPOCH_SECONDS = 978307200;
 const DAY_MS = 86_400_000;
@@ -743,7 +744,6 @@ const timeText = (d) => d.toLocaleTimeString(undefined, { hour: "numeric", minut
 let leaveDay = null;
 let leaveMonth = null;
 let leaveAnchor = null;
-let planView = null;
 
 function syncLeave() {
   const on = upcoming(plan.leaveAt);
@@ -855,30 +855,6 @@ function closeLeave({ focus = false } = {}) {
 
 const rpc = (name, body) => rest(`/rest/v1/rpc/${name}`, { method: "POST", body });
 
-function planFailure(failure) {
-  const said = `${failure?.data?.message || ""} ${failure?.message || ""}`;
-  if (said.includes("plan_limit")) return "You've set 50 drive times today. Try again tomorrow.";
-  if (said.includes("bad_time")) return "Pick a time from now to a year ahead.";
-  if (said.includes("sign_in")) return "Sign in to set a time.";
-  return "Couldn't set the time. The route is saved; try the time again.";
-}
-
-/// The route's drive plan, as its leave time says: set (or moved, answers
-/// kept), or taken off. Its plan_view, for who's going.
-async function syncPlan() {
-  planView = null;
-  if (!plan.token) return;
-  if (upcoming(plan.leaveAt)) {
-    try {
-      planView = await rpc("plan_set", { p_share_token: plan.token, p_starts_at: new Date(plan.leaveAt).toISOString() });
-    } catch (failure) {
-      toast(planFailure(failure), true);
-    }
-  } else {
-    await rpc("plan_clear", { p_share_token: plan.token }).catch(() => {});
-  }
-}
-
 async function applyLeave(ms) {
   closeLeave({ focus: true });
   if (ms === plan.leaveAt) return;
@@ -886,25 +862,11 @@ async function applyLeave(ms) {
   forecastText = null;
   renderForecast();
   if (ms) askForecast();
-  // Saved already: the route and its plan change now.
-  if (saved && plan.token && session && plan.ownerId === session.user.id) {
-    busy(true, "Saving…");
-    try {
-      await writeRoute();
-      await syncPlan();
-    } catch (failure) {
-      toast(failure.message, true);
-    } finally {
-      busy(false);
-      renderWhen();
-    }
-  }
+  renderWhen();
 }
 
 function wireLeave() {
   $("leave-btn").addEventListener("click", () => ($("leave").hidden ? openLeave($("leave-btn")) : closeLeave()));
-  $("s-when-change").addEventListener("click", () => openLeave($("s-when-change")));
-  $("s-when-add").addEventListener("click", () => openLeave($("s-when-add")));
   $("cal-prev").addEventListener("click", () => { leaveMonth = new Date(leaveMonth.getFullYear(), leaveMonth.getMonth() - 1, 1); renderCal(); });
   $("cal-next").addEventListener("click", () => { leaveMonth = new Date(leaveMonth.getFullYear(), leaveMonth.getMonth() + 1, 1); renderCal(); });
   // Arrows move the day, a week up or down, across months.
@@ -959,38 +921,14 @@ function wireNote() {
   });
 }
 
-// ── a scheduled drive, saved: when, the note, who's going, a calendar ──
+// ── saved: the route's note, and your own calendar ───────────────────
 
 function renderWhen() {
-  const on = upcoming(plan.leaveAt);
-  const at = on ? new Date(plan.leaveAt) : null;
-  $("s-when").hidden = !on;
-  $("s-when-add").hidden = on;
-  if (at) $("s-when-text").textContent = `${dayText(at)} · Leave ${timeText(at)}`;
   const note = (plan.note || "").trim();
   $("s-note").hidden = !note;
   $("s-note").textContent = note ? `“${note}”` : "";
-  const people = on && Array.isArray(planView?.people) ? planView.people.filter((p) => p.answer === "yes") : [];
-  $("s-going").hidden = !people.length;
-  const faces = people.slice(0, 5).map((p, i) => {
-    if (p.avatar_url) {
-      const img = el("img");
-      img.src = p.avatar_url;
-      img.alt = "";
-      return img;
-    }
-    const face = el("span", "", (p.display_name || p.username || "?").trim().charAt(0).toUpperCase());
-    face.style.background = ["#2E92FF", "#E4731C", "#6A5FE8", "#2E9E52", "#C2417A"][i % 5];
-    face.setAttribute("aria-hidden", "true");
-    return face;
-  });
-  $("s-faces").replaceChildren(...faces);
-  const names = people.map((p) => (p.me ? "You" : p.display_name || p.username));
-  const shown = names.length > 4 ? [...names.slice(0, 3), `${names.length - 3} more`] : names;
-  const list = shown.length > 1 ? `${shown.slice(0, -1).join(", ")} and ${shown.at(-1)}` : shown[0] || "";
-  const count = Number(planView?.yes) || people.length;
-  $("s-going-text").replaceChildren(el("b", "", `${count} going`), document.createTextNode(` ${list}`));
-  $("ics").hidden = !on;
+  // Add to calendar: your own drive time, to your own calendar; nothing shared.
+  $("ics").hidden = !upcoming(plan.leaveAt);
 }
 
 /// The drive as a calendar event (.ics): from the leave time for the
@@ -2442,6 +2380,9 @@ function keptFrom(payload) {
   return {
     ...(payload.photo ? { photo: payload.photo } : {}),
     ...(payload.author ? { author: payload.author } : {}),
+    // A time the app set (a 1.7 plan), carried as it was: the planner never
+    // writes its own (private) time to the route.
+    ...(Number.isFinite(payload.leaveAt) ? { leaveAt: payload.leaveAt } : {}),
   };
 }
 
@@ -2618,9 +2559,6 @@ async function save() {
       body: [{ token: plan.token, route_id: plan.id.toLowerCase() }],
       headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
     });
-    // A time set: the drive plan (0046), as the app's Leave makes one;
-    // Leave Now on a route that had one takes it off.
-    if (upcoming(plan.leaveAt) || !first) await syncPlan();
     saved = true;
     store.remove(PENDING_SAVE_KEY);
     saveDraft();

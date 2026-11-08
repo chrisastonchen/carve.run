@@ -117,13 +117,13 @@ export function routePayload(plan, now = appleDate()) {
     shareToken: plan.token,
     ...styleKeys(plan.style),
   };
-  // Its maker's note and when they're leaving (Route.note, Route.leaveAt):
-  // none is no key, as the app writes them.
+  // Its maker's note (Route.note): none is no key, as the app writes it.
+  // The planner's leave time is private (the user, 11/8: Free doesn't
+  // schedule drives), so it never goes in the route; a Route.leaveAt the
+  // app set comes through untouched with the rest of `kept`.
   const note = typeof plan.note === "string" ? plan.note.trim().slice(0, MOST_NOTE_CHARACTERS) : "";
   if (note) payload.note = note;
   else delete payload.note;
-  if (Number.isFinite(plan.leaveAt)) payload.leaveAt = appleDate(plan.leaveAt);
-  else delete payload.leaveAt;
   // Roads it keeps off, in the app's RouteAvoid order; none is no key (Route.avoids nil).
   const avoids = ["tolls", "unpaved", "ferries"].filter((a) => (plan.avoids || []).includes(a));
   if (avoids.length) payload.avoids = avoids;
