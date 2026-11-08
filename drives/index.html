@@ -19,9 +19,10 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=30">
+<link rel="stylesheet" href="/plan/plan.css?v=38">
 <link rel="stylesheet" href="/assets/route-view.css?v=b688721c1e">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
+<link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -88,14 +89,12 @@
 <div class="ex" id="ex">
 <main class="panel ex-panel" aria-label="Drives">
   <div class="ex-top">
-    <h1>Explore drives</h1>
+    <h1>Explore Drives and Events</h1>
     <label class="ex-search"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="visually-hidden">Search drives</span><input id="ex-q" type="search" placeholder="Search a road, town or state" autocomplete="off"></label>
-    <div class="ex-filters" role="group" aria-label="Filters"><button type="button" class="ex-chip" data-level="leisurely" aria-pressed="false"><span class="dot" style="background:#3B8A3E"></span>Leisurely</button><button type="button" class="ex-chip" data-level="sweeping" aria-pressed="false"><span class="dot" style="background:#C0860A"></span>Sweeping</button><button type="button" class="ex-chip" data-level="twisty" aria-pressed="false"><span class="dot" style="background:#D2591F"></span>Twisty</button><button type="button" class="ex-chip" data-level="intense" aria-pressed="false"><span class="dot" style="background:#9B1C1C"></span>Intense</button>
-      <select id="ex-length" class="ex-select" aria-label="Length"><option value="">Any length</option><option value="0-20">Under 20 mi</option><option value="20-50">20 to 50 mi</option><option value="50-9999">Over 50 mi</option></select>
-    </div>
   </div>
   <div class="scroll ex-scroll" id="ex-scroll">
-    <div class="ex-head"><h2 id="ex-title">Drives on the map</h2><button type="button" class="textlink" id="ex-where" hidden></button></div>
+    <section class="ex-events" id="ex-events" aria-labelledby="ex-ev-title" hidden><h2 id="ex-ev-title">Nearby Events</h2><ol class="ev-rail" id="ex-ev"></ol><a class="ex-ev-all" href="/events/">All car events by area</a></section>
+    <div class="ex-head"><h2 id="ex-title">Best Roads in the Area</h2><button type="button" class="textlink" id="ex-where" hidden></button></div>
     <ol class="ex-list" id="ex-list" aria-live="polite"></ol>
     <p class="ex-more dim" id="ex-more" hidden></p>
     <div class="ex-static">
