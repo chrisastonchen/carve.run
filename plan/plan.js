@@ -1054,7 +1054,11 @@ const CONDITIONS = {
   Thunderstorms: ["⚡︎", "thunderstorms"], Snow: ["❄︎", "snow"], Flurries: ["❄︎", "flurries"], HeavySnow: ["❄︎", "heavy snow"],
   Sleet: ["❄︎", "sleet"], FreezingRain: ["❄︎", "freezing rain"], Windy: ["≋", "windy"], Breezy: ["≋", "breezy"],
 };
-const conditionOf = (code) => CONDITIONS[code] || ["", String(code || "").replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()];
+// The function says them as WeatherKit's codes in lowerCamel ("mostlyCloudy").
+const conditionOf = (code) => {
+  const raw = String(code || "");
+  return CONDITIONS[raw.charAt(0).toUpperCase() + raw.slice(1)] || ["", raw.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()];
+};
 const inUnits = (c) => Math.round(miles ? c * 9 / 5 + 32 : c);
 const degrees = (c) => `${inUnits(c)}°`;
 let forecastText = null;
