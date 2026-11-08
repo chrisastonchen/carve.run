@@ -23,7 +23,7 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=38">
+<link rel="stylesheet" href="/plan/plan.css?v=39">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -33,6 +33,7 @@
   <symbol id="i-grip" viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
   <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM4 10h16M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 9v4l2.5 2M9 2h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
   <!-- The app's start and finish marks (Material Icons, Apache 2.0, as android/…/ic_pin_flag*.xml). -->
   <symbol id="i-flag" viewBox="0 0 24 24"><path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6z" fill="currentColor"/></symbol>
@@ -142,7 +143,7 @@
         <!-- Trip, Leave and Options in one row, as the app's planner (the user, 2026-11-07). -->
         <div class="ctls" id="ctls" hidden>
           <span class="select small"><select id="trip" aria-label="Trip"><option value="oneWay">One way</option><option value="roundTrip">Round trip</option><option value="outAndBack">Out and back</option></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span>
-          <button type="button" class="ctl" id="leave-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="leave" hidden><span id="leave-label">Leave Now</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+          <button type="button" class="ctl" id="leave-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="leave"><span id="leave-label">Leave Now</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
           <button type="button" class="ctl" id="options-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="options">Options</button>
         </div>
         <ol class="rows" id="rows" aria-label="Start, stops, waypoints and destination"></ol>
@@ -171,6 +172,10 @@
         </div>
         <label for="route-name" class="visually-hidden">Route name</label>
         <input id="route-name" class="field" type="text" maxlength="120" placeholder="Name your drive">
+        <!-- The route's note: anyone with the link sees it (Route.note; the user, 2026-11-07). -->
+        <button type="button" class="textlink note-add" id="note-add">Add a note</button>
+        <label for="note" class="visually-hidden">Note for anyone with the link</label>
+        <textarea id="note" class="field note" maxlength="280" rows="3" placeholder="Where to meet, what to bring. Anyone with the link sees it." hidden></textarea>
         <button type="button" class="pill green big" id="save" disabled>Save and get the link</button>
       </div>
       <!-- Signed out, with nothing planned yet: a way in (the user, 2026-10-29). -->
@@ -188,6 +193,11 @@
           <h1 id="s-name"></h1>
           <p class="dim" id="s-sub"></p>
         </div>
+        <!-- A scheduled drive: when, the note, who's going (0046's plan; the user, 2026-11-07). -->
+        <div class="when" id="s-when" hidden><svg aria-hidden="true"><use href="#i-clock"/></svg><b id="s-when-text"></b><button type="button" class="textlink" id="s-when-change" aria-haspopup="dialog">Change</button></div>
+        <button type="button" class="textlink s-when-add" id="s-when-add" aria-haspopup="dialog" hidden>Add a time to drive it together</button>
+        <p class="s-note" id="s-note" hidden></p>
+        <div class="going" id="s-going" hidden><span class="faces" id="s-faces"></span><span id="s-going-text"></span></div>
         <div class="facts" id="s-facts"></div>
         <div class="scan">
           <div class="scan-top">
@@ -198,6 +208,7 @@
             <button type="button" class="pill white" id="qr-download"><svg aria-hidden="true"><use href="#i-download"/></svg>Download</button>
             <button type="button" class="pill white" id="print"><svg aria-hidden="true"><use href="#i-print"/></svg>Print directions</button>
           </div>
+          <button type="button" class="pill white ics" id="ics" hidden><svg aria-hidden="true"><use href="#i-cal"/></svg>Add to calendar</button>
         </div>
         <div class="paste">
           <input id="link-out" readonly aria-label="The route's link">
@@ -241,6 +252,15 @@
   </div>
   <div class="pin-tip" id="pin-tip" aria-hidden="true" hidden></div>
   <div class="click-menu" id="click-menu" role="menu" aria-label="Add this spot" hidden></div>
+  <!-- When you're leaving, as the app's Leave picker: a month, half-hour times (the user, 2026-11-07). -->
+  <div class="pop leave" id="leave" role="dialog" aria-label="When you're leaving" hidden>
+    <p class="pop-title">Leave</p>
+    <div class="cal-head"><button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">‹</button><b id="cal-month" aria-live="polite"></b><button type="button" class="cal-nav" id="cal-next" aria-label="Next month">›</button></div>
+    <div class="cal" id="cal" role="grid" aria-labelledby="cal-month"></div>
+    <label class="time-row"><span>Time</span><span class="select small"><select id="leave-time" aria-label="Time"></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span></label>
+    <button type="button" class="pill green" id="leave-set">Set</button>
+    <button type="button" class="textlink" id="leave-now">Leave Now</button>
+  </div>
   <!-- Route options, as the app's Options sheet: roads, avoids, reverse. -->
   <div class="pop" id="options" role="dialog" aria-label="Route options" hidden>
     <p class="pop-title">Route options</p>
@@ -331,7 +351,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=69"></script>
+<script type="module" src="/plan/plan.js?v=70"></script>
 <script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>

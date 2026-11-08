@@ -15,13 +15,13 @@
 // from carve.run), and anything kept in browser storage falls back to
 // memory for the tab.
 import {
-  MAX_WAYPOINTS, MAX_STOPS, MOST_NAME_CHARACTERS, MOST_LABEL_CHARACTERS,
+  MAX_WAYPOINTS, MAX_STOPS, MOST_NAME_CHARACTERS, MOST_LABEL_CHARACTERS, MOST_NOTE_CHARACTERS,
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
-} from "./route-wire.js?v=2";
+} from "./route-wire.js?v=3";
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=7";
 import { addPins } from "/assets/events.js?v=bb6f2616de";
-import { closures, closureTitle, closureWords } from "./closures.js?v=1";
+import { closures, closureTitle, closureWords } from "./closures.js?v=2";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -102,7 +102,7 @@ function blankPlan() {
   return {
     id: null, token: null, createdAt: null, ownerId: null,
     name: "", start: null, end: null, waypoints: [],
-    trip: "oneWay", style: "balanced", avoids: [],
+    trip: "oneWay", style: "balanced", avoids: [], leaveAt: null, note: "",
     path: null, roads: [], frozen: false, imported: null,
     turnaroundId: null, oneWayEnd: null,
     elevationProfile: null, blurb: null, profile: null,
@@ -117,8 +117,8 @@ const history = { back: [], forward: [] };
 /// Everything an undo puts back (not the route's identity: undoing an
 /// edit of a saved route still saves over that route).
 function snapshot() {
-  const { name, nameMade, madeName, start, end, waypoints, trip, style, avoids, path, roads, frozen, imported, turnaroundId, oneWayEnd } = plan;
-  return JSON.stringify({ name, nameMade, madeName, start, end, waypoints, trip, style, avoids, path, roads, frozen, imported, turnaroundId, oneWayEnd });
+  const { name, nameMade, madeName, start, end, waypoints, trip, style, avoids, leaveAt, note, path, roads, frozen, imported, turnaroundId, oneWayEnd } = plan;
+  return JSON.stringify({ name, nameMade, madeName, start, end, waypoints, trip, style, avoids, leaveAt, note, path, roads, frozen, imported, turnaroundId, oneWayEnd });
 }
 
 /// Bumped whenever the plan is replaced or put back: an answer that set
@@ -727,6 +727,314 @@ function wireOptions() {
   addEventListener("resize", () => closeOptions());
 }
 
+// ── leave: when you're leaving (the app's Leave picker, 0046's plan) ──
+// A time makes the route a scheduled drive: saved, the link shows it and
+// asks Going?, and the saved panel says who's in. Times in half hours,
+// from now to a year ahead, in the browser's own time zone (as the app
+// uses the phone's). Leave Now takes the plan off.
+
+const APPLE_EPOCH_SECONDS = 978307200;
+const DAY_MS = 86_400_000;
+const upcoming = (ms) => Number.isFinite(ms) && ms > Date.now() - 3_600_000;
+const dayStart = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const sameDay = (a, b) => !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+const dayText = (d) => d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+const timeText = (d) => d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+let leaveDay = null;
+let leaveMonth = null;
+let leaveAnchor = null;
+let planView = null;
+
+function syncLeave() {
+  const on = upcoming(plan.leaveAt);
+  $("leave-label").textContent = on ? `${dayText(new Date(plan.leaveAt))}, ${timeText(new Date(plan.leaveAt))}` : "Leave Now";
+  $("leave-btn").classList.toggle("on", on);
+}
+
+/// The half hours still to come on `day`.
+function timesFor(day) {
+  const out = [];
+  for (let i = 0; i < 48; i++) {
+    const t = new Date(day.getFullYear(), day.getMonth(), day.getDate(), Math.floor(i / 2), (i % 2) * 30);
+    if (t.getTime() > Date.now()) out.push(t);
+  }
+  return out;
+}
+
+const lastDay = () => dayStart(new Date(Date.now() + 364 * DAY_MS));
+
+function renderCal() {
+  const today = dayStart(new Date());
+  const last = lastDay();
+  $("cal-month").textContent = leaveMonth.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  $("cal-prev").disabled = leaveMonth <= new Date(today.getFullYear(), today.getMonth(), 1);
+  $("cal-next").disabled = new Date(leaveMonth.getFullYear(), leaveMonth.getMonth() + 1, 1) > last;
+  const cal = $("cal");
+  cal.replaceChildren();
+  const names = [0, 1, 2, 3, 4, 5, 6].map((i) => new Date(2026, 10, 1 + i).toLocaleDateString(undefined, { weekday: "narrow" }));
+  for (const n of names) {
+    const h = el("span", "dow", n);
+    h.setAttribute("aria-hidden", "true");
+    cal.append(h);
+  }
+  for (let i = 0; i < leaveMonth.getDay(); i++) cal.append(el("span"));
+  const days = new Date(leaveMonth.getFullYear(), leaveMonth.getMonth() + 1, 0).getDate();
+  for (let n = 1; n <= days; n++) {
+    const day = new Date(leaveMonth.getFullYear(), leaveMonth.getMonth(), n);
+    const b = el("button", sameDay(day, today) ? "today" : "", String(n));
+    b.type = "button";
+    b.dataset.day = String(day.getTime());
+    b.setAttribute("aria-label", day.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }));
+    b.disabled = day < today || day > last || (sameDay(day, today) && !timesFor(day).length);
+    const picked = sameDay(day, leaveDay);
+    b.setAttribute("aria-selected", String(picked));
+    b.tabIndex = picked ? 0 : -1;
+    b.addEventListener("click", () => {
+      leaveDay = day;
+      renderCal();
+      renderTimes();
+      $("cal").querySelector('[aria-selected="true"]')?.focus();
+    });
+    cal.append(b);
+  }
+  if (!cal.querySelector('button[tabindex="0"]')) {
+    const first = cal.querySelector("button:not(:disabled)");
+    if (first) first.tabIndex = 0;
+  }
+}
+
+/// The day's times; the same clock time if it's still there, else 8:00 AM,
+/// else the first one left.
+function renderTimes(minutes = Number($("leave-time").value)) {
+  const times = timesFor(leaveDay);
+  $("leave-time").replaceChildren(...times.map((t) => {
+    const o = el("option", "", timeText(t));
+    o.value = String(t.getHours() * 60 + t.getMinutes());
+    return o;
+  }));
+  const values = times.map((t) => t.getHours() * 60 + t.getMinutes());
+  const pick = [minutes, 8 * 60].find((m) => values.includes(m)) ?? values[0];
+  if (pick !== undefined) $("leave-time").value = String(pick);
+  syncLeaveSet();
+}
+
+function chosenLeave() {
+  const m = Number($("leave-time").value);
+  if (!leaveDay || !Number.isFinite(m)) return null;
+  return new Date(leaveDay.getFullYear(), leaveDay.getMonth(), leaveDay.getDate(), Math.floor(m / 60), m % 60);
+}
+
+function syncLeaveSet() {
+  const at = chosenLeave();
+  $("leave-set").disabled = !at;
+  $("leave-set").textContent = at ? `Set ${dayText(at)} at ${timeText(at)}` : "Set";
+}
+
+function openLeave(anchor) {
+  closeOptions();
+  const now = new Date();
+  const set = upcoming(plan.leaveAt) ? new Date(plan.leaveAt) : null;
+  leaveDay = set ? dayStart(set) : timesFor(now).length ? dayStart(now) : dayStart(new Date(now.getTime() + DAY_MS));
+  leaveMonth = new Date(leaveDay.getFullYear(), leaveDay.getMonth(), 1);
+  renderCal();
+  renderTimes(set ? set.getHours() * 60 + set.getMinutes() : 8 * 60);
+  $("leave-now").hidden = !set;
+  leaveAnchor = anchor;
+  anchor.setAttribute("aria-expanded", "true");
+  $("leave").hidden = false;
+  placePop($("leave"), anchor);
+  $("cal").querySelector('button[tabindex="0"]')?.focus();
+}
+
+function closeLeave({ focus = false } = {}) {
+  if ($("leave").hidden) return;
+  $("leave").hidden = true;
+  leaveAnchor?.setAttribute("aria-expanded", "false");
+  if (focus) leaveAnchor?.focus();
+}
+
+const rpc = (name, body) => rest(`/rest/v1/rpc/${name}`, { method: "POST", body });
+
+function planFailure(failure) {
+  const said = `${failure?.data?.message || ""} ${failure?.message || ""}`;
+  if (said.includes("plan_limit")) return "You've set 50 drive times today. Try again tomorrow.";
+  if (said.includes("bad_time")) return "Pick a time from now to a year ahead.";
+  if (said.includes("sign_in")) return "Sign in to set a time.";
+  return "Couldn't set the time. The route is saved; try the time again.";
+}
+
+/// The route's drive plan, as its leave time says: set (or moved, answers
+/// kept), or taken off. Its plan_view, for who's going.
+async function syncPlan() {
+  planView = null;
+  if (!plan.token) return;
+  if (upcoming(plan.leaveAt)) {
+    try {
+      planView = await rpc("plan_set", { p_share_token: plan.token, p_starts_at: new Date(plan.leaveAt).toISOString() });
+    } catch (failure) {
+      toast(planFailure(failure), true);
+    }
+  } else {
+    await rpc("plan_clear", { p_share_token: plan.token }).catch(() => {});
+  }
+}
+
+async function applyLeave(ms) {
+  closeLeave({ focus: true });
+  if (ms === plan.leaveAt) return;
+  edit(() => (plan.leaveAt = ms), { geometry: false });
+  // Saved already: the route and its plan change now.
+  if (saved && plan.token && session && plan.ownerId === session.user.id) {
+    busy(true, "Saving…");
+    try {
+      await writeRoute();
+      await syncPlan();
+    } catch (failure) {
+      toast(failure.message, true);
+    } finally {
+      busy(false);
+      renderWhen();
+    }
+  }
+}
+
+function wireLeave() {
+  $("leave-btn").addEventListener("click", () => ($("leave").hidden ? openLeave($("leave-btn")) : closeLeave()));
+  $("s-when-change").addEventListener("click", () => openLeave($("s-when-change")));
+  $("s-when-add").addEventListener("click", () => openLeave($("s-when-add")));
+  $("cal-prev").addEventListener("click", () => { leaveMonth = new Date(leaveMonth.getFullYear(), leaveMonth.getMonth() - 1, 1); renderCal(); });
+  $("cal-next").addEventListener("click", () => { leaveMonth = new Date(leaveMonth.getFullYear(), leaveMonth.getMonth() + 1, 1); renderCal(); });
+  // Arrows move the day, a week up or down, across months.
+  $("cal").addEventListener("keydown", (event) => {
+    const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[event.key];
+    const at = event.target.closest?.("button[data-day]");
+    if (!step || !at) return;
+    event.preventDefault();
+    const next = new Date(Number(at.dataset.day));
+    next.setDate(next.getDate() + step);
+    if (next.getMonth() !== leaveMonth.getMonth() || next.getFullYear() !== leaveMonth.getFullYear()) {
+      leaveMonth = new Date(next.getFullYear(), next.getMonth(), 1);
+      renderCal();
+    }
+    const b = $("cal").querySelector(`button[data-day="${dayStart(next).getTime()}"]`);
+    if (b && !b.disabled) {
+      $("cal").querySelectorAll("button").forEach((x) => (x.tabIndex = -1));
+      b.tabIndex = 0;
+      b.focus();
+    }
+  });
+  $("leave-time").addEventListener("change", syncLeaveSet);
+  $("leave-set").addEventListener("click", () => { const at = chosenLeave(); if (at) applyLeave(at.getTime()); });
+  $("leave-now").addEventListener("click", () => applyLeave(null));
+  document.addEventListener("pointerdown", (event) => {
+    if ($("leave").hidden || $("leave").contains(event.target) || leaveAnchor?.contains(event.target)) return;
+    closeLeave();
+  });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeLeave({ focus: true }); });
+  addEventListener("resize", () => closeLeave());
+}
+
+// ── the note: anyone with the link sees it (Route.note) ───────────────
+
+let noteOpen = false;
+function syncNote(hasAny) {
+  const shown = noteOpen || !!(plan.note || "").trim();
+  $("note").hidden = !shown;
+  $("note-add").hidden = shown || !hasAny;
+  if (document.activeElement !== $("note")) $("note").value = plan.note || "";
+}
+
+function wireNote() {
+  $("note-add").addEventListener("click", () => {
+    noteOpen = true;
+    syncNote(true);
+    $("note").focus();
+  });
+  $("note").addEventListener("input", () => {
+    plan.note = $("note").value.slice(0, MOST_NOTE_CHARACTERS);
+    saveDraft();
+  });
+}
+
+// ── a scheduled drive, saved: when, the note, who's going, a calendar ──
+
+function renderWhen() {
+  const on = upcoming(plan.leaveAt);
+  const at = on ? new Date(plan.leaveAt) : null;
+  $("s-when").hidden = !on;
+  $("s-when-add").hidden = on;
+  if (at) $("s-when-text").textContent = `${dayText(at)} · Leave ${timeText(at)}`;
+  const note = (plan.note || "").trim();
+  $("s-note").hidden = !note;
+  $("s-note").textContent = note ? `“${note}”` : "";
+  const people = on && Array.isArray(planView?.people) ? planView.people.filter((p) => p.answer === "yes") : [];
+  $("s-going").hidden = !people.length;
+  const faces = people.slice(0, 5).map((p, i) => {
+    if (p.avatar_url) {
+      const img = el("img");
+      img.src = p.avatar_url;
+      img.alt = "";
+      return img;
+    }
+    const face = el("span", "", (p.display_name || p.username || "?").trim().charAt(0).toUpperCase());
+    face.style.background = ["#2E92FF", "#E4731C", "#6A5FE8", "#2E9E52", "#C2417A"][i % 5];
+    face.setAttribute("aria-hidden", "true");
+    return face;
+  });
+  $("s-faces").replaceChildren(...faces);
+  const names = people.map((p) => (p.me ? "You" : p.display_name || p.username));
+  const shown = names.length > 4 ? [...names.slice(0, 3), `${names.length - 3} more`] : names;
+  const list = shown.length > 1 ? `${shown.slice(0, -1).join(", ")} and ${shown.at(-1)}` : shown[0] || "";
+  const count = Number(planView?.yes) || people.length;
+  $("s-going-text").replaceChildren(el("b", "", `${count} going`), document.createTextNode(` ${list}`));
+  $("ics").hidden = !on;
+}
+
+/// The drive as a calendar event (.ics): from the leave time for the
+/// route's drive time with its stays, the link and the note with it.
+function downloadICS() {
+  if (!upcoming(plan.leaveAt)) return;
+  const stays = plan.waypoints.reduce((sum, w) => sum + (w.type === "stop" ? w.stayMinutes || 0 : 0), 0);
+  const start = new Date(plan.leaveAt);
+  const end = new Date(plan.leaveAt + ((plan.path?.durationSeconds || 3600) + stays * 60) * 1000);
+  const stamp = (d) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const text = (s) => String(s || "").replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/[,;]/g, (m) => `\\${m}`);
+  const link = shareLink();
+  const lines = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Carve//carve.run planner//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    `UID:${plan.token}-${stamp(start)}@carve.run`,
+    `DTSTAMP:${stamp(new Date())}`,
+    `DTSTART:${stamp(start)}`,
+    `DTEND:${stamp(end)}`,
+    `SUMMARY:${text(plan.name || "Drive")}`,
+    ...(plan.start?.label ? [`LOCATION:${text(plan.start.label)}`] : []),
+    `DESCRIPTION:${text([(plan.note || "").trim(), `Drive it in Carve: ${link}`].filter(Boolean).join("\n\n"))}`,
+    `URL:${link}`,
+    "END:VEVENT", "END:VCALENDAR",
+  ];
+  // Lines longer than 75 octets fold onto the next with a space (RFC 5545).
+  const fold = (line) => {
+    const out = [];
+    let rest = line;
+    while (new TextEncoder().encode(rest).length > 75) {
+      let cut = 74;
+      while (new TextEncoder().encode(rest.slice(0, cut)).length > 74) cut--;
+      out.push(rest.slice(0, cut));
+      rest = " " + rest.slice(cut);
+    }
+    out.push(rest);
+    return out.join("\r\n");
+  };
+  const blob = new Blob([lines.map(fold).join("\r\n") + "\r\n"], { type: "text/calendar" });
+  const a = el("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${(plan.name || "drive").replace(/[^\w -]+/g, "").trim().replace(/\s+/g, "-") || "drive"}.ics`;
+  document.body.append(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+
 // ── along the way: closures on the route (the app's RoadClosures) ─────
 
 let catalogRoads = [];
@@ -745,9 +1053,9 @@ async function loadFlagged() {
   renderClosures();
 }
 
-/// The month the drive's in, 1–12: now, for now.
+/// The month the drive's in, 1–12: the leave time's, or now's.
 function driveMonth() {
-  return new Date().getMonth() + 1;
+  return new Date(upcoming(plan.leaveAt) ? plan.leaveAt : Date.now()).getMonth() + 1;
 }
 
 function renderClosures() {
@@ -765,7 +1073,8 @@ function renderClosures() {
   const list = $("closure-list");
   list.replaceChildren(...hints.map((hint) => {
     const li = el("li");
-    li.append(el("b", "", closureTitle(hint)), el("span", "", closureWords(hint) + " "));
+    const later = month !== new Date().getMonth() + 1 ? month : null;
+    li.append(el("b", "", closureTitle(hint, later)), el("span", "", closureWords(hint) + " "));
     if (!hint.itself) {
       const a = el("a", "", `About ${hint.name}`);
       a.href = `/drives/${encodeURIComponent(hint.slug)}/`;
@@ -1394,8 +1703,10 @@ function render({ keepTyping = false } = {}) {
   $("head-left").hidden = !plan.start;
   $("list-head").hidden = importing || ($("head-left").hidden && $("history-buttons").hidden);
   $("ctls").hidden = importing || !plan.start;
-  if ($("ctls").hidden) closeOptions();
+  if ($("ctls").hidden) { closeOptions(); closeLeave(); }
   syncOptions();
+  syncLeave();
+  syncNote(hasAny);
   // The figures, the name and Save are there from the start, Save greyed
   // until there's a route; "Sign up or log in" stays under them for a guest
   // (the user, 2026-10-29).
@@ -1977,14 +2288,11 @@ async function importCarve(token) {
 }
 
 /// What the planner doesn't make but a route of yours it edits had: its
-/// photo, its maker, and (until the planner sets them) the app's note and
-/// leave time, so saving here doesn't drop them.
+/// photo and its maker (its note and leave time are the planner's own now).
 function keptFrom(payload) {
   return {
     ...(payload.photo ? { photo: payload.photo } : {}),
     ...(payload.author ? { author: payload.author } : {}),
-    ...(typeof payload.note === "string" && payload.note ? { note: payload.note } : {}),
-    ...(payload.leaveAt != null ? { leaveAt: payload.leaveAt } : {}),
   };
 }
 
@@ -2007,6 +2315,10 @@ function loadPayload(payload, source) {
     trip: payload.tripType === "roundtrip" ? (payload.returnsSameWay ? "outAndBack" : "roundTrip") : "oneWay",
     style: payload.balancesRoads ? "balanced" : payload.routingPreference || "scenic",
     avoids: AVOIDS.filter((a) => Array.isArray(payload.avoids) && payload.avoids.includes(a)),
+    // Its note, and when its maker's leaving: Apple's seconds since 2001 to
+    // ms; a time already gone by is Leave Now again.
+    note: typeof payload.note === "string" ? payload.note.slice(0, MOST_NOTE_CHARACTERS) : "",
+    leaveAt: Number.isFinite(payload.leaveAt) && upcoming((payload.leaveAt + APPLE_EPOCH_SECONDS) * 1000) ? (payload.leaveAt + APPLE_EPOCH_SECONDS) * 1000 : null,
     path: payload.pathGeometry?.length ? {
       geometry: payload.pathGeometry.map((c) => [c.longitude, c.latitude]),
       instructions: payload.turnInstructions || [],
@@ -2157,6 +2469,9 @@ async function save() {
       body: [{ token: plan.token, route_id: plan.id.toLowerCase() }],
       headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
     });
+    // A time set: the drive plan (0046), as the app's Leave makes one;
+    // Leave Now on a route that had one takes it off.
+    if (upcoming(plan.leaveAt) || !first) await syncPlan();
     saved = true;
     store.remove(PENDING_SAVE_KEY);
     saveDraft();
@@ -2273,6 +2588,7 @@ function showSaved() {
   $("link-out").value = shareLink().replace("https://", "");
   drawQR();
   renderSavedFacts();
+  renderWhen();
   renderBlurb(true);
   renderAlong();
   renderNearby();
@@ -2756,6 +3072,9 @@ function osAwareGetApp() {
 
 function wire() {
   wireOptions();
+  wireLeave();
+  wireNote();
+  $("ics").addEventListener("click", downloadICS);
   loadFlagged();
   $("undo").addEventListener("click", undo);
   // A click anywhere off the map menu closes it (the map's own clicks do

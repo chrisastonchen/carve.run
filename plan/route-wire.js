@@ -17,6 +17,8 @@ export const OLDER_BUILDS_WAYPOINT_LIMIT = 30;
 export const MAX_STOPS = 10;
 /// Route.mostNameCharacters, Waypoint.mostLabelCharacters.
 export const MOST_NAME_CHARACTERS = 120;
+/// A route's note, as the app's Route.mostNoteCharacters.
+export const MOST_NOTE_CHARACTERS = 280;
 export const MOST_LABEL_CHARACTERS = 80;
 
 /// RouteShareCodec.tokenAlphabet: no 0/O or 1/l/I, so a link read aloud or
@@ -115,6 +117,13 @@ export function routePayload(plan, now = appleDate()) {
     shareToken: plan.token,
     ...styleKeys(plan.style),
   };
+  // Its maker's note and when they're leaving (Route.note, Route.leaveAt):
+  // none is no key, as the app writes them.
+  const note = typeof plan.note === "string" ? plan.note.trim().slice(0, MOST_NOTE_CHARACTERS) : "";
+  if (note) payload.note = note;
+  else delete payload.note;
+  if (Number.isFinite(plan.leaveAt)) payload.leaveAt = appleDate(plan.leaveAt);
+  else delete payload.leaveAt;
   // Roads it keeps off, in the app's RouteAvoid order; none is no key (Route.avoids nil).
   const avoids = ["tolls", "unpaved", "ferries"].filter((a) => (plan.avoids || []).includes(a));
   if (avoids.length) payload.avoids = avoids;

@@ -130,9 +130,11 @@ export function closures(path, roads, flagged, month, itself = null) {
 }
 
 /// The app's words for each (RoadClosures.title and .words).
-export function closureTitle(hint) {
+/// `month` (1–12) when the drive's in another month than this one.
+export function closureTitle(hint, month = null) {
   if (hint.kind === "traffic") return hint.itself ? "Possible closure" : `Possible closure on ${hint.name}`;
-  return hint.itself ? "Usually closed now" : `${hint.name} is usually closed now`;
+  const when = month ? `in ${MONTHS[month - 1]}` : "now";
+  return hint.itself ? `Usually closed ${when}` : `${hint.name} is usually closed ${when}`;
 }
 
 export function closureWords(hint) {
