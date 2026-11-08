@@ -115,6 +115,10 @@ export function routePayload(plan, now = appleDate()) {
     shareToken: plan.token,
     ...styleKeys(plan.style),
   };
+  // Roads it keeps off, in the app's RouteAvoid order; none is no key (Route.avoids nil).
+  const avoids = ["tolls", "unpaved", "ferries"].filter((a) => (plan.avoids || []).includes(a));
+  if (avoids.length) payload.avoids = avoids;
+  else delete payload.avoids;
   if (loops) payload.tripType = "roundtrip";
   if (plan.trip === "outAndBack" && all.length > 0) payload.returnsSameWay = true;
   if (plan.elevationProfile) payload.elevationProfile = plan.elevationProfile;

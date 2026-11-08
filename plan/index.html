@@ -23,7 +23,7 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=37">
+<link rel="stylesheet" href="/plan/plan.css?v=38">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -132,13 +132,18 @@
         <div class="list-head" id="list-head">
           <span class="head-left" id="head-left">
             <span class="eyebrow">Your route</span>
-            <span class="select small"><select id="trip" aria-label="Trip"><option value="oneWay">One way</option><option value="roundTrip">Round trip</option><option value="outAndBack">Out and back</option></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span>
           </span>
           <span class="undo" id="history-buttons">
             <button type="button" class="pill grey small" id="start-over" disabled>Start over</button>
             <button type="button" class="round" id="undo" aria-label="Undo" title="Undo (⌘Z)" disabled><svg aria-hidden="true"><use href="#i-undo"/></svg></button>
             <button type="button" class="round" id="redo" aria-label="Redo" title="Redo (⇧⌘Z)" disabled><svg aria-hidden="true"><use href="#i-redo"/></svg></button>
           </span>
+        </div>
+        <!-- Trip, Leave and Options in one row, as the app's planner (the user, 2026-11-07). -->
+        <div class="ctls" id="ctls" hidden>
+          <span class="select small"><select id="trip" aria-label="Trip"><option value="oneWay">One way</option><option value="roundTrip">Round trip</option><option value="outAndBack">Out and back</option></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+          <button type="button" class="ctl" id="leave-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="leave" hidden><span id="leave-label">Leave Now</span><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+          <button type="button" class="ctl" id="options-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="options">Options</button>
         </div>
         <ol class="rows" id="rows" aria-label="Start, stops, waypoints and destination"></ol>
         <p class="hint" id="rows-hint">Or click the map.</p>
@@ -152,6 +157,10 @@
           <!-- A GPX file: dropped here, or chosen (the user, 2026-10-29). -->
           <button type="button" class="gpx-drop" id="gpx-btn"><svg aria-hidden="true"><use href="#i-file"/></svg><span>Drag a GPX file here, or <u>choose a file</u></span></button>
           <input id="gpx" type="file" accept=".gpx,application/gpx+xml,application/xml,text/xml" hidden>
+        </div>
+        <div class="closures" id="closures" hidden>
+          <p class="eyebrow">Along the way</p>
+          <ul id="closure-list"></ul>
         </div>
       </div>
       <div class="foot" id="foot">
@@ -232,6 +241,23 @@
   </div>
   <div class="pin-tip" id="pin-tip" aria-hidden="true" hidden></div>
   <div class="click-menu" id="click-menu" role="menu" aria-label="Add this spot" hidden></div>
+  <!-- Route options, as the app's Options sheet: roads, avoids, reverse. -->
+  <div class="pop" id="options" role="dialog" aria-label="Route options" hidden>
+    <p class="pop-title">Route options</p>
+    <div id="roads-choice" hidden>
+      <p class="eyebrow">Roads</p>
+      <div class="seg3" role="group" aria-label="Roads">
+        <button type="button" data-style="scenic" aria-pressed="false">Scenic</button>
+        <button type="button" data-style="balanced" aria-pressed="true">Balanced</button>
+        <button type="button" data-style="shortest" aria-pressed="false">Shortest</button>
+      </div>
+    </div>
+    <p class="eyebrow">Avoid</p>
+    <label class="tg"><span>Tolls</span><input type="checkbox" role="switch" data-avoid="tolls"></label>
+    <label class="tg"><span>Ferries</span><input type="checkbox" role="switch" data-avoid="ferries"></label>
+    <label class="tg"><span>Unpaved roads</span><input type="checkbox" role="switch" data-avoid="unpaved"></label>
+    <button type="button" class="pill grey reverse" id="reverse"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Reverse the route</button>
+  </div>
   <div class="road-hover" id="road-hover" aria-hidden="true" hidden></div>
   <div class="drop" id="drop" hidden><span>Drop the GPX file to bring it in</span></div>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
@@ -305,7 +331,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=68"></script>
+<script type="module" src="/plan/plan.js?v=69"></script>
 <script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>

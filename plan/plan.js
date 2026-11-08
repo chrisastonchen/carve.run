@@ -18,9 +18,10 @@ import {
   MAX_WAYPOINTS, MAX_STOPS, MOST_NAME_CHARACTERS, MOST_LABEL_CHARACTERS,
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
-} from "./route-wire.js";
+} from "./route-wire.js?v=2";
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=7";
 import { addPins } from "/assets/events.js?v=bb6f2616de";
+import { closures, closureTitle, closureWords } from "./closures.js?v=1";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -101,7 +102,7 @@ function blankPlan() {
   return {
     id: null, token: null, createdAt: null, ownerId: null,
     name: "", start: null, end: null, waypoints: [],
-    trip: "oneWay", style: "balanced",
+    trip: "oneWay", style: "balanced", avoids: [],
     path: null, roads: [], frozen: false, imported: null,
     turnaroundId: null, oneWayEnd: null,
     elevationProfile: null, blurb: null, profile: null,
@@ -116,8 +117,8 @@ const history = { back: [], forward: [] };
 /// Everything an undo puts back (not the route's identity: undoing an
 /// edit of a saved route still saves over that route).
 function snapshot() {
-  const { name, nameMade, madeName, start, end, waypoints, trip, style, path, roads, frozen, imported, turnaroundId, oneWayEnd } = plan;
-  return JSON.stringify({ name, nameMade, madeName, start, end, waypoints, trip, style, path, roads, frozen, imported, turnaroundId, oneWayEnd });
+  const { name, nameMade, madeName, start, end, waypoints, trip, style, avoids, path, roads, frozen, imported, turnaroundId, oneWayEnd } = plan;
+  return JSON.stringify({ name, nameMade, madeName, start, end, waypoints, trip, style, avoids, path, roads, frozen, imported, turnaroundId, oneWayEnd });
 }
 
 /// Bumped whenever the plan is replaced or put back: an answer that set
@@ -642,6 +643,141 @@ function drawRoute() {
   placeChips();
 }
 
+// ── options: roads, avoids, reverse (the app's Options sheet) ────────
+// Changing one re-routes, as in the app (RouteAuthoringModel): an imported
+// route's own roads give way to the new ones. Avoids start off, as the
+// app's do. Scenic and Shortest wait behind ?roads until QA has driven a
+// web-made route with markers in the iPhone app (DevOps, 2026-11-07).
+
+const AVOIDS = ["tolls", "unpaved", "ferries"];
+const ROAD_CHOICE = (() => {
+  try {
+    if (new URLSearchParams(location.search).has("roads")) localStorage.setItem("carve.plan.roads", "1");
+    return localStorage.getItem("carve.plan.roads") === "1";
+  } catch {
+    return new URLSearchParams(location.search).has("roads");
+  }
+})();
+
+function setStyle(style) {
+  if (style === (plan.style || "balanced")) return;
+  edit(() => (plan.style = style));
+}
+
+function setAvoid(avoid, on) {
+  const now = new Set(plan.avoids || []);
+  if (on) now.add(avoid); else now.delete(avoid);
+  edit(() => (plan.avoids = AVOIDS.filter((a) => now.has(a))));
+}
+
+/// Reversible: the ends trade places and the stops between run backwards;
+/// a loop has one end, so only its points turn round (the app's invert).
+function canReverse() {
+  return loops() ? plan.waypoints.length > 1 : !!(plan.start && plan.end);
+}
+
+function reverseRoute() {
+  if (!canReverse()) return;
+  edit(() => {
+    if (!loops()) [plan.start, plan.end] = [plan.end, plan.start];
+    plan.waypoints.reverse();
+  });
+}
+
+function syncOptions() {
+  $("roads-choice").hidden = !ROAD_CHOICE;
+  for (const b of document.querySelectorAll("#options [data-style]")) b.setAttribute("aria-pressed", String(b.dataset.style === (plan.style || "balanced")));
+  for (const input of document.querySelectorAll("#options [data-avoid]")) input.checked = (plan.avoids || []).includes(input.dataset.avoid);
+  $("reverse").disabled = !canReverse();
+  // Something other than the defaults: the pill says so.
+  $("options-btn").classList.toggle("on", (plan.style || "balanced") !== "balanced" || (plan.avoids || []).length > 0);
+}
+
+function placePop(pop, button) {
+  const r = button.getBoundingClientRect();
+  pop.style.left = `${Math.max(16, Math.min(r.left, innerWidth - pop.offsetWidth - 16))}px`;
+  pop.style.top = `${Math.min(r.bottom + 8, innerHeight - pop.offsetHeight - 16)}px`;
+}
+
+function openOptions() {
+  syncOptions();
+  $("options").hidden = false;
+  $("options-btn").setAttribute("aria-expanded", "true");
+  placePop($("options"), $("options-btn"));
+  ($("options").querySelector('[aria-pressed="true"]:not([hidden] *)') || $("options").querySelector("[data-avoid]")).focus();
+}
+
+function closeOptions({ focus = false } = {}) {
+  if ($("options").hidden) return;
+  $("options").hidden = true;
+  $("options-btn").setAttribute("aria-expanded", "false");
+  if (focus) $("options-btn").focus();
+}
+
+function wireOptions() {
+  $("options-btn").addEventListener("click", () => ($("options").hidden ? openOptions() : closeOptions()));
+  for (const b of document.querySelectorAll("#options [data-style]")) b.addEventListener("click", () => { setStyle(b.dataset.style); syncOptions(); });
+  for (const input of document.querySelectorAll("#options [data-avoid]")) input.addEventListener("change", () => setAvoid(input.dataset.avoid, input.checked));
+  $("reverse").addEventListener("click", () => { reverseRoute(); syncOptions(); });
+  document.addEventListener("pointerdown", (event) => {
+    if ($("options").hidden || $("options").contains(event.target) || $("options-btn").contains(event.target)) return;
+    closeOptions();
+  });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeOptions({ focus: true }); });
+  addEventListener("resize", () => closeOptions());
+}
+
+// ── along the way: closures on the route (the app's RoadClosures) ─────
+
+let catalogRoads = [];
+let flaggedSlugs = null;
+let closuresFor = null;
+
+async function loadFlagged() {
+  try {
+    const response = await fetch("/drives/traffic.json", { cache: "no-cache" });
+    const data = response.ok ? await response.json() : null;
+    flaggedSlugs = new Set(Object.keys(data?.flagged || {}));
+  } catch {
+    flaggedSlugs = new Set();
+  }
+  closuresFor = null;
+  renderClosures();
+}
+
+/// The month the drive's in, 1–12: now, for now.
+function driveMonth() {
+  return new Date().getMonth() + 1;
+}
+
+function renderClosures() {
+  const path = plan.path?.geometry;
+  const month = driveMonth();
+  const key = path && catalogRoads.length && flaggedSlugs ? `${month}` : null;
+  if (!key) {
+    $("closures").hidden = true;
+    return;
+  }
+  if (closuresFor?.path === path && closuresFor.key === key) return;
+  closuresFor = { path, key };
+  const itself = plan.fromRoad ? catalogRoads.find((r) => r.s === plan.fromRoad.slug)?.t : null;
+  const hints = closures(path, catalogRoads, flaggedSlugs, month, itself);
+  const list = $("closure-list");
+  list.replaceChildren(...hints.map((hint) => {
+    const li = el("li");
+    li.append(el("b", "", closureTitle(hint)), el("span", "", closureWords(hint) + " "));
+    if (!hint.itself) {
+      const a = el("a", "", `About ${hint.name}`);
+      a.href = `/drives/${encodeURIComponent(hint.slug)}/`;
+      a.target = "_blank";
+      a.rel = "noopener";
+      li.append(a);
+    }
+    return li;
+  }));
+  $("closures").hidden = !hints.length;
+}
+
 // ── good roads: Carve's drives on the map ────────────────────────────
 // Every one of Carve's drives in view, a dashed violet line (the app's
 // Explore roads), from the planner's first look, route or no route.
@@ -670,6 +806,8 @@ async function showGoodRoads() {
   }
   if (!Array.isArray(rows) || !mapReady) return;
   roadsByToken = new Map(rows.map((road) => [road.t, road]));
+  catalogRoads = rows;
+  renderClosures();
   map.getSource("good-roads").setData({
     type: "FeatureCollection",
     features: rows.filter((road) => lineOf(road).length >= 2).map((road) => ({
@@ -1177,7 +1315,7 @@ async function route() {
       waypointTypes: via.map((w) => (w.type === "stop" ? "stop" : "marker")),
       style: plan.style || "balanced",
       trip: plan.trip,
-      avoids: [],
+      avoids: plan.avoids || [],
     });
     if (ask !== routeAsk) return;
     plan.path = result.path;
@@ -1252,9 +1390,12 @@ function render({ keepTyping = false } = {}) {
   $("start-over").disabled = !hasAny && !plan.name;
   // The history buttons come with the first place.
   $("history-buttons").hidden = !hasAny && !history.back.length && !history.forward.length;
-  // The trip only means something once there's a start.
+  // The trip and the options only mean something once there's a start.
   $("head-left").hidden = !plan.start;
   $("list-head").hidden = importing || ($("head-left").hidden && $("history-buttons").hidden);
+  $("ctls").hidden = importing || !plan.start;
+  if ($("ctls").hidden) closeOptions();
+  syncOptions();
   // The figures, the name and Save are there from the start, Save greyed
   // until there's a route; "Sign up or log in" stays under them for a guest
   // (the user, 2026-10-29).
@@ -1269,6 +1410,7 @@ function render({ keepTyping = false } = {}) {
     renderRows();
   }
   renderFigures();
+  renderClosures();
   drawRoute();
   drawPins();
   findTowns();
@@ -1834,6 +1976,18 @@ async function importCarve(token) {
   loadPayload(payload, "a Carve link");
 }
 
+/// What the planner doesn't make but a route of yours it edits had: its
+/// photo, its maker, and (until the planner sets them) the app's note and
+/// leave time, so saving here doesn't drop them.
+function keptFrom(payload) {
+  return {
+    ...(payload.photo ? { photo: payload.photo } : {}),
+    ...(payload.author ? { author: payload.author } : {}),
+    ...(typeof payload.note === "string" && payload.note ? { note: payload.note } : {}),
+    ...(payload.leaveAt != null ? { leaveAt: payload.leaveAt } : {}),
+  };
+}
+
 /// A Carve route, as the app saves it, onto the planner.
 function loadPayload(payload, source) {
   settle();
@@ -1852,6 +2006,7 @@ function loadPayload(payload, source) {
     })),
     trip: payload.tripType === "roundtrip" ? (payload.returnsSameWay ? "outAndBack" : "roundTrip") : "oneWay",
     style: payload.balancesRoads ? "balanced" : payload.routingPreference || "scenic",
+    avoids: AVOIDS.filter((a) => Array.isArray(payload.avoids) && payload.avoids.includes(a)),
     path: payload.pathGeometry?.length ? {
       geometry: payload.pathGeometry.map((c) => [c.longitude, c.latitude]),
       instructions: payload.turnInstructions || [],
@@ -1888,10 +2043,7 @@ async function editShared(token) {
       plan.createdAt = payload.createdAt || null;
       plan.ownerId = session.user.id;
       plan.imported = null;
-      plan.kept = {
-        ...(payload.photo ? { photo: payload.photo } : {}),
-        ...(payload.author ? { author: payload.author } : {}),
-      };
+      plan.kept = keptFrom(payload);
       changed();
     } else {
       toast("That's someone else's route. Saving makes a copy of your own.");
@@ -1922,10 +2074,7 @@ async function editOwn(id) {
     plan.createdAt = payload.createdAt || null;
     plan.ownerId = session.user.id;
     plan.imported = null;
-    plan.kept = {
-      ...(payload.photo ? { photo: payload.photo } : {}),
-      ...(payload.author ? { author: payload.author } : {}),
-    };
+    plan.kept = keptFrom(payload);
     changed();
   } catch (failure) {
     toast(failure.message, true);
@@ -2606,6 +2755,8 @@ function osAwareGetApp() {
 // ── wiring ───────────────────────────────────────────────────────────
 
 function wire() {
+  wireOptions();
+  loadFlagged();
   $("undo").addEventListener("click", undo);
   // A click anywhere off the map menu closes it (the map's own clicks do
   // that in onMapClick, so they don't also open a new one).
