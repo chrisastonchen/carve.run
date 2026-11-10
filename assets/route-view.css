@@ -242,3 +242,22 @@
   }
 }
 /* end light theme */
+
+/* Waypoints on a route's preview: small plain dots, no number (Chris,
+   11/10); stops keep their orange letters. The planner keeps its numbers. */
+.rv .pin.wp { width: 14px; height: 14px; border-width: 2px; font-size: 0; }
+.rv .along .badge.wp { background: none; box-shadow: none; }
+.rv .along .badge.wp::after { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--wp); border: 2px solid #fff; box-shadow: 0 0 0 .5px rgba(0,0,0,.2); }
+/* The key's waypoint a dot too; guides built before this still carry a
+   "1" in it, which goes. */
+.rv .legend .k-wp { width: 12px; height: 12px; margin: 0 3px; font-size: 0; }
+
+/* Intensity pills on route pages, the guides and events (Chris, 11/10):
+   white text and mark on every level, the fills that miss 4.5:1 for white
+   a shade darker. The planner's own are in plan.css (not stamped on deploy,
+   so the guides' copy of it can be old). */
+.chip[style*="background"] { color: #fff; }
+.chip[style*="background"] svg path { stroke: #fff; }
+.chip[style*="#3B8A3E" i] { background: #39843C !important; }
+.chip[style*="#C0860A" i] { background: #9A6B08 !important; }
+.chip[style*="#D2591F" i] { background: #C1521D !important; }

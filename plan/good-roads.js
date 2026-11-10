@@ -205,6 +205,13 @@ const CLEARANCE = 300;
 const MEET_SLACK = 50;
 /// The app's NearbyDrive.within: legs this near the road are tried.
 const WITHIN = 3 * 1609.344;
+/// Both of a road's ends this near the route, at two places along it in its
+/// order: the whole road, entered at the earlier and left at the later,
+/// whatever the 15-minute cap says (Chris, 11/10: Highway 9 from Saratoga to
+/// Santa Cruz off 85 and 17 added 49 minutes; capped, the stretch began 6 km
+/// up the hill, reached only by turning round on Skyline). The routed check
+/// still takes it out for a real U-turn or far more time than it said.
+const ENDS_NEAR = 5000;
 
 const sub = (a, b) => [a[0] - b[0], a[1] - b[1]];
 const len = (v) => Math.hypot(v[0], v[1]);
@@ -392,6 +399,7 @@ export function fitRoad(road, plan) {
   };
 
   let best = null;
+  let whole = null; // the whole road, both ends by the route in its order
   for (const leg of frame.legs) {
     if (!meets(leg.box, roadBox)) continue;
     const route = leg.track;
@@ -455,14 +463,18 @@ export function fitRoad(road, plan) {
           if (near[hi + 1] - near[lo] >= ON_ROUTE_SHARE * (hi - lo + 1) || !clearOfMeetings(a, b)) continue;
           const stretchSeconds = roadSeconds * stretch / total;
           const added = (foot[a].meters + foot[b].meters) * DETOUR / frame.pace - headway * frame.pathFactor / frame.pace + stretchSeconds;
-          if (added > most) continue;
           const score = stretchSeconds - ADDED_WEIGHT * added;
+          if (lo === 0 && hi === count && foot[a].meters <= ENDS_NEAR && foot[b].meters <= ENDS_NEAR && score > 0 && score > (whole?.score ?? 0)) {
+            whole = { leg: leg.index, a, b, added, score, stretchSeconds };
+          }
+          if (added > most) continue;
           if (!(score > 0) || score <= (best?.score ?? 0)) continue;
           best = { leg: leg.index, a, b, added, score, stretchSeconds };
         }
       }
     }
   }
+  if (whole) best = whole;
   if (!best) return null;
   const lo = Math.min(best.a, best.b), hi = Math.max(best.a, best.b);
   const stretch = track.slice(line, at[lo], at[hi]);

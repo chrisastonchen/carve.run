@@ -18,10 +18,10 @@ import {
   MAX_WAYPOINTS, MAX_STOPS, MOST_NAME_CHARACTERS, MOST_LABEL_CHARACTERS, MOST_NOTE_CHARACTERS,
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
-} from "./route-wire.js?v=3";
-import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=7";
+} from "./route-wire.js?v=4";
+import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=8";
 import { addPins } from "/assets/events.js?v=bb6f2616de";
-import { closures, closureTitle, closureWords } from "./closures.js?v=2";
+import { closures, closureTitle, closureWords } from "./closures.js?v=3";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -2014,6 +2014,9 @@ function removePoint(role, index) {
   });
 }
 
+/// The start alone, close up: a few blocks around it (Mapbox zoom 14–14.5).
+const START_ZOOM = 14.25;
+
 function choosePlace(role, index, place) {
   if (role === "add" && plan.waypoints.length >= MAX_WAYPOINTS) {
     return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
@@ -2032,8 +2035,10 @@ function choosePlace(role, index, place) {
     }
   });
   // Setting up the ends, the map goes to the place; after that, a place found
-  // by search is only brought into view, at the zoom the planner chose.
-  if (mapReady && settingUp) map.easeTo({ center: [spot.lon, spot.lat], zoom: Math.max(map.getZoom(), 9), padding: fitPadding() });
+  // by search is only brought into view, at the zoom the planner chose. A
+  // start with no destination yet: a few blocks around it (Chris, 11/10).
+  if (mapReady && role === "start" && !plan.end) map.flyTo({ center: [spot.lon, spot.lat], zoom: START_ZOOM, padding: fitPadding(), duration: 800 });
+  else if (mapReady && settingUp) map.easeTo({ center: [spot.lon, spot.lat], zoom: Math.max(map.getZoom(), 9), padding: fitPadding() });
   else if (mapReady && !inView(spot.lon, spot.lat)) map.easeTo({ center: [spot.lon, spot.lat], padding: fitPadding() });
   if (role === "add") {
     adding = true;
@@ -2174,6 +2179,9 @@ function attachSearch(li, input, onPick, onLeave) {
           }
         }
         data ||= await planner("search", { query, session, ...near });
+        // Nothing from the quick lookup: Search Box's suggestions reach
+        // further (a named place far from the map: Chris, 11/10).
+        if (!data?.places?.length && placesAction) data = await planner("search", { query, session, ...near });
         if (input.value.trim() !== query) return;
         results = data.places || [];
         active = 0;

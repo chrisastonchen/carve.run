@@ -161,9 +161,11 @@ async function drawMap(host, payload) {
       el.setAttribute("aria-label", el.title);
       return marker;
     };
+    // Stops lettered in order; waypoints small plain dots, not numbered
+    // (Chris, 11/10: the previews only; the planner keeps its numbers).
     places.forEach((p, i) => {
       const stop = p.type === "stop";
-      add(p.lon, p.lat, pin(stop ? "stop" : "wp", labels[i], `${stop ? "Stop" : "Waypoint"} ${labels[i]}${p.label ? `: ${p.label}` : ""}`));
+      add(p.lon, p.lat, stop ? pin("stop", labels[i], `Stop ${labels[i]}${p.label ? `: ${p.label}` : ""}`) : pin("wp", "", `Waypoint${p.label ? `: ${p.label}` : ""}`));
     });
     const start = payload.start;
     if (start) add(start.longitude, start.latitude, pin("start", "", "Start"));
@@ -226,17 +228,63 @@ function wireLink(token, name) {
   });
 }
 
-/// Print directions, once the route's turns are here.
+/// Print directions on every route with a line (Chris, 11/10). A route
+/// saved without its turns (attached by hand, or an older save) gets them
+/// when asked: its own path matched to the roads by the planner (`import`,
+/// as a GPX is), for someone signed in; kept for the visit. Signed out, or
+/// when that fails, the printout says so and lists the stops.
 function wirePrint(token, payload, row) {
   const print = $("rv-print");
-  if (!print) return;
-  const turns = payload.turnInstructions || [];
-  if (!turns.length) return;
-  print.addEventListener("click", () => {
+  if (!print || (payload.pathGeometry || []).length < 2) return;
+  const go = async () => {
     codeFor(shareLink(token));
-    printDirections(token, payload, row);
-  });
+    let turns = payload.turnInstructions || [];
+    if (!turns.length) {
+      const label = print.textContent;
+      print.disabled = true;
+      print.textContent = "Getting directions…";
+      turns = (await turnsFor(token, payload)) || [];
+      print.disabled = false;
+      print.textContent = label;
+    }
+    printDirections(token, { ...payload, turnInstructions: turns }, row);
+  };
+  print.addEventListener("click", go);
   print.hidden = false;
+  // carve.run/<token>?print, a group drive email's "Printable directions":
+  // straight to them (the club sprint, 2026-11-08).
+  if (new URLSearchParams(location.search).has("print")) go();
+}
+
+/// The most path points sent to be matched (a long route's line, thinned).
+const MOST_MATCH_POINTS = 2000;
+
+/// A route's turns from its own path, by the planner's road matching; null
+/// signed out or when it can't. Kept in this tab per link.
+async function turnsFor(token, payload) {
+  const key = `carve.turns.${token}`;
+  try {
+    const kept = JSON.parse(sessionStorage.getItem(key) || "null");
+    if (Array.isArray(kept) && kept.length) return kept;
+  } catch {}
+  if (!signedIn || !(session?.expires_at > Date.now() / 1000)) return null;
+  const line = payload.pathGeometry.filter((c) => Number.isFinite(c?.latitude) && Number.isFinite(c?.longitude));
+  const step = Math.max(1, Math.ceil(line.length / MOST_MATCH_POINTS));
+  const track = line.filter((_, i) => i % step === 0 || i === line.length - 1).map((c) => [c.longitude, c.latitude]);
+  try {
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/planner`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${session.access_token}`, "content-type": "application/json" },
+      body: JSON.stringify({ action: "import", track, name: payload.name || null }),
+    });
+    if (!response.ok) return null;
+    const turns = (await response.json())?.route?.path?.instructions;
+    if (!Array.isArray(turns) || !turns.length) return null;
+    try { sessionStorage.setItem(key, JSON.stringify(turns)); } catch {}
+    return turns;
+  } catch {
+    return null;
+  }
 }
 
 function downloadQR(name) {
@@ -329,8 +377,10 @@ function printDirections(token, payload, row) {
       <svg class="wm"><use href="#i-wordmark"/></svg>
       <h1 style="font-size:22pt">${escapeHTML(name)}: turn by turn</h1>
       <p class="sub">${sub} · ${link}</p>
-      <table><thead><tr><th></th><th></th><th>Direction</th><th style="text-align:right">Then</th><th style="text-align:right">${miles ? "Mile" : "Km"}</th></tr></thead><tbody>${rows}</tbody></table>
-      <p class="foot-note">Directions are the route as planned in Carve. Watch for road signs and closures.</p>
+      ${turns.length ? `<table><thead><tr><th></th><th></th><th>Direction</th><th style="text-align:right">Then</th><th style="text-align:right">${miles ? "Mile" : "Km"}</th></tr></thead><tbody>${rows}</tbody></table>
+      <p class="foot-note">Directions are the route as planned in Carve. Watch for road signs and closures.</p>`
+        : `<p style="font-size:12pt;line-height:1.5">${signedIn ? "Turn-by-turn directions couldn't be made for this route just now. Print again in a minute, or scan the code to drive it in Carve." : "This route was saved without turn-by-turn directions. Sign in on carve.run and print again to get them, or scan the code to drive it in Carve."}</p>
+      ${places.some((w) => w.type === "stop") ? `<table><tbody>${places.map((w, i) => (w.type === "stop" ? `<tr class="stoprow"><td class="n"></td><td class="ic"><svg viewBox="0 0 24 24">${ARROWS.stop}</svg></td><td>Stop ${labels[i]} · ${escapeHTML(w.label || `Stop ${labels[i]}`)}${w.stayMinutes ? ` · stay ${Number(w.stayMinutes)} min` : ""}</td></tr>` : "")).join("")}</tbody></table>` : ""}`}
     </section>`;
   // Afterwards the browser's own Print gives the page again.
   window.addEventListener("afterprint", () => ($("printout").innerHTML = ""), { once: true });
@@ -362,14 +412,15 @@ function listAlong(payload) {
     return li;
   };
   const rows = [row(mark("start"), "Start")];
-  places.forEach((p, i) => rows.push(row(mark(p.type === "stop" ? "stop" : "wp", labels[i]),
-    p.label || (p.type === "stop" ? `Stop ${labels[i]}` : `Waypoint ${labels[i]}`))));
+  places.forEach((p, i) => rows.push(p.type === "stop"
+    ? row(mark("stop", labels[i]), p.label || `Stop ${labels[i]}`)
+    : row(mark("wp", ""), p.label || "Waypoint")));
   rows.push(loops(payload) ? row(mark("start"), "Back to the start") : row(mark("dest"), "Destination"));
   list.replaceChildren(...rows);
 }
 
 /// Along the way, marked as the map marks it: a place the route has by name
-/// takes its letter (a stop) or number (a waypoint); the rest keep theirs.
+/// takes its letter (a stop) or a plain dot (a waypoint); the rest keep theirs.
 function markAlong(payload) {
   const places = placesOf(payload);
   const labels = markerLabels(places);
@@ -383,7 +434,7 @@ function markAlong(payload) {
     const badge = li.querySelector(".badge");
     if (!found || !badge) return;
     badge.className = `badge ${found.stop ? "stop" : "wp"}`;
-    badge.textContent = found.label;
+    badge.textContent = found.stop ? found.label : "";
   });
 }
 

@@ -772,3 +772,14 @@ a { color: var(--green-ink); }
 .search-pin.on { transform: scale(1.25); background: #2E9E52; z-index: 2; }
 .suggest li .num { width: 22px; height: 22px; flex: none; border-radius: 50%; background: #1D5B3A; color: #fff; font-size: 12px; font-weight: 800; display: grid; place-items: center; }
 .suggest li[aria-selected="true"] .num { background: #2E9E52; }
+
+/* Intensity pills (Leisurely, Sweeping, Twisty, Intense) wherever plan.css
+   is: the planner, /r/ and the drive guides. White text and mark on every
+   level, over the generic .chip's grey (Chris, 11/10); the three fills
+   under 4.5:1 for white take a slightly darker shade (Intense's #9B1C1C is
+   8.2:1). The road colours on the map stay. */
+.chip[style*="background"] { color: #fff; }
+.chip[style*="background"] svg path { stroke: #fff; }
+.chip[style*="#3B8A3E" i], .chip[style*="#5E9E6E" i], .chip[style*="rgb(59, 138, 62)"], .chip[style*="rgb(94, 158, 110)"] { background: #39843C !important; } /* 4.6:1 */
+.chip[style*="#C0860A" i], .chip[style*="rgb(192, 134, 10)"] { background: #9A6B08 !important; } /* 4.7:1 */
+.chip[style*="#D2591F" i], .chip[style*="rgb(210, 89, 31)"] { background: #C1521D !important; } /* 4.7:1 */

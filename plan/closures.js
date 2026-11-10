@@ -5,7 +5,7 @@
 // months it's usually closed through). Worked out here, from the
 // catalog's road lines; nothing is asked of a server.
 
-import { decode, meters } from "./good-roads.js?v=7";
+import { decode, meters } from "./good-roads.js?v=8";
 
 /// How much of a road a route must run along to be on it: this many
 /// meters, or this share of a short road (the app's numbers).

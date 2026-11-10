@@ -53,6 +53,14 @@ export function newUUID(randomUUID) {
   return randomUUID().toUpperCase();
 }
 
+/// A place's plain name: its label's first part, without a leading
+/// "pet friendly" or the like ("Vasona Lake Park, 333 Blossom Hill Rd" →
+/// "Vasona Lake Park").
+export function plainName(label) {
+  const first = String(label || "").split(",")[0].trim();
+  return clip(first.replace(/^(?:(?:pet|dog|kid|family)[- ]friendly|budget|luxury)\s+/i, "").trim(), MOST_LABEL_CHARACTERS) || "";
+}
+
 export function clip(text, most) {
   if (typeof text !== "string") return null;
   const trimmed = text.trim();
@@ -133,6 +141,15 @@ export function routePayload(plan, now = appleDate()) {
   if (plan.elevationProfile) payload.elevationProfile = plan.elevationProfile;
   if (plan.blurb) payload.blurb = plan.blurb;
   if (all.length > OLDER_BUILDS_WAYPOINT_LIMIT) payload.allWaypoints = all;
+  // The start's and end's plain names, beside the route (as club-v2 saves
+  // them, 11/10): a drive day's title and its "meet at"; the apps skip keys
+  // they don't know.
+  const startName = plainName(plan.start?.label);
+  if (startName) payload.startName = startName;
+  else delete payload.startName;
+  const endName = plan.end ? plainName(plan.end.label) : "";
+  if (endName) payload.endName = endName;
+  else delete payload.endName;
   return payload;
 }
 

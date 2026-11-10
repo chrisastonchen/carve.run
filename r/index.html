@@ -26,8 +26,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=30">
-<link rel="stylesheet" href="/assets/route-view.css?v=b688721c1e">
+<link rel="stylesheet" href="/plan/plan.css?v=42">
+<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/share-plan.css?v=161a310cc6">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
@@ -132,7 +132,7 @@
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of the route"><div class="rv-still"></div></div>
 <div class="legend" id="rv-legend" hidden aria-label="Map key">
-  <span><i class="k-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp">1</i>Waypoint</span><span><i class="k-end"><svg aria-hidden="true"><use href="#i-flag-checkered"/></svg></i>Destination</span>
+  <span><i class="k-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></i>Start</span><span><i class="k-stop">A</i>Stop</span><span><i class="k-wp dot"></i>Waypoint</span><span><i class="k-end"><svg aria-hidden="true"><use href="#i-flag-checkered"/></svg></i>Destination</span>
 </div>
 </div>
 <div class="printout" id="printout" aria-hidden="true"></div>
@@ -1061,7 +1061,7 @@ const RouteProfile = (() => {
     }
   })();
 </script>
-<script type="module" src="/assets/route-view.js?v=0d94768c84"></script>
+<script type="module" src="/assets/route-view.js?v=2849116c4a"></script>
 <script type="module" src="/assets/share-plan.js?v=43b5c71df5"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>

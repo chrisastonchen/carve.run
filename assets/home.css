@@ -977,3 +977,8 @@ picture.pic > source { display: none; }
 .first-drive .suggest .a { font-size: 13px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .first-drive .suggest li.none { color: var(--ink-3); cursor: default; font-size: 14px; }
 .first-drive .bot-check { font-size: 14px; color: var(--ink-3); }
+
+/* Intensity pills: white on a fill that reaches 4.5:1 (Chris, 11/10; as plan.css). */
+.chip[style*="#3B8A3E" i] { background: #39843C !important; }
+.chip[style*="#C0860A" i] { background: #9A6B08 !important; }
+.chip[style*="#D2591F" i] { background: #C1521D !important; }
