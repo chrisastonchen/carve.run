@@ -28,10 +28,6 @@
    "coverage": 0.52,
    "since": "2026-10-31"
   },
-  "cumbres-pass-colorado": {
-   "coverage": 0.66,
-   "since": "2026-11-06"
-  },
   "ebbetts-pass": {
    "coverage": 0.58,
    "since": "2026-11-01"
@@ -43,6 +39,10 @@
   "guardsman-pass": {
    "coverage": 0.27,
    "since": "2026-11-01"
+  },
+  "highway-1-finland-ely": {
+   "coverage": 0.42,
+   "since": "2026-11-09"
   },
   "highway-131-kickapoo-valley": {
    "coverage": 0.67,
@@ -76,6 +76,10 @@
    "coverage": 0.63,
    "since": "2026-10-29"
   },
+  "lobethal-road-norton-summit": {
+   "coverage": 0.29,
+   "since": "2026-11-09"
+  },
   "looking-glass-road": {
    "coverage": 0.6,
    "since": "2026-11-06"
@@ -105,12 +109,16 @@
    "since": "2026-11-01"
   },
   "rockefeller-parkway-west-thumb": {
-   "coverage": 0.57,
+   "coverage": 0.05,
    "since": "2026-11-02"
   },
   "smugglers-notch": {
    "coverage": 0.47,
    "since": "2026-11-01"
+  },
+  "stevens-canyon-road": {
+   "coverage": 0.21,
+   "since": "2026-11-09"
   },
   "storm-king-highway": {
    "coverage": 0.57,
@@ -119,8 +127,12 @@
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
+  },
+  "us-377-junction-rocksprings": {
+   "coverage": 0.43,
+   "since": "2026-11-09"
   }
  },
  "format": 1,
- "updated": "2026-11-09T14:12:44Z"
+ "updated": "2026-11-10T14:12:57Z"
 }
