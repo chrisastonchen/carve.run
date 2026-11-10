@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-09T13:18:23Z",
+ "generatedAt": "2026-11-10T13:19:05Z",
  "events": [
   {
    "id": "207d8234-1fd1-4fd1-b754-3ceadfc04235",
@@ -14,10 +14,6 @@
    "timeZone": "America/New_York",
    "next": [
     {
-     "start": "2026-11-09T13:00:00Z",
-     "end": "2026-11-09T22:00:00Z"
-    },
-    {
      "start": "2026-11-10T13:00:00Z",
      "end": "2026-11-10T22:00:00Z"
     }
@@ -28,7 +24,7 @@
    "organizer": "Private Driving Events",
    "sourceUrl": "https://www.motorsportreg.com/events/private-driving-events-virginia-international-raceway-hpde-105523",
    "registerUrl": "https://www.motorsportreg.com/events/private-driving-events-virginia-international-raceway-hpde-105523",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/174017c34460fdfe3f6c.jpg",
@@ -47,47 +43,6 @@
    "series": "b0279ab635"
   },
   {
-   "id": "7e7d5119-0635-5b7b-8703-18c99e68c791",
-   "token": "ATKrBUo",
-   "kind": "track",
-   "name": "Kart Racing School",
-   "venue": "Atlanta Motorsports Park",
-   "address": null,
-   "locality": "Dawsonville, GA",
-   "lat": 34.42119,
-   "lon": -84.1188,
-   "timeZone": "America/New_York",
-   "next": [
-    {
-     "start": "2026-11-09T13:00:00Z",
-     "end": "2026-11-09T22:00:00Z"
-    }
-   ],
-   "repeats": null,
-   "cars": null,
-   "cost": null,
-   "organizer": "Atlanta Motorsports Park - KS",
-   "sourceUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-944302",
-   "registerUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-944302",
-   "lastConfirmed": "2026-11-09",
-   "timeUnknown": true,
-   "image": {
-    "url": "https://carve.run/events/media/e9161b0608561525d99a.jpg",
-    "credit": "Atlanta Motorsports Park - KS via MotorsportReg",
-    "page": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-944302"
-   },
-   "logo": null,
-   "circuit": null,
-   "about": {
-    "text": "Ready to take karting to the next level? Sign up for one of our Kart Racing Schools today! Quickly achieve the fastest lap times and the best driving techniques by one of our highly trained AMP Instructors. You will have the experience of classroom, track time, and lead follow instruction. This class will include all aspects of driving, from basic concepts to the advanced dynamics of karting. From Beginners to Pros, Young Adults, Moms, Dads, Weekend Warriors and National Racers, these classes are great for teaching a new karter how to drive like a pro and leave your competitors in the dust!\n\nPlease note that we recommend private lessons for those with previous experience in racing!\n\nYour options are a Full Day or Private Instruction for our younger racers. Please see details below\n\nFull Day Includes: The Pro Concession Experience followed by the Lo206 Experience.. Upon completion of the Pro Concession Experience you will move on to our open wheeled Briggs and Stratton 206cc Lo206 go karts. The Full Day also includes your helmet rental and 90 minutes of track time.\n\nPrivate Instruction- With someone younger than 12, we have learned that doing Private Instruction per hour compared to the Schools helps them concentrate better since it is a shorter time. But don't worry! One hour of Private Instruction equals out to be the same teaching as a Half Day School. We also have several parents who sign up their child for a 2-hour instruction in order to make it equal a Full Day School opportunity.",
-    "source": "organizer",
-    "page": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-944302"
-   },
-   "notes": null,
-   "membersOnly": null,
-   "series": "0a4b61ed2a"
-  },
-  {
    "id": "9c072a4e-fecb-551c-9f31-6d950fbf79e9",
    "token": "vqBnexh",
    "kind": "track",
@@ -100,8 +55,8 @@
    "timeZone": "America/New_York",
    "next": [
     {
-     "start": "2026-11-09T13:00:00Z",
-     "end": "2026-11-09T22:00:00Z"
+     "start": "2026-11-10T13:00:00Z",
+     "end": "2026-11-10T22:00:00Z"
     }
    ],
    "repeats": null,
@@ -110,7 +65,7 @@
    "organizer": "EMRA - Eastern Motor Racing Assoc.",
    "sourceUrl": "https://www.motorsportreg.com/events/2026-emra-racing-hpde-time-attack-office-of-registrar-eastern-motor-assoc-679798",
    "registerUrl": "https://www.motorsportreg.com/events/2026-emra-racing-hpde-time-attack-office-of-registrar-eastern-motor-assoc-679798",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/fb29af5e865a85052007.jpg",
@@ -141,8 +96,8 @@
    "timeZone": "America/New_York",
    "next": [
     {
-     "start": "2026-11-09T13:00:00Z",
-     "end": "2026-11-09T22:00:00Z"
+     "start": "2026-11-10T13:00:00Z",
+     "end": "2026-11-10T22:00:00Z"
     }
    ],
    "repeats": null,
@@ -151,7 +106,7 @@
    "organizer": "MassTuning",
    "sourceUrl": "https://www.motorsportreg.com/events/2026-masstuning-trackfest-schedule-northeast-usa-368148",
    "registerUrl": "https://www.motorsportreg.com/events/2026-masstuning-trackfest-schedule-northeast-usa-368148",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/1d3aa27be52e0e8ac870.png",
@@ -170,45 +125,65 @@
    "series": "abe32bf2db"
   },
   {
-   "id": "7e11a42b-6701-5c51-b67b-fe646ecf4071",
-   "token": "trZB6mY",
-   "kind": "autocross",
-   "name": "Wichita Endurocross Region Members Only11/08/2026",
-   "venue": "Road Yoder Autocross Site",
+   "id": "5c4ac449-fdf4-5af5-ab80-a5aa481f366d",
+   "token": "MyNuhDV",
+   "kind": "track",
+   "name": "2026 SCDA Track Days Schedule",
+   "venue": "SCDA Track Days",
    "address": null,
-   "locality": "Hutchinson, KS",
-   "lat": 37.9409,
-   "lon": -97.90929,
-   "timeZone": "America/Chicago",
+   "locality": "New York, NY",
+   "lat": 41.29594,
+   "lon": -73.14566,
+   "timeZone": "America/New_York",
    "next": [
     {
-     "start": "2026-11-09T14:00:00Z",
-     "end": "2026-11-09T23:00:00Z"
+     "start": "2026-11-10T13:00:00Z",
+     "end": "2026-11-10T22:00:00Z"
+    },
+    {
+     "start": "2026-11-11T13:00:00Z",
+     "end": "2026-11-11T22:00:00Z"
+    },
+    {
+     "start": "2026-11-12T13:00:00Z",
+     "end": "2026-11-12T22:00:00Z"
+    },
+    {
+     "start": "2026-11-13T13:00:00Z",
+     "end": "2026-11-13T22:00:00Z"
+    },
+    {
+     "start": "2026-11-14T13:00:00Z",
+     "end": "2026-11-14T22:00:00Z"
+    },
+    {
+     "start": "2026-11-15T13:00:00Z",
+     "end": "2026-11-15T22:00:00Z"
     }
    ],
    "repeats": null,
    "cars": null,
    "cost": null,
-   "organizer": "SCCA - Wichita Region",
-   "sourceUrl": "https://www.motorsportreg.com/events/wichita-endurocross-members-only11-08-2026-road-yoder-autocross-site-scca-947090",
-   "registerUrl": "https://www.motorsportreg.com/events/wichita-endurocross-members-only11-08-2026-road-yoder-autocross-site-scca-947090",
-   "lastConfirmed": "2026-11-09",
+   "organizer": "Sports Car Driving Association-SCDA",
+   "sourceUrl": "https://www.motorsportreg.com/events/2026-scda-track-days-schedule-sports-car-driving-association-658122",
+   "registerUrl": "https://www.motorsportreg.com/events/2026-scda-track-days-schedule-sports-car-driving-association-658122",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
-    "url": "https://carve.run/events/media/8229926f3e111022fdc8.jpg",
-    "credit": "SCCA - Wichita Region via MotorsportReg",
-    "page": "https://www.motorsportreg.com/events/wichita-endurocross-members-only11-08-2026-road-yoder-autocross-site-scca-947090"
+    "url": "https://carve.run/events/media/1fd18bdfe95d1851f911.jpg",
+    "credit": "Sports Car Driving Association-SCDA via MotorsportReg",
+    "page": "https://www.motorsportreg.com/events/2026-scda-track-days-schedule-sports-car-driving-association-658122"
    },
    "logo": null,
    "circuit": null,
    "about": {
-    "text": "This event is held under the current SCCA Solo Rules, Sanction 26-SRG-66529.\n\nJoin us for Wichita SCCA Region Endurocross! Only current Wichita SCCA Region members allowed. Note this event sells out if you register and can not attend please cancel so someone from the waitlist can run.\n\nTHIS EVENT DOES NOT COUNT FOR WICHITA REGION END OF THE YEAR POINTS. IT'S FOR FUN AND FOOD.\n\nNOTE: Wednesday November 4th if the limit of 36 Wichita Region members is not reached we will open entries to other region SCCA Members.\n\nLIMIT OF 36 DRIVERS TOTAL IN SIX HEATS OF SIX!!!!\n\nIf you do not enter soon enough to get the heat and work group you want just enter your next best selection please,\n\nWe will drive the course three laps for one run time!\n\nALL REGISTRATION IS ON ONLINE, NO WALK UP ENTRIES - On Line Registration and payment required.\n\nALL PAYMENTS ARE DONE ONLINE AT COMPLETION OF REGISTRATION.\n\n***MSR profile address and zip code MUST match credit card address and zip code or payment will fail.***\n\nWichita Region SCCA Members = $45.00 includes Endurocross T Shirt\n\nNEW 2026: No dogs or pets on the site. Renters on the site have numerous large protective defensive dogs. For your safety drive past the renter’s property at 5 to 10 mph with windows up and proceed directly to the paddock.\n\nAutocross emphasizes safe competition and no drifting will be tolerated.\n\nANY Unsafe or Unsportsmanlike Conduct will not be tolerated and drivers or spectators will be asked to leave.\n\nSCHEDULE:\n\n8:00 to 9:00 AM REGISTRATION & TECH Course open for walking. Arrive by 8:15 AM\n\nREGISTRATION: Sign SCCA Liability Paper Waiver at registration or have your Annual Waiver Card.\n\nSave time get your card digitally at Link to SCCA to complete an Annual Waiver digitally. Check your session work assignment.\n\nDo you have a child between 12-17 who is going to participate or ride along? Link to SCCA Minor Waivers digitally or to fill out the required SCCA minor waiver.…",
+    "text": "2026 SCDA Schedule\n\nSCDA – High Performance Driving & Track Events (HPDE)\n\nFounded in 1995, the Sports Car Driving Association (SCDA) provides the driving enthusiast the opportunity to experience high performance driving in a safe and controlled environment. SCDA events are strictly driver educational events, and are non-competitive. SCDA welcomes everyone from novices with no track experience, as well as seasoned track drivers and racers. We invite you to explore our www.SCDA1.com website to learn more about us and our events at some of the best tracks in the East Coast.\n\nSCDA focus is on safety, education, and quality track time to help you be your best while having fun.\n\nCLICK HERE to REGISTER for SCDA Track Day Events\n\nSat, Aug 8\n\nSCDA- Palmer Motorsports Park Track Day- 8/8/2026\n\nSports Car Driving Association-SCDA\n\nPalmer Motorsports Park- Clockwise , Palmer, MA\n\nHPDE\n\nSat, Aug 15\n\nSCDA- Car Control Clinic-Lime Rock- 8/15/26\n\nSports Car Driving Association-SCDA\n\nLime Rock Park , Lakeville, CT\n\nCar Control Clinic\n\nSat, Aug 15\n\nSCDA- Lime Rock Park Track Day- August 15th, 2026\n\nSports Car Driving Association-SCDA\n\nLime Rock Park , Lakeville, CT\n\nHPDE\n\nMon, Aug 31 - Tue, Sep 1\n\nSCDA Watkins Glen International Track Day 8/31-9/1\n\nSports Car Driving Association-SCDA\n\nWatkins Glen International , Watkins Glen, NY\n\nHPDE\n\nSat, Sep 5 - Sun, Sep 6\n\nSCDA-POCONO Mega Course Track Day- Sept. 5-6, 2026\n\nSports Car Driving Association-SCDA\n\nPocono Raceway , Long Pond, PA\n\nHPDE\n\nSat, Sep 12\n\nSCDA Thompson Speedway Track Day- Sept. 12, 2026\n\nSports Car Driving Association-SCDA\n\nThompson Speedway Motorsports Park , Thompson, CT\n\nHPDE\n\nMon, Sep 14\n\nSCDA- Club Motorsports Track Day- Sept. 14th, 2026\n\nSports Car Driving Association-SCDA\n\nClub Motorsports , Tamworth, NH\n\nHPDE\n\nMon, Sep 21 - Tue, Sep 22\n\nSCDA Track Days- VIRginia International Raceway\n\nSports Car Driving Association-SCDA\n\nVirginia International Raceway , Alton, VA\n\nHPDE\n\nMon, Oct 5 - Tue, Oct 6…",
     "source": "organizer",
-    "page": "https://www.motorsportreg.com/events/wichita-endurocross-members-only11-08-2026-road-yoder-autocross-site-scca-947090"
+    "page": "https://www.motorsportreg.com/events/2026-scda-track-days-schedule-sports-car-driving-association-658122"
    },
    "notes": null,
-   "membersOnly": true,
-   "series": "a4aa6418b3"
+   "membersOnly": null,
+   "series": "b735b5da84"
   },
   {
    "id": "3d2ea4c8-bf4f-5b84-adce-f30902301f15",
@@ -233,7 +208,7 @@
    "organizer": "PCA - Arizona",
    "sourceUrl": "https://www.motorsportreg.com/events/fall-drive-to-prescott-palace-restaurant-saloon-pca-arizona-953287",
    "registerUrl": "https://www.motorsportreg.com/events/fall-drive-to-prescott-palace-restaurant-saloon-pca-arizona-953287",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9a6f29e0080f8e56d45a.jpg",
@@ -274,7 +249,7 @@
    "organizer": "SCCA Track Night in America",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-carolina-motorsports-park-hpde-688958",
    "registerUrl": "https://bit.ly/26TNIACMPNov11",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ef47099567df89db799d.jpg",
@@ -315,7 +290,7 @@
    "organizer": "Sebring Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-979247",
    "registerUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-979247",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/559efff3a2f0fd2e2605.jpg",
@@ -356,7 +331,7 @@
    "organizer": "SCCA Track Night in America",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-harris-hill-road-hpde-181146",
    "registerUrl": "https://bit.ly/26TNIAHarrisHillNov11",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ee79f5556bb515c0a07a.jpg",
@@ -397,7 +372,7 @@
    "organizer": "SCCA Track Night in America",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-sebring-intl-raceway-hpde-476696",
    "registerUrl": "https://bit.ly/26TNIASebringNov12",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c385773682e2edb6e021.jpg",
@@ -450,7 +425,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-atlanta-motorsports-park-3-416428",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-atlanta-motorsports-park-3-416428",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/82a79e584478b8585759.png",
@@ -491,7 +466,7 @@
    "organizer": "New Jersey Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/njmp-open-track-test-day-11-12-26-thunderbolt-raceway-new-jersey-636670",
    "registerUrl": "https://www.motorsportreg.com/events/njmp-open-track-test-day-11-12-26-thunderbolt-raceway-new-jersey-636670",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/a77507f0aeea5f447e40.png",
@@ -532,7 +507,7 @@
    "organizer": "New Jersey Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/njmp-open-track-test-day-11-12-26-thunderbolt-raceway-new-jersey-636670",
    "registerUrl": "https://www.motorsportreg.com/events/njmp-open-track-test-day-11-12-26-thunderbolt-raceway-new-jersey-636670",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/a77507f0aeea5f447e40.png",
@@ -573,7 +548,7 @@
    "organizer": "SoCal Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-cw13-nov-12th-40-car-limit-raceway-classic-socal-drivers-club-935030",
    "registerUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-cw13-nov-12th-40-car-limit-raceway-classic-socal-drivers-club-935030",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/53d15b24a32d7f7b82b2.png",
@@ -669,7 +644,7 @@
    "organizer": "Porsche Club of America – Suncoast Florida Region",
    "sourceUrl": "https://suncoastpca.org/event/drivers-education-79/",
    "registerUrl": "https://suncoastpca.org/event/drivers-education-79/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/8cf76da0c7d4f6bcdd2d.jpg",
@@ -718,7 +693,7 @@
    "organizer": "BMW CCA Peachtree Chapter",
    "sourceUrl": "https://www.motorsportreg.com/events/fall-2026-driving-school-michelin-raceway-road-atlanta-bmw-cca-peachtree-events-943383",
    "registerUrl": "https://www.motorsportreg.com/events/fall-2026-driving-school-michelin-raceway-road-atlanta-bmw-cca-peachtree-events-943383",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/289c4ae065c1c84602ca.jpg",
@@ -759,7 +734,7 @@
    "organizer": "MassTuning",
    "sourceUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-13-2026-thompson-speedway-motorsports-park-471472",
    "registerUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-13-2026-thompson-speedway-motorsports-park-471472",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/80102d0ae85930a52fa7.jpg",
@@ -800,7 +775,7 @@
    "organizer": "Hallett Motor Racing Circuit",
    "sourceUrl": "https://www.motorsportreg.com/events/hallett-motor-racing-circuit-combined-057110",
    "registerUrl": "https://www.motorsportreg.com/events/hallett-motor-racing-circuit-combined-057110",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/dc088c3ab6d9e532ccd0.jpg",
@@ -886,7 +861,7 @@
    "organizer": "DK Racing School",
    "sourceUrl": "https://www.motorsportreg.com/events/dk-precision-driving-school-at-big-willow-springs-intl-raceway-racing-890742",
    "registerUrl": "https://www.motorsportreg.com/events/dk-precision-driving-school-at-big-willow-springs-intl-raceway-racing-890742",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/5ad8e71eb441eb633601.jpg",
@@ -927,7 +902,7 @@
    "organizer": "Thunderhill Raceway Park",
    "sourceUrl": "https://www.motorsportreg.com/events/5-mile-open-test-lucky-dog-thunderhill-raceway-park-677008",
    "registerUrl": "https://www.motorsportreg.com/events/5-mile-open-test-lucky-dog-thunderhill-raceway-park-677008",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/a17fc2489cdba1f06f6f.jpg",
@@ -1043,7 +1018,7 @@
    "organizer": "Old Town Entertainment District",
    "sourceUrl": "https://www.myoldtownusa.com/car-shows-events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -1110,7 +1085,7 @@
    "organizer": "Bob's Big Boy Burbank",
    "sourceUrl": "https://www.bobs.net/pages/classic-car-show",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -1208,7 +1183,7 @@
    "organizer": "SCCA Central Carolinas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/ccr-autocross-9-2026-rfh-tour-zmax-dragway-scca-central-carolinas-800761",
    "registerUrl": "https://www.motorsportreg.com/events/ccr-autocross-9-2026-rfh-tour-zmax-dragway-scca-central-carolinas-800761",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/32f1704ceaf7354e55dc.jpg",
@@ -1253,7 +1228,7 @@
    "organizer": "Tarheel Sports Car Club (THSCC)",
    "sourceUrl": "https://www.motorsportreg.com/events/thscc-autocross-points-event-9-10-nccar-tarheel-sports-car-club-593539",
    "registerUrl": "https://www.motorsportreg.com/events/thscc-autocross-points-event-9-10-nccar-tarheel-sports-car-club-593539",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/f6c745d8d34b4e7762ca.jpg",
@@ -1353,7 +1328,7 @@
    "organizer": "Sports Car Driving Association (SCDA)",
    "sourceUrl": "https://www.motorsportreg.com/events/scda-njmp-11-14-lightning-15-thunderbolt-at-sports-car-driving-association-281710",
    "registerUrl": "https://www.motorsportreg.com/events/scda-njmp-11-14-lightning-15-thunderbolt-at-sports-car-driving-association-281710",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/cefcb89d50d6ac5eb6f3.jpg",
@@ -1398,7 +1373,7 @@
    "organizer": "SCCA Washington DC Region",
    "sourceUrl": "https://www.motorsportreg.com/events/wdcr-hpde-tt-11-dominion-raceway-nov-14-15-scca-washington-dc-415012",
    "registerUrl": "https://www.motorsportreg.com/events/wdcr-hpde-tt-11-dominion-raceway-nov-14-15-scca-washington-dc-415012",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/654b5bcd8529e9dff7d5.jpg",
@@ -1459,7 +1434,7 @@
    "organizer": "Hunt Valley Horsepower",
    "sourceUrl": "https://www.horsepowering.com/every-saturday-morning",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -1506,7 +1481,7 @@
    "organizer": "SCCA Northern New Jersey Region (Solo)",
    "sourceUrl": "https://www.motorsportreg.com/events/nnjr-autocross-event-5-lot-l-metlife-stadium-scca-northern-new-jersey-solo-799491",
    "registerUrl": "https://www.motorsportreg.com/events/nnjr-autocross-event-5-lot-l-metlife-stadium-scca-northern-new-jersey-solo-799491",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/cc1c012f8580a5e9c479.jpg",
@@ -1551,7 +1526,7 @@
    "organizer": "Hooked On Driving – Mid-Atlantic",
    "sourceUrl": "https://www.motorsportreg.com/events/hooked-on-driving-carolina-motorsports-park-mid-atlantic-528234",
    "registerUrl": "https://www.motorsportreg.com/events/hooked-on-driving-carolina-motorsports-park-mid-atlantic-528234",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/5e7e3fc8b407626b9c9c.png",
@@ -1596,7 +1571,7 @@
    "organizer": "SCCA Alabama Region",
    "sourceUrl": "https://www.motorsportreg.com/events/alscca-autocross-pts-10-november-14th-15th-barber-motorsports-park-scca-alabama-265575",
    "registerUrl": "https://www.motorsportreg.com/events/alscca-autocross-pts-10-november-14th-15th-barber-motorsports-park-scca-alabama-265575",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/7bd772bd1f0670421e01.jpg",
@@ -1637,7 +1612,7 @@
    "organizer": "SCCA Texas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/txr-scca-time-trial-track-day-hpde-8-motorsport-ranch-cresson-texas-309809",
    "registerUrl": "https://www.motorsportreg.com/events/txr-scca-time-trial-track-day-hpde-8-motorsport-ranch-cresson-texas-309809",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/1eab3805649e9af852f2.png",
@@ -1682,7 +1657,7 @@
    "organizer": "SCCA Houston Region (Solo)",
    "sourceUrl": "https://www.motorsportreg.com/events/2026-tx-sw-divisional-sat-houscca-regional-sun-naval-air-station-chase-986622",
    "registerUrl": "https://www.motorsportreg.com/events/2026-tx-sw-divisional-sat-houscca-regional-sun-naval-air-station-chase-986622",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/0fdd8b8b132c7bbf4f68.jpg",
@@ -1731,7 +1706,7 @@
    "organizer": "Supercar Saturdays Florida / Exotics Cars Shows",
    "sourceUrl": "https://www.supercarssaturdaysfl.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -1778,7 +1753,7 @@
    "organizer": "Innisbrook Resort (presented by Porsche Clearwater)",
    "sourceUrl": "https://www.innisbrookgolfresort.com/activities/cars-and-coffee/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -1815,7 +1790,7 @@
    "organizer": "MassTuning",
    "sourceUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-14-2026-thompson-speedway-motorsports-park-007859",
    "registerUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-14-2026-thompson-speedway-motorsports-park-007859",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/80102d0ae85930a52fa7.jpg",
@@ -1856,7 +1831,7 @@
    "organizer": "The Driver's Edge",
    "sourceUrl": "https://www.motorsportreg.com/events/drivers-edge-msr-houston-hpde-720255",
    "registerUrl": "https://www.thedriversedge.net",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/521f3934a9ec212d89b8.jpg",
@@ -1901,7 +1876,7 @@
    "organizer": "Chin Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/chin-track-days-circuit-of-americas-hpde-364726",
    "registerUrl": "https://www.chintrackdays.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/1c50e26cef4e9a65efd0.jpg",
@@ -1942,7 +1917,7 @@
    "organizer": "Talladega Gran Prix Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/open-car-day-tgpr-november-14-2026-talladega-gran-prix-raceway-main-776787",
    "registerUrl": "https://www.motorsportreg.com/events/open-car-day-tgpr-november-14-2026-talladega-gran-prix-raceway-main-776787",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/7cad252a0f7ef4852ed9.jpg",
@@ -1983,7 +1958,7 @@
    "organizer": "SASCA - San Antonio",
    "sourceUrl": "https://www.motorsportreg.com/events/sasca-10-2026-spokes-hosted-in-beeville-naval-air-station-chase-field-san-887909",
    "registerUrl": "https://www.motorsportreg.com/events/sasca-10-2026-spokes-hosted-in-beeville-naval-air-station-chase-field-san-887909",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c0f4eddf0022c2ec5bed.jpg",
@@ -2075,7 +2050,7 @@
    "organizer": "Pioneer Flight Museum",
    "sourceUrl": "https://pioneerflightmuseum.org/aerodrome/fall-wings-wheels-fly-in/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -2122,7 +2097,7 @@
    "organizer": "High Plains Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-saturday-nov-14-high-plains-raceway-419076",
    "registerUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-saturday-nov-14-high-plains-raceway-419076",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c4e303eb2a0bdec7881e.jpg",
@@ -2167,7 +2142,7 @@
    "organizer": "PCA - Roadrunner",
    "sourceUrl": "https://www.motorsportreg.com/events/rrrpca-autocross-ds9-ds10-suika-circuit-albuquerque-pca-roadrunner-690736",
    "registerUrl": "https://www.motorsportreg.com/events/rrrpca-autocross-ds9-ds10-suika-circuit-albuquerque-pca-roadrunner-690736",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e3d54d818568aeda623b.jpg",
@@ -2208,7 +2183,7 @@
    "organizer": "Town of Paradise Valley",
    "sourceUrl": "https://paradisevalleyaz.gov/680/Veterans-Day-Car-Show",
    "registerUrl": "https://carshow2026.givesmart.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -2259,7 +2234,7 @@
    "organizer": "American Autocross Series",
    "sourceUrl": "https://www.motorsportreg.com/events/aas-2026-rounds-17-18-crows-landing-american-autocross-series-391939",
    "registerUrl": "https://www.motorsportreg.com/events/aas-2026-rounds-17-18-crows-landing-american-autocross-series-391939",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/8b1731aa375f10118c48.jpg",
@@ -2300,7 +2275,7 @@
    "organizer": "BMW CCA Golden Gate Chapter",
    "sourceUrl": "https://www.ggcbmwcca.org/events/ggc-cars-coffee-san-francisco-nov26",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -2351,7 +2326,7 @@
    "organizer": "Speed SF",
    "sourceUrl": "https://www.motorsportreg.com/events/ncrc-x-speed-sf-105db-laguna-seca-11-14-15-weathertech-raceway-speedsf-com-262861",
    "registerUrl": "https://www.motorsportreg.com/events/ncrc-x-speed-sf-105db-laguna-seca-11-14-15-weathertech-raceway-speedsf-com-262861",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/d4c87f11bb04425e7759.jpg",
@@ -2643,7 +2618,7 @@
    "organizer": "Portland Cars and Coffee",
    "sourceUrl": "https://portlandcarsandcoffee.com/calendar/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -2690,7 +2665,7 @@
    "organizer": "Speed District",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-district-willow-springs-intl-raceway-open-track-412459",
    "registerUrl": "https://www.motorsportreg.com/events/speed-district-willow-springs-intl-raceway-open-track-412459",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/58c9a4f66b6a4d73179f.jpg",
@@ -2731,7 +2706,7 @@
    "organizer": "SCCA Cal Club (California Sports Car Club)",
    "sourceUrl": "https://www.motorsportreg.com/events/cal-club-autocross-november-14th-storm-stadium-lake-elsinore-scca-324351",
    "registerUrl": "https://www.motorsportreg.com/events/cal-club-autocross-november-14th-storm-stadium-lake-elsinore-scca-324351",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/1006845d474aa90cb358.jpg",
@@ -2792,7 +2767,7 @@
    "organizer": "Donut Derelicts",
    "sourceUrl": "https://donutderelicts.net/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": {
@@ -2894,7 +2869,7 @@
    "organizer": "PCA - California Central Coast Region",
    "sourceUrl": "https://www.motorsportreg.com/events/cccr-camp-roberts-museum-tour-event-pca-california-central-coast-522711",
    "registerUrl": "https://www.motorsportreg.com/events/cccr-camp-roberts-museum-tour-event-pca-california-central-coast-522711",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/35844d806b8f29c78750.jpg",
@@ -2935,7 +2910,7 @@
    "organizer": "PCA - California Central Coast Region",
    "sourceUrl": "https://www.motorsportreg.com/events/cccr-pca-autocross-81-11-14-2026-santa-maria-ca-airport-california-central-coast-783624",
    "registerUrl": "https://www.motorsportreg.com/events/cccr-pca-autocross-81-11-14-2026-santa-maria-ca-airport-california-central-coast-783624",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/bcc6c79297ad33fa4aba.jpg",
@@ -2976,7 +2951,7 @@
    "organizer": "SCCA - SMSCC - Road Rally",
    "sourceUrl": "https://www.motorsportreg.com/events/drive-high-country-a-navigational-road-rally-dinks-deli-bagel-bakery-scca-smscc-805420",
    "registerUrl": "https://www.motorsportreg.com/events/drive-high-country-a-navigational-road-rally-dinks-deli-bagel-bakery-scca-smscc-805420",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/647daa7a9cdaa5a8b603.jpg",
@@ -3017,7 +2992,7 @@
    "organizer": "PCA - Sequoia Region",
    "sourceUrl": "https://www.motorsportreg.com/events/november-autocross-madera-airport-south-pca-sequoia-985551",
    "registerUrl": "https://www.motorsportreg.com/events/november-autocross-madera-airport-south-pca-sequoia-985551",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/723caed37b5e9e618455.jpg",
@@ -3058,7 +3033,7 @@
    "organizer": "PCA - California Inland",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-cal-inland-2nd-sat-tour-nov-santa-clarita-valley-california-786624",
    "registerUrl": "https://www.motorsportreg.com/events/pca-cal-inland-2nd-sat-tour-nov-santa-clarita-valley-california-786624",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8026193a914f76487cb9.jpg",
@@ -3099,7 +3074,7 @@
    "organizer": "PCA - Inland Empire",
    "sourceUrl": "https://www.motorsportreg.com/events/pearls-of-porsche-parade-to-oak-glen-11-14-2026-steak-house-pca-inland-empire-564724",
    "registerUrl": "https://www.motorsportreg.com/events/pearls-of-porsche-parade-to-oak-glen-11-14-2026-steak-house-pca-inland-empire-564724",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c88cceb24ecbce67feeb.jpg",
@@ -3144,7 +3119,7 @@
    "organizer": "SCCA - National - Time Trials",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-time-trials-buttonwillow-raceway-trial-682252",
    "registerUrl": "https://www.motorsportreg.com/events/scca-national-time-trials-buttonwillow-raceway-trial-682252",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/6b4a0d9fcd9c3ee27a15.jpg",
@@ -3222,7 +3197,7 @@
    "organizer": "BMW CCA Golden Gate Chapter",
    "sourceUrl": "https://www.ggcbmwcca.org/events/ggc-cars-coffee-north-bay-nbbav-nov26",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -3273,7 +3248,7 @@
    "organizer": "Sports Car Driving Association (SCDA)",
    "sourceUrl": "https://www.motorsportreg.com/events/scda-njmp-11-14-lightning-15-thunderbolt-at-sports-car-driving-association-281710",
    "registerUrl": "https://www.motorsportreg.com/events/scda-njmp-11-14-lightning-15-thunderbolt-at-sports-car-driving-association-281710",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/d56b746c5e5ec8663bd7.jpg",
@@ -3401,7 +3376,7 @@
    "organizer": "Old Town Entertainment District",
    "sourceUrl": "https://www.myoldtownusa.com/car-shows-events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -3515,7 +3490,7 @@
    "organizer": "Sunset Walk",
    "sourceUrl": "https://sunsetwalk.com/events/show-car-saturday-nights/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -3582,7 +3557,7 @@
    "organizer": "Cold Beers & Cheeseburgers (with Rinzler Automotive Designs)",
    "sourceUrl": "https://www.coldbeers.com/cheeseburgers/car-shows/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -3629,7 +3604,7 @@
    "organizer": "Virginia Motor Sports Club",
    "sourceUrl": "https://www.motorsportreg.com/events/vmsc-2026-autocross-points-event-x-virginia-motorsports-park-motor-sports-club-446645",
    "registerUrl": "https://www.motorsportreg.com/events/vmsc-2026-autocross-points-event-x-virginia-motorsports-park-motor-sports-club-446645",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -3817,7 +3792,7 @@
    "organizer": "NCM Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/ncm-open-track-day-grand-full-motorsports-park-739323",
    "registerUrl": "https://www.motorsportreg.com/events/ncm-open-track-day-grand-full-motorsports-park-739323",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/8430caa56d2b2161ccaa.jpg",
@@ -3913,7 +3888,7 @@
    "organizer": "Performance Motorsport Club",
    "sourceUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-835198",
    "registerUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-835198",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/da9ca4b6ab378ea093da.jpg",
@@ -3954,7 +3929,7 @@
    "organizer": "SCCA - Middle Georgia Region",
    "sourceUrl": "https://www.motorsportreg.com/events/mga-scca-charity-autocross-old-peach-county-high-school-middle-georgia-299411",
    "registerUrl": "https://www.motorsportreg.com/events/mga-scca-charity-autocross-old-peach-county-high-school-middle-georgia-299411",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/94d4b64e31e84f58005e.jpg",
@@ -3995,7 +3970,7 @@
    "organizer": "SCCA - Kentucky Region",
    "sourceUrl": "https://www.motorsportreg.com/events/kyscca-2026-fun-event-2-salem-motorsports-park-scca-kentucky-239589",
    "registerUrl": "https://www.motorsportreg.com/events/kyscca-2026-fun-event-2-salem-motorsports-park-scca-kentucky-239589",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/3aef22cf87c4cc0be183.jpg",
@@ -4083,7 +4058,7 @@
    "organizer": "BMW CCA Lone Star Chapter",
    "sourceUrl": "https://www.motorsportreg.com/events/lsc-bmw-cca-2026-autox-8-lone-star-park-406938",
    "registerUrl": "https://www.motorsportreg.com/events/lsc-bmw-cca-2026-autox-8-lone-star-park-406938",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/7ce77796ecd7e17ab8a6.jpg",
@@ -4124,7 +4099,7 @@
    "organizer": "SCCA - Pan American Region",
    "sourceUrl": "https://www.motorsportreg.com/events/par-2026-championship-event-8-cohen-stadium-scca-pan-american-209735",
    "registerUrl": "https://www.motorsportreg.com/events/par-2026-championship-event-8-cohen-stadium-scca-pan-american-209735",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f24a04bc52209bca8b46.jpg",
@@ -4165,7 +4140,7 @@
    "organizer": "SCCA - Texas Region - RoadRally",
    "sourceUrl": "https://www.motorsportreg.com/events/sashas-childrens-book-run-rally-school-virtual-classroom-scca-texas-roadrally-915827",
    "registerUrl": "https://www.motorsportreg.com/events/sashas-childrens-book-run-rally-school-virtual-classroom-scca-texas-roadrally-915827",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/52bbb0b9c5fc7d0c2501.jpg",
@@ -4214,7 +4189,7 @@
    "organizer": "San Diego Automotive Museum",
    "sourceUrl": "https://sdautomuseum.org/pages/events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -4308,7 +4283,7 @@
    "organizer": "SCCA Las Vegas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/lvrscca-autocross-round-9-2026-las-vegas-motor-speed-metro-lot-scca-001010",
    "registerUrl": "https://www.motorsportreg.com/events/lvrscca-autocross-round-9-2026-las-vegas-motor-speed-metro-lot-scca-001010",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/1b122861ac03213477d8.png",
@@ -4369,7 +4344,7 @@
    "organizer": "Supercar Sunday",
    "sourceUrl": "https://www.supercarsunday.com/pages/schedule",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -4465,7 +4440,7 @@
    "organizer": "PCA - Arizona",
    "sourceUrl": "https://www.motorsportreg.com/events/ladies-drive-prescott-holiday-shopping-courthouse-plaza-pca-arizona-237728",
    "registerUrl": "https://www.motorsportreg.com/events/ladies-drive-prescott-holiday-shopping-courthouse-plaza-pca-arizona-237728",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f265e4c5400e8e189311.jpg",
@@ -4506,7 +4481,7 @@
    "organizer": "High Plains Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/tentative-cars-lapping-sunday-nov-15-high-plains-raceway-583278",
    "registerUrl": "https://www.motorsportreg.com/events/tentative-cars-lapping-sunday-nov-15-high-plains-raceway-583278",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c4e303eb2a0bdec7881e.jpg",
@@ -4547,7 +4522,7 @@
    "organizer": "DriveTrackTime",
    "sourceUrl": "https://www.motorsportreg.com/events/drivetracktime-november-15-2026-sonoma-raceway-125842",
    "registerUrl": "https://www.motorsportreg.com/events/drivetracktime-november-15-2026-sonoma-raceway-125842",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e781c2596ceb55ba863b.jpg",
@@ -4635,7 +4610,7 @@
    "organizer": "ClubSport Experience",
    "sourceUrl": "https://www.motorsportreg.com/events/clubsport-experience-spring-mountain-east-a-hpde-724381",
    "registerUrl": "https://web.clubsportexperience.com/east-a",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/2c0c3fb7ed9243bb6196.jpg",
@@ -4676,7 +4651,7 @@
    "organizer": "PCA - Los Angeles",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-la-november-drive-2026-los-angeles-035680",
    "registerUrl": "https://www.motorsportreg.com/events/pca-la-november-drive-2026-los-angeles-035680",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/0f8922ec1e243b2f77b2.jpg",
@@ -4717,7 +4692,7 @@
    "organizer": "MassTuning",
    "sourceUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-aug-30-2026-ladiesday-thompson-speedway-motorsports-park-064795",
    "registerUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-aug-30-2026-ladiesday-thompson-speedway-motorsports-park-064795",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/80102d0ae85930a52fa7.jpg",
@@ -4758,7 +4733,7 @@
    "organizer": "Pueblo Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-120104",
    "registerUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-120104",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/5b34be189dd40b692155.jpg",
@@ -4897,7 +4872,7 @@
    "organizer": "Chin Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/chin-track-days-virginia-international-raceway-hpde-383674",
    "registerUrl": "https://www.chintrackdays.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/7f130de3c5567cad7032.jpg",
@@ -4946,7 +4921,7 @@
    "organizer": "MSR Houston",
    "sourceUrl": "https://www.motorsportreg.com/events/msr-houston-competition-license-school-737567",
    "registerUrl": "https://www.motorsportreg.com/events/msr-houston-competition-license-school-737567",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/521f3934a9ec212d89b8.jpg",
@@ -4987,7 +4962,7 @@
    "organizer": "Tamale Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/tamale-track-days-chuckwalla-valley-raceway-open-553659",
    "registerUrl": "https://www.motorsportreg.com/events/tamale-track-days-chuckwalla-valley-raceway-open-553659",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -5028,7 +5003,7 @@
    "organizer": "SCCA Track Night in America",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-atlanta-motorsports-park-hpde-646130",
    "registerUrl": "https://bit.ly/26AMPTNIANov18",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/5b0237749044597eb213.jpg",
@@ -5077,7 +5052,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-cota-2-circuit-of-americas-824418",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-cota-2-circuit-of-americas-824418",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/1c50e26cef4e9a65efd0.jpg",
@@ -5118,7 +5093,7 @@
    "organizer": "Open Track Racing",
    "sourceUrl": "https://www.motorsportreg.com/events/open-track-racing-willow-springs-intl-raceway-hpde-065117",
    "registerUrl": "https://www.motorsportreg.com/events/open-track-racing-willow-springs-intl-raceway-hpde-065117",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/58c9a4f66b6a4d73179f.jpg",
@@ -5159,7 +5134,7 @@
    "organizer": "SCCA Track Night in America",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-virginia-international-raceway-hpde-000044",
    "registerUrl": "https://bit.ly/26VIRTNIANov19",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/5b4f1535758369457c8f.jpg",
@@ -5212,7 +5187,7 @@
    "organizer": "Rétromobile New York",
    "sourceUrl": "https://www.retromobile.us/show-info",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -5271,7 +5246,7 @@
    "organizer": "Greater Charlotte Automobile Dealers Association",
    "sourceUrl": "https://www.charlotteautoshow.com/show-info/dates-hours",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -5318,7 +5293,7 @@
    "organizer": "SCCA Track Night in America",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-thunderhill-raceway-park-hpde-491775",
    "registerUrl": "https://www.tracknightinamerica.com/events/2010470-track-night-2026-thunderhill-raceway-park-november-19",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/5d7fdec29b2b91356eb0.jpg",
@@ -5359,7 +5334,7 @@
    "organizer": "VIRginia International Raceway",
    "sourceUrl": "https://virnow.com/charity-laps/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -5406,7 +5381,7 @@
    "organizer": "Turn One Performance Driving",
    "sourceUrl": "https://www.motorsportreg.com/events/turn-one-track-day-carolina-motorsports-park-performance-driving-091600",
    "registerUrl": "https://www.motorsportreg.com/events/turn-one-track-day-carolina-motorsports-park-performance-driving-091600",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/0b65a051efe13d27fc5a.jpg",
@@ -5423,6 +5398,47 @@
    "notes": "Friday HPDE day; on CMP's calendar too.",
    "membersOnly": null,
    "series": "5c1640b0cf"
+  },
+  {
+   "id": "944ae10e-2725-5a7c-9c2b-c7cc93f1c3e2",
+   "token": "Ejm2tE7",
+   "kind": "track",
+   "name": "The FIRM Full Course Reopening | Fri Nov. 20th",
+   "venue": "Florida Int'l Rally & Msport Park",
+   "address": null,
+   "locality": "Starke, FL",
+   "lat": 29.94413,
+   "lon": -82.10983,
+   "timeZone": "America/New_York",
+   "next": [
+    {
+     "start": "2026-11-20T13:00:00Z",
+     "end": "2026-11-20T22:00:00Z"
+    }
+   ],
+   "repeats": null,
+   "cars": null,
+   "cost": null,
+   "organizer": "The FIRM",
+   "sourceUrl": "https://www.motorsportreg.com/events/firm-full-course-reopening-fri-nov-20th-florida-intl-rally-msport-park-634670",
+   "registerUrl": "https://www.motorsportreg.com/events/firm-full-course-reopening-fri-nov-20th-florida-intl-rally-msport-park-634670",
+   "lastConfirmed": "2026-11-10",
+   "timeUnknown": true,
+   "image": {
+    "url": "https://carve.run/events/media/a2bcd13b7fc7cd428320.jpg",
+    "credit": "The FIRM via MotorsportReg",
+    "page": "https://www.motorsportreg.com/events/firm-full-course-reopening-fri-nov-20th-florida-intl-rally-msport-park-634670"
+   },
+   "logo": null,
+   "circuit": null,
+   "about": {
+    "text": "FIRMSanity | FULL COURSE REOPENING – OPEN TRACK DAY & TRACK NIGHT\n\nFriday, November 20, 2026 | The FIRM | Starke, Florida\n\nTHE FULL COURSE IS BACK. LET'S DRIVE!\n\nAfter months of repairs, improvements, and anticipation, The FIRM is excited to welcome drivers back to our restored full road course!\n\nJoin us Friday, November 20, as we kick off FIRMSanity, our three-day motorsports and community celebration, with the first public Open Track Day on our updated Phase I full course.\n\nWe're offering two opportunities to get behind the wheel: our traditional daytime Open Track Day and a special evening Track Night. Register for either session or make the most of reopening weekend by experiencing both!\n\nOPEN TRACK DAY SESSIONS | 9:00 AM – 4:00 PM\n\nWelcome to The FIRM Open Track Day, where seat time is the priority and drivers come to improve.\n\nDesigned for all experience levels, our Open Track Days welcome everyone from first-time participants building confidence to experienced drivers refining technique, testing vehicle setups, or preparing for competition.\n\nOur structured, low-traffic environment allows drivers to focus on skill development, consistency, and enjoying time behind the wheel.\n\nWhat to Expect:\n\n• The first public Open Track Day on our restored Phase I full road course.\n\n• The return of the banked turn, esses, and updated course connections.\n\n• Counterclockwise track operation for November.\n\n• Designated Novice, Intermediate, and Advanced run groups.\n\n• 20-minute driving sessions with a maximum of 12 cars per session.\n\n• Professional instruction available for first-time participants.\n\n• The opportunity to experience the restored course as part of FIRMSanity reopening weekend.\n\nTRACK NIGHT | 5:00 PM – 8:00 PM\n\nKeep the excitement going with a special Friday evening Track Night!\n\nWhether you can't make it during the day or simply want more time behind the wheel, Track Night offers another opportunity to experience our restored full course during FIRMSanity.…",
+    "source": "organizer",
+    "page": "https://www.motorsportreg.com/events/firm-full-course-reopening-fri-nov-20th-florida-intl-rally-msport-park-634670"
+   },
+   "notes": null,
+   "membersOnly": null,
+   "series": "1845c18b1c"
   },
   {
    "id": "30387a0c-735c-5ced-8fe7-8983908716f2",
@@ -5447,7 +5463,7 @@
    "organizer": "Track Day Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/track-day-xperience-roebling-road-raceway-hpde-174567",
    "registerUrl": "https://www.motorsportreg.com/events/track-day-xperience-roebling-road-raceway-hpde-174567",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/12f60fa2db0686ec572d.jpg",
@@ -5488,7 +5504,7 @@
    "organizer": "MassTuning",
    "sourceUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-19-2026-lime-rock-park-380012",
    "registerUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-19-2026-lime-rock-park-380012",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/cd839fc100783618e7d4.jpg",
@@ -5586,7 +5602,7 @@
    "organizer": "Goodguys Rod & Custom Association",
    "sourceUrl": "https://good-guys.com/swn-26",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -5633,7 +5649,7 @@
    "organizer": "PCA - Southern Arizona",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-sar-kitt-peak-driving-tour-national-observatory-southern-arizona-243475",
    "registerUrl": "https://www.motorsportreg.com/events/pca-sar-kitt-peak-driving-tour-national-observatory-southern-arizona-243475",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/689c2888cd4ce44629f4.jpg",
@@ -5682,7 +5698,7 @@
    "organizer": "Audi Club North America - Southern California Chapter",
    "sourceUrl": "https://www.motorsportreg.com/events/audi-club-socal-hpde-buttonwillow-classic-raceway-na-southern-california-701760",
    "registerUrl": "https://www.motorsportreg.com/events/audi-club-socal-hpde-buttonwillow-classic-raceway-na-southern-california-701760",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/4d3aa4ee8859064d1b8d.jpg",
@@ -5723,7 +5739,7 @@
    "organizer": "Serge Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/serge-track-days-thunderhill-raceway-park-hpde-306398",
    "registerUrl": "https://www.motorsportreg.com/events/serge-track-days-thunderhill-raceway-park-hpde-306398",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/96b8d2ad09522fb5041a.jpg",
@@ -5784,7 +5800,7 @@
    "organizer": "Danville Livery (shopping center)",
    "sourceUrl": "https://www.danvillelivery.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -5888,7 +5904,7 @@
    "organizer": "Turn One Performance Driving",
    "sourceUrl": "https://www.motorsportreg.com/events/taste-of-track-10-laps-lead-follow-format-carolina-motorsports-park-turn-960392",
    "registerUrl": "https://www.motorsportreg.com/events/taste-of-track-10-laps-lead-follow-format-carolina-motorsports-park-turn-960392",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/e022d614208c73075df0.jpg",
@@ -5929,7 +5945,7 @@
    "organizer": "Porsche Club of America - Golden Gate Region",
    "sourceUrl": "https://www.pca-ggr.org/calendar",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -5976,7 +5992,7 @@
    "organizer": "Dominion Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/dominion-raceway-hpdre-saturday11-21-26-597547",
    "registerUrl": "https://www.motorsportreg.com/events/dominion-raceway-hpdre-saturday11-21-26-597547",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/654b5bcd8529e9dff7d5.jpg",
@@ -6021,7 +6037,7 @@
    "organizer": "Porsche Club of America – Hill Country, Lone Star & Maverick Regions",
    "sourceUrl": "https://www.hcrpca.org/event/schnell-fest-hpde-8/",
    "registerUrl": "https://austinschnellfest.clubregistration.net",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/1c50e26cef4e9a65efd0.jpg",
@@ -6066,7 +6082,7 @@
    "organizer": "Chin Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/chin-track-days-homestead-miami-speedway-hpde-110828",
    "registerUrl": "https://www.chintrackdays.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/2a814fbae5b7b14d8b64.jpg",
@@ -6107,7 +6123,7 @@
    "organizer": "SCCA Northern New Jersey Region (Solo)",
    "sourceUrl": "https://www.motorsportreg.com/events/nnjr-autocross-event-6-lot-l-metlife-stadium-scca-northern-new-jersey-solo-671665",
    "registerUrl": "https://www.motorsportreg.com/events/nnjr-autocross-event-6-lot-l-metlife-stadium-scca-northern-new-jersey-solo-671665",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ae2b7b9c83a30c3b98e0.jpg",
@@ -6152,7 +6168,7 @@
    "organizer": "MVP Track Time",
    "sourceUrl": "https://www.motorsportreg.com/events/mvp-track-time-michelin-raceway-road-atlanta-hpde-831295",
    "registerUrl": "https://www.motorsportreg.com/events/mvp-track-time-michelin-raceway-road-atlanta-hpde-831295",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/7f5e0afb201aa6ec5598.jpg",
@@ -6201,7 +6217,7 @@
    "organizer": "Charlotte Motor Speedway (presented by HendrickCars.com)",
    "sourceUrl": "https://www.charlottemotorspeedway.com/experiences/cars-and-coffee/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -6252,7 +6268,7 @@
    "organizer": "Gulfcoast Autocrossers",
    "sourceUrl": "https://www.motorsportreg.com/events/gcac-2026-points-event-9-test-n-tune-buckingham-airfield-gulfcoast-autocrossers-961264",
    "registerUrl": "https://www.motorsportreg.com/events/gcac-2026-points-event-9-test-n-tune-buckingham-airfield-gulfcoast-autocrossers-961264",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e61d28a7720c079ef611.jpg",
@@ -6293,7 +6309,7 @@
    "organizer": "SCCA - Buccaneer Region - Coastal Empire Club",
    "sourceUrl": "https://www.motorsportreg.com/events/savannah-solo-event-9-hutchinson-island-paddock-scca-buccaneer-coastal-927674",
    "registerUrl": "https://www.motorsportreg.com/events/savannah-solo-event-9-hutchinson-island-paddock-scca-buccaneer-coastal-927674",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": null,
@@ -6385,7 +6401,7 @@
    "organizer": "MassTuning",
    "sourceUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-21-2026-lime-rock-park-574759",
    "registerUrl": "https://www.motorsportreg.com/events/masstuning-trackfest-nov-21-2026-lime-rock-park-574759",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/cd839fc100783618e7d4.jpg",
@@ -6434,7 +6450,7 @@
    "organizer": "Jaguar Club of Southern New England (JCSNE)",
    "sourceUrl": "https://jcsne.clubexpress.com/content.aspx?page_id=4001&club_id=124803",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -6485,7 +6501,7 @@
    "organizer": "Jzilla Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/friendsgiving-2026-barber-motorsports-park-jzilla-track-days-238175",
    "registerUrl": "https://www.motorsportreg.com/events/friendsgiving-2026-barber-motorsports-park-jzilla-track-days-238175",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e17156e69e62be754166.png",
@@ -6530,7 +6546,7 @@
    "organizer": "The Driver's Edge",
    "sourceUrl": "https://www.motorsportreg.com/events/drivers-edge-motorsport-ranch-cresson-hpde-610955",
    "registerUrl": "https://www.thedriversedge.net",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9925add6ffcbb1aa4ae2.jpg",
@@ -6571,7 +6587,7 @@
    "organizer": "Twickenham Auto Club",
    "sourceUrl": "https://www.motorsportreg.com/events/tac-autocross-championship-series-event-11-milton-frank-stadium-444102",
    "registerUrl": "https://www.motorsportreg.com/events/tac-autocross-championship-series-event-11-milton-frank-stadium-444102",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f4fbb84b61150582a04c.jpg",
@@ -6612,7 +6628,7 @@
    "organizer": "SCCA - Wiregrass Region",
    "sourceUrl": "https://www.motorsportreg.com/events/wiregrass-points-10-yano-hall-scca-244765",
    "registerUrl": "https://www.motorsportreg.com/events/wiregrass-points-10-yano-hall-scca-244765",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/836d844c48b2f9c0d3d5.jpg",
@@ -6653,7 +6669,7 @@
    "organizer": "SCCA - Mid South Region - Autocross",
    "sourceUrl": "https://www.motorsportreg.com/events/13th-annual-ronald-mcdonald-house-charity-event-liberty-park-mid-south-858218",
    "registerUrl": "https://www.motorsportreg.com/events/13th-annual-ronald-mcdonald-house-charity-event-liberty-park-mid-south-858218",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/b2ccf563a71ad1980e86.png",
@@ -6698,7 +6714,7 @@
    "organizer": "The Driver's Edge",
    "sourceUrl": "https://www.motorsportreg.com/events/drivers-edge-msr-houston-hpde-562857",
    "registerUrl": "https://www.motorsportreg.com/events/drivers-edge-msr-houston-hpde-562857",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/cb81773056b064c3d12d.jpg",
@@ -6747,7 +6763,7 @@
    "organizer": "BMW CCA Tejas Chapter (with 2002 Forever Chapter)",
    "sourceUrl": "https://www.tejaschapter.org/events/november-2026-cars-coffee",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -6798,7 +6814,7 @@
    "organizer": "Hooked On Driving - California",
    "sourceUrl": "https://www.motorsportreg.com/events/thankful-for-laguna-seca-90db-weathertech-raceway-hooked-on-driving-977807",
    "registerUrl": "https://www.motorsportreg.com/events/thankful-for-laguna-seca-90db-weathertech-raceway-hooked-on-driving-977807",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/d2dda6b671d8a5980599.jpg",
@@ -6859,7 +6875,7 @@
    "organizer": "Conejo Valley Cars & Coffee",
    "sourceUrl": "https://www.cvcarsandcoffee.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -6914,7 +6930,7 @@
    "organizer": "BMW CCA Tejas Chapter (with 2002 Forever Chapter)",
    "sourceUrl": "https://www.tejaschapter.org/events/december-2026-cars-coffee",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -6961,7 +6977,7 @@
    "organizer": "Audi Club NA - Arizona Chapter",
    "sourceUrl": "https://www.motorsportreg.com/events/sunrise-at-dobins-lookout-check-your-email-audi-club-na-arizona-520573",
    "registerUrl": "https://www.motorsportreg.com/events/sunrise-at-dobins-lookout-check-your-email-audi-club-na-arizona-520573",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/40d4528930df7e859ffc.jpg",
@@ -7002,7 +7018,7 @@
    "organizer": "High Plains Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/tentative-cars-lapping-saturday-nov-21-high-plains-raceway-216612",
    "registerUrl": "https://www.motorsportreg.com/events/tentative-cars-lapping-saturday-nov-21-high-plains-raceway-216612",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c4e303eb2a0bdec7881e.jpg",
@@ -7043,7 +7059,7 @@
    "organizer": "SCCA Texas Region RoadRally",
    "sourceUrl": "https://www.motorsportreg.com/events/sashas-childrens-book-run-rally-collin-county-scca-texas-roadrally-747868",
    "registerUrl": "https://www.motorsportreg.com/events/sashas-childrens-book-run-rally-collin-county-scca-texas-roadrally-747868",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/2f024dc2580912e397e4.jpg",
@@ -7084,7 +7100,7 @@
    "organizer": "LightSpeed Track Events",
    "sourceUrl": "https://www.motorsportreg.com/events/11-22-23-thunderhill-3-5-mile-charity-event-raceway-park-lightspeed-track-events-189973",
    "registerUrl": "https://www.motorsportreg.com/events/11-22-23-thunderhill-3-5-mile-charity-event-raceway-park-lightspeed-track-events-189973",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/d381a32d9875e0f90cc0.jpg",
@@ -7125,7 +7141,7 @@
    "organizer": "Fast In Fast Out Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/sonoma-raceway-hpde-november-fast-in-out-track-days-588407",
    "registerUrl": "https://www.motorsportreg.com/events/sonoma-raceway-hpde-november-fast-in-out-track-days-588407",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f047f8a0945e00c213ec.jpg",
@@ -7170,7 +7186,7 @@
    "organizer": "BMW CCA Golden Gate Chapter with BMW 2002 FAQ",
    "sourceUrl": "https://www.ggcbmwcca.org/events/neue-klasse-kaffee-nov26",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -7317,7 +7333,7 @@
    "organizer": "SCCA San Diego Region",
    "sourceUrl": "https://www.motorsportreg.com/events/san-diego-scca-open-track-weekend-nov-21-22-2026-willow-springs-intl-529858",
    "registerUrl": "https://www.motorsportreg.com/events/san-diego-scca-open-track-weekend-nov-21-22-2026-willow-springs-intl-529858",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/58c9a4f66b6a4d73179f.jpg",
@@ -7362,7 +7378,7 @@
    "organizer": "Speed Ventures",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-ventures-chuckwalla-valley-raceway-open-track-555192",
    "registerUrl": "https://www.motorsportreg.com/events/speed-ventures-chuckwalla-valley-raceway-open-track-555192",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -7403,7 +7419,7 @@
    "organizer": "SoCal Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sdc-streets-of-willow-november-21-springs-socal-drivers-club-860463",
    "registerUrl": "https://www.motorsportreg.com/events/sdc-streets-of-willow-november-21-springs-socal-drivers-club-860463",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9e58a14eb388e23a772e.png",
@@ -7444,7 +7460,7 @@
    "organizer": "Porsche Club of America - Los Angeles Region",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-la-autocross-championship-series-11-21-2026-angel-stadium-los-angeles-409433",
    "registerUrl": "https://www.motorsportreg.com/events/pca-la-autocross-championship-series-11-21-2026-angel-stadium-los-angeles-409433",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ebdd440af7d00a252427.png",
@@ -7485,7 +7501,7 @@
    "organizer": "PCA - Grand Prix Region",
    "sourceUrl": "https://www.motorsportreg.com/events/gpx-santa-monica-mtns-multi-canyon-tour-redo-mountains-pca-grand-prix-915340",
    "registerUrl": "https://www.motorsportreg.com/events/gpx-santa-monica-mtns-multi-canyon-tour-redo-mountains-pca-grand-prix-915340",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/774f157b0ec407ef9948.jpg",
@@ -7573,10 +7589,10 @@
    "organizer": "The FIRM",
    "sourceUrl": "https://www.motorsportreg.com/events/firm-track-attack-final-round-open-florida-intl-rally-msport-park-367884",
    "registerUrl": "https://gorally.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
-    "url": "https://carve.run/events/media/fae443e93baddc41b815.jpg",
+    "url": "https://carve.run/events/media/ead25d566426c96b0ff3.jpg",
     "credit": "The FIRM via MotorsportReg",
     "page": "https://www.motorsportreg.com/events/firm-track-attack-final-round-open-florida-intl-rally-msport-park-367884"
    },
@@ -7614,7 +7630,7 @@
    "organizer": "Equipe Rapide Sports Car Club (FL)",
    "sourceUrl": "https://www.motorsportreg.com/events/equipe-rapide-sports-car-club-fl-st-lucie-county-fairgrounds-autocross-solo-603897",
    "registerUrl": "https://www.motorsportreg.com/events/equipe-rapide-sports-car-club-fl-st-lucie-county-fairgrounds-autocross-solo-603897",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": null,
@@ -7651,7 +7667,7 @@
    "organizer": "Dominion Raceway - Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/member-driving-day-sunday-11-22-dominion-raceway-drivers-club-229796",
    "registerUrl": "https://www.motorsportreg.com/events/member-driving-day-sunday-11-22-dominion-raceway-drivers-club-229796",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/654b5bcd8529e9dff7d5.jpg",
@@ -7692,7 +7708,7 @@
    "organizer": "SCCA Texas Region (Solo)",
    "sourceUrl": "https://www.motorsportreg.com/events/txr-scca-solo-e8-overnight-cones-from-japan-lone-star-park-texas-709300",
    "registerUrl": "https://www.motorsportreg.com/events/txr-scca-solo-e8-overnight-cones-from-japan-lone-star-park-texas-709300",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/765f2329646764ead22d.jpg",
@@ -7733,7 +7749,7 @@
    "organizer": "SCCA - St. Louis Region - Road Rally",
    "sourceUrl": "https://www.motorsportreg.com/events/second-opportunity-gta-rally-big-chief-roadhouse-scca-st-louis-road-263684",
    "registerUrl": "https://www.motorsportreg.com/events/second-opportunity-gta-rally-big-chief-roadhouse-scca-st-louis-road-263684",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9b3fe0ed65566e3b5d5d.jpg",
@@ -7774,7 +7790,7 @@
    "organizer": "G2 Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/g2-hpde-track-day-11-21-2026-motorsports-park-239459",
    "registerUrl": "https://www.motorsportreg.com/events/g2-hpde-track-day-11-21-2026-motorsports-park-239459",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/841802204b119b285b63.jpg",
@@ -7862,7 +7878,7 @@
    "organizer": "High Plains Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-sunday-nov-22-high-plains-raceway-688260",
    "registerUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-sunday-nov-22-high-plains-raceway-688260",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c4e303eb2a0bdec7881e.jpg",
@@ -7903,7 +7919,7 @@
    "organizer": "SoCal Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sdc-streets-of-willow-november-22-2026-springs-socal-drivers-club-535073",
    "registerUrl": "https://www.motorsportreg.com/events/sdc-streets-of-willow-november-22-2026-springs-socal-drivers-club-535073",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/4fa997bf138526513d6c.png",
@@ -7944,7 +7960,7 @@
    "organizer": "Corner Exit",
    "sourceUrl": "https://www.motorsportreg.com/events/corner-exit-angel-stadium-autocross-solo-793429",
    "registerUrl": "https://www.corner-exit.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/81ebeebfe83cf4c30e33.jpg",
@@ -7985,7 +8001,7 @@
    "organizer": "PCA - San Diego Region",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-sdr-driving-tour-sun-nov-22-2026-westfield-north-county-fair-mall-san-diego-297408",
    "registerUrl": "https://www.motorsportreg.com/events/pca-sdr-driving-tour-sun-nov-22-2026-westfield-north-county-fair-mall-san-diego-297408",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/725fd883dd1c94661c14.jpg",
@@ -8026,7 +8042,7 @@
    "organizer": "The Redline Club",
    "sourceUrl": "https://www.motorsportreg.com/events/redline-track-day-101-spring-mountain-club-534587",
    "registerUrl": "https://www.motorsportreg.com/events/redline-track-day-101-spring-mountain-club-534587",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/89796c96c13511c7dd2b.jpg",
@@ -8067,7 +8083,7 @@
    "organizer": "Pueblo Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-476124",
    "registerUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-476124",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/5b34be189dd40b692155.jpg",
@@ -8155,7 +8171,7 @@
    "organizer": "Porsche Club of America - Golden Gate Region",
    "sourceUrl": "https://www.pca-ggr.org/calendar",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -8253,7 +8269,7 @@
    "organizer": "SCCA - Big Island of Hawaii Region",
    "sourceUrl": "https://www.motorsportreg.com/events/hawaii-island-scca-solo-event-11-nov-22-2026-hilo-drag-strip-pana-ewa-big-of-640969",
    "registerUrl": "https://www.motorsportreg.com/events/hawaii-island-scca-solo-event-11-nov-22-2026-hilo-drag-strip-pana-ewa-big-of-640969",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/304527e6583e78bcd0fd.jpg",
@@ -8294,7 +8310,7 @@
    "organizer": "Atlanta Motorsports Park - KS",
    "sourceUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-429755",
    "registerUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-429755",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e9161b0608561525d99a.jpg",
@@ -8418,7 +8434,7 @@
    "organizer": "Homestead Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-202574",
    "registerUrl": "https://www.homesteaddrivingclub.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg",
@@ -8467,7 +8483,7 @@
    "organizer": "ProAutoSports Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/proautosports-track-days-podium-club-attesa-552250",
    "registerUrl": "https://www.motorsportreg.com/events/proautosports-track-days-podium-club-attesa-552250",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f9a13f19d3b05807d9d8.jpg",
@@ -8508,7 +8524,7 @@
    "organizer": "SpeedSF",
    "sourceUrl": "https://www.motorsportreg.com/events/black-friday-buttonwillow-cw13-raceway-classic-speedsf-com-243736",
    "registerUrl": "https://www.motorsportreg.com/events/black-friday-buttonwillow-cw13-raceway-classic-speedsf-com-243736",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/6bdb12896269f7a36647.jpg",
@@ -8549,7 +8565,7 @@
    "organizer": "PCA - California Inland",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-cal-inland-blacktop-friday-santa-clarita-valley-california-320870",
    "registerUrl": "https://www.motorsportreg.com/events/pca-cal-inland-blacktop-friday-santa-clarita-valley-california-320870",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9a36e78ee7760c7e0c71.jpg",
@@ -8594,7 +8610,7 @@
    "organizer": "Hooked on Driving Mid-Atlantic",
    "sourceUrl": "https://www.motorsportreg.com/events/hooked-on-driving-vir-virginia-international-raceway-mid-atlantic-810468",
    "registerUrl": "https://www.motorsportreg.com/events/hooked-on-driving-vir-virginia-international-raceway-mid-atlantic-810468",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/5e7e3fc8b407626b9c9c.png",
@@ -8635,7 +8651,7 @@
    "organizer": "Connecticut Autocross & Rally Team (CART)",
    "sourceUrl": "https://www.motorsportreg.com/events/cart-autox-ax-fun-day-thompson-speedway-connecticut-autocross-rally-team-517972",
    "registerUrl": "https://www.motorsportreg.com/events/cart-autox-ax-fun-day-thompson-speedway-connecticut-autocross-rally-team-517972",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ec894c5226c6134fcebb.jpg",
@@ -8782,7 +8798,7 @@
    "organizer": "SCCA – Land O' Lakes Region Road Rally",
    "sourceUrl": "https://www.motorsportreg.com/events/lol-thanksgiving-roadrallies-jackpot-junction-scca-land-o-lakes-road-rally-870148",
    "registerUrl": "https://www.motorsportreg.com/events/lol-thanksgiving-roadrallies-jackpot-junction-scca-land-o-lakes-road-rally-870148",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/918508c1327c4067d445.jpg",
@@ -8827,7 +8843,7 @@
    "organizer": "Porsche Club of America, Las Vegas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/lvr-pca-hpde-spring-mountain-november-2026-las-vegas-351936",
    "registerUrl": "https://www.motorsportreg.com/events/lvr-pca-hpde-spring-mountain-november-2026-las-vegas-351936",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/0cb385018de2fb893c0c.jpg",
@@ -8876,7 +8892,7 @@
    "organizer": "Cooper's Garage",
    "sourceUrl": "https://www.coopersgaragetn.com/event/cars-and-coffee-november-2026",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -8923,7 +8939,7 @@
    "organizer": "Apex Driving Academy",
    "sourceUrl": "https://www.motorsportreg.com/events/apex-hpde-by-gspeed-msr-1-7-cw-on-nov-28th-motorsport-ranch-cresson-742608",
    "registerUrl": "https://www.motorsportreg.com/events/apex-hpde-by-gspeed-msr-1-7-cw-on-nov-28th-motorsport-ranch-cresson-742608",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/68a652feb3cf17f3e190.jpg",
@@ -8968,7 +8984,7 @@
    "organizer": "Streetside Classics",
    "sourceUrl": "https://www.streetsideclassics.com/events/508",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -9005,7 +9021,7 @@
    "organizer": "High Plains Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-saturday-nov-28-high-plains-raceway-200280",
    "registerUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-saturday-nov-28-high-plains-raceway-200280",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c4e303eb2a0bdec7881e.jpg",
@@ -9050,7 +9066,7 @@
    "organizer": "OnGrid",
    "sourceUrl": "https://www.motorsportreg.com/events/ongrid-hill-2026-thunderhill-raceway-park-460227",
    "registerUrl": "https://www.motorsportreg.com/events/ongrid-hill-2026-thunderhill-raceway-park-460227",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/62c02a4f14f47b127354.jpg",
@@ -9095,7 +9111,7 @@
    "organizer": "Speed SF",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-sf-92db-laguna-seca-11-28-29-weathertech-raceway-speedsf-com-166587",
    "registerUrl": "https://www.motorsportreg.com/events/speed-sf-92db-laguna-seca-11-28-29-weathertech-raceway-speedsf-com-166587",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/35a47f91b69a86f62422.jpg",
@@ -9140,7 +9156,7 @@
    "organizer": "Speed SF",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-sf-sonoma-raceway-12-28-29-speedsf-com-974492",
    "registerUrl": "https://www.motorsportreg.com/events/speed-sf-sonoma-raceway-12-28-29-speedsf-com-974492",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/de1172e3576ad3748814.jpg",
@@ -9269,7 +9285,7 @@
    "organizer": "SoCal Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-circuit-november-28-2026-raceway-classic-socal-drivers-club-544294",
    "registerUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-circuit-november-28-2026-raceway-classic-socal-drivers-club-544294",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/1c4a4ae853c993939e48.png",
@@ -9314,7 +9330,7 @@
    "organizer": "Speed SF",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-sf-auto-x-11-28-29-sonoma-raceway-speedsf-com-556349",
    "registerUrl": "https://www.motorsportreg.com/events/speed-sf-auto-x-11-28-29-sonoma-raceway-speedsf-com-556349",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/aaee5c2fa616cc75ef89.jpg",
@@ -9355,7 +9371,7 @@
    "organizer": "Pueblo Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-606543",
    "registerUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-606543",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/5b34be189dd40b692155.jpg",
@@ -9437,7 +9453,7 @@
    "organizer": "Dominion Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/dominion-raceway-trackcross-sunday-10-11-26-808111",
    "registerUrl": "https://www.motorsportreg.com/events/dominion-raceway-trackcross-sunday-10-11-26-808111",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/654b5bcd8529e9dff7d5.jpg",
@@ -9478,7 +9494,7 @@
    "organizer": "Performance Motorsport Club",
    "sourceUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-609447",
    "registerUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-609447",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/b3f0617b05623678f53a.jpg",
@@ -9519,7 +9535,7 @@
    "organizer": "SCCA - Southwest Louisiana Region",
    "sourceUrl": "https://www.motorsportreg.com/events/sowela-solo-event-9-college-lake-charles-scca-southwest-louisiana-544485",
    "registerUrl": "https://www.motorsportreg.com/events/sowela-solo-event-9-college-lake-charles-scca-southwest-louisiana-544485",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/bfb5bd385d7a461bc0b7.jpg",
@@ -9568,7 +9584,7 @@
    "organizer": "Anthem Cars and Coffee",
    "sourceUrl": "https://anthemcarsandcoffee.com/listing/cars-and-coffee-az/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -9615,7 +9631,7 @@
    "organizer": "High Plains Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/tentative-cars-lapping-sunday-nov-29-high-plains-raceway-295865",
    "registerUrl": "https://www.motorsportreg.com/events/tentative-cars-lapping-sunday-nov-29-high-plains-raceway-295865",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/c4e303eb2a0bdec7881e.jpg",
@@ -9656,7 +9672,7 @@
    "organizer": "SoCal Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-circuit-november-29-2026-raceway-classic-socal-drivers-club-688276",
    "registerUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-circuit-november-29-2026-raceway-classic-socal-drivers-club-688276",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/32f19904518154fa77fc.png",
@@ -9752,7 +9768,7 @@
    "organizer": "Cold Beers & Cheeseburgers",
    "sourceUrl": "https://www.coldbeers.com/cheeseburgers/car-shows/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -9854,7 +9870,7 @@
    "organizer": "Max Track Time",
    "sourceUrl": "https://www.motorsportreg.com/events/max-track-time-at-cota-thurs-before-wrl-circuit-of-americas-109698",
    "registerUrl": "https://www.motorsportreg.com/events/max-track-time-at-cota-thurs-before-wrl-circuit-of-americas-109698",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/1c50e26cef4e9a65efd0.jpg",
@@ -9895,7 +9911,7 @@
    "organizer": "Homestead Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-114686",
    "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-114686",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg",
@@ -9983,7 +9999,7 @@
    "organizer": "Track Advantage",
    "sourceUrl": "https://www.motorsportreg.com/events/dec-hpde-test-tune-vir-full-course-virginia-international-raceway-track-564227",
    "registerUrl": "https://www.motorsportreg.com/events/dec-hpde-test-tune-vir-full-course-virginia-international-raceway-track-564227",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/0d00afcd015aa9efee6e.jpg",
@@ -10000,6 +10016,47 @@
    "notes": "Two run groups on the full course; tech the night before or that morning.",
    "membersOnly": null,
    "series": "e3006e1f0b"
+  },
+  {
+   "id": "d5c86ef7-6e18-5fd1-83b2-c3d0a03b3c0d",
+   "token": "pkHoUdX",
+   "kind": "track",
+   "name": "Wide Open Wednesday / AutoCross",
+   "venue": "Utah Motorsports Campus",
+   "address": null,
+   "locality": "Grantsville, UT",
+   "lat": 40.58404,
+   "lon": -112.37352,
+   "timeZone": "America/Denver",
+   "next": [
+    {
+     "start": "2026-12-04T15:00:00Z",
+     "end": "2026-12-05T00:00:00Z"
+    }
+   ],
+   "repeats": null,
+   "cars": null,
+   "cost": null,
+   "organizer": "Utah Motorsports Campus",
+   "sourceUrl": "https://www.motorsportreg.com/events/wide-open-wednesday-autocross-utah-motorsports-campus-739067",
+   "registerUrl": "https://www.motorsportreg.com/events/wide-open-wednesday-autocross-utah-motorsports-campus-739067",
+   "lastConfirmed": "2026-11-10",
+   "timeUnknown": true,
+   "image": {
+    "url": "https://carve.run/events/media/24553061a2ed61430798.jpg",
+    "credit": "Utah Motorsports Campus via MotorsportReg",
+    "page": "https://www.motorsportreg.com/events/wide-open-wednesday-autocross-utah-motorsports-campus-739067"
+   },
+   "logo": null,
+   "circuit": null,
+   "about": {
+    "text": "Welcome to Wide Open Wednesday! (WoW)\n\n(Autocross further down)\n\nWide Open Wednesday (WoW) is a unique program presented by West Desert that allows enthusiasts to drive their street or race-prepared cars at speed on our racetrack in a non-competitive environment!\n\nCars are released onto the track strategically, allowing you to drive at whatever speed your comfort level permits, to enjoy your car’s abilities and sharpen your skills. Precautions are in place to keep you and everyone else safe; it will be one of the most memorable experiences of your life.\n\nFor 2026, we are now holding four sessions for WoW. We will have Advanced WoW (WoW+) Sessions in the near future!\n\nWe now have 1 run group for all four sessions - BEGINNER - for those with little to no experience.\n\nWoW Track Laps - $90 per 1-hour session - 20 Cars Maximum per session.\n\nPLEASE READ BELOW SPECIFIC RULES FOR OUR WoW TRACK DAYS\n\n• Helmet rentals ARE available - we are taking extreme cautions with this and will be sanitizing the helmets after each use\n\n• If you are late and miss your session, there will be NO REFUNDS\n\n• Must have a valid driver’s license\n\n• If you have a convertible, it is required to have a certified roll bar!\n\n• Sessions will run regardless of the weather!\n\n• NO EV Vehicles\n\nHelmet Rental $25\n\nWest Desert has helmets available for rent, sizes S-XL.\n\n(Additional fee will be charged if the helmet is not returned)\n\nWoW Track Laps Session Times - You can book multiple sessions.\n\nSession 1 – 3:00 PM - 4:00 PM – BEGINNER, No Passing\n\nSession 2 – 4:10 PM - 5:10 PM – BEGINNER, No Passing\n\nWelcome To West Desert's AutoCross! (AutoX)\n\nParticipate in our Autocross experience on the West Paddock using your own vehicle. Drivers are released onto a cone-defined course one at a time, with each run professionally timed. This format emphasizes driver skill, precision, and control, allowing you to push your car within your personal comfort level while improving technique.…",
+    "source": "organizer",
+    "page": "https://www.motorsportreg.com/events/wide-open-wednesday-autocross-utah-motorsports-campus-739067"
+   },
+   "notes": null,
+   "membersOnly": null,
+   "series": "f4f0e272b1"
   },
   {
    "id": "2c1ada53-441a-44c7-94eb-54ee5f5d3021",
@@ -10024,7 +10081,7 @@
    "organizer": "SoCal Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sdc-chuckwalla-cw-dec-4th-40-car-limit-buttonwillow-raceway-classic-socal-549991",
    "registerUrl": "https://www.motorsportreg.com/events/sdc-chuckwalla-cw-dec-4th-40-car-limit-buttonwillow-raceway-classic-socal-549991",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -10069,7 +10126,7 @@
    "organizer": "SCCA Central Florida Region – Solo",
    "sourceUrl": "https://www.motorsportreg.com/events/cfr-scca-solo-2026-dec-clearlake-event-12-13-education-center-central-florida-667950",
    "registerUrl": "https://www.motorsportreg.com/events/cfr-scca-solo-2026-dec-clearlake-event-12-13-education-center-central-florida-667950",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/328838f0b1bf00e6b189.jpg",
@@ -10208,7 +10265,7 @@
    "organizer": "SCCA Washington DC Region",
    "sourceUrl": "https://www.motorsportreg.com/events/wdcr-hpde-tt-12-dominion-raceway-dec-5-6-scca-washington-dc-718201",
    "registerUrl": "https://www.motorsportreg.com/events/wdcr-hpde-tt-12-dominion-raceway-dec-5-6-scca-washington-dc-718201",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/654b5bcd8529e9dff7d5.jpg",
@@ -10359,7 +10416,7 @@
    "organizer": "Cars & Coffee Morrisville, Inc.",
    "sourceUrl": "https://www.carsandcoffeemorrisville.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -10396,7 +10453,7 @@
    "organizer": "SCCA Texas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/txr-scca-time-trial-track-day-hpde-9-eagles-canyon-raceway-texas-797564",
    "registerUrl": "https://www.motorsportreg.com/events/txr-scca-time-trial-track-day-hpde-9-eagles-canyon-raceway-texas-797564",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/9b44ef73d27492a470cd.jpg",
@@ -10437,7 +10494,7 @@
    "organizer": "San Antonio Sports Car Association & Texas Spokes Sports Car Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sasca-11-2026-spokes-hosted-river-city-community-church-venue-san-antonio-631194",
    "registerUrl": "https://www.motorsportreg.com/events/sasca-11-2026-spokes-hosted-river-city-community-church-venue-san-antonio-631194",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/c0f4eddf0022c2ec5bed.jpg",
@@ -10478,7 +10535,7 @@
    "organizer": "PCA - Chesapeake",
    "sourceUrl": "https://www.motorsportreg.com/events/lindas-legacy-toy-drive-lunch-tour-porsche-hunt-valley-pca-chesapeake-215271",
    "registerUrl": "https://www.motorsportreg.com/events/lindas-legacy-toy-drive-lunch-tour-porsche-hunt-valley-pca-chesapeake-215271",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/65c159060355dce71f23.jpg",
@@ -10519,7 +10576,7 @@
    "organizer": "Turn One Performance Driving",
    "sourceUrl": "https://www.motorsportreg.com/events/taste-of-track-10-laps-lead-follow-format-carolina-motorsports-park-turn-381376",
    "registerUrl": "https://www.motorsportreg.com/events/taste-of-track-10-laps-lead-follow-format-carolina-motorsports-park-turn-381376",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e022d614208c73075df0.jpg",
@@ -10560,7 +10617,7 @@
    "organizer": "SCCA Phoenix AZ Solo Region",
    "sourceUrl": "https://www.motorsportreg.com/events/fall-2026-event-4-pasr-phoenix-raceway-scca-az-solo-190419",
    "registerUrl": "https://www.motorsportreg.com/events/fall-2026-event-4-pasr-phoenix-raceway-scca-az-solo-190419",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/4f25ce0e299f5101edbf.jpg",
@@ -10609,7 +10666,7 @@
    "organizer": "Scuderia Southwest",
    "sourceUrl": "https://www.scuderiasouthwest.com/content.aspx?page_id=22&club_id=531885&module_id=359039",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/56eb6cfed9431902f1a5.png",
@@ -10658,7 +10715,7 @@
    "organizer": "XLR8 Cars and Coffee at Musselman Honda Circuit",
    "sourceUrl": "https://mhcircuit.com/event/xlr8-cars-and-coffee-2026-11-07/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -10713,7 +10770,7 @@
    "organizer": "Fourtillfour",
    "sourceUrl": "https://fourtillfour.com/blogs/news/fourtillfour-event-schedule",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -10760,7 +10817,7 @@
    "organizer": "Gateway Classic Cars",
    "sourceUrl": "https://www.gatewayclassiccars.com/events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -10807,7 +10864,7 @@
    "organizer": "Lowend Garage Chicago with Midwest Performance Cars and Checkeditout",
    "sourceUrl": "https://www.eventbrite.com/e/2002482484015/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -10909,7 +10966,7 @@
    "organizer": "Gateway Classic Cars",
    "sourceUrl": "https://www.gatewayclassiccars.com/caffeine-and-chrome",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": {
@@ -10956,7 +11013,7 @@
    "organizer": "Gateway Classic Cars",
    "sourceUrl": "https://www.gatewayclassiccars.com/caffeine-and-chrome",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": {
@@ -11003,7 +11060,7 @@
    "organizer": "Gateway Classic Cars",
    "sourceUrl": "https://www.gatewayclassiccars.com/caffeine-and-chrome",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": {
@@ -11050,7 +11107,7 @@
    "organizer": "Talladega Gran Prix Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/open-car-day-tgpr-december-5-2026-talladega-gran-prix-raceway-main-521635",
    "registerUrl": "https://www.motorsportreg.com/events/open-car-day-tgpr-december-5-2026-talladega-gran-prix-raceway-main-521635",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/7cad252a0f7ef4852ed9.jpg",
@@ -11091,7 +11148,7 @@
    "organizer": "SCCA - South Texas Border Region",
    "sourceUrl": "https://www.motorsportreg.com/events/stbr-autocross-12-coastal-bend-aviators-stadium-scca-south-texas-border-376224",
    "registerUrl": "https://www.motorsportreg.com/events/stbr-autocross-12-coastal-bend-aviators-stadium-scca-south-texas-border-376224",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9bb60e5fa0aef48a0bac.jpg",
@@ -11132,7 +11189,7 @@
    "organizer": "SCCA Rocky Mountain Solo (Colorado Region)",
    "sourceUrl": "https://www.motorsportreg.com/events/rmsolo-winter-series-2-colorado-air-space-port-scca-rocky-mountain-solo-771585",
    "registerUrl": "https://www.motorsportreg.com/events/rmsolo-winter-series-2-colorado-air-space-port-scca-rocky-mountain-solo-771585",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/912ca34c0c7627106ab2.jpg",
@@ -11224,7 +11281,7 @@
    "organizer": "Streetside Classics",
    "sourceUrl": "https://www.streetsideclassics.com/events/583",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -11261,7 +11318,7 @@
    "organizer": "Streetside Classics",
    "sourceUrl": "https://www.streetsideclassics.com/events/589",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -11400,7 +11457,7 @@
    "organizer": "FSE-LA",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-rebel-track-event-buttonwillow-raceway-circuit-fse-la-027013",
    "registerUrl": "https://www.motorsportreg.com/events/speed-rebel-track-event-buttonwillow-raceway-circuit-fse-la-027013",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/c077ba607c3e2e807f49.jpg",
@@ -11445,7 +11502,7 @@
    "organizer": "LightSpeed Track Events",
    "sourceUrl": "https://www.motorsportreg.com/events/12-5-6-laguna-seca-105db-season-finale-weathertech-raceway-lightspeed-211757",
    "registerUrl": "https://www.motorsportreg.com/events/12-5-6-laguna-seca-105db-season-finale-weathertech-raceway-lightspeed-211757",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/d381a32d9875e0f90cc0.jpg",
@@ -11486,7 +11543,7 @@
    "organizer": "Gateway Classic Cars",
    "sourceUrl": "https://www.gatewayclassiccars.com/events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -11533,7 +11590,7 @@
    "organizer": "Gateway Classic Cars",
    "sourceUrl": "https://www.gatewayclassiccars.com/events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -11635,7 +11692,7 @@
    "organizer": "Cars & Coffee Utah",
    "sourceUrl": "https://carsandcoffeeutah.com/pages/faq",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -11778,7 +11835,7 @@
    "organizer": "Lotus Club of Southern California (listed under Golden Gate Lotus Club)",
    "sourceUrl": "https://www.motorsportreg.com/events/buttonwillow-13cw-december-5-2026-raceway-classic-golden-gate-lotus-club-419362",
    "registerUrl": "https://www.motorsportreg.com/events/buttonwillow-13cw-december-5-2026-raceway-classic-golden-gate-lotus-club-419362",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/bc595825a32c274214b1.jpg",
@@ -11819,7 +11876,7 @@
    "organizer": "Speed Ventures",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-ventures-willow-springs-intl-raceway-open-track-751809",
    "registerUrl": "https://www.motorsportreg.com/events/speed-ventures-willow-springs-intl-raceway-open-track-751809",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/58c9a4f66b6a4d73179f.jpg",
@@ -11864,7 +11921,7 @@
    "organizer": "SCCA San Diego Region - Solo",
    "sourceUrl": "https://www.motorsportreg.com/events/san-diego-scca-autocross-dec-5th-6th-lake-elsinore-storm-stadium-solo-586081",
    "registerUrl": "https://www.motorsportreg.com/events/san-diego-scca-autocross-dec-5th-6th-lake-elsinore-storm-stadium-solo-586081",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/b509af452601d4e88c95.jpg",
@@ -11960,7 +12017,7 @@
    "organizer": "Gateway Classic Cars",
    "sourceUrl": "https://www.gatewayclassiccars.com/events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -12007,7 +12064,7 @@
    "organizer": "Streetside Classics",
    "sourceUrl": "https://www.streetsideclassics.com/events/585",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -12044,7 +12101,7 @@
    "organizer": "Listed on the City of Tucker calendar",
    "sourceUrl": "https://www.tuckerga.gov/events_list/toys-for-tots-cruise-in-2026/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -12081,7 +12138,7 @@
    "organizer": "Streetside Classics",
    "sourceUrl": "https://www.streetsideclassics.com/events/584",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -12118,7 +12175,7 @@
    "organizer": "Race Pace Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/december-saturday-chuckwalla-ccw-valley-raceway-race-pace-track-days-846067",
    "registerUrl": "https://www.motorsportreg.com/events/december-saturday-chuckwalla-ccw-valley-raceway-race-pace-track-days-846067",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -12159,7 +12216,7 @@
    "organizer": "Serge Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/serge-track-days-weathertech-raceway-laguna-seca-hpde-523934",
    "registerUrl": "https://www.motorsportreg.com/events/serge-track-days-weathertech-raceway-laguna-seca-hpde-523934",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/4d4ae8b5cff54b7dc2a3.jpg",
@@ -12204,7 +12261,7 @@
    "organizer": "Speedsf.com",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-sf-thunderhill-open-test-day-12-5-6-raceway-park-speedsf-com-028124",
    "registerUrl": "https://www.motorsportreg.com/events/speed-sf-thunderhill-open-test-day-12-5-6-raceway-park-speedsf-com-028124",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/96b8d2ad09522fb5041a.jpg",
@@ -12249,7 +12306,7 @@
    "organizer": "Thunderhill Raceway Park",
    "sourceUrl": "https://www.motorsportreg.com/events/thunderhill-instructors-clinic-raceway-park-832702",
    "registerUrl": "https://www.motorsportreg.com/events/thunderhill-instructors-clinic-raceway-park-832702",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/96b8d2ad09522fb5041a.jpg",
@@ -12290,7 +12347,7 @@
    "organizer": "Pawsitive Friendships",
    "sourceUrl": "https://pawsitivefriendships.org/11th-annual-revd-up-for-autism/",
    "registerUrl": "https://pawsitivefriendships.org/11th-annual-revd-up-for-autism/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -12337,7 +12394,7 @@
    "organizer": "Porsche Club of America - Golden Gate Region with Euro Clinic",
    "sourceUrl": "https://www.pca-ggr.org/calendar",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -12384,7 +12441,7 @@
    "organizer": "Utah Motorsports Campus / REV Performance",
    "sourceUrl": "https://www.motorsportreg.com/events/rev-performance-at-west-desert-utah-motorsports-campus-398525",
    "registerUrl": "https://www.motorsportreg.com/events/rev-performance-at-west-desert-utah-motorsports-campus-398525",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/2a04b720d7ced4b91894.jpg",
@@ -12433,7 +12490,7 @@
    "organizer": "The Woodlands Car Club",
    "sourceUrl": "https://shopatmarketstreet.com/events/the-woodlands-cars-coffee-for-a-cause-19/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -12470,7 +12527,7 @@
    "organizer": "Porsche Club of America – Suncoast Florida Region",
    "sourceUrl": "https://suncoastpca.org/event/autocross-36/",
    "registerUrl": "https://suncoastpca.org/event/autocross-36/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -12517,7 +12574,7 @@
    "organizer": "Cars & Coffee Palm Beach (ZeilCorp)",
    "sourceUrl": "https://www.carsandcoffeepb.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -12572,7 +12629,7 @@
    "organizer": "Old Town Entertainment District",
    "sourceUrl": "https://www.myoldtownusa.com/car-shows-events",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": {
@@ -12623,7 +12680,7 @@
    "organizer": "Pomona Swap Meet",
    "sourceUrl": "https://www.pomonaswapmeet.com/event-info/future-dates/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -12648,6 +12705,47 @@
    "series": "42e1007a6c"
   },
   {
+   "id": "8f757655-225d-5ea5-ae50-1d6eaa36d6b7",
+   "token": "Hgd9U2B",
+   "kind": "show",
+   "name": "MBCA STARS and Coffee December 2026",
+   "venue": "RBM of Alpharetta",
+   "address": null,
+   "locality": "Alpharetta, GA",
+   "lat": 34.07538,
+   "lon": -84.29409,
+   "timeZone": "America/New_York",
+   "next": [
+    {
+     "start": "2026-12-06T13:00:00Z",
+     "end": "2026-12-06T22:00:00Z"
+    }
+   ],
+   "repeats": null,
+   "cars": null,
+   "cost": null,
+   "organizer": "MBCA - Peachtree",
+   "sourceUrl": "https://www.motorsportreg.com/events/mbca-stars-coffee-december-2026-rbm-of-alpharetta-peachtree-543472",
+   "registerUrl": "https://www.motorsportreg.com/events/mbca-stars-coffee-december-2026-rbm-of-alpharetta-peachtree-543472",
+   "lastConfirmed": "2026-11-10",
+   "timeUnknown": true,
+   "image": {
+    "url": "https://carve.run/events/media/affff5eddc42218e9d0c.jpg",
+    "credit": "MBCA - Peachtree via MotorsportReg",
+    "page": "https://www.motorsportreg.com/events/mbca-stars-coffee-december-2026-rbm-of-alpharetta-peachtree-543472"
+   },
+   "logo": null,
+   "circuit": null,
+   "about": {
+    "text": "You are invited to attend our free monthly MBCA STARS & Coffee! from 10:00 am to 1:00 pm. Our STARS and Coffee is open to all Mercedes-Benz models.\n\nWE ARE NOW AT RBM OF ALPHARETTA MERCEDES-BENZ DEALERSHIP\n\nRBM of Alpharetta has opened their recently renovated and expanded facility for our private use with lots of wide spaces to show our cars and mingle with friends and other members.\n\nRBM fo Alpharetta is located at 345 McFarland Pkwy, Alpharetta, GA 30004.",
+    "source": "organizer",
+    "page": "https://www.motorsportreg.com/events/mbca-stars-coffee-december-2026-rbm-of-alpharetta-peachtree-543472"
+   },
+   "notes": null,
+   "membersOnly": null,
+   "series": "c1b93ddad5"
+  },
+  {
    "id": "b30a9efc-cc3a-5b1e-a42d-4d0cfa52182f",
    "token": "X8G5kiL",
    "kind": "track",
@@ -12670,7 +12768,7 @@
    "organizer": "Turn One Performance Driving",
    "sourceUrl": "https://www.motorsportreg.com/events/taste-of-track-10-laps-lead-follow-format-carolina-motorsports-park-turn-683756",
    "registerUrl": "https://www.motorsportreg.com/events/taste-of-track-10-laps-lead-follow-format-carolina-motorsports-park-turn-683756",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e022d614208c73075df0.jpg",
@@ -12719,7 +12817,7 @@
    "organizer": "Orlando Cars and Coffee / Gateway City Coffee",
    "sourceUrl": "https://sanfordfl.gov/events/orlando-cars-coffee/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -12764,7 +12862,7 @@
    "organizer": "Caffeine & Octane (High Octane Events)",
    "sourceUrl": "https://www.caffeineandoctane.com/c-o-atlanta",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -12811,7 +12909,7 @@
    "organizer": "Twickenham Auto Club",
    "sourceUrl": "https://www.motorsportreg.com/events/tac-autocross-championship-series-event-12-milton-frank-stadium-290725",
    "registerUrl": "https://www.motorsportreg.com/events/tac-autocross-championship-series-event-12-milton-frank-stadium-290725",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f4fbb84b61150582a04c.jpg",
@@ -12852,7 +12950,7 @@
    "organizer": "SCCA - Delta Region",
    "sourceUrl": "https://www.motorsportreg.com/events/delta-solo-december-event-10-nola-motorsports-park-scca-817701",
    "registerUrl": "https://www.motorsportreg.com/events/delta-solo-december-event-10-nola-motorsports-park-scca-817701",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/48bb3afcc7aaf2411849.jpg",
@@ -12940,7 +13038,7 @@
    "organizer": "SCCA Las Vegas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/lvrscca-autocross-round-10-2026-las-vegas-motor-speed-metro-lot-scca-088884",
    "registerUrl": "https://www.motorsportreg.com/events/lvrscca-autocross-round-10-2026-las-vegas-motor-speed-metro-lot-scca-088884",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/1b122861ac03213477d8.png",
@@ -12981,7 +13079,7 @@
    "organizer": "Motor4Toys",
    "sourceUrl": "https://www.motor4toys.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -13083,7 +13181,7 @@
    "organizer": "ClubSport Experience",
    "sourceUrl": "https://www.motorsportreg.com/events/clubsport-experience-spring-mountain-lauda-c-hpde-271094",
    "registerUrl": "https://web.clubsportexperience.com/laudac",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/b545992925b82177ebfd.jpg",
@@ -13124,7 +13222,7 @@
    "organizer": "Speed Ventures",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-ventures-streets-of-willow-springs-open-track-817596",
    "registerUrl": "https://www.motorsportreg.com/events/speed-ventures-streets-of-willow-springs-open-track-817596",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/3e853007680691370bdb.png",
@@ -13165,7 +13263,7 @@
    "organizer": "Corner Exit",
    "sourceUrl": "https://www.motorsportreg.com/events/corner-exit-angel-stadium-autocross-solo-091962",
    "registerUrl": "https://www.corner-exit.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/65239e0a6d0ec5c5ff32.jpg",
@@ -13206,7 +13304,7 @@
    "organizer": "Race Pace Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/december-sunday-chuckwalla-ccw-valley-raceway-race-pace-track-days-591410",
    "registerUrl": "https://www.motorsportreg.com/events/december-sunday-chuckwalla-ccw-valley-raceway-race-pace-track-days-591410",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -13247,7 +13345,7 @@
    "organizer": "Tamale Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/tamale-track-days-buttonwillow-raceway-classic-open-196033",
    "registerUrl": "https://www.motorsportreg.com/events/tamale-track-days-buttonwillow-raceway-classic-open-196033",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/07fb1d0d99cdd797b38b.jpg",
@@ -13288,7 +13386,7 @@
    "organizer": "Arizona Cars and Coffee",
    "sourceUrl": "https://arizonacarsandcoffee.com/best-of-arizona-cars-and-coffee/",
    "registerUrl": "https://arizonacarsandcoffee.com/best-of-arizona-cars-and-coffee/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -13335,7 +13433,7 @@
    "organizer": "BMW CCA Golden Gate Chapter",
    "sourceUrl": "https://www.ggcbmwcca.org/events/ggc-cars-coffee-mosslanding-dec26",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -13437,7 +13535,7 @@
    "organizer": "Pacific Raceways with Cruise Enumclaw, Cruise Puyallup, Cruise Buckley and other local cruise groups",
    "sourceUrl": "https://pacificraceways.com/schedule/bad-santa-car-cruise-in-2/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -13484,7 +13582,7 @@
    "organizer": "Brea Holiday Car Show",
    "sourceUrl": "https://breaholidaycarshow.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -13543,7 +13641,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-homestead-miami-speedway-2-168020",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-homestead-miami-speedway-2-168020",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/82a79e584478b8585759.png",
@@ -13584,7 +13682,7 @@
    "organizer": "Atlanta Motorsports Park - KS",
    "sourceUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-047911",
    "registerUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-047911",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e9161b0608561525d99a.jpg",
@@ -13625,7 +13723,7 @@
    "organizer": "Jzilla Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/jzilla-treat-yourself-presented-by-ring-freaks-barber-motorsports-park-453887",
    "registerUrl": "https://www.motorsportreg.com/events/jzilla-treat-yourself-presented-by-ring-freaks-barber-motorsports-park-453887",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/5227a58f1af610e8f901.jpg",
@@ -13666,7 +13764,7 @@
    "organizer": "Jzilla Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/jzilla-treat-yourself-too-by-edmonson-motorsports-michelin-raceway-road-896202",
    "registerUrl": "https://www.motorsportreg.com/events/jzilla-treat-yourself-too-by-edmonson-motorsports-michelin-raceway-road-896202",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8e0f6cca1913740edfb4.jpg",
@@ -13707,7 +13805,7 @@
    "organizer": "Sebring Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-969732",
    "registerUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-969732",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/559efff3a2f0fd2e2605.jpg",
@@ -13748,7 +13846,7 @@
    "organizer": "Cosmo-Sport, Inc.",
    "sourceUrl": "https://www.motorsportreg.com/events/cosmo-sport-sebring-intl-raceway-open-track-806094",
    "registerUrl": "https://www.cosmo-sport.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8cf76da0c7d4f6bcdd2d.jpg",
@@ -13789,7 +13887,7 @@
    "organizer": "BMW CCA - Club Racing - Tarheel Chapter",
    "sourceUrl": "https://www.motorsportreg.com/events/bmwcca-club-racing-test-tune-roebling-road-raceway-bmw-cca-tarheel-279787",
    "registerUrl": "https://www.motorsportreg.com/events/bmwcca-club-racing-test-tune-roebling-road-raceway-bmw-cca-tarheel-279787",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/12f60fa2db0686ec572d.jpg",
@@ -13834,7 +13932,7 @@
    "organizer": "BMW CCA - Club Racing - Tarheel Chapter",
    "sourceUrl": "https://www.motorsportreg.com/events/bimmerworld-bmw-cca-club-race-school-roebling-road-raceway-racing-tarheel-525994",
    "registerUrl": "https://www.motorsportreg.com/events/bimmerworld-bmw-cca-club-race-school-roebling-road-raceway-racing-tarheel-525994",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/12f60fa2db0686ec572d.jpg",
@@ -13887,7 +13985,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-firebird-raceway-2-wild-horse-pass-538616",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-firebird-raceway-2-wild-horse-pass-538616",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/82a79e584478b8585759.png",
@@ -13928,7 +14026,7 @@
    "organizer": "Orange County Mustang Club",
    "sourceUrl": "https://www.ocmustangclub.com/event-details-registration/2026-holiday-light-cruise",
    "registerUrl": "https://www.ocmustangclub.com/event-details-registration/2026-holiday-light-cruise",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -13975,7 +14073,7 @@
    "organizer": "Chin Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/chin-track-days-sebring-intl-raceway-open-897863",
    "registerUrl": "https://www.chintrackdays.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8cf76da0c7d4f6bcdd2d.jpg",
@@ -14016,7 +14114,7 @@
    "organizer": "Track Day Xperience (Selfmade Motorsports)",
    "sourceUrl": "https://www.motorsportreg.com/events/track-day-xperience-homestead-miami-speedway-hpde-810697",
    "registerUrl": "https://trackdayxperience.com/product/tdx-at-homestead-miami-speedway-12-11-26/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8ac565074a0c3ca1cef9.jpg",
@@ -14057,7 +14155,7 @@
    "organizer": "ProAutoSports Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/proautosports-platinum-firebird-east-motorsports-park-track-days-120914",
    "registerUrl": "https://www.motorsportreg.com/events/proautosports-platinum-firebird-east-motorsports-park-track-days-120914",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/b70ba0d36e8772b27312.png",
@@ -14098,7 +14196,7 @@
    "organizer": "Get Fast Events",
    "sourceUrl": "https://www.motorsportreg.com/events/mach-v-refrigerator-bowl-trackcross-rounds-1-2-summit-point-circuit-get-550884",
    "registerUrl": "https://www.motorsportreg.com/events/mach-v-refrigerator-bowl-trackcross-rounds-1-2-summit-point-circuit-get-550884",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/18b30978765fb857c1ab.jpg",
@@ -14190,7 +14288,7 @@
    "organizer": "Chin Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/chin-track-days-sebring-intl-raceway-hpde-449707",
    "registerUrl": "https://www.chintrackdays.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8cf76da0c7d4f6bcdd2d.jpg",
@@ -14235,7 +14333,7 @@
    "organizer": "Tidewater Sports Car Club",
    "sourceUrl": "https://www.motorsportreg.com/events/tscc-december-to-virmember-hpde-virginia-international-raceway-tidewater-634395",
    "registerUrl": "https://www.motorsportreg.com/events/tscc-december-to-virmember-hpde-virginia-international-raceway-tidewater-634395",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/1f6ceb6c675182072134.jpg",
@@ -14280,7 +14378,7 @@
    "organizer": "SCCA - North Carolina Region",
    "sourceUrl": "https://www.motorsportreg.com/events/nccar-workday-fun-runs-scca-north-carolina-709551",
    "registerUrl": "https://www.motorsportreg.com/events/nccar-workday-fun-runs-scca-north-carolina-709551",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ffe887baa6ed0361276f.jpg",
@@ -14321,7 +14419,7 @@
    "organizer": "The Driver's Edge",
    "sourceUrl": "https://www.motorsportreg.com/events/drivers-edge-motorsport-ranch-cresson-hpde-001043",
    "registerUrl": "https://www.thedriversedge.net",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8f06dc88d3cea81794ec.jpg",
@@ -14366,7 +14464,7 @@
    "organizer": "Hooked On Driving - California",
    "sourceUrl": "https://www.motorsportreg.com/events/2026-season-closer-thunderhill-3-5-mile-raceway-park-hooked-on-driving-773207",
    "registerUrl": "https://www.motorsportreg.com/events/2026-season-closer-thunderhill-3-5-mile-raceway-park-hooked-on-driving-773207",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/d2dda6b671d8a5980599.jpg",
@@ -14407,7 +14505,7 @@
    "organizer": "Judge's Car & Truck Shows",
    "sourceUrl": "https://judgescarshows.eventsmart.com/events/annual-christmas-show-at-sylvan-abbey/",
    "registerUrl": "https://judgescarshows.eventsmart.com/events/annual-christmas-show-at-sylvan-abbey/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -14454,7 +14552,7 @@
    "organizer": "PCA - Arizona Mountain",
    "sourceUrl": "https://www.motorsportreg.com/events/porsche-club-holiday-party-2025-northern-arizona-pca-mountain-572059",
    "registerUrl": "https://www.motorsportreg.com/events/porsche-club-holiday-party-2025-northern-arizona-pca-mountain-572059",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/def662b73d458e4b1e5e.jpg",
@@ -14495,7 +14593,7 @@
    "organizer": "BMW CCA Golden Gate Chapter",
    "sourceUrl": "https://www.ggcbmwcca.org/events/ggc-cars-coffee-san-francisco-dec26",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -14583,7 +14681,7 @@
    "organizer": "OnGrid",
    "sourceUrl": "https://www.motorsportreg.com/events/ongrid-buttonwillow-13cw-raceway-classic-944482",
    "registerUrl": "https://www.motorsportreg.com/events/ongrid-buttonwillow-13cw-raceway-classic-944482",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e7e790d93c2388f5c885.jpg",
@@ -14669,7 +14767,7 @@
    "organizer": "SCCA Cal Club (California Sports Car Club)",
    "sourceUrl": "https://www.motorsportreg.com/events/cal-club-autocross-finale-december-12th-storm-stadium-lake-elsinore-scca-292305",
    "registerUrl": "https://www.motorsportreg.com/events/cal-club-autocross-finale-december-12th-storm-stadium-lake-elsinore-scca-292305",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/3e336d821dcf157d48df.jpg",
@@ -14710,7 +14808,7 @@
    "organizer": "PCA - California Inland",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-cal-inland-2nd-sat-tour-dec-santa-clarita-valley-california-527447",
    "registerUrl": "https://www.motorsportreg.com/events/pca-cal-inland-2nd-sat-tour-dec-santa-clarita-valley-california-527447",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8026193a914f76487cb9.jpg",
@@ -14751,7 +14849,7 @@
    "organizer": "BMW CCA Golden Gate Chapter",
    "sourceUrl": "https://www.ggcbmwcca.org/events/ggc-cars-coffee-north-bay-dec26",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -14798,7 +14896,7 @@
    "organizer": "SCCA – Land O' Lakes Region Road Rally",
    "sourceUrl": "https://www.motorsportreg.com/events/frickland-frolick-team-oil-travel-center-scca-land-o-lakes-road-rally-753532",
    "registerUrl": "https://www.motorsportreg.com/events/frickland-frolick-team-oil-travel-center-scca-land-o-lakes-road-rally-753532",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/47a213e906cbb2ca004e.jpg",
@@ -14886,7 +14984,7 @@
    "organizer": "Equipe Rapide Sports Car Club (FL)",
    "sourceUrl": "https://www.motorsportreg.com/events/equipe-rapide-sports-car-club-fl-st-lucie-county-fairgrounds-autocross-solo-555686",
    "registerUrl": "https://www.motorsportreg.com/events/equipe-rapide-sports-car-club-fl-st-lucie-county-fairgrounds-autocross-solo-555686",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": null,
@@ -14943,7 +15041,7 @@
    "organizer": "PCA - Northeast Region - Drivers Education",
    "sourceUrl": "https://www.motorsportreg.com/events/2026-ner-ncr-track-schedule-days-pca-northeast-drivers-education-232307",
    "registerUrl": "https://www.motorsportreg.com/events/2026-ner-ncr-track-schedule-days-pca-northeast-drivers-education-232307",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/fd073d7166ef896c61c0.jpg",
@@ -15039,7 +15137,7 @@
    "organizer": "Downtown Chandler Community Partnership with Volturo Luxury Lifestyle",
    "sourceUrl": "https://downtownchandler.org/events/downtown-chandler-cars-and-coffee",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -15090,7 +15188,7 @@
    "organizer": "Vistancia Car Club",
    "sourceUrl": "https://vistanciacarclub.com",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -15137,7 +15235,7 @@
    "organizer": "PCA Southern Arizona Region",
    "sourceUrl": "https://www.motorsportreg.com/events/pca-sar-high-performance-driver-education-hpde-musselman-honda-circuit-873425",
    "registerUrl": "https://www.motorsportreg.com/events/pca-sar-high-performance-driver-education-hpde-musselman-honda-circuit-873425",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/eb4b7b67a5a7000309ca.jpg",
@@ -15233,7 +15331,7 @@
    "organizer": "David Murry Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/david-murry-track-days-daytona-intl-speedway-open-577800",
    "registerUrl": "https://www.davidmurry.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/1551cb943e6c87930758.jpg",
@@ -15274,7 +15372,7 @@
    "organizer": "SCCA Track Night in America",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-sebring-intl-raceway-hpde-329343",
    "registerUrl": "https://bit.ly/26SebringTNIADec17",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ac598c15bddec8b1572a.jpg",
@@ -15327,7 +15425,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-circuit-florida-2-366288",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-circuit-florida-2-366288",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/82a79e584478b8585759.png",
@@ -15380,7 +15478,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-sonoma-raceway-3-427793",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-sonoma-raceway-3-427793",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/cc4bdf9a68728c1709d4.jpg",
@@ -15421,7 +15519,7 @@
    "organizer": "Track Day Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/track-day-xperience-sebring-intl-raceway-hpde-523538",
    "registerUrl": "https://trackdayxperience.com/product/tdx-at-sebring-international-12-18-26/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8cf76da0c7d4f6bcdd2d.jpg",
@@ -15462,7 +15560,7 @@
    "organizer": "Chuckwalla Valley Raceway",
    "sourceUrl": "https://www.motorsportreg.com/events/lap-lab-open-track-day-chuckwalla-valley-raceway-821953",
    "registerUrl": "https://www.motorsportreg.com/events/lap-lab-open-track-day-chuckwalla-valley-raceway-821953",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -15503,7 +15601,7 @@
    "organizer": "SoCal Drivers Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-cw13-dec-18th-40-car-limit-raceway-classic-socal-drivers-club-881508",
    "registerUrl": "https://www.motorsportreg.com/events/sdc-buttonwillow-cw13-dec-18th-40-car-limit-raceway-classic-socal-drivers-club-881508",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/53d15b24a32d7f7b82b2.png",
@@ -15548,7 +15646,7 @@
    "organizer": "Performance Driving Group",
    "sourceUrl": "https://www.motorsportreg.com/events/performance-driving-group-sebring-intl-raceway-hpde-550764",
    "registerUrl": "https://www.performancedrivinggroup.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8cf76da0c7d4f6bcdd2d.jpg",
@@ -15593,7 +15691,7 @@
    "organizer": "Sports Car Driving Experience",
    "sourceUrl": "https://www.motorsportreg.com/events/sports-car-driving-experience-sebring-intl-raceway-hpde-049428",
    "registerUrl": "https://www.motorsportreg.com/events/sports-car-driving-experience-sebring-intl-raceway-hpde-049428",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/559efff3a2f0fd2e2605.jpg",
@@ -15634,7 +15732,7 @@
    "organizer": "ProAutoSports Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/proautosports-track-days-radford-racing-school-508457",
    "registerUrl": "https://www.motorsportreg.com/events/proautosports-track-days-radford-racing-school-508457",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/b7c1361928e479b3b012.jpg",
@@ -15675,7 +15773,7 @@
    "organizer": "Judge's Car & Truck Shows",
    "sourceUrl": "https://judgescarshows.eventsmart.com/events/annual-holiday-car-truck-jeep-show-at-occ-road-house/",
    "registerUrl": "https://judgescarshows.eventsmart.com/events/annual-holiday-car-truck-jeep-show-at-occ-road-house/",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -15726,7 +15824,7 @@
    "organizer": "Speed SF",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-sf-92db-laguna-seca-12-19-20-weathertech-raceway-speedsf-com-817131",
    "registerUrl": "https://www.motorsportreg.com/events/speed-sf-92db-laguna-seca-12-19-20-weathertech-raceway-speedsf-com-817131",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/35a47f91b69a86f62422.jpg",
@@ -15771,7 +15869,7 @@
    "organizer": "Porsche Club of America - San Diego Region",
    "sourceUrl": "https://www.motorsportreg.com/events/pcasdr-time-trial-de-chuckwalla-ccw-valley-raceway-pca-san-diego-395097",
    "registerUrl": "https://www.motorsportreg.com/events/pcasdr-time-trial-de-chuckwalla-ccw-valley-raceway-pca-san-diego-395097",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -15816,7 +15914,7 @@
    "organizer": "Speed Ventures",
    "sourceUrl": "https://www.motorsportreg.com/events/speed-ventures-buttonwillow-raceway-open-track-721820",
    "registerUrl": "https://www.motorsportreg.com/events/speed-ventures-buttonwillow-raceway-open-track-721820",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9dc6980ae425555ee858.png",
@@ -15857,7 +15955,7 @@
    "organizer": "Performance Motorsport Club",
    "sourceUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-731623",
    "registerUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-731623",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/52a6d3c12602a366c153.jpg",
@@ -15898,7 +15996,7 @@
    "organizer": "SCCA Las Vegas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/lvrscca-autocross-round-11-2026-las-vegas-motor-speed-metro-lot-scca-573605",
    "registerUrl": "https://www.motorsportreg.com/events/lvrscca-autocross-round-11-2026-las-vegas-motor-speed-metro-lot-scca-573605",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/1b122861ac03213477d8.png",
@@ -15939,7 +16037,7 @@
    "organizer": "Atlanta Motorsports Park - KS",
    "sourceUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-046569",
    "registerUrl": "https://www.motorsportreg.com/events/kart-racing-school-atlanta-motorsports-park-ks-046569",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e9161b0608561525d99a.jpg",
@@ -15980,7 +16078,7 @@
    "organizer": "Homestead Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-369602",
    "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-369602",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg",
@@ -16021,7 +16119,7 @@
    "organizer": "Tamale Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/tamale-track-days-chuckwalla-valley-raceway-open-960309",
    "registerUrl": "https://www.motorsportreg.com/events/tamale-track-days-chuckwalla-valley-raceway-open-960309",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -16121,7 +16219,7 @@
    "organizer": "PCA - Sacramento Valley Region - Events",
    "sourceUrl": "https://www.motorsportreg.com/events/new-years-day-tour-2027-castle-oaks-golf-club-pca-sacramento-valley-events-360491",
    "registerUrl": "https://www.motorsportreg.com/events/new-years-day-tour-2027-castle-oaks-golf-club-pca-sacramento-valley-events-360491",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/978f5aca9d7c73a36ffa.jpg",
@@ -16203,7 +16301,7 @@
    "organizer": "Performance Driving Group",
    "sourceUrl": "https://www.motorsportreg.com/events/performance-driving-group-homestead-miami-speedway-hpde-713615",
    "registerUrl": "https://www.performancedrivinggroup.com",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/b538c1af54f1be3b67f6.jpg",
@@ -16244,7 +16342,7 @@
    "organizer": "Performance Motorsport Club",
    "sourceUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-370180",
    "registerUrl": "https://www.motorsportreg.com/events/performance-motorsport-club-st-lucie-county-fairgrounds-autocross-solo-370180",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/dfe18faade8596c42f86.jpg",
@@ -16285,7 +16383,7 @@
    "organizer": "Sports Car Driving Experience",
    "sourceUrl": "https://www.motorsportreg.com/events/sports-car-driving-experience-homestead-miami-speedway-hpde-119067",
    "registerUrl": "https://www.motorsportreg.com/events/sports-car-driving-experience-homestead-miami-speedway-hpde-119067",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/d2bc8c2b079e56a4d849.jpg",
@@ -16326,7 +16424,7 @@
    "organizer": "Sebring Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-051691",
    "registerUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-051691",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/559efff3a2f0fd2e2605.jpg",
@@ -16367,7 +16465,7 @@
    "organizer": "Homestead Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-108875",
    "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-108875",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg",
@@ -16416,7 +16514,7 @@
    "organizer": "Championship Auto Shows (Autorama / World of Wheels)",
    "sourceUrl": "https://autorama.com/attend/cincinnati/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -16471,7 +16569,7 @@
    "organizer": "Motorsports Productions (World of Wheels)",
    "sourceUrl": "https://worldofwheels.net/chattanooga/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -16518,7 +16616,7 @@
    "organizer": "SCCA Phoenix AZ Solo Region",
    "sourceUrl": "https://www.motorsportreg.com/events/spring-2027-event-1-pasr-phoenix-raceway-scca-az-solo-295259",
    "registerUrl": "https://www.motorsportreg.com/events/spring-2027-event-1-pasr-phoenix-raceway-scca-az-solo-295259",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/4f25ce0e299f5101edbf.jpg",
@@ -16600,7 +16698,7 @@
    "organizer": "Festivals of Speed",
    "sourceUrl": "https://festivalsofspeed.com/events/legends-of-stuttgart-coachman-park-clearwater-fl/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -16655,7 +16753,7 @@
    "organizer": "Audi Club North America - Golden Gate Chapter",
    "sourceUrl": "https://www.motorsportreg.com/events/audi-winter-driving-event-2027-thunderhill-raceway-park-club-na-golden-gate-585408",
    "registerUrl": "https://www.motorsportreg.com/events/audi-winter-driving-event-2027-thunderhill-raceway-park-club-na-golden-gate-585408",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ebdf8e3d1ccfd4931ad7.jpg",
@@ -16708,7 +16806,7 @@
    "organizer": "Utah International Auto Expo",
    "sourceUrl": "https://autoshowutah.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -16889,7 +16987,7 @@
    "organizer": "SCCA - Buccaneer Region - Jax Solo",
    "sourceUrl": "https://www.motorsportreg.com/events/scca-buccaneer-jax-solo-gainesville-regional-airport-autocross-127123",
    "registerUrl": "https://www.motorsportreg.com/events/scca-buccaneer-jax-solo-gainesville-regional-airport-autocross-127123",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": null,
@@ -16973,7 +17071,7 @@
    "organizer": "Apex Driving Academy",
    "sourceUrl": "https://www.motorsportreg.com/events/apex-hpde-by-gspeed-ecr-2-7-ccw-on-jan-16th-eagles-canyon-raceway-driving-889760",
    "registerUrl": "https://www.motorsportreg.com/events/apex-hpde-by-gspeed-ecr-2-7-ccw-on-jan-16th-eagles-canyon-raceway-driving-889760",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9b44ef73d27492a470cd.jpg",
@@ -17018,7 +17116,7 @@
    "organizer": "ProAutoSports Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/proautosports-track-days-firebird-motorsports-park-combined-651980",
    "registerUrl": "https://www.motorsportreg.com/events/proautosports-track-days-firebird-motorsports-park-combined-651980",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/ab6e679736288583d308.jpg",
@@ -17059,7 +17157,7 @@
    "organizer": "Judge's Car & Truck Shows / Clearwater Historical Society",
    "sourceUrl": "https://judgescarshows.eventsmart.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -17110,7 +17208,7 @@
    "organizer": "Sonoma Raceway",
    "sourceUrl": "https://www.sonomaraceway.com/events/winter-jam/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/6f152e85be03e7e707f4.png",
@@ -17192,7 +17290,7 @@
    "organizer": "Race Pace Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/january-saturday-chuckwalla-cw-valley-raceway-race-pace-track-days-089119",
    "registerUrl": "https://www.motorsportreg.com/events/january-saturday-chuckwalla-cw-valley-raceway-race-pace-track-days-089119",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -17233,7 +17331,7 @@
    "organizer": "Arctikhana",
    "sourceUrl": "https://www.arctikhana.com/",
    "registerUrl": "https://www.motorsportreg.com/events/arctikhana-georgetown-lake-ice-racing-437359",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": {
@@ -17280,7 +17378,7 @@
    "organizer": "Race Pace Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/january-sunday-chuckwalla-cw-valley-raceway-race-pace-track-days-042530",
    "registerUrl": "https://www.motorsportreg.com/events/january-sunday-chuckwalla-cw-valley-raceway-race-pace-track-days-042530",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -17321,7 +17419,7 @@
    "organizer": "Pueblo Motorsports Park",
    "sourceUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-546138",
    "registerUrl": "https://www.motorsportreg.com/events/winter-open-lapping-combined-cars-motorcycles-pueblo-motorsports-park-546138",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/16d0748bcfe2d85f7628.jpg",
@@ -17362,7 +17460,7 @@
    "organizer": "Homestead Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-736423",
    "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-736423",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg",
@@ -17423,7 +17521,7 @@
    "organizer": "The Washington Auto Show",
    "sourceUrl": "https://www.washingtonautoshow.com/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": {
@@ -17470,7 +17568,7 @@
    "organizer": "Homestead Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-366325",
    "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-366325",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg",
@@ -17519,7 +17617,7 @@
    "organizer": "PCA - Arizona Mountain",
    "sourceUrl": "https://www.motorsportreg.com/events/2027-tri-state-extravaganza-northern-arizona-pca-mountain-575634",
    "registerUrl": "https://www.motorsportreg.com/events/2027-tri-state-extravaganza-northern-arizona-pca-mountain-575634",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/613cbe0c9eb71e9c143a.jpg",
@@ -17564,7 +17662,7 @@
    "organizer": "Track Day Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/track-day-xperience-roebling-road-raceway-hpde-792461",
    "registerUrl": "https://www.motorsportreg.com/events/track-day-xperience-roebling-road-raceway-hpde-792461",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/12f60fa2db0686ec572d.jpg",
@@ -17625,7 +17723,7 @@
    "organizer": "Barrett-Jackson",
    "sourceUrl": "https://www.barrett-jackson.com/2027-scottsdale",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": null,
@@ -17707,7 +17805,7 @@
    "organizer": "SCCA San Diego Region",
    "sourceUrl": "https://www.motorsportreg.com/events/san-diego-scca-open-track-weekend-jan-23-24-2027-chuckwalla-valley-raceway-solo-498510",
    "registerUrl": "https://www.motorsportreg.com/events/san-diego-scca-open-track-weekend-jan-23-24-2027-chuckwalla-valley-raceway-solo-498510",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg",
@@ -17752,7 +17850,7 @@
    "organizer": "VARA",
    "sourceUrl": "https://www.motorsportreg.com/events/vara-university-2027-buttonwillow-raceway-classic-765343",
    "registerUrl": "https://www.motorsportreg.com/events/vara-university-2027-buttonwillow-raceway-classic-765343",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": null,
    "logo": null,
@@ -17789,7 +17887,7 @@
    "organizer": "SCCA Phoenix AZ Solo Region",
    "sourceUrl": "https://www.motorsportreg.com/events/spring-2027-event-2-pasr-phoenix-raceway-scca-az-solo-512717",
    "registerUrl": "https://www.motorsportreg.com/events/spring-2027-event-2-pasr-phoenix-raceway-scca-az-solo-512717",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": {
     "url": "https://carve.run/events/media/4f25ce0e299f5101edbf.jpg",
@@ -17877,7 +17975,7 @@
    "organizer": "Arizona Concours d'Elegance / Scottsdale Arts",
    "sourceUrl": "https://arizonaconcours.org/event/",
    "registerUrl": null,
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": null,
    "image": null,
    "logo": {
@@ -18050,7 +18148,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-sonoma-raceway-1-525776",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-sonoma-raceway-1-525776",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/cc4bdf9a68728c1709d4.jpg",
@@ -18091,7 +18189,7 @@
    "organizer": "SCCA - Neohio Region - Road Rally",
    "sourceUrl": "https://www.motorsportreg.com/events/2027-ohio-winter-rally-dibellas-subs-scca-neohio-road-770407",
    "registerUrl": "https://www.motorsportreg.com/events/2027-ohio-winter-rally-dibellas-subs-scca-neohio-road-770407",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/133faf2e24057ca10a46.jpg",
@@ -18132,7 +18230,7 @@
    "organizer": "PCA - Southern Arizona",
    "sourceUrl": "https://www.motorsportreg.com/events/sar-drive-tour-to-sahuarita-car-show-quail-creek-veterans-municipal-park-609213",
    "registerUrl": "https://www.motorsportreg.com/events/sar-drive-tour-to-sahuarita-car-show-quail-creek-veterans-municipal-park-609213",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/9c888d66cd753053e789.jpg",
@@ -18214,7 +18312,7 @@
    "organizer": "SCCA - Las Vegas Region",
    "sourceUrl": "https://www.motorsportreg.com/events/lvrscca-time-trial-3-las-vegas-motor-speedway-orc-scca-576554",
    "registerUrl": "https://www.motorsportreg.com/events/lvrscca-time-trial-3-las-vegas-motor-speedway-orc-scca-576554",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/79a23cc9aed0f756ea87.png",
@@ -18302,7 +18400,7 @@
    "organizer": "Homestead Driving Club",
    "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-878655",
    "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-878655",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg",
@@ -18355,7 +18453,7 @@
    "organizer": "Xtreme Xperience",
    "sourceUrl": "https://www.motorsportreg.com/events/xtreme-xperience-firebird-raceway-1-wild-horse-pass-894640",
    "registerUrl": "https://www.motorsportreg.com/events/xtreme-xperience-firebird-raceway-1-wild-horse-pass-894640",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/82a79e584478b8585759.png",
@@ -18400,7 +18498,7 @@
    "organizer": "Wheels of Color",
    "sourceUrl": "https://www.motorsportreg.com/events/996-gathering-2027-sebring-motor-garages-townhomes-wheels-of-color-362080",
    "registerUrl": "https://www.motorsportreg.com/events/996-gathering-2027-sebring-motor-garages-townhomes-wheels-of-color-362080",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/e90931ca32a394a37fc4.jpg",
@@ -18441,7 +18539,7 @@
    "organizer": "ProAutoSports Track Days",
    "sourceUrl": "https://www.motorsportreg.com/events/proautosports-track-days-radford-racing-school-open-895870",
    "registerUrl": "https://www.motorsportreg.com/events/proautosports-track-days-radford-racing-school-open-895870",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/d2abcbc95ef910cf02cf.png",
@@ -18482,7 +18580,7 @@
    "organizer": "ProFormance Racing School",
    "sourceUrl": "https://www.motorsportreg.com/events/proformance-racing-school-pacific-raceways-open-track-827846",
    "registerUrl": "https://www.motorsportreg.com/events/proformance-racing-school-pacific-raceways-open-track-827846",
-   "lastConfirmed": "2026-11-09",
+   "lastConfirmed": "2026-11-10",
    "timeUnknown": true,
    "image": {
     "url": "https://carve.run/events/media/27f632064645fb98f928.jpg",
