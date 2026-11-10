@@ -783,3 +783,37 @@ a { color: var(--green-ink); }
 .chip[style*="#3B8A3E" i], .chip[style*="#5E9E6E" i], .chip[style*="rgb(59, 138, 62)"], .chip[style*="rgb(94, 158, 110)"] { background: #39843C !important; } /* 4.6:1 */
 .chip[style*="#C0860A" i], .chip[style*="rgb(192, 134, 10)"] { background: #9A6B08 !important; } /* 4.7:1 */
 .chip[style*="#D2591F" i], .chip[style*="rgb(210, 89, 31)"] { background: #C1521D !important; } /* 4.7:1 */
+
+/* ✦ Suggest under the fields (board O5 v37): a bold link under its row,
+   pins labelled by kind, a card over the active one. Theme colours only
+   (vars and inherited text), so light and dark both hold. */
+.suggest-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 0 12px 10px 44px; background: var(--fill-2); border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.row:has(+ .suggest-row) { border-bottom: none; }
+.row.dest:has(+ .suggest-row) { border-radius: 0; }
+.suggest-row:last-child { border-bottom: none; border-radius: 0 0 18px 18px; }
+/* Quiet, as secondary links (Chris, 11/10): lighter and greyer; ink-3 on
+   fill-2 is 6.6:1. */
+.suggest-go { background: none; border: 0; padding: 4px 0; font: inherit; font-size: 14.5px; font-weight: 600; color: var(--ink-3); cursor: pointer; text-align: left; }
+.suggest-go:hover, .suggest-go[aria-pressed="true"] { color: var(--ink-2); }
+.suggest-go:hover, .suggest-go[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 3px; }
+.suggest-go:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; border-radius: 6px; }
+.suggest-solo { font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1.5px solid currentColor; opacity: .75; }
+.suggest-said { flex-basis: 100%; margin: 0; font-size: 13.5px; opacity: .75; }
+.suggest-said:empty { display: none; }
+.suggest-upsell { flex-basis: 100%; margin: 0; font-size: 13.5px; }
+.suggest-hide { background: none; border: 0; padding: 4px 0; margin-left: auto; font: inherit; font-size: 13.5px; font-weight: 700; color: inherit; opacity: .75; cursor: pointer; }
+.suggest-hide:hover { opacity: 1; text-decoration: underline; }
+/* An icon a kind (gas pump, cup, fork and knife, tree, bench, view, star, P), Carve green. */
+.suggest-pin { width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 2px solid #fff; background: #1D5B3A; color: #fff; display: grid; place-items: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.3); transition: transform .12s; }
+.suggest-pin svg { width: 18px; height: 18px; }
+.suggest-pin.on { background: #2E9E52; transform: scale(1.2); z-index: 2; }
+.suggest-kind svg { width: 15px; height: 15px; vertical-align: -3px; margin-right: 6px; color: #2E9E52; }
+.suggest-popup .maplibregl-popup-content { padding: 14px 16px; border-radius: 14px; }
+.suggest-card { display: flex; flex-direction: column; gap: 3px; font-family: "Figtree", system-ui, sans-serif; }
+.suggest-card p { margin: 0; }
+.suggest-kind { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.suggest-title { font-size: 16px; font-weight: 800; padding-right: 14px; }
+.suggest-where, .suggest-fact { font-size: 13.5px; opacity: .8; }
+.suggest-acts { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+.suggest-acts .pill.small { height: 36px; padding: 0 14px; font-size: 14px; }
+.suggest-maps { font-size: 13.5px; font-weight: 700; color: inherit; }

@@ -22,6 +22,7 @@ import {
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=8";
 import { addPins } from "/assets/events.js?v=bb6f2616de";
 import { closures, closureTitle, closureWords } from "./closures.js?v=3";
+import { initSuggest } from "./suggest.js?v=5";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -287,8 +288,9 @@ async function planner(action, body = {}, retried = false) {
   if (data.signIn && token && response.status === 401 && !retried) {
     if (await accessToken({ force: true })) return planner(action, body, true);
   }
-  if (data.signIn) openAccount("choose", { saving: false });
-  throw new Failure(data.error || "Something went wrong. Try again.");
+  if (data.signIn && !data.upgrade) openAccount("choose", { saving: false });
+  // `upgrade`: on Solo (the planner's smart actions, gate.ts).
+  throw Object.assign(new Failure(data.error || "Something went wrong. Try again."), { upgrade: !!data.upgrade });
 }
 
 // ── the guest's pass ─────────────────────────────────────────────────
@@ -737,6 +739,62 @@ function wireOptions() {
 const APPLE_EPOCH_SECONDS = 978307200;
 const DAY_MS = 86_400_000;
 const upcoming = (ms) => Number.isFinite(ms) && ms > Date.now() - 3_600_000;
+
+// ── smart planning: ✦ Suggest under the fields (Chris, 11/10; O5 v37) ──
+// suggest.js: meeting places at the start, stops along the route, places
+// near the end, as pins with a card. On Solo: the planner's `along` and
+// `meet` answer 403 {upgrade} otherwise, and the row then says so (Solo,
+// See Solo). apex_mine (the account's own Apex) isn't on the live project
+// yet, so `smart` stays null (not known) until that 403.
+const planZone = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return null; } })();
+let smart = null;
+let smartFor; // the account `smart` is for (null: a guest)
+let suggest = null;
+
+function checkSmart() {
+  const id = session?.user?.id || null;
+  if (id === smartFor) return;
+  smartFor = id;
+  smart = id ? null : false;
+  suggest?.refresh();
+  if (!id) return;
+  rest("/rest/v1/rpc/apex_mine", { method: "POST", body: {} }).then((a) => {
+    if (smartFor !== id) return;
+    smart = a?.held === true;
+    suggest?.refresh();
+  }).catch(() => {});
+}
+
+function startSuggest() {
+  suggest = initSuggest({
+    el, planner,
+    plan: () => plan,
+    map: () => map,
+    mapReady: () => mapReady,
+    choosePlace,
+    addStop: addSuggestedStop,
+    miles,
+    zone: planZone,
+    upcoming,
+    smart: () => smart,
+    lock: () => { smart = false; },
+    signedIn: () => !!session,
+    signIn: () => openAccount("choose", { saving: false }),
+    fitPadding,
+    mapCentre: () => (mapReady ? { lat: map.getCenter().lat, lon: map.getCenter().lng } : null),
+    driveDay: () => null,
+  });
+}
+
+/// A suggestion picked as a stop: in route order.
+function addSuggestedStop(place) {
+  if (plan.waypoints.length >= MAX_WAYPOINTS) return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
+  const type = stopCount() < MAX_STOPS ? "stop" : "marker";
+  if (type !== "stop") toast(`A route has up to ${MAX_STOPS} stops, so this one is a waypoint.`);
+  const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS), type };
+  edit(() => plan.waypoints.splice(bestSlot(spot), 0, spot));
+  toast(`${spot.label} is a stop now.`);
+}
 const dayStart = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const sameDay = (a, b) => !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 const dayText = (d) => d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
@@ -1825,17 +1883,21 @@ function renderRows() {
   const list = $("rows");
   list.innerHTML = "";
   const labels = markerLabels(plan.waypoints);
+  suggest?.changed();
   list.append(placeRow({ role: "start", point: plan.start, placeholder: "Choose a start" }));
+  if (suggest) list.append(suggest.row("start"));
   plan.waypoints.forEach((w, i) => list.append(placeRow({ role: "waypoint", point: w, index: i, label: labels[i] })));
   // Always there, even empty, so the list reads start, stops, destination
   // (the user, 2026-10-29).
   list.append(addRow());
+  if (suggest) list.append(suggest.row("along"));
   if (loops()) {
     const li = el("li", "row dest");
     li.append(markBadge("dest"), textCell(plan.trip === "outAndBack" ? "Back the same way to the start" : "Back to the start"));
     list.append(li);
   } else {
     list.append(placeRow({ role: "end", point: plan.end, placeholder: "Choose a destination" }));
+    if (suggest) list.append(suggest.row("end"));
   }
   // The empty panel already says to search or click the map.
   $("rows-hint").hidden = plan.waypoints.length < 2 || startMode === "import";
@@ -3077,6 +3139,7 @@ async function afterSignIn() {
 
 function renderWho() {
   const signedIn = !!session;
+  checkSmart();
   $("sign-in").hidden = signedIn;
   $("who").hidden = !signedIn;
   // "No account until you save" is for guests.
@@ -3447,6 +3510,7 @@ async function start() {
     if (await loadProfile().catch(() => null)) return location.replace(signInReturn());
   }
   if (failed && signInReturn({ keep: true }) && signInReturn({ keep: true }) !== "/") return signInFailed();
+  startSuggest();
   wire();
   renderWho();
   setUpMap();
@@ -3459,7 +3523,7 @@ async function start() {
   } else if (cameBack && !profile && signInReturn({ keep: true })) {
     openAccount(nameStep(), { saving: false, title: "Sign in" });
   }
-  if (LOCAL) window.__planner = { get plan() { return plan; }, suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
+  if (LOCAL) window.__planner = { get plan() { return plan; }, mapView: () => (mapReady ? { lon: map.getCenter().lng, lat: map.getCenter().lat, zoom: map.getZoom() } : null), suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
     showSaved();
     renderBlurb(false);
