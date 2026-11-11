@@ -814,3 +814,32 @@ a { color: var(--green-ink); }
 .suggest-acts { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
 .suggest-acts .pill.small { height: 36px; padding: 0 14px; font-size: 14px; }
 .suggest-maps { font-size: 13.5px; font-weight: 700; color: inherit; }
+
+/* ── the place pills over the map (Chris, 11/11): one row at the top left,
+   beside the panel; sideways scroll, never a wrap ── */
+/* Under a pin's card (z-index 4), so a card near the top isn't hidden. */
+.place-bar { position: absolute; z-index: 3; top: 16px; left: 512px; right: 64px; pointer-events: none; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.place-pills { pointer-events: auto; display: flex; gap: 8px; max-width: 100%; overflow-x: auto; scrollbar-width: none; padding: 2px; margin: -2px; }
+.place-pills::-webkit-scrollbar { display: none; }
+.place-pills[hidden] { display: none; }
+.place-pill, .place-chip { flex: none; display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 15px 0 12px; border: 0; border-radius: 999px; background: #161B18; color: var(--ink); font: inherit; font-size: 14.5px; font-weight: 700; white-space: nowrap; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.28); }
+.place-pill svg { width: 17px; height: 17px; color: var(--green-ink); }
+.place-pill:hover, .place-chip:hover { background: #1D2420; }
+.place-pill[aria-pressed="true"] { background: #2E9E52; color: #fff; }
+.place-pill[aria-pressed="true"] svg { color: #fff; }
+.place-pill:focus-visible, .place-chip:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+.place-under { display: flex; gap: 8px; align-items: center; }
+.place-chip { pointer-events: auto; padding: 0 16px; }
+.place-chip[hidden], .place-said[hidden] { display: none; }
+.place-said { pointer-events: auto; margin: 0; padding: 9px 15px; border-radius: 999px; background: #161B18; color: var(--ink-2); font-size: 13.5px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.28); }
+@media (min-width: 1400px) { .place-bar { left: 562px; } }
+.maplibregl-popup.suggest-popup { z-index: 4; }
+@media not all and (prefers-color-scheme: dark) {
+  .place-pill, .place-chip, .place-said { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.14); }
+  .place-pill { color: #1C1C1E; }
+  .place-pill svg { color: var(--green); }
+  .place-pill:hover, .place-chip:hover { background: #F2F2EF; }
+  .place-pill[aria-pressed="true"] { background: var(--green); color: #fff; }
+  .place-chip { color: var(--green); }
+  .place-said { color: #3A3A3C; }
+}

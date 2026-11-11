@@ -23,7 +23,7 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=44">
+<link rel="stylesheet" href="/plan/plan.css?v=45">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -241,6 +241,15 @@
     </section>
   </aside>
 
+  <!-- The place pills (Chris, 11/11): kinds of place over the map, one on
+       at a time (place-pills.js). -->
+  <div class="place-bar" id="place-bar">
+    <div class="place-pills" id="place-pills" role="toolbar" aria-label="Places on the map" hidden></div>
+    <div class="place-under">
+      <button type="button" class="place-chip" id="place-chip" hidden>Search this area</button>
+      <p class="place-said" id="place-said" role="status" hidden></p>
+    </div>
+  </div>
   <!-- The map's key: the dashed violet lines (the pins match the list, and
        say what they are on hover; the user, 2026-10-29). -->
   <div class="legend roads-key" id="legend" hidden tabindex="0" aria-describedby="roads-key-tip">
@@ -349,7 +358,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=78"></script>
+<script type="module" src="/plan/plan.js?v=79"></script>
 <script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>

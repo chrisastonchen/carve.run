@@ -22,7 +22,8 @@ import {
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=8";
 import { addPins } from "/assets/events.js?v=bb6f2616de";
 import { closures, closureTitle, closureWords } from "./closures.js?v=3";
-import { initSuggest } from "./suggest.js?v=5";
+import { initSuggest } from "./suggest.js?v=6";
+import { initPills } from "./place-pills.js?v=1";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -597,6 +598,7 @@ function setUpMap() {
     map.on("mouseleave", "good-roads-hit", () => hoverRoad(null));
     showGoodRoads();
     mapReady = true;
+    pills?.shown(!saved);
     addPins(map, { newTab: true });
     syncRoadsKey();
     drawRoute();
@@ -783,6 +785,19 @@ function startSuggest() {
     fitPadding,
     mapCentre: () => (mapReady ? { lat: map.getCenter().lat, lon: map.getCenter().lng } : null),
     driveDay: () => null,
+  });
+}
+
+// ── the place pills over the map (Chris, 11/11; place-pills.js) ──
+let pills = null;
+function startPills() {
+  pills = initPills({
+    el, planner, miles,
+    plan: () => plan,
+    map: () => map,
+    mapReady: () => mapReady,
+    addStop: addSuggestedStop,
+    closeSuggest: () => suggest?.close(),
   });
 }
 
@@ -1883,6 +1898,7 @@ function renderRows() {
   list.innerHTML = "";
   const labels = markerLabels(plan.waypoints);
   suggest?.changed();
+  pills?.changed();
   list.append(placeRow({ role: "start", point: plan.start, placeholder: "Choose a start" }));
   if (suggest) list.append(suggest.row("start"));
   plan.waypoints.forEach((w, i) => list.append(placeRow({ role: "waypoint", point: w, index: i, label: labels[i] })));
@@ -2734,6 +2750,7 @@ const shareLink = () => `${SITE}/${plan.token}`;
 function showSaved() {
   $("plan-view").hidden = true;
   $("legend").hidden = true;
+  pills?.shown(false);
   $("saved-view").hidden = false;
   closeClickMenu();
   $("s-name").textContent = plan.name;
@@ -3184,6 +3201,7 @@ function showPlan() {
   saved = false;
   $("saved-view").hidden = true;
   $("plan-view").hidden = false;
+  pills?.shown(mapReady);
   render();
   saveDraft();
 }
@@ -3509,6 +3527,7 @@ async function start() {
   }
   if (failed && signInReturn({ keep: true }) && signInReturn({ keep: true }) !== "/") return signInFailed();
   startSuggest();
+  startPills();
   wire();
   renderWho();
   setUpMap();
