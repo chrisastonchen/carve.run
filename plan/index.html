@@ -23,7 +23,7 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=43">
+<link rel="stylesheet" href="/plan/plan.css?v=44">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -241,7 +241,6 @@
     </section>
   </aside>
 
-  <div class="map-hint" id="map-hint" hidden><span class="dot-start"><svg aria-hidden="true"><use href="#i-flag"/></svg></span>Click the map or search</div>
   <!-- The map's key: the dashed violet lines (the pins match the list, and
        say what they are on hover; the user, 2026-10-29). -->
   <div class="legend roads-key" id="legend" hidden tabindex="0" aria-describedby="roads-key-tip">
@@ -350,7 +349,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=77"></script>
+<script type="module" src="/plan/plan.js?v=78"></script>
 <script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>

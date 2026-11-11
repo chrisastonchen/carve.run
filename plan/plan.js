@@ -1775,7 +1775,6 @@ function render({ keepTyping = false } = {}) {
   $("intro").hidden = hasAny;
   $("bring").hidden = !importing;
   $("rows").hidden = importing;
-  $("map-hint").hidden = hasAny || saved || !map;
   syncRoadsKey();
   $("undo").disabled = !history.back.length;
   $("redo").disabled = !history.forward.length;
@@ -2736,7 +2735,6 @@ function showSaved() {
   $("plan-view").hidden = true;
   $("legend").hidden = true;
   $("saved-view").hidden = false;
-  $("map-hint").hidden = true;
   closeClickMenu();
   $("s-name").textContent = plan.name;
   const ends = [town(plan.start), loops() ? "back" : town(plan.end)].filter(Boolean).join(" → ");
