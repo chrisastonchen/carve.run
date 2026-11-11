@@ -843,3 +843,15 @@ a { color: var(--green-ink); }
   .place-chip { color: var(--green); }
   .place-said { color: #3A3A3C; }
 }
+
+/* ── the Layers tile (Chris, 11/11): the map's lower-left corner, the
+   other view's picture, "Layers" on a dark gradient; the roads key beside it ── */
+.layers { position: absolute; z-index: 4; left: 512px; bottom: 16px; width: 88px; height: 88px; padding: 0; border: 3px solid #111; border-radius: 14px; overflow: hidden; background: #2A332E; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.3); }
+.layers[hidden] { display: none; }
+.layers img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.layers span { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 5px; padding: 18px 8px 7px; background: linear-gradient(transparent, rgba(0,0,0,.78)); color: #fff; font-size: 13px; font-weight: 700; }
+.layers svg { width: 15px; height: 15px; flex: none; }
+.layers:hover { border-color: #000; transform: translateY(-1px); }
+.layers:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+.layers:not([hidden]) ~ .legend { left: 612px; }
+@media (min-width: 1400px) { .layers { left: 562px; } .layers:not([hidden]) ~ .legend { left: 662px; } }

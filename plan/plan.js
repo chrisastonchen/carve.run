@@ -24,6 +24,7 @@ import { addPins } from "/assets/events.js?v=bb6f2616de";
 import { closures, closureTitle, closureWords } from "./closures.js?v=3";
 import { initSuggest } from "./suggest.js?v=6";
 import { initPills } from "./place-pills.js?v=1";
+import { initLayers } from "./layers.js?v=1";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -599,6 +600,8 @@ function setUpMap() {
     showGoodRoads();
     mapReady = true;
     pills?.shown(!saved);
+    // The Layers tile (layers.js): satellite under everything Carve draws.
+    layers = initLayers({ map: () => map, below: () => "good-roads-glow", toast, visible: () => !saved });
     addPins(map, { newTab: true });
     syncRoadsKey();
     drawRoute();
@@ -790,6 +793,7 @@ function startSuggest() {
 
 // ── the place pills over the map (Chris, 11/11; place-pills.js) ──
 let pills = null;
+let layers = null;
 function startPills() {
   pills = initPills({
     el, planner, miles,
@@ -2751,6 +2755,7 @@ function showSaved() {
   $("plan-view").hidden = true;
   $("legend").hidden = true;
   pills?.shown(false);
+  layers?.shown(false);
   $("saved-view").hidden = false;
   closeClickMenu();
   $("s-name").textContent = plan.name;
@@ -3202,6 +3207,7 @@ function showPlan() {
   $("saved-view").hidden = true;
   $("plan-view").hidden = false;
   pills?.shown(mapReady);
+  layers?.shown(true);
   render();
   saveDraft();
 }
@@ -3540,7 +3546,7 @@ async function start() {
   } else if (cameBack && !profile && signInReturn({ keep: true })) {
     openAccount(nameStep(), { saving: false, title: "Sign in" });
   }
-  if (LOCAL) window.__planner = { get plan() { return plan; }, mapView: () => (mapReady ? { lon: map.getCenter().lng, lat: map.getCenter().lat, zoom: map.getZoom() } : null), suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
+  if (LOCAL) window.__planner = { get plan() { return plan; }, mapView: () => (mapReady ? { lon: map.getCenter().lng, lat: map.getCenter().lat, zoom: map.getZoom() } : null), layerIds: () => (mapReady ? map.getStyle().layers.map((l) => l.id) : []), attribution: () => document.querySelector(".maplibregl-ctrl-attrib")?.textContent || "", suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
     showSaved();
     renderBlurb(false);

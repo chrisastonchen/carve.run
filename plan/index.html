@@ -23,7 +23,7 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=45">
+<link rel="stylesheet" href="/plan/plan.css?v=46">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -250,6 +250,12 @@
       <p class="place-said" id="place-said" role="status" hidden></p>
     </div>
   </div>
+  <!-- The Layers tile (Chris, 11/11): the other view's picture; a click
+       toggles Map and Satellite (layers.js). Shown once satellite works. -->
+  <button type="button" class="layers" id="layers" aria-pressed="false" aria-label="Satellite view" hidden>
+    <img id="layers-img" alt="" width="88" height="88" decoding="async">
+    <span><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg>Layers</span>
+  </button>
   <!-- The map's key: the dashed violet lines (the pins match the list, and
        say what they are on hover; the user, 2026-10-29). -->
   <div class="legend roads-key" id="legend" hidden tabindex="0" aria-describedby="roads-key-tip">
@@ -358,7 +364,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=79"></script>
+<script type="module" src="/plan/plan.js?v=80"></script>
 <script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
 </body>
 </html>
