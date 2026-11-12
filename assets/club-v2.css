@@ -49,7 +49,10 @@
 .cv-empty .go { align-self: center; }
 .cv-box { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 16px; background: var(--paper-2); border: 1px solid var(--rule); }
 .cv-orgz { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.cv-orgz li { display: flex; gap: 8px; align-items: baseline; overflow-wrap: anywhere; }
+.cv-orgz li { display: flex; gap: 8px; align-items: baseline; }
+/* A long address is cut short; Owner, Invited and Remove stay whole (QA 11/12). */
+.cv-orgz .cv-who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cv-orgz small, .cv-orgz .cv-remove { flex: none; white-space: nowrap; }
 .cv-orgz small { color: var(--ink-3); }
 .cv-orgz-form { display: flex; flex-direction: column; gap: 8px; }
 .cv-link { flex-direction: row; align-items: center; color: inherit; text-decoration: none; }

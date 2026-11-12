@@ -14,7 +14,7 @@
 // Pages never act on a GET: every change is a tap.
 
 import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
-import { $, el, insert, myOrgs, rpc, sessionUserId, signedIn } from "/assets/club-api.js?v=2060100765";
+import { $, el, insert, myOrgs, rpc, sessionUserId, signedIn } from "/assets/club-api.js?v=59a75ac522";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { DRIVE_PASS_UI } from "/plan/club-flags.js?v=4";
 import { thumbPath, DEFAULT_MEET, STAGE_WORDS, TIME_MISSING, addDays, dayWhenProblem, zoneNow, leaveAfter, prerunDefault, dayLabel, dayRouted, dayText, driveLine, driversText, prerunLine, formProblem, plannedLine, routeLine, stageOf } from "/assets/club-words.js?v=e4108d1a92";

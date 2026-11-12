@@ -5,9 +5,9 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, myOrgs, rpc, sessionEmail, signedIn } from "/assets/club-api.js?v=2060100765";
+import { $, billing, el, myOrgs, publicRpc, rpc, sessionEmail, signedIn } from "/assets/club-api.js?v=59a75ac522";
 import { STAGE_WORDS, datesText, planCards, planEyebrow, priceText, renewalTerms, trialDays, splitHome, stageOf, trialStatus } from "/assets/club-words.js?v=e4108d1a92";
-import { organizersBox } from "/assets/club-organizers.js?v=a0226bf956";
+import { organizersBox } from "/assets/club-organizers.js?v=f44f847383";
 import { billsToday } from "/assets/who-words.js?v=f3fe2a71de";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=55f6349230";
 import { forgetWho } from "/assets/who.js?v=4b12d2f422";
@@ -74,6 +74,30 @@ function showSignIn() {
   });
 }
 
+/// Signed out with an invite (Chris 11/12): "You're invited to <Club> on
+/// Carve", one line, Create free account and Log in (the site's sign-in,
+/// back to /club/, where the claim runs). No price, no trial. A token that
+/// won't claim says why, and is dropped, with Log in alone (an organizer who
+/// joined already, tapping the email again; QA 11/12); one the preview
+/// can't check (too many tries, no connection) keeps the page without the
+/// name.
+async function showInvite(token) {
+  status("");
+  $("o-signin").hidden = true;
+  const answer = await publicRpc("org_invite_preview", { p_token: token });
+  const dead = answer?.error && answer.error !== "too_many";
+  if (dead) forgetInvite();
+  $("o-invite-h").textContent = answer?.name ? `You're invited to ${answer.name} on Carve` : "You're invited to a club on Carve";
+  $("o-invite-h").hidden = dead;
+  $("o-invite-line").hidden = dead;
+  $("o-invite-join").hidden = dead;
+  $("o-invite-said").textContent = dead ? INVITE_WORDS[answer.error] || INVITE_WORDS.not_found : "";
+  $("o-invite-said").hidden = !dead;
+  $("o-invite-join").onclick = () => window.carveSignIn?.({ join: true, returnTo: "/club/" });
+  $("o-invite-login").onclick = () => window.carveSignIn?.({ returnTo: "/club/" });
+  $("o-invite").hidden = false;
+}
+
 /// For Clubs once per visit for an account with no club (an Individual
 /// account, say): its trial button opens O1 here.
 let introSeen = false;
@@ -93,14 +117,14 @@ async function start() {
   document.querySelector("main.cp")?.classList.add("cv");
   const invite = takeInvite();
   if (takeStart()) introSeen = true;
-  if (!(await signedIn())) return showSignIn();
+  if (!(await signedIn())) return invite ? showInvite(invite) : showSignIn();
   await rpc("account_claim").catch(() => {});
   let joined = null;
   let said = "";
   if (invite) {
     const claimed = await claimInvite(invite);
     // A guest session can't join: a real sign-in, the invite kept.
-    if (claimed.signIn) return showSignIn();
+    if (claimed.signIn) return showInvite(invite);
     if (claimed.org) {
       joined = claimed.org;
       forgetWho(); // a new club for the bar's menus

@@ -13,9 +13,9 @@
 <link rel="stylesheet" href="/styles.css?v=ce0bec7a67">
 <link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
-<link rel="stylesheet" href="/assets/club-v2.css?v=73a85cdfb1">
+<link rel="stylesheet" href="/assets/club-v2.css?v=11e2587e1f">
 <link rel="stylesheet" href="/assets/home.css?v=b27fea7e01">
-<link rel="stylesheet" href="/assets/club-intro.css?v=6112010493">
+<link rel="stylesheet" href="/assets/club-intro.css?v=33c22d52ac">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 
 </head>
@@ -96,6 +96,19 @@
   <!-- For Clubs, signed out (board F1; Product's spec 11/11, Chris's yes with every
        driver's Apex): the price, the trial and its terms, Log in; club-intro.js fills
        the price, terms and maths from plans.js. -->
+  <!-- An organizer's invite, signed out (Chris 11/12): the club's name from
+       0100's org_invite_preview, then a free account or Log in, back here for
+       the claim. No price, no trial. -->
+  <section class="cv-invite" id="o-invite" hidden>
+    <h1 id="o-invite-h">You're invited to a club on Carve</h1>
+    <p class="cv-invite-line" id="o-invite-line">As an organizer, you plan the club's drives on the web.</p>
+    <p class="cv-invite-said" id="o-invite-said" hidden></p>
+    <div class="cv-invite-go" id="o-invite-go">
+      <button type="button" class="go" id="o-invite-join">Create free account</button>
+      <button type="button" class="go" id="o-invite-login">Log in</button>
+    </div>
+  </section>
+
   <section class="f1" id="o-signin" hidden>
     <div class="f1-hero">
       <div class="f1-copy">
@@ -315,6 +328,6 @@
 
 <script src="/assets/carve-site.js?v=3989e8c97e" defer></script>
 <script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
-<script type="module" src="/assets/club-load.js?v=5ca592236b"></script>
+<script type="module" src="/assets/club-load.js?v=4b0887e015"></script>
 </body>
 </html>

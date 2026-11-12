@@ -62,3 +62,14 @@ main.cp:has(> .f1:not([hidden])) { max-width: 1120px; }
   .f1-list { grid-template-columns: minmax(0, 1fr); }
   .f1-maths div { flex-direction: column; gap: 2px; }
 }
+
+/* An organizer's invite, signed out (Chris 11/12): the club, one line, and
+   two equal buttons. */
+.cp .cv-invite { max-width: 560px; margin: 48px auto 64px; display: flex; flex-direction: column; gap: 14px; }
+.cp .cv-invite h1 { margin: 0; font-size: clamp(32px, 4.4vw, 46px); line-height: 1.08; letter-spacing: -.01em; }
+.cp .cv-invite-line { margin: 0; font-size: 18px; line-height: 1.45; color: var(--muted, #5D636C); }
+.cp .cv-invite-go { display: flex; gap: 12px; margin-top: 10px; }
+.cp .cv-invite-go .go { flex: 1; justify-content: center; height: 54px; font-size: 17px; }
+.cp .cv-invite-said { margin: 0; font-size: 18px; line-height: 1.45; }
+.cp .cv-invite [hidden] { display: none; }
+@media (max-width: 480px) { .cp .cv-invite { margin-top: 28px; } .cp .cv-invite-go { flex-direction: column; } .cp .cv-invite-go .go { flex: none; align-self: stretch; } }

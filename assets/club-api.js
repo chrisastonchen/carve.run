@@ -60,6 +60,21 @@ export const inviteSend = (body) => call(`${SUPABASE_URL}/functions/v1/org-invit
 /// Rows into a table as the organizer (a duplicated drive's routes and shares).
 export const insert = (table, rows) => call(`${SUPABASE_URL}/rest/v1/${table}`, rows);
 
+/// A call anyone may make, signed out too (0100's invite preview), with the
+/// site's key. → the answer, or null when it couldn't be asked.
+export async function publicRpc(name, body = {}) {
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return response.ok ? await response.json() : null;
+  } catch {
+    return null;
+  }
+}
+
 /// Signed in with a live token (the site's own session).
 export async function signedIn() {
   return !!localStorage.getItem(SESSION_KEY) && !!(await accessToken().catch(() => null));

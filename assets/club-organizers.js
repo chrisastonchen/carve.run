@@ -4,7 +4,7 @@
 // (twice, never the owner). The limit is the server's (organizer_cap),
 // else the plan's. A new address gets the invite email (org-invite-send).
 
-import { $, el, inviteSend, rpc } from "/assets/club-api.js?v=2060100765";
+import { $, el, inviteSend, rpc } from "/assets/club-api.js?v=59a75ac522";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 
 
@@ -45,6 +45,7 @@ export function organizersBox(p, org, { removable = false } = {}) {
     $(`${p}-list`).replaceChildren(...list.map((m) => {
       const li = el("li");
       const who = el("span", "cv-who", m.email);
+      who.title = m.email; // in full, when a long one is cut short
       li.append(who);
       if (m.owner) li.append(el("small", "", "Owner"));
       else if (!m.joined) li.append(el("small", "", "Invited"));
