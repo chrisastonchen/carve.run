@@ -36,6 +36,10 @@
    "coverage": 0.02,
    "since": "2026-10-24"
   },
+  "green-gables-shore-route-6-20": {
+   "coverage": 0.53,
+   "since": "2026-11-11"
+  },
   "guardsman-pass": {
    "coverage": 0.27,
    "since": "2026-11-01"
@@ -48,14 +52,6 @@
    "coverage": 0.67,
    "since": "2026-10-28"
   },
-  "highway-35-mount-hood": {
-   "coverage": 0.64,
-   "since": "2026-11-03"
-  },
-  "highway-74-whitewater-minnesota": {
-   "coverage": 0.72,
-   "since": "2026-10-24"
-  },
   "horseshoe-meadow-road": {
    "coverage": 0.35,
    "since": "2026-11-01"
@@ -63,6 +59,10 @@
   "independence-pass": {
    "coverage": 0.32,
    "since": "2026-11-01"
+  },
+  "klondike-highway-white-pass": {
+   "coverage": 0.48,
+   "since": "2026-11-10"
   },
   "la-rumorosa-grade-baja": {
    "coverage": 0.22,
@@ -131,8 +131,12 @@
   "us-377-junction-rocksprings": {
    "coverage": 0.43,
    "since": "2026-11-09"
+  },
+  "wolf-creek-pass": {
+   "coverage": 0.21,
+   "since": "2026-11-10"
   }
  },
  "format": 1,
- "updated": "2026-11-10T14:12:57Z"
+ "updated": "2026-11-12T14:10:58Z"
 }
