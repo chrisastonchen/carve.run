@@ -10,8 +10,8 @@
 
 /* Start a club (O1), redesigned (Chris 11/12; Product's mock): the plan on
    top, then one question, Typeform-style, in a column about 860px wide. */
-.cv-o1 { width: 100%; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; text-align: left; }
-.o1-head { display: flex; flex-direction: column; gap: 12px; }
+.cv-o1 { width: 100%; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; text-align: left; padding: 44px 0 40px; }
+.o1-head { display: flex; flex-direction: column; gap: 18px; }
 .o1-price { margin: 0; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
 .o1-price b { font-size: 22px; font-weight: 800; }
 .o1-chip { background: var(--green); color: #fff; border-radius: 999px; padding: 4px 12px; font-size: 14px; font-weight: 800; }
@@ -19,7 +19,7 @@
 .o1-apex { margin: 0; font-size: 17px; font-weight: 700; color: var(--green-ink); }
 .o1-perks { margin: 2px 0 0; color: var(--ink-2); font-size: 16px; }
 .cv-o1 > .cp-note { margin: 0; }
-.o1-ask { display: flex; flex-direction: column; gap: 22px; padding-top: 12px; }
+.o1-ask { display: flex; flex-direction: column; gap: 36px; margin-top: 52px; }
 .o1-q { display: flex; gap: 16px; align-items: baseline; }
 .o1-n { flex: none; display: inline-flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 800; color: var(--green-ink); transform: translateY(-6px); }
 .o1-n::after { content: ""; width: 16px; height: 16px; background: currentColor; -webkit-mask: var(--o1-arrow) center / contain no-repeat; mask: var(--o1-arrow) center / contain no-repeat; }
@@ -32,11 +32,14 @@
 .cv-o1 .o1-go { align-self: flex-start; height: 56px; padding: 0 30px; font-size: 18px; gap: 10px; }
 .cv-o1 .o1-go::after { content: ""; width: 18px; height: 18px; background: currentColor; -webkit-mask: var(--o1-arrow) center / contain no-repeat; mask: var(--o1-arrow) center / contain no-repeat; }
 .cv-o1 .o1-go:disabled { background: var(--rule); color: var(--ink-3); opacity: 1; cursor: default; }
-.o1-terms, .o1-said { margin-top: -8px; max-width: 60ch; }
+.o1-terms, .o1-said { max-width: 60ch; }
+.o1-said { margin-top: -22px; }
 .o1-said:empty { display: none; }
 .cv-o1 { --o1-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E"); }
 @media (max-width: 480px) {
-  .cv-o1 { gap: 22px; }
+  .cv-o1 { gap: 22px; padding: 22px 0 0; }
+  .o1-ask { gap: 26px; margin-top: 30px; }
+  .o1-said { margin-top: -12px; }
   .o1-q { gap: 10px; }
   .o1-n { transform: none; }
   .cv-o1 .o1-name, .cv-o1 .o1-go, .cv-o1 .o1-terms, .cv-o1 .o1-said { margin-left: 0; }
