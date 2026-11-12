@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/S4hmTAd">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/austin-san-antonio/">More car events in the Austin and San Antonio area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "d63a0977-a0cb-4d1b-b0eb-d5478c397350", "token": "S4hmTAd", "kind": "coffee", "name": "Hill Country PCA Informal Get Together – Dripping Springs", "venue": "Historic Mercer Street lot", "address": "296 W Mercer St, Dripping Springs, TX 78620", "locality": "Dripping Springs, TX", "lat": 30.192873, "lon": -98.089003, "timeZone": "America/Chicago", "next": [{"start": "2026-12-13T15:00:00Z", "end": "2026-12-13T17:30:00Z"}, {"start": "2027-01-10T15:00:00Z", "end": "2027-01-10T17:30:00Z"}], "repeats": "2nd Sunday monthly", "cars": "Porsche club meet; Porsche owners and fans", "cost": null, "organizer": "Porsche Club of America – Hill Country Region", "sourceUrl": "https://www.hcrpca.org/", "registerUrl": null, "lastConfirmed": "2026-11-04", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/971d75d2de395885a5ff.png", "page": "https://www.hcrpca.org/", "background": "#1C1C1E", "crop": [0.0, 0.0, 0.968, 1.0]}, "circuit": null, "about": {"text": "Club homepage says 9–11:30am but its calendar feed says 8–10:30am; check before going. Coffee shops within walking distance.", "source": "carve", "page": null}, "notes": "Club homepage says 9–11:30am but its calendar feed says 8–10:30am; check before going. Coffee shops within walking distance.", "membersOnly": false, "series": "9b1d709ee9", "summary": "Porsche Club of America – Hill Country Region runs a Cars & Coffee meet at Historic Mercer Street lot in Dripping Springs, TX on Sunday, December 13, 2026, 9 AM to 11:30 AM. It runs the 2nd Sunday of every month. Check before going. Coffee shops within walking distance.", "near": "About 20 miles north of Austin, as the crow flies.", "roads": [{"n": "RR 12: Wimberley to Dripping Springs", "s": "ranch-road-12-wimberley-dripping-springs", "m": 13.7, "d": 0}, {"n": "Hamilton Pool Road", "s": "hamilton-pool-road", "m": 16.7, "d": 7}, {"n": "RR 2325: Wimberley to Blanco", "s": "rr-2325-wimberley-blanco", "m": 23.4, "d": 11}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

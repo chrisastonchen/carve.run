@@ -23,7 +23,7 @@ const loops = (plan) => plan?.trip === "roundTrip" || plan?.trip === "outAndBack
 
 /// Without Apex: what tapping an action says (no label beside it; Chris,
 /// 11/11: "Very ugly").
-export const SOLO = { note: "Suggestions are on Solo.", see: "See Solo", signIn: "Sign in" };
+export const SOLO = { note: "Suggestions need Carve Apex, in Individual or Club.", see: "See plans", signIn: "Sign in" };
 
 /// A pin's short label, by kind.
 const PIN = { gas: "Gas", coffee: "Coffee", food: "Food", rest_area: "Rest", viewpoint: "View", attraction: "Sight", park: "Park", parking: "Parking" };

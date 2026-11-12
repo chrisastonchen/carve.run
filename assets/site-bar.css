@@ -49,6 +49,11 @@
 .bar .who-menu button:hover { background: #1D2420; }
 .bar .menu-btn { width: 44px; height: 44px; border: none; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; display: flex; align-items: center; justify-content: center; }
 .bar .menu-btn svg { width: 20px; height: 20px; }
+/* Notifications (notify-bell.js): a bell with the unread count, signed in */
+.bar .bell { position: relative; flex: none; border: none; padding: 0; width: 44px; height: 44px; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; display: flex; align-items: center; justify-content: center; }
+.bar .bell:hover, .bar .bell[aria-current] { background: rgba(255,255,255,.24); }
+.bar .bell svg { width: 22px; height: 22px; }
+.bar .bell .bell-count { position: absolute; top: -3px; right: -5px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #F2C94C; color: #15181C; font-size: 12px; font-weight: 800; line-height: 20px; text-align: center; }
 .sheet {
   position: fixed; inset: var(--bar) 0 0 0; z-index: 19; padding: 8px 20px 24px;
   background: #0E1210; display: flex; flex-direction: column;

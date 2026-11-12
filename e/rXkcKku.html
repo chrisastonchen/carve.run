@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/rXkcKku">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -114,14 +116,14 @@ First car off</p><p class="evx-about">*All cars require a tech-inspection, usual
 </article>
 <p class="evx-more"><a href="/events/virginia/">More car events in Virginia</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "0c102909-811d-451b-acee-c2cb170bf8da", "token": "rXkcKku", "kind": "autocross", "name": "VMSC Autocross Points Event #8", "venue": "Virginia Motorsports Park", "address": null, "locality": "North Dinwiddie, VA", "lat": 37.16514, "lon": -77.52249, "timeZone": "America/New_York", "next": [{"start": "2026-11-15T12:30:00Z", "end": null}], "repeats": null, "cars": "All levels; helmets required (loaners available)", "cost": "$50 members / $60 non-members (prepay only)", "organizer": "Virginia Motor Sports Club", "sourceUrl": "https://www.motorsportreg.com/events/vmsc-2026-autocross-points-event-x-virginia-motorsports-park-motor-sports-club-446645", "registerUrl": "https://www.motorsportreg.com/events/vmsc-2026-autocross-points-event-x-virginia-motorsports-park-motor-sports-club-446645", "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/fe8389a1bf3ce574d606.gif", "page": "https://www.vmsc.org", "background": "#F2F2F4", "crop": [0.0, 0.0, 1.0, 1.0]}, "circuit": null, "about": {"text": "Open to all level drivers. Registration limited to 120 drivers.\n\nYou must register and pre-pay. Payment will not be accepted the day of the event.\n\nMembers are $50 and Non Members are $60\n\nRegister more than 5 days in Advance for a $5 Early Bird Discount!!\n\nNot a Member Yet? Join here: 2026 VMSC Membership to save $10 on each event\n\nEVENT SCHEDULE\n\n7:30\nGates Open\n\n8:30-9:45\nTech Inspection*\n\n9:00-10:00\nRegistration\n\n10:10\nNovice Walk through\n\n10:30\nDriver's meeting\n\n11:15\nFirst car off\n\n*All cars require a tech-inspection, usually near registration trailer. Please have everything out of your car and open your hood and trunk.\n\nWe typically finish between 4 and 5 depending on how many cars show up.\n\nThere will be no food vendor on site at this time.", "source": "organizer", "page": "https://www.motorsportreg.com/events/vmsc-2026-autocross-points-event-x-virginia-motorsports-park-motor-sports-club-446645"}, "notes": "Limited to 120 drivers; first car around 11:15, usually done by 4–5 pm.", "membersOnly": false, "series": "5d1ab4b166", "summary": "Virginia Motor Sports Club runs an autocross at Virginia Motorsports Park in North Dinwiddie, VA on Sunday, November 15, 2026, 7:30 AM. Limited to 120 drivers; first car around 11:15, usually done by 4–5 pm.", "near": null, "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -161,6 +163,6 @@ First car off</p><p class="evx-about">*All cars require a tech-inspection, usual
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

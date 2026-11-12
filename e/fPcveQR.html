@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/fPcveQR">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/seattle/">More car events in the Seattle area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "f1cbf4c8-cd57-4d9f-99da-b71cdb298887", "token": "fPcveQR", "kind": "cruise", "name": "Bad Santa Car Cruise-In", "venue": "Pacific Raceways", "address": "31001 144th Ave SE, Kent, WA 98042", "locality": "Kent, WA", "lat": 47.3232, "lon": -122.1523, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-12-06T18:00:00Z", "end": "2026-12-06T22:00:00Z"}], "repeats": null, "cars": "Classics, hot rods, muscle and custom cars; everyone welcome", "cost": "$10 or one toy donation", "organizer": "Pacific Raceways with Cruise Enumclaw, Cruise Puyallup, Cruise Buckley and other local cruise groups", "sourceUrl": "https://pacificraceways.com/schedule/bad-santa-car-cruise-in-2/", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/0aa72c39e25c3b970d95.webp", "page": "https://pacificraceways.com/", "background": "#F2F2F4", "crop": [0.049, 0.049, 0.911, 0.885]}, "circuit": null, "about": {"text": "Rev up your engines, dust off your Santa hats, and get ready to cruise into the holiday season for a great cause!", "source": "organizer", "page": "https://pacificraceways.com/schedule/bad-santa-car-cruise-in-2/"}, "notes": "Third annual holiday cruise-in in the paddock; toys and donations go to local families.", "membersOnly": false, "series": "9960bf8ffb", "summary": "Pacific Raceways with Cruise Enumclaw, Cruise Puyallup, Cruise Buckley and other local cruise groups runs a cruise at Pacific Raceways in Kent, WA on Sunday, December 6, 2026, 10 AM to 2 PM. Third annual holiday cruise-in in the paddock; toys and donations go to local families.", "near": "About 20 miles southeast of Seattle, as the crow flies.", "roads": [{"n": "Snoqualmie Valley: Highway 203", "s": "snoqualmie-valley-highway-203", "m": 28.0, "d": 21}, {"n": "Chinook Pass: Highway 410", "s": "chinook-pass", "m": 72.8, "d": 27}, {"n": "Highway 106: Hood Canal South Shore", "s": "hood-canal-south-shore", "m": 18.8, "d": 34}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/K64KzsX">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/new-york-city/">More car events in the New York City area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "2080f303-b353-4eec-ac1b-eae60ad4a152", "token": "K64KzsX", "kind": "show", "name": "Rétromobile New York", "venue": "Javits Center", "address": "429 11th Ave, New York, NY 10001", "locality": "New York, NY", "lat": 40.75836, "lon": -74.00221, "timeZone": "America/New_York", "next": [{"start": "2026-11-19T14:00:00Z", "end": "2026-11-20T00:00:00Z"}, {"start": "2026-11-20T14:00:00Z", "end": "2026-11-21T00:00:00Z"}, {"start": "2026-11-21T14:00:00Z", "end": "2026-11-22T00:00:00Z"}, {"start": "2026-11-22T14:00:00Z", "end": "2026-11-23T00:00:00Z"}], "repeats": null, "cars": "Collector and historic cars, restomods, automobilia and art from 100+ exhibitors", "cost": "From $70 general admission ($79 on site); children 6–16 from $30", "organizer": "Rétromobile New York", "sourceUrl": "https://www.retromobile.us/show-info", "registerUrl": null, "lastConfirmed": "2026-11-10", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/b7003dec64491b5f1164.png", "page": "https://www.retromobile.us", "background": "#1C1C1E", "crop": [0.114, 0.16, 0.794, 0.664]}, "circuit": null, "about": {"text": "Find all show info for Retromobile New York 2026 – dates, venue, exhibitors, and highlights of the premier classic and supercar exhibition in the USA.", "source": "organizer", "page": "https://www.retromobile.us/show-info"}, "notes": "First US edition of the Paris classic-car salon; closes 5 pm Sunday; Gooding Christie's auction Nov 20–21.", "membersOnly": false, "series": "959ef2a108", "summary": "Rétromobile New York runs a car show at Javits Center in New York, NY on Thursday, November 19, 2026, 9 AM to 7 PM. First US edition of the Paris classic-car salon; closes 5 pm Sunday; Gooding Christie's auction Nov 20–21.", "near": "In New York.", "roads": [{"n": "Seven Lakes Drive", "s": "seven-lakes-drive", "m": 13.5, "d": 30}, {"n": "Bear Mountain Bridge Road and 9D", "s": "bear-mountain-bridge-road-9d", "m": 18.6, "d": 37}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

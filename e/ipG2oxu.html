@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/ipG2oxu">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/socal/">More car events in Southern California</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "347b0dd6-78f4-52a8-a4e7-366dd4816dd4", "token": "ipG2oxu", "kind": "cruise", "name": "PCA-LA November Drive 2026", "venue": "Los Angeles", "address": null, "locality": "Los Angeles, CA", "lat": 34.0963, "lon": -118.49807, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-15T16:00:00Z", "end": "2026-11-16T01:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "PCA - Los Angeles", "sourceUrl": "https://www.motorsportreg.com/events/pca-la-november-drive-2026-los-angeles-035680", "registerUrl": "https://www.motorsportreg.com/events/pca-la-november-drive-2026-los-angeles-035680", "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/0f8922ec1e243b2f77b2.jpg", "credit": "PCA - Los Angeles via MotorsportReg", "page": "https://www.motorsportreg.com/events/pca-la-november-drive-2026-los-angeles-035680"}, "logo": null, "circuit": null, "about": {"text": "PCA-LA NOVEMBER DRIVE 2026\n\nSunday, November 15, 2026\n\nJoin PCA Los Angeles for a fun drive on November 15!\n\nWe will be meeting in the Moorpark area at 7:00 am and will depart for Ojai at 7:30 am. We'll be taking a short break in Ojai and continue our drive north on CA-33.\n\nExpect a 3.5-hour drive (including 2 stops) when the event ends in Ojai, CA.\n\nLocation/Details:\n\nDeparture: location will be emailed to registered members\n\nDate: Sunday, November 15, 2026\n\nArrival/Meet & Greet: 7:00 AM\n\nDrivers meeting: 7:15 AM\n\nDeparture: 7:30 AM\n\nRegistration for this event is required, along with the number and names of your guests.\n\nRegistration details:\n\n$10/car event fee\n\nWe look forward to seeing you there!", "source": "organizer", "page": "https://www.motorsportreg.com/events/pca-la-november-drive-2026-los-angeles-035680"}, "notes": null, "membersOnly": false, "series": "0e445a3aaa", "summary": "PCA - Los Angeles runs a cruise at Los Angeles in Los Angeles, CA on Sunday, November 15, 2026.", "near": "About 15 miles west of Los Angeles, as the crow flies.", "roads": [{"n": "Mulholland Drive", "s": "mulholland-drive-los-angeles", "m": 11.3, "d": 3}, {"n": "Topanga Canyon Boulevard", "s": "topanga-canyon-boulevard", "m": 11.9, "d": 5}, {"n": "Stunt Road and Saddle Peak Road", "s": "stunt-road-saddle-peak", "m": 5.1, "d": 7}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

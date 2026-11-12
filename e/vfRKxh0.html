@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/vfRKxh0">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/pennsylvania/">More car events in Pennsylvania</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "d85c170d-91d7-4ebc-a8f8-5408167ecd57", "token": "vfRKxh0", "kind": "show", "name": "Philadelphia Auto Show 2027", "venue": "Pennsylvania Convention Center", "address": "1101 Arch St, Philadelphia, PA 19107", "locality": "Philadelphia, PA", "lat": 39.95511, "lon": -75.16024, "timeZone": "America/New_York", "next": [{"start": "2027-01-16T13:00:00Z", "end": "2027-01-16T22:00:00Z"}, {"start": "2027-01-17T13:00:00Z", "end": "2027-01-17T22:00:00Z"}, {"start": "2027-01-18T13:00:00Z", "end": "2027-01-18T22:00:00Z"}, {"start": "2027-01-19T13:00:00Z", "end": "2027-01-19T22:00:00Z"}, {"start": "2027-01-20T13:00:00Z", "end": "2027-01-20T22:00:00Z"}, {"start": "2027-01-21T13:00:00Z", "end": "2027-01-21T22:00:00Z"}], "repeats": null, "cars": "Manufacturer displays plus Custom Alley builds", "cost": null, "organizer": "Philadelphia Auto Show", "sourceUrl": "https://phillyautoshow.com/", "registerUrl": null, "lastConfirmed": "2026-11-05", "timeUnknown": true, "image": null, "logo": {"url": "https://carve.run/events/media/6a028c73450c7bdc4218.png", "page": "https://phillyautoshow.com", "background": "#F2F2F4", "crop": [0.007, 0.067, 0.97, 0.853]}, "circuit": null, "about": {"text": "Experience the 2026 Philadelphia Auto Show at PA Convention Center. 250,000 attendees, 750,000 sq ft of vehicles. Test drives, Custom Alley, and more.", "source": "organizer", "page": "https://phillyautoshow.com/"}, "notes": "Save-the-date only so far; 2027 hours and ticket prices not yet posted. Black Tie Tailgate preview gala Jan 15.", "membersOnly": false, "series": "d32c92abf2", "summary": "Philadelphia Auto Show runs a car show at Pennsylvania Convention Center in Philadelphia, PA on Saturday, January 16, 2027. Save-the-date only so far; 2027 hours and ticket prices not yet posted. Black Tie Tailgate preview gala Jan 15.", "near": "About 80 miles southwest of New York, as the crow flies.", "roads": [{"n": "Brandywine Valley: Route 100", "s": "brandywine-valley-route-100", "m": 7.4, "d": 24}, {"n": "River Road: New Hope to Easton", "s": "delaware-river-road-new-hope-easton", "m": 33.2, "d": 31}, {"n": "Pine Barrens: Batsto to Chatsworth", "s": "pine-barrens-batsto-chatsworth", "m": 19.1, "d": 35}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

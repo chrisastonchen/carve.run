@@ -11,8 +11,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css?v=ce0bec7a67">
-<link rel="stylesheet" href="/assets/site-bar.css?v=afde5806fd">
-<link rel="stylesheet" href="/assets/home.css?v=d5e93551cd">
+<link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
+<link rel="stylesheet" href="/assets/home.css?v=b27fea7e01">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 <style>
   /* carve.run/profile/: a profile, as the app shows it, kept plain (the user, 2026-11-04). */
@@ -30,6 +30,16 @@
   .pf-stats span { font-size: 14px; color: var(--ink-3); }
   .pf-sect { display: flex; flex-direction: column; gap: 10px; }
   .pf-sect h2 { font-size: 20px; font-weight: 800; }
+  .pf-switch { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); cursor: pointer; }
+  .pf-switch span { display: flex; flex-direction: column; gap: 2px; }
+  .pf-switch b { font-size: 16px; }
+  .pf-switch small { font-size: 14px; color: var(--ink-3); }
+  .pf-switch input { appearance: none; flex: none; position: relative; width: 50px; height: 30px; margin: 0; border-radius: 999px; background: var(--rule); cursor: pointer; transition: background .15s; }
+  .pf-switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .15s; }
+  .pf-switch input:checked { background: var(--green); }
+  .pf-switch input:checked::after { transform: translateX(20px); }
+  .pf-switch input:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+  .pf-switch input:disabled { opacity: .6; }
   .pf-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--rule); }
   .pf-list li { display: flex; flex-direction: column; gap: 2px; padding: 12px 2px; border-bottom: 1px solid var(--rule); }
   .pf-list b { font-size: 16px; font-weight: 700; }
@@ -62,8 +72,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,8 +94,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -130,6 +144,7 @@
     <div class="links">
       <a href="/drives/">Drives</a>
       <a href="/compare/">Compare</a>
+      <a href="/pricing/">Pricing</a>
       <a href="/about/">About</a>
       <a href="/privacy/">Privacy</a>
       <a href="/terms/">Terms</a>
@@ -139,8 +154,8 @@
   </div>
 </footer>
 
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
-<script type="module" src="/assets/site-bar.js?v=bfd0517f5a"></script>
-<script type="module" src="/assets/profile.js?v=3160c73b54"></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
+<script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
+<script type="module" src="/assets/profile.js?v=8808cb8652"></script>
 </body>
 </html>

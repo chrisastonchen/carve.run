@@ -6,11 +6,11 @@
 // The drives are /drives/roads.json (build_area_pages.py write_roads), the
 // same lines the planner draws as good roads. The map starts where the
 // visitor likely is (where.js); without a guess, the whole map, legends first.
-import "/assets/site-bar.js?v=bfd0517f5a";
+import "/assets/site-bar.js?v=26e2ebbc13";
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
-import { heartButton, wireHearts } from "/assets/hearts.js?v=5f1f204eb8";
+import { heartButton, wireHearts } from "/assets/hearts.js?v=5c3fca78da";
 import { MAP_DAYS, addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby, nextOn, within } from "/assets/events.js?v=bb6f2616de";
 
 // The map follows the device's theme, light unless it's set to dark (the

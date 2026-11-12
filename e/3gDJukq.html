@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/3gDJukq">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/boston/">More car events in the Boston area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "460bf635-8754-5296-8ce9-8b5af804fd2f", "token": "3gDJukq", "kind": "track", "name": "2026 NER/NCR Track Schedule", "venue": "NER Track Days", "address": null, "locality": "Boston, MA", "lat": 42.35486, "lon": -71.06612, "timeZone": "America/New_York", "next": [{"start": "2026-12-13T13:00:00Z", "end": "2026-12-13T22:00:00Z"}, {"start": "2026-12-14T13:00:00Z", "end": "2026-12-14T22:00:00Z"}, {"start": "2026-12-15T13:00:00Z", "end": "2026-12-15T22:00:00Z"}, {"start": "2026-12-16T13:00:00Z", "end": "2026-12-16T22:00:00Z"}, {"start": "2026-12-17T13:00:00Z", "end": "2026-12-17T22:00:00Z"}, {"start": "2026-12-18T13:00:00Z", "end": "2026-12-18T22:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "PCA - Northeast Region - Drivers Education", "sourceUrl": "https://www.motorsportreg.com/events/2026-ner-ncr-track-schedule-days-pca-northeast-drivers-education-232307", "registerUrl": "https://www.motorsportreg.com/events/2026-ner-ncr-track-schedule-days-pca-northeast-drivers-education-232307", "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/fd073d7166ef896c61c0.jpg", "credit": "PCA - Northeast Region - Drivers Education via MotorsportReg", "page": "https://www.motorsportreg.com/events/2026-ner-ncr-track-schedule-days-pca-northeast-drivers-education-232307"}, "logo": null, "circuit": null, "about": {"text": "• Monday - Tuesday May 4-5 @ Lime Rock Park\n\n• Friday, May 22 HPDE Primer @ Thompson\n\n• Friday - Sunday May 22-24 @ Thompson\n\n• Friday - Sunday, June 19-21 @ Palmer Clockwise\n\n• Thursday - Saturday, July 16-18 @ Club Motorsports\n\n• Friday - Sunday, August 14-16 @ Watkins Glen Interational\n\n• Thursday - Saturday, September 10-12 @ Club Motorsports\n\n• Friday - Sunday, September 25-27 @ Palmer Counter Clockwise…", "source": "organizer", "page": "https://www.motorsportreg.com/events/2026-ner-ncr-track-schedule-days-pca-northeast-drivers-education-232307"}, "notes": null, "membersOnly": false, "series": "4663cf7d78", "summary": "PCA - Northeast Region - Drivers Education runs a track day at NER Track Days in Boston, MA on Sunday, December 13, 2026.", "near": "In Boston.", "roads": [{"n": "Cape Ann: Highway 127", "s": "cape-ann-highway-127", "m": 8.9, "d": 26}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

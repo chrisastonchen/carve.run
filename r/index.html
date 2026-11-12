@@ -26,8 +26,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/share-plan.css?v=161a310cc6">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
@@ -47,13 +47,9 @@
   }
   #gmaps-cancel { flex: 0 0 auto; padding: 0 20px; border: none; background: var(--fill); color: var(--ink); }
   #gmaps-open { background: var(--green); color: #fff; }
-
 /* light theme (scripts/light_theme.py): the device's light setting */
 @media not all and (prefers-color-scheme: dark) {
   .gmaps-warning { background: #fff; }
-  .gmaps-warning::backdrop { background: rgba(17,17,19,.45); }
-  #gmaps-cancel { background: var(--fill); }
-  #gmaps-open { background: var(--green); }
 }
 /* end light theme */
 </style>
@@ -74,6 +70,7 @@
   <symbol id="i-grip" viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
   <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM4 10h16M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 9v4l2.5 2M9 2h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
   <!-- The app's start and finish marks (Material Icons, Apache 2.0, as android/…/ic_pin_flag*.xml). -->
   <symbol id="i-flag" viewBox="0 0 24 24"><path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6z" fill="currentColor"/></symbol>
@@ -92,9 +89,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
     <a href="/events/" class="wide-only">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -113,9 +111,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
   <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -125,7 +124,7 @@
 <div class="scroll">
 <p class="missing" id="missing">Loading the route…</p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 <div class="foot quiet"><a class="linkish grey" href="/plan/">+ Plan a new route</a></div>
@@ -355,8 +354,14 @@ const RouteProfile = (() => {
   // the 404 page forwarded it. ?d= is the old self-contained link.
   const params = new URLSearchParams(location.search);
   const segments = location.pathname.split("/").filter(Boolean);
-  const token = (segments[0] === "r" ? segments[1] : segments[0]) || params.get("t");
+  // ?k= too, as day-extras.js reads it (QA, 11/11).
+  const token = (segments[0] === "r" ? segments[1] : segments[0]) || params.get("t") || params.get("k");
   const payload = params.get("d");
+  // A club drive's day, as its organizer shares it (club v2's O7, O6):
+  // ?club=<drive id>&day=<n>[&prerun]. The same page without the app's
+  // pitch, the QR's own line, and the drive's bar on top (club-share.js).
+  // Only what shows changes; the link to copy is the route's own.
+  const CLUB = /^[0-9a-f-]{36}$/i.test(params.get("club") || "") ? params.get("club") : null;
 
   if (APP_STORE_ID && isApple) {
     const meta = document.createElement("meta");
@@ -586,28 +591,32 @@ const RouteProfile = (() => {
     add(el("div", { class: "scan" },
       el("div", { class: "scan-top" },
         el("div", { class: "qr", id: "rv-qr", role: "img", "aria-label": "QR code for " + link }, code),
-        el("div", {}, el("b", {}, "Scan to drive it in Carve"), el("span", { class: "dim" }, "Point a phone's camera here. It opens ready to drive."))),
+        el("div", {}, CLUB ? el("b", {}, "Scan this QR code or open the link on your phone to drive this route in the App.")
+          : [el("b", {}, "Scan to drive it in Carve"), el("span", { class: "dim" }, "Point a phone's camera here. It opens ready to drive.")])),
       el("div", { class: "two" },
         el("button", { type: "button", class: "pill white", id: "rv-download" }, icon("i-download"), "Download"),
         el("button", { type: "button", class: "pill white", id: "rv-print", hidden: "" }, icon("i-print"), "Print directions"))));
     add(el("div", { class: "paste link" },
       el("input", { id: "rv-link", readonly: "", "aria-label": "The route's link", value: link.replace("https://", "") }),
       el("button", { type: "button", class: "pill green", id: "rv-copy" }, "Copy link")));
-    const store = isAndroid ? ANDROID_URL : APP_STORE_URL;
-    const button = el("a", { href: store }, icon(isAndroid ? "android" : "apple"), "Drive it in Carve, free");
-    button.addEventListener("click", openInApp);
-    add(el("div", { class: "go" }, button,
-      el("p", {}, "Opens this route in the app, or where to get it."),
-      markup(PLATFORMS)));
-    // The bar at the bottom, as page_parts.py's BANNER_INSIDE.
-    const banner = el("a", { href: store },
-      el("img", { src: "/assets/icon-128.png?v=87d1534580", alt: "", width: "40", height: "40" }),
-      el("span", { class: "why" }, "Drive this road", el("br"), "in the app"),
-      el("span", { class: "open" }, "Open"));
-    banner.addEventListener("click", openInApp);
-    add(el("div", { class: "app-banner" },
-      el("button", { type: "button", class: "x", "data-close-banner": "", "aria-label": "Close" }, icon("i-close")),
-      banner));
+    // The app's pitch, but not on a club drive's day (Chris, 11/9).
+    if (!CLUB) {
+      const store = isAndroid ? ANDROID_URL : APP_STORE_URL;
+      const button = el("a", { href: store }, icon(isAndroid ? "android" : "apple"), "Drive it in Carve, free");
+      button.addEventListener("click", openInApp);
+      add(el("div", { class: "go" }, button,
+        el("p", {}, "Opens this route in the app, or where to get it."),
+        markup(PLATFORMS)));
+      // The bar at the bottom, as page_parts.py's BANNER_INSIDE.
+      const banner = el("a", { href: store },
+        el("img", { src: "/assets/icon-128.png?v=87d1534580", alt: "", width: "40", height: "40" }),
+        el("span", { class: "why" }, "Drive this road", el("br"), "in the app"),
+        el("span", { class: "open" }, "Open"));
+      banner.addEventListener("click", openInApp);
+      add(el("div", { class: "app-banner" },
+        el("button", { type: "button", class: "x", "data-close-banner": "", "aria-label": "Close" }, icon("i-close")),
+        banner));
+    }
 
     if (info.blurb) {
       add(el("section", { class: "sect" }, el("h2", {}, "The drive"),
@@ -627,8 +636,10 @@ const RouteProfile = (() => {
       units(info, start, info.roundTrip ? "Start" : end), googleMapsButton(info.googleMaps)));
 
     const nearby = el("section", { class: "sect", hidden: "" }, el("h2", {}, "More drives near here"));
-    add(nearby);
-    add(markup(APP_SECTION)[0]);
+    if (!CLUB) {
+      add(nearby);
+      add(markup(APP_SECTION)[0]);
+    }
     add(el("p", { class: "rv-sources" },
       "Distance, time, elevation, curves and intensity are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
     return nearby;
@@ -1055,14 +1066,21 @@ const RouteProfile = (() => {
         if (Number.isFinite(row.start_lat) && Number.isFinite(row.start_lon)) drivesNear(nearby, { lat: row.start_lat, lon: row.start_lon });
       }, { once: true });
       ready();
+      // A club drive's day: its weather and road conditions (day-extras.js),
+      // only with CLUB_V2 on: the live site, without club-flags.js or with it
+      // off, asks route_drive nothing.
+      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=8973216d34"); }).catch(() => {});
+      if (CLUB) import("/assets/club-share.js?v=ccf4130d95");
+      // A club drive's day, to a driver: the drive pass (P1).
+      else import("/assets/route-pass.js?v=cb64bac2fb");
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";
     }
   })();
 </script>
-<script type="module" src="/assets/route-view.js?v=2849116c4a"></script>
-<script type="module" src="/assets/share-plan.js?v=43b5c71df5"></script>
+<script type="module" src="/assets/route-view.js?v=706111f491"></script>
+<script type="module" src="/assets/share-plan.js?v=cca4f57428"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
@@ -1103,6 +1121,6 @@ const RouteProfile = (() => {
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

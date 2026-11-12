@@ -1,0 +1,67 @@
+/* The Notifications pane (notify-pane.js), over any page with the site's
+   bar: under the bell on a computer, the whole screen on a phone. Its own
+   colours, as the bar has, so it looks the same on the planner and the
+   site. Dark first; the device's light setting below. */
+
+.nf-pane {
+  position: fixed; z-index: 40; top: calc(var(--bar, 64px) + 8px); right: 16px;
+  width: 400px; max-width: calc(100vw - 32px); max-height: calc(100vh - var(--bar, 64px) - 24px); max-height: calc(100dvh - var(--bar, 64px) - 24px);
+  display: flex; flex-direction: column; border-radius: 18px; overflow: hidden;
+  background: #161B18; color: #EEF1EE; border: 1px solid #2A332E; box-shadow: 0 18px 48px rgba(0,0,0,.35);
+  font-family: "Figtree", -apple-system, system-ui, sans-serif; font-size: 16px; line-height: 1.45;
+}
+.nf-pane[hidden] { display: none !important; }
+.nf-pane:focus { outline: none; }
+.nf-head { display: flex; align-items: center; gap: 10px; padding: 14px 12px 10px 20px; border-bottom: 1px solid #2A332E; flex: none; }
+.nf-head h2 { margin: 0; flex: 1; font-size: 20px; font-weight: 800; line-height: 1.2; }
+.nf-close { width: 44px; height: 44px; border: none; border-radius: 999px; background: rgba(255,255,255,.1); color: inherit; display: flex; align-items: center; justify-content: center; cursor: pointer; font: inherit; }
+.nf-close:hover { background: rgba(255,255,255,.18); }
+.nf-close svg { width: 18px; height: 18px; }
+.nf-body { overflow-y: auto; overscroll-behavior: contain; padding: 12px 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+.nf-said { margin: 6px 8px; color: #A3ACA6; font-size: 15px; }
+.nf-out { display: flex; flex-direction: column; gap: 12px; padding: 4px 8px; }
+.nf-out p { margin: 0; color: #C3CAC5; }
+.nf-signin { align-self: flex-start; display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 999px; background: #EEF1EE; color: #0E1210; font-weight: 800; text-decoration: none; }
+.nf-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.nf-item { position: relative; display: flex; flex-direction: column; gap: 3px; padding: 12px 14px 12px 28px; border-radius: 14px; background: #1D2420; }
+.nf-item.unread::before { content: ""; position: absolute; left: 11px; top: 19px; width: 8px; height: 8px; border-radius: 50%; background: #6FD39A; }
+.nf-title { color: #EEF1EE; font-size: 16px; font-weight: 800; text-decoration: none; }
+.nf-title:hover { text-decoration: underline; }
+.nf-detail { color: #C3CAC5; font-size: 15px; }
+.nf-when { color: #9AA39D; font-size: 13px; }
+.nf-choices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.nf-choices button { min-width: 80px; height: 44px; padding: 0 16px; border-radius: 999px; border: 2px solid #2A332E; background: #161B18; color: #EEF1EE; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; }
+.nf-choices button[aria-pressed="true"] { background: #1D5B3A; border-color: #1D5B3A; color: #fff; }
+.nf-choices button:disabled { opacity: .6; }
+.nf-said-item { color: #9AA39D; font-size: 14px; }
+.nf-more { align-self: center; height: 44px; padding: 0 20px; border-radius: 999px; border: none; background: #EEF1EE; color: #0E1210; font: inherit; font-weight: 800; cursor: pointer; }
+.nf-pane :focus-visible { outline: 3px solid #6FD39A; outline-offset: 2px; }
+.nf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* A phone: the whole screen, over the bar too. */
+@media (max-width: 699px) {
+  .nf-pane { inset: 0; top: 0; right: 0; width: auto; max-width: none; max-height: none; height: 100%; border-radius: 0; border: none; box-shadow: none; }
+  .nf-head { padding: 10px 12px 10px 20px; padding-top: max(10px, env(safe-area-inset-top)); }
+  .nf-body { flex: 1; padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+}
+html.nf-locked, html.nf-locked body { overflow: hidden; }
+
+/* light theme: the device's light setting */
+@media not all and (prefers-color-scheme: dark) {
+  .nf-pane { background: #fff; color: #15181C; border-color: #E2DCCC; box-shadow: 0 18px 48px rgba(21,24,28,.18); }
+  .nf-head { border-bottom-color: #E2DCCC; }
+  .nf-close { background: #F1EEE5; }
+  .nf-close:hover { background: #E7E2D5; }
+  .nf-said { color: #5D636C; }
+  .nf-out p { color: #3D434B; }
+  .nf-signin { background: #1D5B3A; color: #fff; }
+  .nf-item { background: #F6F4EE; }
+  .nf-item.unread::before { background: #1D5B3A; }
+  .nf-title { color: #15181C; }
+  .nf-detail { color: #3D434B; }
+  .nf-when, .nf-said-item { color: #5D636C; }
+  .nf-choices button { background: #fff; border-color: #E2DCCC; color: #15181C; }
+  .nf-choices button[aria-pressed="true"] { background: #1D5B3A; border-color: #1D5B3A; color: #fff; }
+  .nf-more { background: #1D5B3A; color: #fff; }
+  .nf-pane :focus-visible { outline-color: #1D5B3A; }
+}

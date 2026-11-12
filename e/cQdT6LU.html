@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/cQdT6LU">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/socal/">More car events in Southern California</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "dbe4ec33-e020-4581-9e70-c21b57a50506", "token": "cQdT6LU", "kind": "coffee", "name": "Cars and Coffee Classics", "venue": "Center Street Promenade", "address": "Center Street Promenade, Anaheim, CA 92805", "locality": "Anaheim, CA", "lat": 33.834, "lon": -117.9151, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-12-06T17:00:00Z", "end": "2026-12-06T21:00:00Z"}, {"start": "2027-01-03T17:00:00Z", "end": "2027-01-03T21:00:00Z"}, {"start": "2027-02-07T17:00:00Z", "end": "2027-02-07T21:00:00Z"}], "repeats": "1st Sunday monthly", "cars": "Classic imports featured; all welcome", "cost": null, "organizer": "Cars and Coffee Classics (listed by Downtown Anaheim Association)", "sourceUrl": "https://downtownanaheim.com/upcoming-events", "registerUrl": null, "lastConfirmed": "2026-11-09", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/c5be6025456007f89429.webp", "page": "https://carsandcoffeeclassics.com/", "background": "#F2F2F4", "crop": [0.0, 0.0, 1.0, 1.0]}, "circuit": null, "about": {"text": "Listed as 1st Sunday with an asterisk; check for skipped months.", "source": "carve", "page": null}, "notes": "Listed as 1st Sunday with an asterisk; check for skipped months.", "membersOnly": false, "series": "6bbc97160e", "summary": "Cars and Coffee Classics (listed by Downtown Anaheim Association) runs a Cars & Coffee meet at Center Street Promenade in Anaheim, CA on Sunday, December 6, 2026, 9 AM to 1 PM. It runs the 1st Sunday of every month. Check for skipped months.", "near": "About 25 miles southeast of Los Angeles, as the crow flies.", "roads": [{"n": "Carbon Canyon Road", "s": "carbon-canyon-road", "m": 7.1, "d": 8}, {"n": "Santiago Canyon Road", "s": "santiago-canyon-road", "m": 10.6, "d": 10}, {"n": "Glendora Mountain and Ridge Roads", "s": "glendora-mountain-ridge-roads", "m": 21.2, "d": 22}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

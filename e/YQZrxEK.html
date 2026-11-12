@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/YQZrxEK">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/socal/">More car events in Southern California</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "eba52e71-8c3b-4abf-8d39-620e1f19ab73", "token": "YQZrxEK", "kind": "show", "name": "Long Beach Hi-Performance Swap Meet & Car Show", "venue": "Veterans Memorial Stadium", "address": "5000 Lew Davis St, Long Beach, CA 90808", "locality": "Long Beach, CA", "lat": 33.8299, "lon": -118.135, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-12-13T14:00:00Z", "end": "2026-12-13T21:00:00Z"}, {"start": "2027-01-10T14:00:00Z", "end": "2027-01-10T21:00:00Z"}], "repeats": null, "cars": "Hot rods, muscle and classic cars; pre-1995 car corral", "cost": "$15 spectators (11 and under free)", "organizer": "Topping Events", "sourceUrl": "https://www.longbeachhiposwapmeet.com/swap-dates", "registerUrl": null, "lastConfirmed": "2026-11-08", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/ac3c07e6ec21e5f8b7c9.jpg", "page": "https://toppingevents.com/", "background": "#000000", "crop": [0.031, 0.164, 0.932, 0.623]}, "circuit": null, "about": {"text": "Monthly swap meet with a show/sell car corral; stadium demolition has changed entrances.", "source": "carve", "page": null}, "notes": "Monthly swap meet with a show/sell car corral; stadium demolition has changed entrances.", "membersOnly": false, "series": "c7eecd6c7f", "summary": "Topping Events runs a car show at Veterans Memorial Stadium in Long Beach, CA on Sunday, December 13, 2026, 6 AM to 1 PM. Monthly swap meet with a show/sell car corral; stadium demolition has changed entrances.", "near": "About 15 miles south of Los Angeles, as the crow flies.", "roads": [{"n": "Palos Verdes Drive", "s": "palos-verdes-drive", "m": 10.9, "d": 13}, {"n": "Carbon Canyon Road", "s": "carbon-canyon-road", "m": 7.1, "d": 19}, {"n": "Santiago Canyon Road", "s": "santiago-canyon-road", "m": 10.6, "d": 22}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

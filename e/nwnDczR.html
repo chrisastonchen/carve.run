@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/nwnDczR">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/georgia/">More car events in Georgia</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "9be2c13b-8d5a-5910-a588-3ef02c74d0fd", "token": "nwnDczR", "kind": "autocross", "name": "MGA SCCA Charity Autocross ", "venue": "Old Peach County High School", "address": null, "locality": "Fort Valley, GA", "lat": 32.56961, "lon": -83.90706, "timeZone": "America/New_York", "next": [{"start": "2026-11-15T13:00:00Z", "end": "2026-11-15T22:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "SCCA - Middle Georgia Region", "sourceUrl": "https://www.motorsportreg.com/events/mga-scca-charity-autocross-old-peach-county-high-school-middle-georgia-299411", "registerUrl": "https://www.motorsportreg.com/events/mga-scca-charity-autocross-old-peach-county-high-school-middle-georgia-299411", "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/94d4b64e31e84f58005e.jpg", "credit": "SCCA - Middle Georgia Region via MotorsportReg", "page": "https://www.motorsportreg.com/events/mga-scca-charity-autocross-old-peach-county-high-school-middle-georgia-299411"}, "logo": null, "circuit": null, "about": {"text": "Come out and join us for the last event of the year, Please register early, registration closes at noon on the 7th of November. The event will be at the Old Peach County High School in Fort Valley, GA. Address is 902 Campus Drive, Fort Valley. Site will open at 7 AM and we will have a drivers meeting at 9:30. We will not take walk up registrations so register online please. If you aren't a full SCCA member you need to purchase your weekend membership here as well, sorry the cost of the weekend membership has gone up to $25 this year but Middle Georgia is only charging $22.\n\nThis is a charity event supporting the Halo Group based in Perry, GA. This is Christian based charity that offers life skills and job training as well as so much more for adults with autism and other learning disabilities. All proceeds from this event will be donated to them.\n\nThe SCCA strives to ensure that ALL participants in its events and activities enjoy a welcoming environment. The SCCA supports equality of opportunity and treatment for all participants, regardless of gender, gender identity or expression, race, color, national or ethnic origin, religion or religious beliefs, age, marital status, sexual orientation, disabilities, or veteran status. SCCA will make every effort to maintain an environment that is free of harassment, discrimination, and any behavior that interferes with a safe, fun, and exciting experience.…", "source": "organizer", "page": "https://www.motorsportreg.com/events/mga-scca-charity-autocross-old-peach-county-high-school-middle-georgia-299411"}, "notes": null, "membersOnly": false, "series": "5d04a77b10", "summary": "SCCA - Middle Georgia Region runs an autocross at Old Peach County High School in Fort Valley, GA on Sunday, November 15, 2026.", "near": "About 90 miles south of Atlanta, as the crow flies.", "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

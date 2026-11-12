@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/tvKAV3n">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/tennessee/">More car events in Tennessee</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "3ff05d9a-6872-4331-9222-58a828f65467", "token": "tvKAV3n", "kind": "coffee", "name": "Gateway Classic Cars Caffeine and Chrome – Nashville", "venue": "Gateway Classic Cars Nashville showroom", "address": "706 Swan Dr, Smyrna, TN 37167", "locality": "Smyrna, TN", "lat": 36.00183, "lon": -86.50534, "timeZone": "America/Chicago", "next": [{"start": "2026-12-05T16:00:00Z", "end": "2026-12-05T19:00:00Z"}], "repeats": null, "cars": "All makes, collectible or daily driver", "cost": "Free", "organizer": "Gateway Classic Cars", "sourceUrl": "https://www.gatewayclassiccars.com/events", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/8ded441d9581e74ee66d.jpg", "page": "https://www.gatewayclassiccars.com/", "background": "#FFFFFF", "crop": [0.223, 0.345, 0.554, 0.312]}, "circuit": null, "about": {"text": "Monthly showroom meet with donuts and coffee; Dec 5 is the only Nashville date currently posted.", "source": "carve", "page": null}, "notes": "Monthly showroom meet with donuts and coffee; Dec 5 is the only Nashville date currently posted.", "membersOnly": false, "series": "102a9279a9", "summary": "Gateway Classic Cars runs a Cars & Coffee meet at Gateway Classic Cars Nashville showroom in Smyrna, TN on Saturday, December 5, 2026, 10 AM to 1 PM. Monthly showroom meet with donuts and coffee; Dec 5 is the only Nashville date currently posted.", "near": null, "roads": [{"n": "Natchez Trace Parkway: Franklin to Hohenwald", "s": "natchez-trace-tennessee", "m": 50.1, "d": 27}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

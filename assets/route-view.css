@@ -44,6 +44,9 @@
 .rv .go { display: none; }
 .rv .go a { display: flex; align-items: center; justify-content: center; gap: 9px; height: 56px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
 .rv .go a svg { width: 20px; height: 20px; fill: #161B18; }
+/* A road's guide ends with the road into the planner (board N7): green, full width, on a phone too. */
+.rv .foot.road { padding: 14px 16px 16px; }
+.rv .foot.road a { display: flex; align-items: center; justify-content: center; height: 52px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; font-size: 17px; text-decoration: none; }
 .rv .go p { text-align: center; color: var(--ink-3); font-size: 13px; margin-top: 8px; }
 .rv .platforms { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; color: var(--ink-3); }
 .rv .platforms a { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 10px; color: inherit; background: none; height: auto; }
@@ -261,3 +264,32 @@
 .chip[style*="#3B8A3E" i] { background: #39843C !important; }
 .chip[style*="#C0860A" i] { background: #9A6B08 !important; }
 .chip[style*="#D2591F" i] { background: #C1521D !important; }
+/* A club drive's day: weather and road conditions (day-extras.js) */
+/* Apex on a club's route (board A1): the green card above the way into the app. */
+.rv .apex-card { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 14px; padding: 16px; border-radius: 16px; background: #14301F; border: 1.5px solid #2E6B48; }
+.rv .apex-pill { align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: var(--green); color: #fff; font-size: 12.5px; font-weight: 800; }
+.rv .apex-card h2 { margin: 0; font-size: 18px; font-weight: 800; }
+.rv .apex-line { margin: 0; font-size: 15px; color: #C3D9CB; }
+.rv .apex-feats { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.rv .apex-feats li { font-size: 15px; font-weight: 700; padding-left: 22px; position: relative; }
+.rv .apex-feats li::before { content: ""; position: absolute; left: 2px; top: 4px; width: 7px; height: 12px; border: solid var(--green-ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+.rv .apex-ends { margin: 2px 0 0; font-size: 14.5px; font-weight: 700; color: var(--green-ink); }
+.rv .dx-day { margin: 0 0 4px; color: var(--green-ink); font-size: 15px; font-weight: 700; }
+/* Light: after the rules above, so it wins (the theme block sits earlier). */
+@media not all and (prefers-color-scheme: dark) {
+  .rv .dx-day { color: var(--green); }
+  .rv .apex-card { background: #EAF4EE; border-color: #9CC9AE; }
+  .rv .apex-line { color: #3D5A49; }
+  .rv .apex-feats li::before { border-color: var(--green); }
+  .rv .apex-ends { color: var(--green); }
+}
+.rv .dx-weather, .rv .dx-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.rv .dx-weather li { display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; }
+.rv .dx-weather li span { color: var(--ink-3); text-align: right; }
+.rv .dx-rows { margin-top: 14px; }
+.rv .dx-row { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); font-size: 14.5px; }
+.rv .dx-row span { color: var(--ink-3); font-size: 13.5px; }
+.rv .dx-row a { font-size: 13.5px; color: inherit; }
+.rv .dx-row.warning { border-color: #D9822B; }
+.rv .dx-src { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+.rv .dx-src a { color: inherit; }

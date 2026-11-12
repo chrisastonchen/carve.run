@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/9CHjzn6">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/socal/">More car events in Southern California</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "83c2cdb7-d14b-44e1-bb11-32896fec2795", "token": "9CHjzn6", "kind": "coffee", "name": "Conejo Valley Cars & Coffee", "venue": "Firestone Tire at The Oaks mall", "address": "598 W Hillcrest Dr, Thousand Oaks, CA 91360", "locality": "Thousand Oaks, CA", "lat": 34.1861, "lon": -118.8865, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-21T15:00:00Z", "end": "2026-11-21T18:00:00Z"}, {"start": "2026-12-05T15:00:00Z", "end": "2026-12-05T18:00:00Z"}, {"start": "2026-12-19T15:00:00Z", "end": "2026-12-19T18:00:00Z"}, {"start": "2027-01-02T15:00:00Z", "end": "2027-01-02T18:00:00Z"}, {"start": "2027-01-16T15:00:00Z", "end": "2027-01-16T18:00:00Z"}, {"start": "2027-02-06T15:00:00Z", "end": "2027-02-06T18:00:00Z"}], "repeats": "1st and 3rd Saturdays monthly", "cars": "All makes welcome", "cost": null, "organizer": "Conejo Valley Cars & Coffee", "sourceUrl": "https://www.cvcarsandcoffee.com/", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/216465ffca7f46e8ce34.png", "page": "https://www.cvcarsandcoffee.com/", "background": "#F2F2F4", "crop": [0.028, 0.039, 0.928, 0.906]}, "circuit": null, "about": {"text": "Got a Classic car, Hot rod, Exotic or just love what you drive?", "source": "organizer", "page": "https://www.cvcarsandcoffee.com/"}, "notes": "1st and 3rd Saturdays per the organizer's home page; the site has no dated 2026 calendar.", "membersOnly": false, "series": "e1420fde18", "summary": "Conejo Valley Cars & Coffee runs a Cars & Coffee meet at Firestone Tire at The Oaks mall in Thousand Oaks, CA on Saturday, November 21, 2026, 7 AM to 10 AM. It runs the 1st and 3rd Saturdays of every month. 1st and 3rd Saturdays.", "near": "About 40 miles west of Los Angeles, as the crow flies.", "roads": [{"n": "Decker Canyon Road", "s": "decker-canyon-road", "m": 10.6, "d": 4}, {"n": "Mulholland Highway", "s": "mulholland-highway", "m": 21.3, "d": 6}, {"n": "Latigo Canyon Road", "s": "latigo-canyon-road", "m": 9.1, "d": 8}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

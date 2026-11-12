@@ -4,7 +4,7 @@
 // decides who can see whom, and needs a sign-in. Never indexed (the page's
 // robots meta and robots.txt).
 
-import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=517867446e";
+import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=a3869ea508";
 import { usesMiles } from "/plan/route-wire.js";
 
 const $ = (id) => document.getElementById(id);
@@ -107,9 +107,42 @@ function render(profile) {
     ${section("Coming up", upcoming.map((e) => `<li><b>${escapeHTML(e.name)}</b><span>${escapeHTML([when(e.starts_at), e.place].filter(Boolean).join(" · "))}</span></li>`))}
     ${activity.length ? section("Activity", activity.map((item) => `<li>${item.html}</li>`))
       : `<section class="pf-sect"><h2>Activity</h2><p class="pf-note">${profile.is_me ? "Your drives, reviews and events show here once you've driven with Carve." : "Nothing here yet."}</p></section>`}
+    ${profile.is_me ? `<section class="pf-sect pf-emails" aria-labelledby="pf-emails-h"><h2 id="pf-emails-h">Emails</h2>
+      <label class="pf-switch"><span><b>Emails about Carve</b><small>Tips and news. Sign-in codes and club emails always come.</small></span>
+      <input type="checkbox" role="switch" id="pf-mkt" disabled></label><p class="pf-note" id="pf-mkt-said" role="status"></p></section>` : ""}
     ${profile.is_me ? `<p class="pf-note">Change your name, picture and garage in the Carve app, under Me.</p>` : ""}`;
   $("pf-body").hidden = false;
   status("");
+}
+
+/// Your own profile: the marketing-email switch (App Dev's 0097; Chris and
+/// Legal, 11/11). It shows the stored choice, off when there's none; a
+/// change is saved at once (source "settings", no country on the web).
+/// Sign-up on the web asks nothing.
+async function emailPrefs(token) {
+  const box = $("pf-mkt");
+  if (!box) return;
+  const said = (text) => { $("pf-mkt-said").textContent = text; };
+  try {
+    const prefs = await rest("/rest/v1/rpc/email_prefs_mine", token, {});
+    box.checked = prefs?.marketing_opt_in === true;
+    box.disabled = false;
+  } catch {
+    return said("Couldn't load your email setting. Try again later.");
+  }
+  box.addEventListener("change", async () => {
+    const want = box.checked;
+    box.disabled = true;
+    said("");
+    try {
+      await rest("/rest/v1/rpc/email_prefs_set", await accessToken().catch(() => token), { p_marketing_opt_in: want, p_source: "settings", p_country: null });
+      said(want ? "You'll get tips and news." : "No more tips and news.");
+    } catch {
+      box.checked = !want;
+      said("Couldn't save that. Try again.");
+    }
+    box.disabled = false;
+  });
 }
 
 async function main() {
@@ -131,6 +164,7 @@ async function main() {
     const profile = await rest("/rest/v1/rpc/profile_view", token, { p_username: username });
     if (!profile) return status("This profile is only visible to people who've been on a drive with them.");
     render(profile);
+    if (profile.is_me) emailPrefs(token);
   } catch {
     status("Couldn't load the profile. Check the connection and try again.");
   }

@@ -4,7 +4,7 @@
 // never plans anything itself: what's typed, dropped or pasted goes to
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
 // address bar).
-import "/assets/site-bar.js?v=bfd0517f5a";
+import "/assets/site-bar.js?v=26e2ebbc13";
 
 // The hero's car screen: CarPlay on an iPhone, Android Auto on Android (the
 // user, 2026-11-02). Here, not in site-bar.js: that file's import isn't
@@ -16,10 +16,12 @@ if (/android/i.test(navigator.userAgent || "")) {
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
-import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=c9ddd2b545";
-import { heartButton, wireHearts } from "/assets/hearts.js?v=5f1f204eb8";
-import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=517867446e";
+import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=428a174f1e";
+import { heartButton, wireHearts } from "/assets/hearts.js?v=5c3fca78da";
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=a3869ea508";
 import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=bb6f2616de";
+import { who, whoNow } from "/assets/who.js?v=a86c218f65";
+import { homeMenu } from "/assets/who-words.js?v=39abf98d28";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
@@ -742,7 +744,7 @@ function wireJoin() {
 
 // The hero's headline, theirs (the user, 2026-11-04): "Ray, let's hit the road."
 // The first name is kept (carve.first-name, by account) so the next visit draws it at once.
-const PUBLIC_TITLE = "The ultimate app for car clubs and group drives.";
+const PUBLIC_TITLE = "Plan your club's drive.";
 async function greet() {
   const token = await accessToken();
   if (!token) {
@@ -768,8 +770,57 @@ async function greet() {
   }
 }
 
+/// Plan a drive (boards N1, N2): the planner, with the Club line under it;
+/// a Club organizer gets a menu instead, a group drive for each club, then
+/// one for themselves, and no Club line.
+function heroPlan() {
+  const button = $("hero-plan");
+  const menu = $("hero-menu");
+  if (!button || !menu) return; // the ad pages keep their own
+  const show = ({ state, clubs }) => {
+    if (state !== "club" || button.dataset.menu) return;
+    button.dataset.menu = "1";
+    $("hero-club-line").hidden = true;
+    // …and the Share one link card's trial line too (Product, 11/11).
+    if ($("share-club-line")) $("share-club-line").hidden = true;
+    button.setAttribute("role", "button");
+    button.setAttribute("aria-haspopup", "menu");
+    button.setAttribute("aria-expanded", "false");
+    button.insertAdjacentHTML("beforeend", '<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>');
+    const items = homeMenu(clubs);
+    menu.replaceChildren(...items.flatMap((item, i) => {
+      const a = document.createElement("a");
+      a.href = item.href;
+      a.setAttribute("role", "menuitem");
+      a.textContent = item.label;
+      // A rule before the one for themselves.
+      return i === items.length - 1 && i > 0 ? [document.createElement("hr"), a] : [a];
+    }));
+    const open = (on) => {
+      menu.hidden = !on;
+      button.setAttribute("aria-expanded", String(on));
+      if (on) menu.querySelector("a")?.focus();
+    };
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      open(menu.hidden);
+    });
+    document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest(".hero-plan")) open(false); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !menu.hidden) {
+        open(false);
+        button.focus();
+      }
+    });
+  };
+  const known = whoNow();
+  if (known) show(known);
+  else who().then(show).catch(() => {});
+}
+
 async function main() {
   riseIn();
+  heroPlan();
   wireJoin();
   offerApp();
   heroStory();

@@ -225,7 +225,7 @@
   // MARK: - My Drives
 
   // Signed in (the planner's sign-in, kept in this browser), the bar and the
-  // phone's menu get My Drives after Plan a Route (the user, 2026-11-01).
+  // phone's menu are drawn for who's looking (site-nav.js, Chris 11/11).
   function myDrivesLink() {
     var session = safe(function () { return JSON.parse(localStorage.getItem("carve.plan.session") || "null"); }, null);
     if (!session || !session.user) return;
@@ -263,16 +263,9 @@
       if (/^\/profile\//.test(location.pathname)) mine.setAttribute("aria-current", "page");
       sheet.append(mine, out);
     }
-    document.querySelectorAll(".bar nav.links, nav.sheet").forEach(function (nav) {
-      if (nav.querySelector('a[href="/my-drives/"]')) return;
-      var a = document.createElement("a");
-      a.href = "/my-drives/";
-      a.textContent = "Saved";
-      if (/^\/my-drives\//.test(location.pathname)) a.setAttribute("aria-current", "page");
-      var after = nav.querySelector('a[href="/plan/"]') || nav.querySelector('a[href="/drives/"]');
-      if (after) after.after(a);
-      else nav.prepend(a);
-    });
+    // The bar by who's looking (boards N3–N5): Free, Individual or a Club
+    // organizer, with Saved; site-nav.js draws it.
+    safe(function () { import("/assets/site-nav.js?v=1b4ee1665d").catch(function () {}); });
   }
 
   // MARK: - Sign in on a phone
@@ -283,8 +276,13 @@
   // allows, and the planner takes a phone on to My Drives; a code by email
   // signs in right here and goes on to My Drives too. The session is the
   // planner's (carve.plan.session), so every page sees it.
-  var SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
-  var SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
+  // A local preview may point at a test backend (carve.dev.backend, as
+  // plan.js and carve-session.js read it); never on carve.run.
+  var DEV_BACKEND = safe(function () {
+    return /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? JSON.parse(localStorage.getItem("carve.dev.backend") || "null") : null;
+  }, null);
+  var SUPABASE_URL = (DEV_BACKEND && DEV_BACKEND.url) || "https://uvaabajzkzupecemzsug.supabase.co";
+  var SUPABASE_KEY = (DEV_BACKEND && DEV_BACKEND.key) || "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
   var SESSION_KEY = "carve.plan.session";
   var OAUTH_STATE_KEY = "carve.plan.oauth-state";
   var APPLE_PATH = "M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701";
@@ -440,7 +438,18 @@
       if (step === "intents") setTimeout(function () { q('[data-step="intents"] h2').focus(); }, 30);
     };
     // Signed in, the home page is theirs (the user, 2026-11-04; was My Drives).
-    var signedIn = function () { location.href = signInThen || "/"; };
+    // Club invitations waiting for this email join first (account_claim,
+    // App Dev's contract 1a), never holding the sign-in up past 3 s.
+    var signedIn = function () {
+      var go = function () { location.href = signInThen || "/"; };
+      if (!session || !session.access_token) return go();
+      var claim = fetch(SUPABASE_URL + "/rest/v1/rpc/account_claim", {
+        method: "POST",
+        headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token, "content-type": "application/json" },
+        body: "{}"
+      }).catch(function () {});
+      Promise.race([claim, new Promise(function (done) { setTimeout(done, 3000); })]).then(go, go);
+    };
     q("[data-close]").addEventListener("click", function () { dialog.close(); });
     dialog.addEventListener("click", function (event) { if (event.target === dialog) dialog.close(); });
     dialog.querySelectorAll("[data-to]").forEach(function (button) {

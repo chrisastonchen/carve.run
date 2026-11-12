@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/p7CC7GY">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/michigan/">More car events in Michigan</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "f9bd5a0d-7d14-401e-8fce-605d3b46e02d", "token": "p7CC7GY", "kind": "show", "name": "Detroit Auto Show 2027", "venue": "Huntington Place", "address": "1 Washington Blvd, Detroit, MI 48226", "locality": "Detroit, MI", "lat": 42.32817, "lon": -83.0498, "timeZone": "America/Detroit", "next": [{"start": "2027-01-16T13:00:00Z", "end": "2027-01-16T22:00:00Z"}, {"start": "2027-01-17T13:00:00Z", "end": "2027-01-17T22:00:00Z"}, {"start": "2027-01-18T13:00:00Z", "end": "2027-01-18T22:00:00Z"}, {"start": "2027-01-19T13:00:00Z", "end": "2027-01-19T22:00:00Z"}, {"start": "2027-01-20T13:00:00Z", "end": "2027-01-20T22:00:00Z"}, {"start": "2027-01-21T13:00:00Z", "end": "2027-01-21T22:00:00Z"}], "repeats": null, "cars": "New-model auto show; manufacturer displays, Modded Detroit and indoor ride-and-drives", "cost": null, "organizer": "Detroit Auto Dealers Association", "sourceUrl": "https://detroitautoshow.com/", "registerUrl": null, "lastConfirmed": "2026-11-11", "timeUnknown": true, "image": null, "logo": {"url": "https://carve.run/events/media/63873253e848139453ae.webp", "page": "https://detroitautoshow.com", "background": "#1C1C1E", "crop": [0.0, 0.0, 1.0, 1.0]}, "circuit": null, "about": {"text": "Public show runs Jan 16–24. The Industry/Media Day (Jan 14) and Charity Preview (Jan 15) are ticketed separately, and Racing Day is Jan 19. Daily hours aren't posted yet.", "source": "carve", "page": null}, "notes": "Public show runs Jan 16–24. The Industry/Media Day (Jan 14) and Charity Preview (Jan 15) are ticketed separately, and Racing Day is Jan 19. Daily hours aren't posted yet.", "membersOnly": false, "series": "eb64c1255c", "summary": "Detroit Auto Dealers Association runs a car show at Huntington Place in Detroit, MI on Saturday, January 16, 2027. Public show runs Jan 16–24. The Industry/Media Day (Jan 14) and Charity Preview (Jan 15) are ticketed separately, and Racing Day is Jan 19. Daily hours aren't posted yet.", "near": null, "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

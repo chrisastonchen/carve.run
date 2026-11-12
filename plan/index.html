@@ -23,7 +23,8 @@
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=47">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/plan/club-steps.css">
 </head>
 <body>
 <svg style="display:none" aria-hidden="true">
@@ -53,9 +54,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" aria-current="page" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
     <a href="/events/" class="wide-only">Events</a>
-    <a href="/plan/" aria-current="page" class="wide-only">Plan a Route</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -74,9 +76,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/" aria-current="page">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
   <a href="/events/">Events</a>
-  <a href="/plan/" aria-current="page">Plan a Route</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +111,303 @@
 
 <div class="app wide-only">
   <div id="map" class="map" role="application" aria-label="Map. Click to add a place."></div>
+  <!-- The group planner's "Along the way" (the approved mock, 11/9): on Route's roads. -->
+  <section class="along" id="along" hidden aria-labelledby="along-h">
+    <h3 id="along-h">Along the way</h3>
+    <div class="along-tabs" id="along-tabs" role="tablist" aria-label="Along the way"></div>
+    <button type="button" class="pill grey small" id="along-go">Look along the route</button>
+    <p class="dim small" id="along-said" role="status"></p>
+    <ol class="along-list" id="along-list"></ol>
+  </section>
   <div class="no-map" id="no-map" hidden>
     <p><strong>The map can't show in this browser.</strong> It needs WebGL, which is switched off here (Safari's Lockdown Mode does this). You can still search, bring a route in, save it and get its QR code.</p>
   </div>
 
+  <!-- The group drive's steps (the approved mock, 11/9): the only way round
+       the drive, no Skip, nothing locked. group.js fills it. -->
+  <nav class="g-rail" id="g-rail" aria-label="Steps" hidden>
+    <span class="g-rail-eyebrow" id="g-rail-eyebrow">New group drive</span>
+    <span class="g-rail-title" id="g-rail-title"></span>
+    <ol class="g-rail-steps" id="g-rail-steps"></ol>
+    <div class="g-meter" id="g-meter"><div class="g-meter-bar"><i id="g-meter-fill"></i></div><span id="g-meter-said"></span></div>
+    <div class="g-rail-links"><button type="button" class="textlink small" id="g-rail-page" hidden>Drive page</button><button type="button" class="textlink small" id="g-rail-drives">Your drives</button></div>
+  </nav>
   <aside class="panel" id="panel" aria-label="Your route">
+    <!-- A club drive's day (club v2's O5, drive-day.js): back to the drive, the day switch. -->
+    <div class="drive-bar" id="drive-bar" hidden>
+      <a class="db-back" id="db-back" href="/club/">‹ <span id="db-name">Your drive</span></a>
+      <span class="db-state">Planning</span>
+      <div class="db-days" id="db-days" role="group" aria-label="Days" hidden></div>
+    </div>
     <!-- Planning -->
     <section class="view" id="plan-view">
       <div class="scroll">
+        <!-- Plan a group drive (/plan/?group; Club-Sprint-Requirements.md §1): group.js's steps over the planner. -->
+        <div class="group" id="group" hidden>
+          <div class="g-head"><h1>Plan a group drive</h1><span class="g-head-links"><button type="button" class="textlink small" id="g-drives-link">Your drives</button><a class="textlink small" href="/plan/">Plan one route instead</a></span></div>
+          <label for="g-name" class="visually-hidden">The drive's name</label>
+          <input id="g-name" class="field" type="text" maxlength="120" autocomplete="off" placeholder="Name the drive, like Julian Pie Run">
+          <nav aria-label="Steps"><ol class="g-steps" id="g-steps"></ol></nav>
+          <button type="button" class="textlink small g-page-link" id="g-page-link" hidden>Open the drive page</button>
+          <div class="g-days" id="g-days" role="tablist" aria-label="Days"></div>
+          <section class="g-sec" id="g-when" aria-labelledby="g-when-h">
+            <h2 id="g-when-h" tabindex="-1">When and how many</h2>
+            <!-- One question at a time (ask.js; the approved mock, 11/9). -->
+            <div class="ask" id="g-when-ask"></div>
+            <div class="g-when-next" id="g-when-next" hidden>
+              <h3>That's the when and how many.</h3>
+              <p class="dim">Next, the route.</p>
+              <button type="button" class="pill green" id="g-when-go">Continue</button>
+            </div>
+            <!-- The meeting place is Route's now; the description moves to Attendees (32512's). -->
+            <h3 class="eyebrow g-when-later">Description</h3>
+            <div class="g-grid">
+              <label class="g-field"><span>Day</span><input type="date" id="g-date" class="field"></label>
+              <label class="g-field"><span>Meet</span><input type="time" id="g-meet" class="field" step="300"></label>
+              <label class="g-field"><span>Leave</span><input type="time" id="g-leave" class="field" step="300"></label>
+            </div>
+            <div class="g-field g-place" id="g-place-row"><label for="g-place">Meeting place</label><input id="g-place" class="field" type="text" autocomplete="off" placeholder="Search for a place, or click the map"></div>
+            <p class="dim small">The meeting place is where the route starts.</p>
+            <!-- What invited people see (the user, 11/8 late): the city, not the place, and the description. -->
+            <label class="g-field g-city"><span>Meet city</span><input type="text" id="g-city" class="field" maxlength="60" autocomplete="off" placeholder="Escondido" aria-describedby="g-city-said"></label>
+            <p class="dim small" id="g-city-said">Invited people see the city and time, not the exact place, until they're going.</p>
+            <!-- Spots (the user, 11/8 late): optional, the plan's cap when blank; past it, a waitlist. -->
+            <div class="g-spots-row">
+              <label class="g-field g-day-spots"><span>Spots</span><input type="number" id="g-day-spots" class="field" min="1" step="1" inputmode="numeric" aria-describedby="g-day-spots-said"></label>
+              <p class="dim small" id="g-day-spots-said"></p>
+            </div>
+            <div class="g-meetfind" id="g-meetfind">
+              <button type="button" class="textlink" id="g-meet-find">Find a meeting place</button>
+              <p class="dim small" id="g-meet-said" role="status"></p>
+              <ol class="g-spots" id="g-spots" aria-label="Meeting places" hidden></ol>
+              <p class="dim small g-credit" id="g-meet-credit" hidden>Sizes and restrooms from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors</p>
+            </div>
+            <!-- Pre-run (the user, 11/8 late; Club only): the crew drives version 1 first. -->
+            <div class="g-pr" id="g-pr" hidden>
+              <div class="g-row"><span class="g-label">Pre-run</span>
+                <div class="seg g-pr-seg" role="radiogroup" aria-label="Pre-run"><button type="button" role="radio" id="g-pr-yes" aria-checked="true">Yes</button><button type="button" role="radio" id="g-pr-no" aria-checked="false">No</button></div></div>
+              <label class="g-field" id="g-pr-date-row"><span>Pre-run date for this day</span><input type="date" id="g-pr-date" class="field"></label>
+              <p class="dim small" id="g-pr-said">Your crew (leads and sweeps, and anyone you add on the drive page) drives version 1 first. The first change you make after it becomes version 2, which Send the route sends.</p>
+            </div>
+            <label class="g-field g-desc"><span>Description</span><textarea id="g-desc" class="field" maxlength="200" rows="2" placeholder="Santa Cruz Mountains to Carmel, about 180 miles, lunch stop"></textarea></label>
+            <p class="dim small">It's on the invitation, so people can decide before the route is ready.</p>
+            <p class="g-problem" id="g-when-problem" role="alert" hidden></p>
+            <p class="g-sum" id="g-when-sum" aria-live="polite"></p>
+            <button type="button" class="textlink g-remove" id="g-day-remove" hidden>Remove this day</button>
+          </section>
+          <section class="g-sec" id="g-route" aria-labelledby="g-route-h" hidden>
+            <h2 id="g-route-h" tabindex="-1">Route</h2>
+            <!-- A day at a time, one question at a time (the approved mock, 11/9). -->
+            <p class="g-route-day" id="g-route-day"></p>
+            <div class="ask" id="g-route-ask"></div>
+            <div class="g-roads" id="g-roads" hidden>
+              <h3>Roads and stops</h3>
+              <p class="dim">Drag to reorder. Choose Waypoint (drive through) or Stop (pull over) for each. Tap the clock to set how long you stay.</p>
+            </div>
+            <p class="dim g-route-old">The meeting place is the start. Add the destination, such as lunch, a winery or a hotel, then build the road between on the map, or <button type="button" class="textlink" id="g-import">import a route</button>. <button type="button" class="textlink" id="g-plan-map">Back to the map</button></p>
+            <div class="g-legs" id="g-legs"></div>
+            <!-- Version 2, changed since the pre-run (Club): what changed, and version 1 on the map. -->
+            <div class="g-ver" id="g-ver" hidden>
+              <p><b>Version 2</b>: changed since the pre-run. Send the route sends this one.</p>
+              <label class="g-ver-show"><input type="checkbox" id="g-ver-show"> Show version 1 on the map</label>
+              <p class="g-label">What changed since the pre-run</p>
+              <ul class="g-ver-list" id="g-ver-list"></ul>
+            </div>
+          </section>
+          <section class="g-sec" id="g-stops" aria-labelledby="g-stops-h" hidden>
+            <h2 id="g-stops-h" tabindex="-1">Stops</h2>
+            <p class="dim">Click the map, then Add a stop. Give each stop a name and how long you'll stay. Map notes are labelled pins for things to know on the way.</p>
+            <h3 class="eyebrow">Map notes</h3>
+            <ul class="g-notes" id="g-notes"></ul>
+            <p class="dim small" id="g-notes-empty">Click the map, then Add a map note.</p>
+          </section>
+          <!-- The Pre-run step (Chris, 11/9): prerun-step.js fills it; the review moved here from the drive page. -->
+          <section class="g-sec" id="g-prerun" aria-labelledby="g-prerun-h" hidden>
+            <h2 id="g-prerun-h" tabindex="-1">Pre-run</h2>
+            <div class="pr-review" id="pr-review">
+              <h4 class="dp-sub" id="dp-times-h" hidden>Planned and pre-run times</h4>
+              <div class="g-table-wrap dp-times" id="dp-times"></div>
+              <p class="dim small" id="dp-times-none" hidden>No pre-run drive yet. Times show here after the crew drives the route with Carve.</p>
+              <button type="button" class="pill grey" id="dp-apply" hidden></button>
+            </div>
+          </section>
+          <section class="g-sec" id="g-attendees" aria-labelledby="g-attendees-h" hidden>
+            <h2 id="g-attendees-h" tabindex="-1">Attendees</h2>
+            <p class="g-counts" id="g-counts" aria-live="polite"></p>
+            <!-- One question per drive (the user, 11/8 late): registered or invited, for everyone added. -->
+            <div class="g-reg-ask" id="g-reg-ask" role="group" aria-labelledby="g-reg-q" hidden>
+              <p class="g-reg-q" id="g-reg-q">Do you already have people registered for this drive?</p>
+              <p class="dim small">If yes, everyone you add counts as going and isn't asked Going?. If no, everyone you add gets an invitation with Going?.</p>
+              <div class="g-row"><button type="button" class="pill green" id="g-reg-yes">Yes, they're registered</button><button type="button" class="pill green" id="g-reg-no">No, invite them</button></div>
+            </div>
+            <p class="dim small g-reg-line" id="g-reg-line" hidden><span id="g-reg-said"></span> <button type="button" class="textlink" id="g-reg-change">Change</button></p>
+            <!-- A registered drive (the user, 11/8 late): add registered people, or invite more with Going?. -->
+            <div class="seg g-mode" id="g-add-mode" role="radiogroup" aria-label="Who you're adding" hidden>
+              <button type="button" role="radio" id="g-mode-reg" aria-checked="true">Add registered people</button>
+              <button type="button" role="radio" id="g-mode-inv" aria-checked="false">Invite more people</button>
+            </div>
+            <div class="seg" role="tablist" aria-label="Add people" id="g-add-tabs">
+              <button type="button" role="tab" id="g-tab-invite" aria-selected="true" aria-controls="g-invite">Invite by email</button>
+              <button type="button" role="tab" id="g-tab-import" aria-selected="false" aria-controls="g-import-box">Import a list</button>
+            </div>
+            <div id="g-invite" role="tabpanel" aria-labelledby="g-tab-invite">
+              <label for="g-invite-text" class="g-label">Email addresses, one per line or separated by commas. Names are optional.</label>
+              <textarea id="g-invite-text" class="field g-area" rows="4" placeholder="maya@example.com&#10;Ray Kim &lt;ray@example.com&gt;"></textarea>
+              <div class="g-row"><button type="button" class="pill green" id="g-invite-add">Add</button><span class="dim small" id="g-invite-said" aria-live="polite"></span></div>
+              <p class="dim small g-add-hint"></p>
+            </div>
+            <div id="g-import-box" role="tabpanel" aria-labelledby="g-tab-import" hidden>
+              <p class="dim small">A CSV from MotorsportReg or any sign-up sheet, or paste the rows. Phone numbers aren't kept.</p>
+              <p class="dim small g-add-hint"></p>
+              <div class="g-row"><label class="pill grey g-file"><input type="file" id="g-file" accept=".csv,.tsv,.txt,text/csv,text/plain">Choose a CSV file</label><span class="dim small">or</span></div>
+              <label for="g-import-text" class="visually-hidden">Paste rows</label>
+              <textarea id="g-import-text" class="field g-area" rows="3" placeholder="Paste rows from a sheet, with the header row"></textarea>
+              <div class="g-preview" id="g-preview" hidden>
+                <p class="g-label">Match the columns</p>
+                <div class="g-table-wrap"><table class="g-table" id="g-preview-table"></table></div>
+                <p class="dim small" id="g-preview-said" aria-live="polite"></p>
+                <button type="button" class="pill green" id="g-import-add">Add as Registered</button>
+              </div>
+              <p class="dim small" id="g-import-said" aria-live="polite"></p>
+            </div>
+            <div class="g-row g-list-head"><h3 class="eyebrow" id="g-list-h">On this drive</h3>
+              <label class="select small"><select id="g-filter" aria-label="Show"><option value="">Everyone</option><option value="registered">Registered</option><option value="going">Going</option><option value="maybe">Maybe</option><option value="invited">Invited</option><option value="no">Can't make it</option></select><svg aria-hidden="true"><use href="#i-chev"/></svg></label></div>
+            <!-- Group (the user, 11/8 late): one group, an optional lead and sweep; numbered groups are Club's. -->
+            <div class="g-ls" id="g-ls" hidden>
+              <label class="g-field">Lead <span class="dim">(optional)</span><span class="select small"><select id="g-lead"></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span></label>
+              <label class="g-field">Sweep <span class="dim">(optional)</span><span class="select small"><select id="g-sweep"></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span></label>
+              <p class="dim small">On Group, everyone drives as one group and leaves at the day's time. Numbered groups come with Club.</p>
+            </div>
+            <ul class="g-people" id="g-people" aria-labelledby="g-list-h"></ul>
+            <p class="dim small" id="g-people-empty">Nobody yet. Invite people or import a list.</p>
+            <!-- The day's waitlist (the user, 11/8 late): in order; drag or the arrows, Promote, Promote next, Remove. -->
+            <section class="g-wait" id="g-wait" aria-labelledby="g-wait-h" hidden>
+              <div class="g-row g-list-head"><h3 class="eyebrow" id="g-wait-h">Waitlist</h3><span class="dim small" id="g-wait-count"></span></div>
+              <div class="g-wait-open" id="g-wait-open" hidden><b id="g-wait-open-text"></b><button type="button" class="pill green small" id="g-wait-next">Promote next</button></div>
+              <ol class="g-wait-list" id="g-wait-list" aria-labelledby="g-wait-h"></ol>
+              <p class="dim small" id="g-wait-said" role="status"></p>
+            </section>
+          </section>
+          <section class="g-sec" id="g-groups" aria-labelledby="g-groups-h" hidden>
+            <h2 id="g-groups-h" tabindex="-1">Groups</h2>
+            <p class="dim small">Lower numbers leave first and drive more briskly. Auto-arrange places first-timers in their group, keeps pairs together, then fills by driving style. Leads, sweeps and pinned people stay put.</p>
+            <div class="gb-settings">
+              <label>Groups <input type="number" id="gb-count" class="field gb-num" min="1" max="30"></label>
+              <label>Cars per group <input type="number" id="gb-target" class="field gb-num" min="1" max="100"></label>
+              <label>Minutes apart <input type="number" id="gb-gap" class="field gb-num" min="0" max="60"></label>
+              <label>First-timers go in <span class="select small"><select id="gb-first"></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span></label>
+              <button type="button" class="pill green" id="gb-arrange">Auto-arrange</button>
+              <button type="button" class="pill grey" id="gb-csv">Download CSV</button>
+              <button type="button" class="pill grey" id="gb-print">Print check-in sheet</button>
+            </div>
+            <p class="gb-late" id="gb-late" role="status" hidden></p>
+            <div class="gb-move-row" id="gb-move-row" hidden><span class="dim small" id="gb-sel"></span><span class="select small"><select id="gb-move" aria-label="Move the selected people"></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span></div>
+            <p class="visually-hidden" id="gb-said" aria-live="polite"></p>
+            <div class="gb-cols" id="gb-cols"></div>
+          </section>
+          <section class="g-sec" id="g-send" aria-labelledby="g-send-h" hidden>
+            <h2 id="g-send-h" tabindex="-1">Send the route</h2>
+            <p class="dim" id="sd-intro">Send it to yourself first, then the leads and sweeps, then everyone going.</p>
+            <div class="sd-box" id="sd-sign-in">
+              <p>Sign in to send. Emails go out from your club, and replies come to you.</p>
+              <button type="button" class="pill green" id="sd-sign-in-btn">Sign in</button>
+            </div>
+            <div class="sd-box" id="sd-register" hidden>
+              <p class="g-label">Who is this drive from?</p>
+              <div class="seg3 sd-reg-kinds" id="sd-reg-kinds" role="radiogroup" aria-label="Who it's from">
+                <button type="button" role="radio" aria-checked="true" data-kind="club">A club</button>
+                <button type="button" role="radio" aria-checked="false" data-kind="group">A group</button>
+                <button type="button" role="radio" aria-checked="false" data-kind="solo">Just me</button>
+              </div>
+              <label class="g-field" id="sd-name-row">Name<input type="text" class="field" id="sd-name" maxlength="80" placeholder="Golden Gate Region PCA" autocomplete="organization"></label>
+              <label class="g-field">Replies go to<input type="email" class="field" id="sd-contact" maxlength="120" autocomplete="email"></label>
+              <div class="g-row"><button type="button" class="pill green" id="sd-reg-go">Register</button><span class="dim small" id="sd-reg-said" aria-live="polite"></span></div>
+              <p class="dim small">We approve new clubs by hand, usually the same day. Until then you can send to yourself.</p>
+            </div>
+            <label class="g-field" id="sd-from" hidden>From<span class="select small"><select id="sd-org"></select><svg aria-hidden="true"><use href="#i-chev"/></svg></span></label>
+            <div class="sd-ready" id="sd-ready" hidden>
+              <p class="dim small" id="sd-org-line"></p>
+              <div id="sd-kinds" hidden>
+                <div class="seg3" role="radiogroup" aria-label="What to send">
+                  <button type="button" role="radio" id="sd-kind-update" aria-checked="true">What changed</button>
+                  <button type="button" role="radio" id="sd-kind-invite" aria-checked="false">New invitations</button>
+                </div>
+                <p class="dim small" id="sd-kind-said"></p>
+              </div>
+              <!-- Route mode (the approved mock, 11/9): each audience a card, its count and words. -->
+              <div class="sd-aud" id="sd-me-box">
+                <span class="sd-aud-words"><b class="sd-aud-t" id="sd-me-t" hidden></b><span class="dim small sd-aud-s" id="sd-me-s" hidden></span></span>
+                <button type="button" class="pill grey" id="sd-me">Send to myself</button>
+                <p class="dim small">A test: exactly what an attendee gets, filled in with one of them.</p>
+              </div>
+              <div class="sd-aud" id="sd-leads-box">
+                <span class="sd-aud-words"><b class="sd-aud-t" id="sd-leads-t" hidden></b><span class="dim small sd-aud-s" id="sd-leads-s" hidden></span></span>
+                <button type="button" class="pill grey" id="sd-leads">Send to leads and sweeps</button>
+                <p class="dim small sd-why" id="sd-leads-why"></p>
+              </div>
+              <div class="sd-aud" id="sd-everyone-box">
+                <span class="sd-aud-words"><b class="sd-aud-t" id="sd-everyone-t" hidden></b><span class="dim small sd-aud-s" id="sd-everyone-s" hidden></span></span>
+                <div class="g-row"><button type="button" class="pill green" id="sd-everyone">Send to everyone</button><button type="button" class="pill grey" id="sd-cancel" hidden>Cancel</button></div>
+                <p class="dim small sd-why" id="sd-everyone-why"></p>
+                <a class="pill grey sd-upgrade" id="sd-upgrade" href="/pricing/" hidden>See plans</a>
+              </div>
+              <p class="sd-warn" id="sd-ungrouped" hidden></p>
+              <p class="dim small" id="sd-test-said" hidden></p>
+              <p class="sd-said" id="sd-said" role="status" aria-live="polite"></p>
+              <!-- The drivers' meeting: the route link and its QR (link-card.js, 32512's). -->
+              <div class="sd-link" id="sd-link" hidden>
+                <h3 class="eyebrow">For the drivers' meeting</h3>
+              </div>
+              <h3 class="eyebrow" id="sd-history-h" hidden>Sent</h3>
+              <ul class="sd-history" id="sd-history" aria-labelledby="sd-history-h"></ul>
+            </div>
+            <!-- The email itself, in its own frame (the mock, 11/9): drive-send's preview, nothing sent. -->
+            <div class="sd-preview" id="sd-preview" hidden>
+              <div class="sd-preview-head">
+                <b>Email preview</b><span class="chip">Not sent</span>
+                <span class="sd-preview-imgs">Images <span class="seg sd-imgs" role="radiogroup" aria-label="Images"><button type="button" role="radio" id="sd-imgs-on" aria-checked="true">On</button><button type="button" role="radio" id="sd-imgs-off" aria-checked="false">Off</button></span></span>
+              </div>
+              <p class="dim small" id="sd-preview-said">Some inboxes block images. Check both.</p>
+              <p class="sd-preview-subject" id="sd-preview-subject"></p>
+              <iframe class="sd-preview-frame" id="sd-preview-frame" title="Email preview" sandbox=""></iframe>
+            </div>
+          </section>
+          <section class="g-sec" id="g-drives" aria-labelledby="g-drives-h" hidden>
+            <h2 id="g-drives-h" tabindex="-1">Your drives</h2>
+            <ul class="dl-list" id="dl-local"></ul>
+            <div id="dl-lists"></div>
+            <button type="button" class="pill green dl-new" id="dl-new">Plan a new drive</button>
+            <p class="dim small" id="dl-said" role="status" aria-live="polite"></p>
+          </section>
+          <section class="g-sec" id="g-page" aria-labelledby="g-page-h" hidden>
+            <h2 id="g-page-h" tabindex="-1">Drive page</h2>
+            <p class="dim" id="dp-empty"></p>
+            <div class="dp-body" id="dp-body" hidden>
+              <p class="dp-top"><span class="chip" id="dp-status"></span> <a class="textlink small" id="dp-link" target="_blank" rel="noopener"></a> <button type="button" class="textlink small" id="dp-copy">Copy link</button></p>
+              <ul class="dp-days" id="dp-days" aria-label="Days"></ul>
+              <div class="g-row"><button type="button" class="pill grey" id="dp-people">Attendees</button><button type="button" class="pill grey" id="dp-groups">Groups</button><button type="button" class="pill grey" id="dp-send">Send an update</button></div>
+              <h3 class="eyebrow" id="dp-pr-h">Pre-run</h3>
+              <div id="dp-pr-off">
+                <p class="dim small">Leads and sweeps drive the route ahead of time with Carve. Their notes and drive times show up here.</p>
+                <button type="button" class="pill grey" id="dp-pr-plan">Plan a pre-run</button>
+              </div>
+              <div class="dp-pr" id="dp-pr-on" hidden>
+                <label class="g-field">Date<input type="date" class="field" id="dp-pr-date"></label>
+                <p class="small"><b>Going:</b> <span id="dp-pr-who"></span> <button type="button" class="textlink small" id="dp-pr-change" aria-expanded="false" aria-controls="dp-pr-pick">Change</button></p>
+                <div class="dp-pick" id="dp-pr-pick" hidden>
+                  <ul class="dp-pick-list" id="dp-pr-list" aria-label="Who's on the pre-run"></ul>
+                  <div class="g-row"><button type="button" class="pill green" id="dp-pr-save">Save</button><button type="button" class="textlink small" id="dp-pr-cancel">Cancel</button></div>
+                </div>
+                <div class="g-row"><button type="button" class="pill green" id="dp-pr-send">Send leads and sweeps the pre-run</button><button type="button" class="textlink small" id="dp-pr-remove">No pre-run</button></div>
+                <p class="dim small sd-why" id="dp-pr-send-why"></p>
+              </div>
+              <p class="sd-said" id="dp-said" role="status" aria-live="polite"></p>
+              <h3 class="eyebrow" id="dp-history-h" hidden>Sent</h3>
+              <ul class="sd-history" id="dp-history" aria-labelledby="dp-history-h"></ul>
+              <p class="dim small" id="dp-history-none">Nothing sent yet.</p>
+            </div>
+          </section>
+        </div>
         <div class="intro" id="intro">
           <h1>Plan a drive</h1>
           <!-- Two ways to start: plan it here, or bring one in (the user, 2026-10-29). -->
@@ -124,6 +416,12 @@
             <button type="button" role="tab" id="tab-import" aria-selected="false" aria-controls="bring">Import</button>
           </div>
           <p class="dim mode-note" id="mode-note" aria-live="polite">Plan a route by searching or clicking on the map.</p>
+          <p class="pd-group"><a class="textlink small" id="pd-group-link" href="/plan/?group">Plan a group drive ›</a></p>
+          <section class="pd-drafts" id="pd-drafts" aria-labelledby="pd-h" hidden>
+            <h2 class="eyebrow" id="pd-h">Your drafts</h2>
+            <ul class="dl-list" id="pd-list"></ul>
+            <p class="dim small" id="pd-said" role="status" aria-live="polite"></p>
+          </section>
         </div>
         <div class="notice" id="import-notice" hidden>
           <svg class="tick" aria-hidden="true"><use href="#i-check"/></svg>
@@ -177,6 +475,20 @@
         <label for="note" class="visually-hidden">Note for anyone with the link</label>
         <textarea id="note" class="field note" maxlength="280" rows="3" placeholder="Where to meet, what to bring. Anyone with the link sees it." hidden></textarea>
         <button type="button" class="pill green big" id="save" disabled>Save and get the link</button>
+        <!-- Someone else changed the same part (QA S2, 11/9): theirs or mine. -->
+        <div class="g-conflict" id="g-conflict" role="alert" hidden>
+          <p class="small" id="g-conflict-said"></p>
+          <div class="g-conflict-do">
+            <button type="button" class="pill grey" id="g-conflict-theirs">Keep theirs</button>
+            <button type="button" class="pill grey" id="g-conflict-mine">Use mine</button>
+          </div>
+        </div>
+        <div class="g-nav" id="g-nav">
+          <button type="button" class="pill grey" id="g-back">Back</button>
+          <span class="dim small" id="g-saved" aria-live="polite"></span>
+          <button type="button" class="textlink small" id="g-later" hidden>Finish the route later</button>
+          <button type="button" class="pill green" id="g-next">Next</button>
+        </div>
       </div>
       <!-- Signed out, with nothing planned yet: a way in (the user, 2026-10-29). -->
       <div class="foot join" id="join" hidden>
@@ -364,7 +676,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=81"></script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script type="module" src="/plan/plan.js?v=116"></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

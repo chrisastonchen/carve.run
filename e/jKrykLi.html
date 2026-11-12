@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/jKrykLi">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/south-florida/">More car events in South Florida</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "909b611c-8929-5c43-acb6-472fa327cbe4", "token": "jKrykLi", "kind": "track", "name": "Homestead Driving Club Track Day", "venue": "Homestead Miami Speedway", "address": null, "locality": "Homestead, FL", "lat": 25.45491, "lon": -80.41119, "timeZone": "America/New_York", "next": [{"start": "2027-02-03T13:00:00Z", "end": "2027-02-03T22:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "Homestead Driving Club", "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-878655", "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-878655", "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg", "credit": "Homestead Driving Club via MotorsportReg", "page": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-878655"}, "logo": null, "circuit": null, "about": {"text": "Track Day at Homestead Miami Speedway\n\nHomestead Drivers Club was founded to open up a new world of experiences to car, and speed enthusiasts, with various activities and special events throughout the year.\n\nHomestead Driving Club welcomes all car brands, drivers, and even race teams.", "source": "organizer", "page": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-878655"}, "notes": null, "membersOnly": false, "series": "6df0a0ed03", "summary": "Homestead Driving Club runs a track day at Homestead Miami Speedway in Homestead, FL on Wednesday, February 3, 2027.", "near": "About 45 miles south of Miami, as the crow flies.", "roads": [{"n": "Card Sound Road", "s": "card-sound-road", "m": 23.2, "d": 4}, {"n": "Everglades Main Park Road", "s": "everglades-main-park-road", "m": 38.1, "d": 10}, {"n": "Old Cutler Road", "s": "old-cutler-road", "m": 8.8, "d": 11}], "otherDates": [{"token": "Lax3pi4", "start": "2026-12-03T13:00:00Z"}, {"token": "jKFgJPB", "start": "2026-12-23T13:00:00Z"}, {"token": "baWwTTu", "start": "2027-01-07T13:00:00Z"}, {"token": "GZikMXJ", "start": "2027-01-21T13:00:00Z"}, {"token": "2C12oTF", "start": "2027-01-22T13:00:00Z"}]}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

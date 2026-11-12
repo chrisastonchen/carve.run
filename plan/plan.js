@@ -18,23 +18,41 @@ import {
   MAX_WAYPOINTS, MAX_STOPS, MOST_NAME_CHARACTERS, MOST_LABEL_CHARACTERS, MOST_NOTE_CHARACTERS,
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
-} from "./route-wire.js?v=4";
+} from "./route-wire.js?v=7";
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=8";
 import { addPins } from "/assets/events.js?v=bb6f2616de";
 import { closures, closureTitle, closureWords } from "./closures.js?v=3";
-import { initSuggest } from "./suggest.js?v=7";
+import { initGroup } from "./group.js?v=14";
+import { initDraftsEntry } from "./drives-list.js?v=2";
+import { initDriveDay } from "./drive-day.js?v=6";
+import { CLUB_V2 } from "./club-flags.js?v=4";
+import { ALONG_TABS, alongCard } from "./stops.js?v=2";
+import { initSuggest } from "./suggest.js?v=8";
 import { initPills } from "./place-pills.js?v=1";
 import { initLayers } from "./layers.js?v=1";
+import { initDraftsSync } from "./drafts-sync.js?v=2";
 
-const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
-const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
+// A local preview may point at a test backend (a Supabase branch):
+// localStorage "carve.dev.backend" = {"url": "https://<ref>.supabase.co",
+// "key": "<publishable key>"}. Only on localhost, never on carve.run.
+const DEV_BACKEND = (() => {
+  try {
+    return /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? JSON.parse(localStorage.getItem("carve.dev.backend") || "null") : null;
+  } catch {
+    return null;
+  }
+})();
+const SUPABASE_URL = DEV_BACKEND?.url || "https://uvaabajzkzupecemzsug.supabase.co";
+const SUPABASE_KEY = DEV_BACKEND?.key || "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
 // Cloudflare Turnstile's public site key: guests prove they're a browser
 // once an hour before the planner spends anything on them. Empty, no check.
 const TURNSTILE_SITE_KEY = "0x4AAAAAAFqn1SkCkqJfDpRa";
 /// On a local preview (scripts/plan-tests/dev-server.mjs) the functions are
 /// served next to the page, so it can be tried before they're deployed.
+/// With a test backend set, they're that backend's: the planner too, not a
+/// page server that has none (the user's UX pass, 11/9: every search said "no").
 const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-const FUNCTIONS = LOCAL ? `${location.origin}/functions/v1` : `${SUPABASE_URL}/functions/v1`;
+const FUNCTIONS = LOCAL && !DEV_BACKEND ? `${location.origin}/functions/v1` : `${SUPABASE_URL}/functions/v1`;
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
 const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -88,12 +106,25 @@ const store = {
     }
   },
 };
-const DRAFT_KEY = "carve.plan.draft";
+/// Plan a group drive (/plan/?group): the planner with group.js's steps. Its
+/// route is kept apart from the planner's own draft.
+const GROUP = new URLSearchParams(location.search).has("group");
+/// A club drive's day (club v2's O5, /plan/?drive=<id>&day=<n>; drive-day.js):
+/// its own draft per day, Done in place of Save and get the link.
+const DRIVE = (() => {
+  const q = new URLSearchParams(location.search);
+  const id = q.get("drive");
+  return !GROUP && id && /^[0-9a-f-]{36}$/i.test(id) ? { id, day: Math.max(1, parseInt(q.get("day"), 10) || 1) } : null;
+})();
+const DRAFT_KEY = GROUP ? "carve.group.plan" : DRIVE ? `carve.drive.${DRIVE.id}.${DRIVE.day}` : "carve.plan.draft";
 const SESSION_KEY = "carve.plan.session";
 const PENDING_SAVE_KEY = "carve.plan.pending-save";
 const PENDING_EDIT_KEY = "carve.plan.pending-edit";
 const OAUTH_STATE_KEY = "carve.plan.oauth-state";
 const VIEW_KEY = "carve.plan.view";
+/// Where a drive's day opens with nothing nearer: the US West, where the
+/// clubs are so far.
+const US_WEST = { center: [-119.5, 37.5], zoom: 5 };
 /// The guest's hour-long pass, kept so a reload doesn't run the bot check
 /// again (the user, 2026-10-29: Safari showed it on every refresh).
 const PASS_KEY = "carve.plan.pass";
@@ -254,7 +285,29 @@ function rowsAfterTyping() {
 let draftTimer = 0;
 function saveDraft() {
   clearTimeout(draftTimer);
-  draftTimer = setTimeout(() => store.set(DRAFT_KEY, { plan, saved }), 250);
+  draftTimer = setTimeout(() => store.set(DRAFT_KEY, { plan, saved, draftId }), 250);
+  routeDrafts?.changed();
+}
+
+// ── Drafts on Carve (0089, board N6; drafts-sync.js): signed in, the plan
+// planner's route is kept as a draft until it's saved ──
+let draftId = null;
+let routeDrafts = null;
+function startRouteDrafts() {
+  routeDrafts = initDraftsSync({
+    rest, el, toast,
+    plan: () => plan,
+    saved: () => saved,
+    signedIn: () => !!session,
+    // A road from its guide, as it came (QA, 11/11): Save takes it back to
+    // the guide, so it's a draft only once it's changed.
+    untouched: () => !!plan.fromRoad && plan.fromRoad.shape === roadShape(),
+    id: () => draftId,
+    setId: (id) => {
+      draftId = id;
+      store.set(DRAFT_KEY, { plan, saved, draftId });
+    },
+  });
 }
 
 // ── network ──────────────────────────────────────────────────────────
@@ -291,7 +344,7 @@ async function planner(action, body = {}, retried = false) {
     if (await accessToken({ force: true })) return planner(action, body, true);
   }
   if (data.signIn && !data.upgrade) openAccount("choose", { saving: false });
-  // `upgrade`: on Solo (the planner's smart actions, gate.ts).
+  // `upgrade`: on Individual (the planner's smart actions, gate.ts).
   throw Object.assign(new Failure(data.error || "Something went wrong. Try again."), { upgrade: !!data.upgrade });
 }
 
@@ -399,8 +452,21 @@ async function rest(path, { method = "GET", body, headers = {} } = {}, retried =
   return data;
 }
 
+/// The club calls' refusals (App Dev's contract): the short code is the
+/// JSON's message, whatever the HTTP status (not_found comes as 500).
+const CLUB_REFUSALS = {
+  sign_in: "Please sign in again.",
+  not_organizer: "Only the drive's organizers can do that.",
+  not_admin: "Only the club's admins can do that.",
+  not_found: "That wasn't found. It may have been removed.",
+  bad_input: "Something in that didn't work. Check it and try again.",
+  not_lead: "Only the drive's leads, sweeps and organizers can do that.",
+  member_cap: "That's more members than the plan has room for.",
+};
+
 function friendlyRestError(status, data) {
   const code = data?.code;
+  if (CLUB_REFUSALS[data?.message]) return CLUB_REFUSALS[data.message];
   if (code === "54000") return "Your account is at its limit for saved routes. Delete a few in the app and try again.";
   if (status === 401 || status === 403) return "Please sign in again.";
   return data?.msg || data?.message || data?.error_description || "Couldn't save. Try again.";
@@ -556,13 +622,15 @@ function setUpMap() {
   }
   // Where this browser left the map, or the whole country until the
   // visitor's town comes back.
-  const view = store.get(VIEW_KEY);
+  // A drive's day never opens on where this browser last was (Chris saw
+  // Prince Rupert, 11/10): startDriveDay places it (drive-day.js nearOf).
+  const view = DRIVE ? null : store.get(VIEW_KEY);
   const remembered = Array.isArray(view?.center) && view.center.length === 2 && view.center.every(Number.isFinite) && Number.isFinite(view.zoom);
   map = new maplibregl.Map({
     container: "map",
     style: MAP_STYLE,
-    center: remembered ? view.center : [-98.5, 39.5],
-    zoom: remembered ? view.zoom : 3.6,
+    center: remembered ? view.center : DRIVE ? US_WEST.center : [-98.5, 39.5],
+    zoom: remembered ? view.zoom : DRIVE ? US_WEST.zoom : 3.6,
     attributionControl: { compact: false },
     dragRotate: false,
     pitchWithRotate: false,
@@ -576,9 +644,13 @@ function setUpMap() {
     trackUserLocation: false,
   }), "top-right");
   map.addControl(new WholeRouteControl(), "top-right");
-  if (!remembered && !plan.start && !plan.end) startNearVisitor();
+  if (!remembered && !plan.start && !plan.end && !DRIVE) startNearVisitor();
   map.on("load", () => {
     const firstLabel = map.getStyle().layers.find((layer) => layer.type === "symbol")?.id;
+    // Version 1 of a route after its pre-run (group.js, Club): grey and
+    // dashed, under the route, when the organizer asks to see it.
+    map.addSource("ghost", { type: "geojson", data: emptyLine() });
+    map.addLayer({ id: "ghost-line", type: "line", source: "ghost", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#8B9098", "line-width": 5, "line-dasharray": ["literal", [1.2, 1.2]] } }, firstLabel);
     map.addSource("route", { type: "geojson", data: emptyLine() });
     map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#ffffff", "line-width": 11 } }, firstLabel);
     map.addLayer({ id: "route-line", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#2E92FF", "line-width": 6 } }, firstLabel);
@@ -602,6 +674,7 @@ function setUpMap() {
     pills?.shown(!saved);
     // The Layers tile (layers.js): satellite under everything Carve draws.
     layers = initLayers({ map: () => map, below: () => "good-roads-glow", toast, visible: () => !saved });
+    for (const hook of mapReadyHooks) hook();
     addPins(map, { newTab: true });
     syncRoadsKey();
     drawRoute();
@@ -734,6 +807,214 @@ function wireOptions() {
   addEventListener("resize", () => closeOptions());
 }
 
+// ── Your drafts: group drives not yet sent, on the planner's entry ──
+let drafts = null;
+function startDrafts() {
+  drafts = initDraftsEntry({
+    $, el, store,
+    api: {
+      rpc,
+      account: () => (session ? { id: session.user.id, email: session.user.email || "" } : null),
+      planFromPayload: (payload) => planFromPayload(payload, "your drive"),
+    },
+  });
+  drafts.render();
+}
+
+// ── group mode: the planner as group.js's Route and Stops steps ──────
+
+function startGroup() {
+  $("panel").classList.add("group-mode");
+  $("group").hidden = false;
+  document.title = "Plan a Group Drive | Carve";
+  group = initGroup({
+    $, el, store,
+    plan: () => plan,
+    render,
+    map: () => map,
+    mapReady: () => mapReady,
+    onPlan: (hook) => planHooks.push(hook),
+    onMapReady: (hook) => (mapReady ? hook() : mapReadyHooks.push(hook)),
+    attachSearch,
+    choosePlace: (role, place) => choosePlace(role, undefined, place),
+    // The meeting place finder (item 9): the planner's `meet`, and its pins.
+    findMeet: (at, day) => planner("meet", { at, ...(day ? { day } : {}) }),
+    showGhost,
+    mapCentre: () => (mapReady ? { lat: map.getCenter().lat, lon: map.getCenter().lng } : null),
+    spotPins,
+    // A day's legs are routes of their own: the planner shows one at a time.
+    snapshot: () => JSON.parse(JSON.stringify(plan)),
+    // The group drive's layout changed (the map shows only on Route).
+    resizeMap: () => requestAnimationFrame(() => map?.resize()),
+    toast,
+    // Route's questions (the mock, 11/9): one way or round trip, the
+    // roads Carve picks, and bringing a route in.
+    setTrip: (trip) => setTrip(trip),
+    setStyle: (style) => setStyle(style),
+    startImport: () => setStartMode("import"),
+    // Route's roads came or went: the "Along the way" card follows.
+    renderAlong: () => renderAlongCard(),
+    loadPlan: (next) => {
+      settle();
+      plan = { ...blankPlan(), ...(next ? JSON.parse(JSON.stringify(next)) : {}) };
+      saved = false;
+      history.back.length = 0;
+      history.forward.length = 0;
+      fitOnRoute = true;
+      saveDraft();
+      render();
+      if (routable() && !plan.path) scheduleRoute();
+      else if (plan.start && fitRoute()) fitOnRoute = !plan.path;
+    },
+    // The day's leave time is the route's: the forecast, the closures' month.
+    setLeave: (ms) => {
+      if (plan.leaveAt === ms) return;
+      plan.leaveAt = ms;
+      saveDraft();
+      render();
+    },
+    // The Send step's (send.js): the page's calls, as the organizer.
+    rpc,
+    callFunction,
+    account: () => (session ? { id: session.user.id, email: session.user.email || "", name: profile?.username || "" } : null),
+    signIn: () => openAccount("choose", { saving: false, title: "Sign in to send" }),
+    saveRoute: saveGroupRoute,
+    planFromPayload: (payload) => planFromPayload(payload, "your drive"),
+    adopt: (fields) => {
+      Object.assign(plan, fields);
+      saveDraft();
+    },
+  });
+  $("g-import").addEventListener("click", () => setStartMode("import"));
+  $("g-plan-map").addEventListener("click", () => setStartMode("plan"));
+}
+
+// ── a club drive's day (club v2's O5): the bar, its route, Done ──────
+
+let driveDay = null;
+let driveSaving = false;
+// The day's route as it opened (its payload, less what saving stamps or the
+// planner fills in by itself): Done saves only when it's different. Null:
+// changes kept from before, so there's something to save.
+let driveBaseline = null;
+const driveKey = () => {
+  if (!plan.path) return "";
+  const { updatedAt, createdAt, startName, endName, elevationProfile, blurb, ...rest } = routePayload(plan, 0);
+  return JSON.stringify({ ...rest, name: plan.name || "" });
+};
+
+async function startDriveDay() {
+  $("panel").classList.add("drive-mode");
+  // No Name field: the drive is named already (Chris, 11/10).
+  $("route-name").hidden = true;
+  document.querySelector('label[for="route-name"]').hidden = true;
+  if (!session) return openAccount("choose", { saving: false, title: "Sign in to plan your drive" });
+  const day = initDriveDay({
+    ids: DRIVE, $, el, rpc,
+    userId: () => session?.user?.id || null,
+    planFromPayload: (payload) => planFromPayload(payload, "your drive"),
+    hasDraft: () => !!store.get(DRAFT_KEY)?.plan,
+    loadPlan: (next) => {
+      settle();
+      // The day's own saved route: not an import to tell them about.
+      plan = { ...blankPlan(), ...JSON.parse(JSON.stringify(next)), imported: null };
+      // A start or end with no name (a saved route keeps none) gets the
+      // place's: the start's is the drive link's "meet at" (startName).
+      for (const spot of [plan.start, plan.end]) if (spot) spot.id ||= newUUID(() => crypto.randomUUID());
+      saved = false;
+      history.back.length = 0;
+      history.forward.length = 0;
+      fitOnRoute = true;
+      render();
+      if (routable() && !plan.path) scheduleRoute();
+      else if (plan.start && fitRoute()) fitOnRoute = !plan.path;
+      for (const spot of [plan.start, plan.end]) if (spot && !spot.label) nameSpot(spot);
+    },
+    done: (href) => driveDone(href),
+  });
+  try {
+    const got = await day.load();
+    driveDay = day;
+    // Nothing to show yet: the club's area, else this browser's, else US West.
+    if (!plan.start && !plan.end && !plan.path) openNear(got.near || (await browserSpot()));
+    driveBaseline = got.kept ? null : driveKey();
+    if (got.kept) toast("Your changes to this day are back. Done saves them.");
+  } catch (failure) {
+    toast(failure.message || "Couldn't open this drive.", true);
+  }
+  render();
+}
+
+/// Where the browser is, when it has already said it may tell (never a
+/// prompt), else carve.run's own rough guess; null on this machine.
+async function browserSpot() {
+  try {
+    if ((await navigator.permissions?.query({ name: "geolocation" }))?.state === "granted") {
+      const at = await new Promise((done, fail) => navigator.geolocation.getCurrentPosition(done, fail, { timeout: 5000, maximumAge: 600000 }));
+      return { lat: at.coords.latitude, lon: at.coords.longitude };
+    }
+  } catch {}
+  if (LOCAL) return null;
+  try {
+    const response = await fetch("/where", { cache: "no-store", signal: AbortSignal.timeout(4000) });
+    const { lat, lon } = response.ok ? await response.json() : {};
+    return Number.isFinite(lat) && Number.isFinite(lon) ? { lat, lon } : null;
+  } catch {
+    return null;
+  }
+}
+
+function openNear(spot) {
+  const go = () => (spot ? map.jumpTo({ center: [spot.lon, spot.lat], zoom: 9 }) : map.jumpTo(US_WEST));
+  if (!map) return;
+  if (mapReady) go();
+  else map.once("load", go);
+}
+
+/// Done (and the bar's back and day switch): the day's route saved when it
+/// changed, set on the drive, then on to `href` (the drive page).
+async function driveDone(href = driveDay?.back()) {
+  if (!driveDay || driveSaving) return;
+  const unchanged = driveBaseline !== null && driveKey() === driveBaseline;
+  if (!plan.path || (unchanged && plan.elevationProfile)) {
+    location.href = href;
+    return;
+  }
+  $("save").disabled = true;
+  busy(true, "Saving…");
+  driveSaving = true;
+  try {
+    // The day's link shows the climb and the elevation line from the
+    // route's elevationProfile. Plain /plan adds it after a save (enrich);
+    // a day adds it before its one save, and a day saved without it (before
+    // 11/11) gets it the next time it's opened and Done.
+    if (!plan.elevationProfile) {
+      try {
+        plan.profile ||= await planner("profile", { path: plan.path.geometry });
+        plan.elevationProfile = plan.profile?.elevationProfile || null;
+      } catch {
+        // Saved without it; the link shows the curves still.
+      }
+    }
+    if (unchanged && !plan.elevationProfile) {
+      location.href = href;
+      return;
+    }
+    readyToSave();
+    const out = await saveGroupRoute(plan);
+    await driveDay.setRoute(out);
+    clearTimeout(draftTimer);
+    store.remove(DRAFT_KEY);
+    location.href = href;
+  } catch (failure) {
+    toast(failure.message || "Couldn't save the route. Try again.", true);
+    $("save").disabled = false;
+  } finally {
+    busy(false);
+    driveSaving = false;
+  }
+}
+
 // ── leave: when you'll drive (private; the user, 11/8) ───────────────
 // Free no longer schedules a drive or asks Going (~/Carve/backlog/
 // Free-Plans-Removal.md): the time is yours alone and only times the
@@ -744,76 +1025,6 @@ function wireOptions() {
 const APPLE_EPOCH_SECONDS = 978307200;
 const DAY_MS = 86_400_000;
 const upcoming = (ms) => Number.isFinite(ms) && ms > Date.now() - 3_600_000;
-
-// ── smart planning: ✦ Suggest under the fields (Chris, 11/10; O5 v37) ──
-// suggest.js: meeting places at the start, stops along the route, places
-// near the end, as pins with a card. On Solo: the planner's `along` and
-// `meet` answer 403 {upgrade} otherwise, and the row then says so (Solo,
-// See Solo). apex_mine (the account's own Apex) isn't on the live project
-// yet, so `smart` stays null (not known) until that 403.
-const planZone = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return null; } })();
-let smart = null;
-let smartFor; // the account `smart` is for (null: a guest)
-let suggest = null;
-
-function checkSmart() {
-  const id = session?.user?.id || null;
-  if (id === smartFor) return;
-  smartFor = id;
-  smart = id ? null : false;
-  suggest?.refresh();
-  if (!id) return;
-  rest("/rest/v1/rpc/apex_mine", { method: "POST", body: {} }).then((a) => {
-    if (smartFor !== id) return;
-    smart = a?.held === true;
-    suggest?.refresh();
-  }).catch(() => {});
-}
-
-function startSuggest() {
-  suggest = initSuggest({
-    el, planner,
-    plan: () => plan,
-    map: () => map,
-    mapReady: () => mapReady,
-    choosePlace,
-    addStop: addSuggestedStop,
-    miles,
-    zone: planZone,
-    upcoming,
-    smart: () => smart,
-    lock: () => { smart = false; },
-    signedIn: () => !!session,
-    signIn: () => openAccount("choose", { saving: false }),
-    fitPadding,
-    mapCentre: () => (mapReady ? { lat: map.getCenter().lat, lon: map.getCenter().lng } : null),
-    driveDay: () => null,
-  });
-}
-
-// ── the place pills over the map (Chris, 11/11; place-pills.js) ──
-let pills = null;
-let layers = null;
-function startPills() {
-  pills = initPills({
-    el, planner, miles,
-    plan: () => plan,
-    map: () => map,
-    mapReady: () => mapReady,
-    addStop: addSuggestedStop,
-    closeSuggest: () => suggest?.close(),
-  });
-}
-
-/// A suggestion picked as a stop: in route order.
-function addSuggestedStop(place) {
-  if (plan.waypoints.length >= MAX_WAYPOINTS) return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
-  const type = stopCount() < MAX_STOPS ? "stop" : "marker";
-  if (type !== "stop") toast(`A route has up to ${MAX_STOPS} stops, so this one is a waypoint.`);
-  const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS), type };
-  edit(() => plan.waypoints.splice(bestSlot(spot), 0, spot));
-  toast(`${spot.label} is a stop now.`);
-}
 const dayStart = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const sameDay = (a, b) => !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 const dayText = (d) => d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
@@ -1160,7 +1371,154 @@ function driveMonth() {
   return new Date(upcoming(plan.leaveAt) ? plan.leaveAt : Date.now()).getMonth() + 1;
 }
 
+// ── smart planning: ✦ Suggest under the fields (Chris, 11/10; O5 v37) ──
+// suggest.js: meeting places at the start, stops along the route, places
+// near the end, as pins with a card. Individual (Apex, which a paid club's
+// organizers hold too): apex_mine's `held` is the account's own Apex,
+// never a drive pass's routes. null: not known (no apex_mine there yet);
+// the planner's 403 has the last word either way.
+const planZone = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return null; } })();
+let smart = null;
+let smartFor; // the account `smart` is for (null: a guest)
+let suggest = null;
+
+function checkSmart() {
+  const id = session?.user?.id || null;
+  if (id === smartFor) return;
+  smartFor = id;
+  smart = id ? null : false;
+  suggest?.refresh();
+  if (!id) return;
+  rpc("apex_mine", {}).then((a) => {
+    if (smartFor !== id) return;
+    smart = a?.held === true;
+    suggest?.refresh();
+  }).catch(() => {});
+}
+
+function startSuggest() {
+  suggest = initSuggest({
+    el, planner,
+    plan: () => plan,
+    map: () => map,
+    mapReady: () => mapReady,
+    choosePlace,
+    addStop: addSuggestedStop,
+    miles,
+    zone: planZone,
+    upcoming,
+    smart: () => smart,
+    lock: () => { smart = false; },
+    signedIn: () => !!session,
+    signIn: () => openAccount("choose", { saving: false }),
+    fitPadding,
+    mapCentre: () => (mapReady ? { lat: map.getCenter().lat, lon: map.getCenter().lng } : null),
+    driveDay: () => driveDay?.day() || null,
+  });
+}
+
+// ── the place pills over the map (Chris, 11/11; place-pills.js) ──
+let pills = null;
+let layers = null;
+function startPills() {
+  pills = initPills({
+    el, planner, miles,
+    plan: () => plan,
+    map: () => map,
+    mapReady: () => mapReady,
+    addStop: addSuggestedStop,
+    closeSuggest: () => suggest?.close(),
+  });
+}
+
+/// A suggestion picked as a stop: in route order.
+function addSuggestedStop(place) {
+  if (plan.waypoints.length >= MAX_WAYPOINTS) return toast(`A route holds up to ${MAX_WAYPOINTS} stops and waypoints.`, true);
+  const type = stopCount() < MAX_STOPS ? "stop" : "marker";
+  if (type !== "stop") toast(`A route has up to ${MAX_STOPS} stops, so this one is a waypoint.`);
+  const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS), type };
+  edit(() => plan.waypoints.splice(bestSlot(spot), 0, spot));
+  toast(`${spot.label} is a stop now.`);
+}
+
+// ── the group planner's "Along the way" (the approved mock, 11/9) ──────
+// On Route's Roads and stops: Rest stops, Landmarks and Vista points from
+// the planner's `along`, asked once a tap ("Look along the route"), each
+// with "+ Stop". Kept while the start and end stay; a new start or end
+// asks again. No restrooms (the decision, 11/9: none without OSM).
+let alongKey = null; // the start, end and trip the shown answer is for
+let alongData = null;
+let alongTab = "rest";
+let alongPins = null;
+const alongKeyNow = () => JSON.stringify([plan.start?.lat, plan.start?.lon, plan.end?.lat, plan.end?.lon, plan.trip]);
+
+function renderAlongCard() {
+  const on = !!group && document.body.dataset.roads === "1" && !!plan.path?.geometry;
+  $("along").hidden = !on;
+  if (!on) { alongPins?.clear(); alongPins = null; return; }
+  if (alongKey && alongKey !== alongKeyNow()) { alongData = null; alongKey = null; $("along-said").textContent = ""; }
+  $("along-go").hidden = !!alongData;
+  $("along-tabs").replaceChildren(...ALONG_TABS.map((tab) => {
+    const b = el("button", "along-tab", tab.label);
+    b.type = "button";
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(tab.key === alongTab));
+    b.addEventListener("click", () => { alongTab = tab.key; renderAlongCard(); });
+    return b;
+  }));
+  drawAlong();
+}
+
+function drawAlong() {
+  alongPins?.clear();
+  alongPins = null;
+  const list = $("along-list");
+  if (!alongData) return list.replaceChildren();
+  const items = alongCard(alongData, { miles })[alongTab];
+  list.replaceChildren(...items.map((x, i) => {
+    const li = el("li", "along-item");
+    li.dataset.n = String(i);
+    li.append(el("span", "num", String(i + 1)));
+    const text = el("span", "along-text");
+    text.append(el("b", "", x.title), el("span", "dim small", x.sub));
+    const add = el("button", "pill grey small", "+ Stop");
+    add.type = "button";
+    add.setAttribute("aria-label", `Add ${x.title} as a stop`);
+    add.addEventListener("click", () => addSuggestedStop(x.place));
+    li.addEventListener("mouseenter", () => alongPins?.setActive(i));
+    li.append(text, add);
+    return li;
+  }));
+  if (!items.length) list.append(el("li", "dim small", `No ${ALONG_TABS.find((t) => t.key === alongTab).label.toLowerCase()} found along this route.`));
+  alongPins = spotPins(items.map((x) => x.place), (place) => addSuggestedStop(place), (i) => {
+    for (const li of list.querySelectorAll(".along-item")) li.classList.toggle("on", li.dataset.n === String(i));
+  });
+}
+
+async function lookAlong() {
+  const path = plan.path?.geometry;
+  if (!path) return;
+  const key = alongKeyNow();
+  $("along-go").disabled = true;
+  $("along-said").textContent = "Looking along the route…";
+  try {
+    const stops = plan.waypoints.filter((w) => w.type === "stop").map((w) => ({ lat: w.lat, lon: w.lon, stayMinutes: w.stayMinutes || 0 }));
+    const leaveAt = upcoming(plan.leaveAt) ? plan.leaveAt : null;
+    const answer = await planner("along", { path, durationSeconds: plan.path.durationSeconds, stops, ...(leaveAt ? { leaveAt, zone: planZone } : {}) });
+    if (alongKeyNow() !== key) return;
+    alongData = answer;
+    alongKey = key;
+    $("along-said").textContent = "";
+    renderAlongCard();
+  } catch (failure) {
+    $("along-said").textContent = failure.message || "Couldn't look along the route. Try again.";
+  } finally {
+    $("along-go").disabled = false;
+  }
+}
+
 function renderClosures() {
+  renderAlongCard();
   const path = plan.path?.geometry;
   const month = driveMonth();
   const key = path && catalogRoads.length && flaggedSlugs ? `${month}` : null;
@@ -1351,7 +1709,9 @@ function driveWholeRoad(road, placed = joinRoad(road), check = { trying: true })
     plan.waypoints.splice(at, 0, ...added.map((p) => ({ ...spot(p), type: "marker" })));
   });
   // The whole plan is this drive: Save opens its page while it stays so.
-  plan.fromRoad = fresh ? { slug: road.s, shape: roadShape() } : null;
+  // Its guide's name and length too: Drafts lists the road by the guide's
+  // name, not the map's (Tail of the Dragon, not Calderwood Highway).
+  plan.fromRoad = fresh ? { slug: road.s, name: road.n, meters: Number.isFinite(road.m) ? Math.round(road.m * (Number.isFinite(placed.share) ? placed.share : 1) * 1609.344) : null, shape: roadShape() } : null;
   saveDraft();
   const share = Number.isFinite(placed.share) ? placed.share : 1;
   const length = Number.isFinite(road.m) ? formatDistance(road.m * share * 1609.344, miles) : null;
@@ -1592,6 +1952,10 @@ function onMapClick(event) {
     const button = item(`${choice.icon}<span>${choice.label}</span>`, () => placeAt(choice.key, menuAt));
     if (choice.key === likeliest) (lit = button).classList.add("on");
   }
+  for (const choice of group?.menuChoices() || []) {
+    const at = menuAt;
+    item(`${choice.icon}<span>${choice.label}</span>`, () => group.pick(choice.key, at));
+  }
   if (road) {
     // The stretch that fits the route, when one does: "Add this road" and
     // how much of it; a plan with no route yet, the whole road; one with no
@@ -1781,6 +2145,11 @@ function setStartMode(mode) {
   if (mode === "import") $("link-in").focus();
 }
 
+/// group.js's hooks: after every render, and once the map is ready.
+const planHooks = [];
+const mapReadyHooks = [];
+let group = null;
+
 function render({ keepTyping = false } = {}) {
   const hasAny = !!(plan.start || plan.end || plan.waypoints.length);
   // Once there's a route, the panel is the route: the switch goes, and an
@@ -1826,8 +2195,10 @@ function render({ keepTyping = false } = {}) {
   drawRoute();
   drawPins();
   findTowns();
-  $("save").disabled = !plan.path;
-  $("save").textContent = plan.id ? "Save changes" : "Save and get the link";
+  // A drive's day: Done, back to the drive page, with or without a route.
+  $("save").disabled = DRIVE ? !driveDay : !plan.path;
+  $("save").textContent = DRIVE ? "Done" : plan.id ? "Save changes" : "Save and get the link";
+  for (const hook of planHooks) hook();
 }
 
 function renderNotice() {
@@ -2304,6 +2675,41 @@ function attachSearch(li, input, onPick, onLeave) {
   });
 }
 
+/// Version 1's road on the map (null hides it).
+function showGhost(geometry) {
+  if (!mapReady || !map.getSource("ghost")) return;
+  map.getSource("ghost").setData(geometry?.length >= 2 ? { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: geometry } } : emptyLine());
+}
+
+/// The meeting place finder's results as numbered pins (the search pins'
+/// look), brought into view. → { clear, setActive(i) }.
+function spotPins(spots, onPick, onHover) {
+  const markers = [];
+  if (!map || !mapReady) return { clear() {}, setActive() {} };
+  spots.forEach((spot, i) => {
+    const node = el("button", "search-pin", String(i + 1));
+    node.type = "button";
+    node.tabIndex = -1;
+    node.setAttribute("aria-label", `${i + 1}: ${spot.name}`);
+    node.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onPick(spot, i);
+    });
+    node.addEventListener("mouseenter", () => onHover?.(i));
+    markers.push(new maplibregl.Marker({ element: node, anchor: "center" }).setLngLat([spot.lon, spot.lat]).addTo(map));
+  });
+  if (spots.length) {
+    const bounds = spots.reduce((b, s) => b.extend([s.lon, s.lat]), new maplibregl.LngLatBounds([spots[0].lon, spots[0].lat], [spots[0].lon, spots[0].lat]));
+    const pad = fitPadding();
+    map.fitBounds(bounds, { padding: { top: pad.top + 50, bottom: pad.bottom + 40, left: pad.left + 30, right: pad.right + 30 }, maxZoom: 15, duration: 500 });
+  }
+  return {
+    clear: () => { for (const m of markers) m.remove(); markers.length = 0; },
+    setActive: (n) => markers.forEach((m, i) => m.getElement().classList.toggle("on", i === n)),
+  };
+}
+
 // drag to reorder the stops and waypoints (and the arrow keys on the handle)
 let dragFrom = null;
 function makeDraggable(li, grip, index) {
@@ -2475,12 +2881,10 @@ function keptFrom(payload) {
   };
 }
 
-/// A Carve route, as the app saves it, onto the planner.
-function loadPayload(payload, source) {
-  settle();
+/// A Carve route, as the app saves it, as a plan.
+function planFromPayload(payload, source) {
   const all = payload.allWaypoints?.length > (payload.waypoints?.length || 0) ? payload.allWaypoints : payload.waypoints || [];
-  remember();
-  plan = {
+  return {
     ...blankPlan(),
     name: payload.name || "",
     start: spotFrom(payload.start),
@@ -2507,6 +2911,13 @@ function loadPayload(payload, source) {
     frozen: !!payload.pathGeometry?.length,
     imported: { source, matched: true, turns: payload.turnInstructions?.length || 0 },
   };
+}
+
+/// A Carve route, as the app saves it, onto the planner.
+function loadPayload(payload, source) {
+  settle();
+  remember();
+  plan = planFromPayload(payload, source);
   changed({ reroute: !plan.path });
   fitOnRoute = !(fitRoute() && plan.path);
 }
@@ -2598,33 +3009,17 @@ async function importFile(file) {
 
 async function save() {
   if (!plan.path) return;
-  // One of Carve's drives, whole and untouched: its own page, with more
-  // than a copy would have (the user, 2026-10-29). Changed at all, it's
-  // the planner's own route.
+  // One of Carve's drives, whole and untouched: never a copy (the user,
+  // 2026-10-29). The web can't put a catalog road in Saved, so the planner
+  // stays as it is and says how to make it your own (Product, 11/11).
+  // Changed at all, it's the planner's own route.
   if (plan.fromRoad && plan.fromRoad.shape === roadShape()) {
-    location.href = `/drives/${encodeURIComponent(plan.fromRoad.slug)}/`;
+    toast("Change the route to save your own copy, or plan it for a club.");
     return;
   }
-  // A name the planner made follows the route ("From El Granada" moved to
-  // Belmont is "From Belmont"); one they typed is theirs.
-  const typed = clip($("route-name").value, MOST_NAME_CHARACTERS);
-  // The field holds the made name until someone changes it.
-  const madeHere = !typed || (plan.nameMade && typed === plan.madeName);
-  plan.name = madeHere ? suggestedName() : typed;
-  plan.nameMade = madeHere;
-  plan.madeName = madeHere ? plan.name : null;
-  // A saved route has an end: with none chosen, the last stop or waypoint,
-  // where the road already ends, becomes it.
-  if (openEnded()) {
-    const { type, stayMinutes, road, ...last } = plan.waypoints[plan.waypoints.length - 1];
-    edit(() => {
-      plan.waypoints.pop();
-      plan.end = last;
-    }, { geometry: false });
-    if (madeHere) plan.name = plan.madeName = suggestedName();
-  }
+  readyToSave();
   if (!session || !(await accessToken())) {
-    store.set(DRAFT_KEY, { plan, saved, resume: true });
+    store.set(DRAFT_KEY, { plan, saved, draftId, resume: true });
     openAccount();
     return;
   }
@@ -2650,6 +3045,8 @@ async function save() {
     });
     saved = true;
     store.remove(PENDING_SAVE_KEY);
+    // A route now, in Saved: its draft goes.
+    routeDrafts?.saved();
     saveDraft();
     showSaved();
     askForecast();
@@ -2662,6 +3059,129 @@ async function save() {
     busy(false);
     $("save").disabled = false;
   }
+}
+
+/// Before a save: the route's name, and an end as a saved route has one
+/// (save, and a drive day's Done).
+function readyToSave() {
+  // A club drive's day has no Name field: the route keeps its name, a new
+  // one the drive's (drive-day.js routeName).
+  if (DRIVE && driveDay) {
+    plan.name = plan.name || driveDay.routeName();
+    plan.nameMade = false;
+    plan.madeName = null;
+  }
+  // A name the planner made follows the route ("From El Granada" moved to
+  // Belmont is "From Belmont"); one they typed is theirs.
+  const typed = clip($("route-name").value, MOST_NAME_CHARACTERS);
+  // The field holds the made name until someone changes it.
+  const madeHere = !DRIVE && (!typed || (plan.nameMade && typed === plan.madeName));
+  if (!DRIVE) {
+    plan.name = madeHere ? suggestedName() : typed;
+    plan.nameMade = madeHere;
+    plan.madeName = madeHere ? plan.name : null;
+  }
+  // A saved route has an end: with none chosen, the last stop or waypoint,
+  // where the road already ends, becomes it.
+  if (openEnded()) {
+    const { type, stayMinutes, road, ...last } = plan.waypoints[plan.waypoints.length - 1];
+    edit(() => {
+      plan.waypoints.pop();
+      plan.end = last;
+    }, { geometry: false });
+    if (madeHere) plan.name = plan.madeName = suggestedName();
+  }
+}
+
+/// A group drive's leg, saved as the organizer's own route (never one of
+/// Carve's drives: a copy is theirs). Another organizer's route on the
+/// drive is edited in place through drive_route_update (0071): its id and
+/// link stay, so version 2 is behind the link the drivers have. A
+/// stranger's route on it (not_organizer) becomes your own copy.
+/// → { route_id, share_token, plan }
+async function saveGroupRoute(source) {
+  const theirs = source.driveRoute && (!source.id || source.ownerId !== session.user.id) ? source.driveRoute : null;
+  if (theirs) {
+    try {
+      return await updateDriveRoute(source, theirs);
+    } catch (failure) {
+      if (failure.data?.message !== "not_organizer") throw failure;
+    }
+  }
+  const leg = JSON.parse(JSON.stringify(source));
+  delete leg.fromRoad;
+  delete leg.driveRoute;
+  if (!leg.id || leg.ownerId !== session.user.id) {
+    leg.id = newUUID(() => crypto.randomUUID());
+    leg.token = newShareToken((n) => crypto.getRandomValues(new Uint8Array(n)));
+    leg.createdAt = appleDate();
+    leg.ownerId = session.user.id;
+  }
+  // A saved route has an end: the last stop, or where the road ends.
+  endLeg(leg);
+  const payload = routePayload(leg);
+  await rest("/rest/v1/routes", {
+    method: "POST",
+    body: [routeRow(leg, session.user.id, payload)],
+    headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+  });
+  await rest("/rest/v1/shares", {
+    method: "POST",
+    body: [{ token: leg.token, route_id: leg.id.toLowerCase() }],
+    headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+  });
+  return { route_id: leg.id.toLowerCase(), share_token: leg.token, plan: leg };
+}
+
+/// A leg's end, as a saved route needs one: the last stop, or where the
+/// road ends (in place).
+function endLeg(leg) {
+  const loops = leg.trip === "roundTrip" || leg.trip === "outAndBack";
+  if (!loops && !leg.end) {
+    const last = leg.waypoints.length ? leg.waypoints.pop() : null;
+    const [lon, lat] = leg.path.geometry[leg.path.geometry.length - 1];
+    leg.end = last ? { lat: last.lat, lon: last.lon, label: last.label } : { lat, lon, label: "" };
+  }
+  return leg;
+}
+
+/// Another organizer's route on this drive, rewritten as this leg: the
+/// owner, id and links are the server's to keep.
+async function updateDriveRoute(source, theirs) {
+  const leg = endLeg(JSON.parse(JSON.stringify(source)));
+  delete leg.fromRoad;
+  leg.id = theirs.id.toUpperCase();
+  leg.token = theirs.token;
+  const payload = routePayload(leg);
+  const kept = await rpc("drive_route_update", { p_route_id: theirs.id.toLowerCase(), p_row: routeRow(leg, session.user.id, payload) });
+  leg.token = kept?.share_tokens?.[0] || theirs.token;
+  leg.ownerId = kept?.owner_id || null;
+  return { route_id: theirs.id.toLowerCase(), share_token: leg.token, plan: leg };
+}
+
+/// An edge function, as the signed-in organizer. A failure carries the
+/// answer (`data`) for its code.
+async function callFunction(name, body) {
+  const token = await accessToken();
+  // The club functions are the backend's own, even on a local preview.
+  let response;
+  try {
+    response = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token || SUPABASE_KEY}`, "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    throw new Failure("Couldn't reach Carve. Check the connection and try again.");
+  }
+  const data = await response.json().catch(() => null);
+  if (!response.ok) {
+    const failure = new Failure(data?.message || data?.error || "Couldn't send. Try again.");
+    failure.status = response.status;
+    failure.data = data;
+    throw failure;
+  }
+  return data;
 }
 
 async function writeRoute() {
@@ -3081,7 +3601,7 @@ function accountError(message) {
 }
 
 function oauth(provider) {
-  store.set(DRAFT_KEY, { plan, saved, resume: true });
+  store.set(DRAFT_KEY, { plan, saved, draftId, resume: true });
   store.set(PENDING_SAVE_KEY, saveAfterSignIn);
   if (!storageWorks) {
     accountError("This browser isn't keeping data, so signing in with " + (provider === "apple" ? "Apple" : "Google") + " would lose your route. Use email instead.");
@@ -3108,7 +3628,8 @@ function signInReturn({ keep = false } = {}) {
     if (!keep) sessionStorage.removeItem("carve.signin.return");
   } catch {}
   // A route plan's page, or the home page (a sign-up from the site's Join; the user, 2026-11-04).
-  return to && (to === "/" || /^\/([A-Za-z0-9]{10}|[0-9a-fA-F]{32})(\?a=(yes|no|maybe))?$/.test(to)) ? to : null;
+  // Or a group drive's page (a lead adding pre-run notes from a phone).
+  return to && (to === "/" || /^\/([A-Za-z0-9]{10}|[0-9a-fA-F]{32})(\?a=(yes|no|maybe))?$/.test(to) || /^\/d\/[A-Za-z0-9_-]{6,64}\/?(\?a=[A-Za-z0-9_-]{6,64})?$/.test(to) || /^\/club\/(\?org=[0-9a-f-]{36})?$/.test(to)) ? to : null;
 }
 
 /// Apple or Google sent the visitor back without signing them in (the
@@ -3139,8 +3660,13 @@ function signInFailed() {
   return false;
 }
 
+/// Club invitations waiting for this email join now (App Dev's contract
+/// §1a), before the page moves on. Never holds a sign-in up.
+const claimInvites = () => Promise.race([rpc("account_claim", {}).catch(() => {}), new Promise((done) => setTimeout(done, 3000))]);
+
 async function afterSignIn() {
   renderWho();
+  await claimInvites();
   const found = await loadProfile().catch(() => null);
   // A new account: the one question, then its name (the user, 2026-11-04).
   if (!found) return setStep(nameStep());
@@ -3154,6 +3680,8 @@ async function afterSignIn() {
     store.remove(PENDING_EDIT_KEY);
     return editShared(pendingEdit);
   }
+  if (GROUP) return group?.signedIn();
+  drafts?.render();
   if (saveAfterSignIn) await save();
 }
 
@@ -3165,6 +3693,7 @@ function renderWho() {
   // "No account until you save" is for guests.
   if (signedIn) $("join").hidden = true;
   if (!signedIn) return;
+  import("/assets/notify-bell.js?v=afa06aa693").then((m) => m.mountBell()).catch(() => {});
   $("who-name").textContent = profile?.username || session.user.email?.split("@")[0] || "Account";
   const avatar = $("avatar");
   const url = profile?.avatar_url;
@@ -3221,6 +3750,7 @@ function planAnother() {
   history.back.length = 0;
   history.forward.length = 0;
   store.remove(DRAFT_KEY);
+  routeDrafts?.startOver();
   showPlan();
 }
 
@@ -3326,7 +3856,7 @@ function wire() {
     dropBox.classList.remove("over");
     importFile(event.dataTransfer.files[0]);
   });
-  $("save").addEventListener("click", save);
+  $("save").addEventListener("click", () => (DRIVE ? driveDone() : save()));
   $("edit").addEventListener("click", showPlan);
   $("plan-another").addEventListener("click", planAnother);
   $("copy").addEventListener("click", async () => {
@@ -3345,6 +3875,7 @@ function wire() {
   $("sign-in").addEventListener("click", () => openAccount("choose", { saving: false, title: "Sign in" }));
   $("join-create").addEventListener("click", () => openAccount("choose", { saving: false, title: "Create an account" }));
   $("tab-plan").addEventListener("click", () => setStartMode("plan"));
+  $("along-go").addEventListener("click", lookAlong);
   $("tab-import").addEventListener("click", () => setStartMode("import"));
   $("join-login").addEventListener("click", () => openAccount("choose", { saving: false, title: "Log in" }));
   $("who-btn").addEventListener("click", () => {
@@ -3480,6 +4011,13 @@ async function freeUsernameLike(name) {
 }
 
 async function start() {
+  // Club v2: the old group flow (Attendees, Invitations, Groups, Send) is
+  // cut (Chris, 11/9); club drives are planned from /club/. Behind
+  // CLUB_V2, nothing deleted.
+  if (GROUP && CLUB_V2) {
+    location.replace("/club/");
+    return;
+  }
   osAwareGetApp();
   const narrow = window.matchMedia("(max-width: 699px)");
   if (narrow.matches) {
@@ -3497,6 +4035,7 @@ async function start() {
     if (readOAuthFailure()) return signInFailed();
     const cameBack = await readOAuthReturn().catch(() => false);
     if (cameBack) {
+      await claimInvites();
       if (await loadProfile().catch(() => null)) return location.replace(signInReturn() || "/");
       return openAccount(nameStep(), { saving: false, title: "Sign in" });
     }
@@ -3519,11 +4058,30 @@ async function start() {
   const draft = store.get(DRAFT_KEY);
   if (draft?.plan && draft.saved && !draft.resume) store.remove(DRAFT_KEY);
   else if (draft?.plan) {
-    if (draft.resume) store.set(DRAFT_KEY, { plan: draft.plan, saved: draft.saved });
+    if (draft.resume) store.set(DRAFT_KEY, { plan: draft.plan, saved: draft.saved, draftId: draft.draftId || null });
     plan = { ...blankPlan(), ...draft.plan };
     saved = !!draft.saved;
+    draftId = draft.draftId || null;
   }
   session = store.get(SESSION_KEY);
+  if (!GROUP && !DRIVE) {
+    startRouteDrafts();
+    // Opened from Drafts (/plan/?draft=…): that draft, in place of the last.
+    const wanted = new URLSearchParams(location.search).get("draft");
+    if (wanted && session) {
+      const d = await routeDrafts.open(wanted);
+      if (d) {
+        plan = { ...blankPlan(), ...d.plan };
+        saved = false;
+        draftId = d.id;
+        store.set(DRAFT_KEY, { plan, saved, draftId });
+      }
+      window.history.replaceState(null, "", "/plan/");
+      if (!d) setTimeout(() => toast("That draft wasn't found. It may have been deleted.", true), 0);
+    }
+    // A route planned before signing in: kept as a draft now too.
+    if (session && !draftId) routeDrafts.changed();
+  }
   const failed = readOAuthFailure();
   const cameBack = await readOAuthReturn().catch(() => false);
   // Signed in from another page (a route's plan): straight back to it, once
@@ -3537,6 +4095,11 @@ async function start() {
   wire();
   renderWho();
   setUpMap();
+  if (GROUP) startGroup();
+  else if (DRIVE) startDriveDay();
+  // Club v2: drives are planned from the club's pages, so no group drafts here.
+  else if (!CLUB_V2) startDrafts();
+  if (CLUB_V2) $("pd-group-link").setAttribute("href", "/club/");
   render();
   // A guest's check runs while they look at the map, not when they search.
   if (!session) fetchPass();
@@ -3591,6 +4154,27 @@ async function start() {
   if (!storageWorks) toast("This browser isn't keeping data, so a reload starts the route over.");
 }
 
+/// A road from its guide. Signed in: a new plan with the road, and the one
+/// before stays in Drafts. Signed out there are no drafts, so the road goes
+/// into the route being planned (nothing lost), or is the plan when there's
+/// none.
+async function planRoad(slug) {
+  if (typeof slug !== "string" || !slug) return;
+  let road = catalogRoads.find((r) => r.s === slug);
+  if (!road) {
+    try {
+      const response = await fetch("/drives/roads.json", { cache: "default" });
+      const rows = response.ok ? await response.json() : [];
+      road = Array.isArray(rows) ? rows.find((r) => r.s === slug) : null;
+    } catch {
+      // Not found, then.
+    }
+  }
+  if (!road) return toast("That road couldn't be found.", true);
+  if (session || saved) planAnother();
+  driveWholeRoad(road);
+}
+
 // What the home page's front door sent along (assets/home.js handOff; the
 // user, 2026-10-29): a link (Google Maps, Ride with GPS, a Carve drive), a
 // GPX file's text, a start and destination as typed, or a spot clicked on its map. Kept in this tab's
@@ -3616,6 +4200,8 @@ async function takeHandoff() {
     if (view && Number.isFinite(view.lat) && Number.isFinite(view.lon) && Number.isFinite(view.zoom)) map.jumpTo({ center: [view.lon, view.lat], zoom: view.zoom });
     return placeAt(handoff.role === "end" && loops() ? "wp" : handoff.role, { lat: round(handoff.lat), lon: round(handoff.lon) });
   }
+  // A road's guide (Plan a drive on this road, board N7; DevOps 11/11).
+  if (handoff.kind === "road") return planRoad(handoff.slug);
   if (handoff.kind !== "stops") return;
   // Each typed place becomes the search's best answer near the map; one it
   // can't find stays typed in its row, to search from there.

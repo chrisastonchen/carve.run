@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/UfeJgWT">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/phoenix/">More car events in the Phoenix area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "65e49976-d238-40af-ac7c-fef42064f9b2", "token": "UfeJgWT", "kind": "coffee", "name": "Peoria Cars and Coffee", "venue": "Lowe's Home Improvement (Lake Pleasant Pkwy & Happy Valley Rd)", "address": "25311 N Lake Pleasant Pkwy, Peoria, AZ 85383", "locality": "Peoria, AZ", "lat": 33.7125, "lon": -112.2676, "timeZone": "America/Phoenix", "next": [{"start": "2026-12-13T15:00:00Z", "end": "2026-12-13T17:30:00Z"}, {"start": "2027-01-10T15:00:00Z", "end": "2027-01-10T17:30:00Z"}], "repeats": "2nd Sunday monthly", "cars": "All makes welcome", "cost": "Free to show or attend", "organizer": "Vistancia Car Club", "sourceUrl": "https://vistanciacarclub.com", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/cf9ee7c637960f21937e.png", "page": "https://www.vistanciacarclub.com/", "background": "#F2F2F4", "crop": [0.013, 0.015, 0.974, 0.97]}, "circuit": null, "about": {"text": "Vistancia Car Club hosts Peoria Cars and Coffee, a go-to Phoenix Cars and Coffee event and a fixture of the Arizona Cars and Coffee scene. Free, every Second Sunday, Sept–May. No dues, no judging, just cars.", "source": "organizer", "page": "https://www.vistanciacarclub.com/"}, "notes": "Second Sundays September through May; club lists Nov 8, Dec 13, Jan 10. No registration.", "membersOnly": false, "series": "1576a4b10a", "summary": "Vistancia Car Club runs a Cars & Coffee meet at Lowe's Home Improvement (Lake Pleasant Pkwy & Happy Valley Rd) in Peoria, AZ on Sunday, December 13, 2026, 8 AM to 10:30 AM. It runs the 2nd Sunday of every month. Second Sundays September through May; club lists Nov 8, Dec 13, Jan 10. No registration.", "near": "About 20 miles northwest of Phoenix, as the crow flies.", "roads": [{"n": "Usery Pass Road and Bush Highway", "s": "usery-pass-bush-highway", "m": 10.0, "d": 40}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

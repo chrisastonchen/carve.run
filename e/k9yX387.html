@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/k9yX387">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/tampa-bay/">More car events in the Tampa Bay area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "86f2c578-8db4-4858-969b-e6bc7ef6435c", "token": "k9yX387", "kind": "show", "name": "Christmas Benefit Car & Truck Show at Sylvan Abbey", "venue": "Sylvan Abbey Church", "address": "2817 Sunset Point Rd, Clearwater, FL 33759", "locality": "Clearwater, FL", "lat": 27.99074, "lon": -82.72263, "timeZone": "America/New_York", "next": [{"start": "2026-12-12T15:00:00Z", "end": null}], "repeats": null, "cars": "Cars, trucks and Jeeps (judged classes)", "cost": null, "organizer": "Judge's Car & Truck Shows", "sourceUrl": "https://judgescarshows.eventsmart.com/events/annual-christmas-show-at-sylvan-abbey/", "registerUrl": "https://judgescarshows.eventsmart.com/events/annual-christmas-show-at-sylvan-abbey/", "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/0b4a3666b436b892924d.png", "page": "https://www.judgescarshows.com/", "background": "#F2F2F4", "crop": [0.0, 0.0, 1.0, 1.0]}, "circuit": null, "about": {"text": "Join us in celebrating the holiday season! This is a Food and Toy Drive so please bring a new unwrapped toy and at least 5 cans of food. Help brighten up a child's Christmas! Toys are being collected for Safety Harbor Elementary and McMullen Booth Elementary schools and the food will be donated to the Sylvan Abbey Church food pantry. Also enjoy great food and drinks at this popular annual show!", "source": "organizer", "page": "https://judgescarshows.eventsmart.com/events/annual-christmas-show-at-sylvan-abbey/"}, "notes": "Food and toy drive; bring a new toy and five cans of food.", "membersOnly": false, "series": "1180e7d2e2", "summary": "Judge's Car & Truck Shows runs a car show at Sylvan Abbey Church in Clearwater, FL on Saturday, December 12, 2026, 10 AM. Food and toy drive; bring a new toy and five cans of food.", "near": "About 15 miles west of Tampa, as the crow flies.", "roads": [{"n": "Pinellas Bayway to Fort De Soto", "s": "fort-de-soto-bayway", "m": 8.0, "d": 20}, {"n": "Longboat Key to Anna Maria", "s": "longboat-key-anna-maria", "m": 16.8, "d": 32}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

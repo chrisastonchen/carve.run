@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/fZJRq9L">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/austin-san-antonio/">More car events in the Austin and San Antonio area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "ec5b592f-fa2c-4575-97ae-ae1e81c3297d", "token": "fZJRq9L", "kind": "coffee", "name": "Hill Country PCA Get Together & Air-Cooled Meet-Up – Red Horn", "venue": "Red Horn Brewery & Roastery", "address": "1615 Scottsdale Dr, Bldg 1, Suite 110, Leander, TX 78641", "locality": "Leander, TX", "lat": 30.550536, "lon": -97.814767, "timeZone": "America/Chicago", "next": [{"start": "2026-11-15T15:00:00Z", "end": "2026-11-15T17:30:00Z"}, {"start": "2026-12-20T15:00:00Z", "end": "2026-12-20T17:30:00Z"}, {"start": "2027-01-17T15:00:00Z", "end": "2027-01-17T17:30:00Z"}], "repeats": "3rd Sunday monthly", "cars": "Porsche club meet; air-cooled Porsches especially welcome", "cost": null, "organizer": "Porsche Club of America – Hill Country Region", "sourceUrl": "https://www.hcrpca.org/event/informal-get-together-red-horn-brewery-roastery-in-leander-3/2026-11-15/", "registerUrl": null, "lastConfirmed": "2026-11-05", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/971d75d2de395885a5ff.png", "page": "https://www.hcrpca.org/", "background": "#1C1C1E", "crop": [0.0, 0.0, 0.968, 1.0]}, "circuit": null, "about": {"text": "\u003cp>Informal Get Together @ Red Horn Brewery & Roastery in Leander is a very informal “come as you are” gathering on the 3rd Sunday of each month.", "source": "organizer", "page": "https://www.hcrpca.org/event/informal-get-together-red-horn-brewery-roastery-in-leander-3/2026-11-15/"}, "notes": "Posted for Nov 15 and Dec 20; park on the north side of the building.", "membersOnly": false, "series": "6d5614ed2f", "summary": "Porsche Club of America – Hill Country Region runs a Cars & Coffee meet at Red Horn Brewery & Roastery in Leander, TX on Sunday, November 15, 2026, 9 AM to 11:30 AM. It runs the 3rd Sunday of every month. Posted for Nov 15 and Dec 20; park on the north side of the building.", "near": "About 50 miles north of Austin, as the crow flies.", "roads": [{"n": "Lime Creek Road", "s": "lime-creek-road-texas", "m": 6.6, "d": 6}, {"n": "RR 1431: Jonestown to Marble Falls", "s": "ranch-road-1431-texas", "m": 29.9, "d": 8}, {"n": "Hamilton Pool Road", "s": "hamilton-pool-road", "m": 16.7, "d": 20}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

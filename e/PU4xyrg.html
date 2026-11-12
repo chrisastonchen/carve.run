@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/PU4xyrg">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/orlando/">More car events in the Orlando area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "c956d425-cb15-46d0-bed6-84bf0a9ea755", "token": "PU4xyrg", "kind": "cruise", "name": "Show Car Saturday Nights at Sunset Walk", "venue": "Promenade at Sunset Walk (Margaritaville Resort Orlando)", "address": "3251 Margaritaville Blvd, Kissimmee, FL 34747", "locality": "Kissimmee, FL", "lat": 28.34551, "lon": -81.60877, "timeZone": "America/New_York", "next": [{"start": "2026-11-14T21:00:00Z", "end": "2026-11-15T01:00:00Z"}, {"start": "2026-11-21T21:00:00Z", "end": "2026-11-22T01:00:00Z"}, {"start": "2026-11-28T21:00:00Z", "end": "2026-11-29T01:00:00Z"}, {"start": "2026-12-05T21:00:00Z", "end": "2026-12-06T01:00:00Z"}, {"start": "2026-12-12T21:00:00Z", "end": "2026-12-13T01:00:00Z"}, {"start": "2026-12-19T21:00:00Z", "end": "2026-12-20T01:00:00Z"}], "repeats": "Every Saturday", "cars": "All makes and models", "cost": null, "organizer": "Sunset Walk", "sourceUrl": "https://sunsetwalk.com/events/show-car-saturday-nights/", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/9f3816e47b7d474bdb79.png", "page": "https://sunsetwalk.com/", "background": "#FFFFFF", "crop": [0.078, 0.25, 0.856, 0.394]}, "circuit": null, "about": {"text": "Learn more here about Show Car Saturday Nights at Sunset Walk in Kissimmee, Florida…", "source": "organizer", "page": "https://sunsetwalk.com/events/show-car-saturday-nights/"}, "notes": "Weekly cruise-in along Margaritaville Blvd, with a DJ and live bands.", "membersOnly": false, "series": "ef0cc8d4c5", "summary": "Sunset Walk runs a cruise at Promenade at Sunset Walk (Margaritaville Resort Orlando) in Kissimmee, FL on Saturday, November 14, 2026, 4 PM to 8 PM. It runs every Saturday. Weekly cruise-in along Margaritaville Blvd, with a DJ and live bands.", "near": "About 20 miles southwest of Orlando, as the crow flies.", "roads": [{"n": "Green Mountain Scenic Byway", "s": "green-mountain-scenic-byway", "m": 15.6, "d": 14}, {"n": "Ridge Scenic Highway: SR 17", "s": "ridge-scenic-highway", "m": 31.7, "d": 16}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

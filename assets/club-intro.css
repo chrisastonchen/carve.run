@@ -1,0 +1,64 @@
+/* For Clubs, signed out (board F1; Product 11/11): /club/'s page before
+   sign-in, and for a signed-in account with no club. club-intro.js. */
+main.cp:has(> .f1:not([hidden])) { max-width: 1120px; }
+.f1 { display: flex; flex-direction: column; gap: 56px; }
+.f1 h1 { margin: 0; font-size: clamp(36px, 5vw, 58px); line-height: 1.04; letter-spacing: -.01em; }
+.f1 h2 { margin: 0; font-size: clamp(24px, 3vw, 32px); font-weight: 800; line-height: 1.15; }
+.f1-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: center; }
+.f1-copy { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.f1-eyebrow { margin: 0; font-size: 14px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--green-ink); }
+.f1-sub { margin: 0; font-size: 20px; line-height: 1.45; color: var(--ink-2); max-width: 34em; }
+.f1-price { margin: 6px 0 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.f1-price b { font-size: 26px; font-weight: 800; }
+.f1-chip { padding: 4px 12px; border-radius: 999px; background: var(--green); color: #fff; font-size: 14px; font-weight: 800; }
+.f1-every { margin: 0; font-size: 17px; font-weight: 800; color: var(--green-ink); }
+.cp .f1-go { height: 54px; padding: 0 30px; font-size: 17px; }
+.f1-terms { margin: 0; max-width: 30em; font-size: 14px; line-height: 1.45; color: var(--ink-3); }
+.f1-login { padding: 0; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 700; color: var(--green-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.f1-phone { justify-self: center; width: min(300px, 100%); aspect-ratio: 390 / 844; padding: 10px; border-radius: 46px; background: #0B0D0C; box-shadow: 0 30px 70px rgba(0,0,0,.35), inset 0 0 0 2px #2A2F2C; }
+.f1-screen { width: 100%; height: 100%; overflow: hidden; border-radius: 37px; background: #1D2420; }
+.f1-screen img, .f1-screen video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.f1-apex { display: flex; flex-direction: column; gap: 16px; padding: 32px; border-radius: 24px; background: #14301F; border: 1.5px solid #2E6B48; }
+.f1-apex > p { margin: 0; font-size: 17px; line-height: 1.5; color: #C3D9CB; max-width: 46em; }
+.f1-feats { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.f1-feats li { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
+.f1-feats svg { flex: none; width: 34px; height: 34px; padding: 7px; box-sizing: border-box; border-radius: 10px; background: var(--green); color: #fff; }
+.f1-maths { margin: 8px 0 0; display: flex; flex-direction: column; gap: 0; max-width: 560px; font-variant-numeric: tabular-nums; }
+.f1-maths div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,.14); }
+.f1-maths dt { font-size: 16px; }
+.f1-maths dd { margin: 0; font-size: 16px; font-weight: 700; white-space: nowrap; }
+.f1-maths .club dt, .f1-maths .club dd { font-weight: 800; color: #6FD39A; }
+.f1-small { margin: 0; font-size: 14px; color: var(--ink-3); }
+.f1-apex .f1-small { color: #A8C2B2; }
+.f1-band { display: flex; flex-direction: column; gap: 18px; }
+.f1-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }
+.f1-list li { display: flex; gap: 12px; font-size: 17px; line-height: 1.45; }
+.f1-list svg { flex: none; width: 22px; height: 22px; margin-top: 2px; color: var(--green-ink); }
+.f1-steps { list-style: none; counter-reset: step; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.f1-steps li { counter-increment: step; display: flex; flex-direction: column; gap: 6px; padding: 22px; border-radius: 18px; background: var(--paper-2); border: 1px solid var(--rule); font-size: 16px; line-height: 1.45; }
+.f1-steps li::before { content: counter(step); display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: 6px; border-radius: 50%; background: var(--green); color: #fff; font-weight: 800; }
+.f1-steps b { font-size: 18px; }
+.f1-steps span { color: var(--ink-2); }
+.f1-close { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 40px 24px; border-radius: 24px; background: var(--paper-2); border: 1px solid var(--rule); text-align: center; }
+.f1-close p { margin: 0; font-size: 16px; }
+.f1-close a { color: var(--green-ink); font-weight: 700; }
+.cp .f1-close .go { align-self: center; }
+@media not all and (prefers-color-scheme: dark) {
+  .f1-apex { background: #EAF4EE; border-color: #9CC9AE; }
+  .f1-apex > p { color: #3D5A49; }
+  .f1-maths div { border-top-color: #C9DED0; }
+  .f1-maths .club dt, .f1-maths .club dd { color: #1D5B3A; }
+  .f1-apex .f1-small { color: #4A6656; }
+}
+@media (max-width: 899px) {
+  .f1-feats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .f1-steps { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 699px) {
+  .f1 { gap: 40px; }
+  .f1-hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .f1-phone { width: min(240px, 70%); }
+  .f1-apex { padding: 22px 18px; }
+  .f1-list { grid-template-columns: minmax(0, 1fr); }
+  .f1-maths div { flex-direction: column; gap: 2px; }
+}

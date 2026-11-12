@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/tF7k2Go">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/denver/">More car events in the Denver area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "3eec040e-b61e-5d22-8cd8-9b2b5596f405", "token": "tF7k2Go", "kind": "track", "name": "**TENTATIVE** Motorcycles Lapping SUNDAY Nov 22", "venue": "High Plains Raceway", "address": null, "locality": "Deer Trail, CO", "lat": 39.7356, "lon": -103.8972, "timeZone": "America/Denver", "next": [{"start": "2026-11-22T15:00:00Z", "end": "2026-11-23T00:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "High Plains Raceway", "sourceUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-sunday-nov-22-high-plains-raceway-688260", "registerUrl": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-sunday-nov-22-high-plains-raceway-688260", "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/c4e303eb2a0bdec7881e.jpg", "credit": "High Plains Raceway via MotorsportReg", "page": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-sunday-nov-22-high-plains-raceway-688260"}, "logo": null, "circuit": null, "about": {"text": "High Plains Raceway is NOT JUST FOR RACERS!\n\nEveryone is welcome at our Open Lapping Days. Virtually any type of motorcycle is allowed and no previous race track experience is necessary. There are NO SPEED LIMITS and NO SPEEDING TICKETS! It’s a fun way to challenge yourself, improve your skills and have a great time in a controlled and safe environment!\n\nPlease note that this event is TENTATIVE based on the weather AND reaching the required number of minimum sign ups. Call the hotline 303-769-4771 for Lapping Day status.\n\nEverything you need to know prior to arriving is included in the High Plains Raceway Lapping Days Information Page.\n\nPlease DO NOT use the \"Register Someone Else\" feature in MSR to add another participant, and do not allow anyone else to use it to add you to an event. Please always register yourself using YOUR OWN account each time you attend an Open Lapping Day.", "source": "organizer", "page": "https://www.motorsportreg.com/events/tentative-motorcycles-lapping-sunday-nov-22-high-plains-raceway-688260"}, "notes": null, "membersOnly": false, "series": "ddaf8aa4c9", "summary": "High Plains Raceway runs a track day at High Plains Raceway in Deer Trail, CO on Sunday, November 22, 2026.", "near": "About 60 miles east of Denver, as the crow flies.", "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

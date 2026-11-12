@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/T7EGuEG">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/socal/">More car events in Southern California</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "90c227c6-4819-56cd-9bd1-844d5a523797", "token": "T7EGuEG", "kind": "track", "name": "December [Saturday] Chuckwalla CCW", "venue": "Chuckwalla Valley Raceway", "address": null, "locality": "Desert Center, CA", "lat": 33.71335, "lon": -115.40058, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-12-05T16:00:00Z", "end": "2026-12-06T01:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "Race Pace Track Days", "sourceUrl": "https://www.motorsportreg.com/events/december-saturday-chuckwalla-ccw-valley-raceway-race-pace-track-days-846067", "registerUrl": "https://www.motorsportreg.com/events/december-saturday-chuckwalla-ccw-valley-raceway-race-pace-track-days-846067", "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/8c133f546931eaf6ab3e.jpg", "credit": "National Agriculture Imagery Program · Public domain · Wikimedia Commons", "page": "https://commons.wikimedia.org/wiki/File:Chuckwalla_Valley_Raceway_aerial_photo_2022-05-02.jpg"}, "logo": null, "circuit": null, "about": {"text": "No-Sessions Track Day for ADVANCED riders only!\n\nRace Pace Track Days provides highly experienced riders with a unique no-sessions format event to hone their skills and/or test and tune their motorcycle. The day is restricted to racers and ADVANCED track day riders only.", "source": "organizer", "page": "https://www.motorsportreg.com/events/december-saturday-chuckwalla-ccw-valley-raceway-race-pace-track-days-846067"}, "notes": null, "membersOnly": false, "series": "e5c035f66d", "summary": "Race Pace Track Days runs a track day at Chuckwalla Valley Raceway in Desert Center, CA on Saturday, December 5, 2026.", "near": null, "roads": [{"n": "Joshua Tree: Park Blvd to Cottonwood", "s": "joshua-tree-park-boulevard-pinto-basin", "m": 56.8, "d": 22}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

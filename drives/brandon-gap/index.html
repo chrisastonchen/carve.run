@@ -22,7 +22,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=30">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <meta name="apple-itunes-app" content="app-id=6808087716, app-argument=https://carve.run/QBEmrP4KQc">
 </head>
@@ -60,9 +60,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/" aria-current="page">Explore</a>
     <a href="/events/" class="wide-only">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -81,9 +82,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
-  <a href="/drives/">Explore</a>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
+  <a href="/drives/" aria-current="page">Explore</a>
   <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -154,10 +156,10 @@
   </section>
   <p class="rv-sources">Distance, time, elevation, curves and intensity are from Carve's route. Checked 2026-10-28.</p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
-<div class="foot quiet"><a class="linkish grey" href="/plan/">+ Plan a new route</a></div>
+<div class="foot road"><a href="/plan/" data-plan-road="brandon-gap">Plan a drive on this road</a></div>
 </main>
 <div class="rv-map" id="rv-map" data-token="QBEmrP4KQc" role="region" aria-label="Map of Brandon Gap: Route 73, from Rochester to Brandon"><div class="rv-still"><img src="https://carve.run/map/QBEmrP4KQc" width="1200" height="630" alt="Map of Brandon Gap: Route 73, from Rochester to Brandon" loading="lazy"></div></div>
 <div class="legend" id="rv-legend" hidden aria-label="Map key">
@@ -165,7 +167,7 @@
 </div>
 </div>
 <div class="printout" id="printout" aria-hidden="true"></div>
-<script type="module" src="/assets/route-view.js?v=2849116c4a"></script>
+<script type="module" src="/assets/route-view.js?v=706111f491"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
@@ -206,6 +208,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

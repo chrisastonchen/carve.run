@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/JxYjMkJ">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/kentucky/">More car events in Kentucky</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "6b23fc79-4578-4018-a216-49711b4752bb", "token": "JxYjMkJ", "kind": "track", "name": "NCM Open Track Day – Grand Full Course", "venue": "NCM Motorsports Park", "address": "505 Kimberlee A. Fast Drive, Bowling Green, KY 42103", "locality": "Bowling Green, KY", "lat": 37.00197, "lon": -86.36839, "timeZone": "America/Chicago", "next": [{"start": "2026-11-15T13:00:00Z", "end": null}], "repeats": null, "cars": "Street and track cars; approved helmet and tech form required", "cost": "$325 per driver; passengers $30", "organizer": "NCM Motorsports Park", "sourceUrl": "https://www.motorsportreg.com/events/ncm-open-track-day-grand-full-motorsports-park-739323", "registerUrl": "https://www.motorsportreg.com/events/ncm-open-track-day-grand-full-motorsports-park-739323", "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": {"url": "https://carve.run/events/media/8430caa56d2b2161ccaa.jpg", "credit": "NCM Motorsports Park via MotorsportReg", "page": "https://www.motorsportreg.com/events/ncm-open-track-day-grand-full-motorsports-park-739323"}, "logo": null, "circuit": null, "about": {"text": "Looking for a place to shake off the winter dust on your car, want to shake down your car, or simply just want some fun and safe rack time with like minded people this is a day for you. This open track day is meant for people who have had track time and have the ability to drive safely in a hot track environment. If you have never attended and HPDE, HPDI, or other forms of track time please contract us prior to registering at ashley.white@motorsportspark.org.\n\nThis is a $325 individual registration and is good for one driver for the day and passengers will be subject to a $30 fee for the day and must sign waivers, have approved clothing, approved footware, and have an approved helmet.\n\nA tech form will need to be filled out for each car. A helmet form will need to be filled out for each driver.\n\nNCM_Tech_Inspection_Form.pdf\n\n2026 HELMET FORM.pdf\n\nOpen track day on the NCM Grand Full course. Solo approved advanced and intermediate drivers.", "source": "organizer", "page": "https://www.motorsportreg.com/events/ncm-open-track-day-grand-full-motorsports-park-739323"}, "notes": "Open lapping (no instruction) next to the National Corvette Museum, about an hour north of Nashville; check-in from 7am Central.", "membersOnly": false, "series": "77cf74f566", "summary": "NCM Motorsports Park runs a track day at NCM Motorsports Park in Bowling Green, KY on Sunday, November 15, 2026, 7 AM. Open lapping (no instruction) next to the National Corvette Museum, about an hour north of Nashville; check-in from 7am Central.", "near": null, "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

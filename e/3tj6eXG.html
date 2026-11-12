@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/3tj6eXG">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/phoenix/">More car events in the Phoenix area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "5712dac3-25ce-41bf-9fdf-d713ce9fd321", "token": "3tj6eXG", "kind": "show", "name": "Barrett-Jackson Scottsdale Auction", "venue": "WestWorld of Scottsdale", "address": "16601 N Pima Rd, Scottsdale, AZ 85260", "locality": "Scottsdale, AZ", "lat": 33.633, "lon": -111.8823, "timeZone": "America/Phoenix", "next": [{"start": "2027-01-23T15:00:00Z", "end": null}, {"start": "2027-01-24T15:00:00Z", "end": null}, {"start": "2027-01-25T15:00:00Z", "end": null}, {"start": "2027-01-26T15:00:00Z", "end": null}, {"start": "2027-01-27T15:00:00Z", "end": null}, {"start": "2027-01-28T15:00:00Z", "end": null}], "repeats": null, "cars": "2,000+ collector vehicles on display and crossing the block", "cost": "Ticketed", "organizer": "Barrett-Jackson", "sourceUrl": "https://www.barrett-jackson.com/2027-scottsdale", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": null, "circuit": null, "about": {"text": "Nine-day collector car auction and festival; gates open 8 am until the auction closes.", "source": "carve", "page": null}, "notes": "Nine-day collector car auction and festival; gates open 8 am until the auction closes.", "membersOnly": false, "series": "cf652e645a", "summary": "Barrett-Jackson runs a car show at WestWorld of Scottsdale in Scottsdale, AZ on Saturday, January 23, 2027, 8 AM. Nine-day collector car auction and festival; gates open 8 am until the auction closes.", "near": "About 15 miles northeast of Phoenix, as the crow flies.", "roads": [{"n": "Usery Pass Road and Bush Highway", "s": "usery-pass-bush-highway", "m": 10.0, "d": 17}, {"n": "Beeline Highway: Bush Highway to Payson", "s": "beeline-highway-az87", "m": 51.7, "d": 18}, {"n": "Apache Trail: AZ-88", "s": "apache-trail", "m": 14.0, "d": 25}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

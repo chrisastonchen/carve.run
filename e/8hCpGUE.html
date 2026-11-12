@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/8hCpGUE">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/orlando/">More car events in the Orlando area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "97deb17b-9335-4cd0-a8b3-52b05823e5dc", "token": "8hCpGUE", "kind": "show", "name": "Daytona Turkey Run (53rd Annual)", "venue": "Daytona International Speedway", "address": "1801 W International Speedway Blvd, Daytona Beach, FL 32114", "locality": "Daytona Beach, FL", "lat": 29.1845, "lon": -81.07037, "timeZone": "America/New_York", "next": [{"start": "2026-11-25T13:00:00Z", "end": "2026-11-25T21:00:00Z"}, {"start": "2026-11-26T13:00:00Z", "end": "2026-11-26T21:00:00Z"}, {"start": "2026-11-27T13:00:00Z", "end": "2026-11-27T21:00:00Z"}, {"start": "2026-11-28T13:00:00Z", "end": "2026-11-28T21:00:00Z"}, {"start": "2026-11-29T13:00:00Z", "end": "2026-11-29T21:00:00Z"}], "repeats": null, "cars": "5,000+ collector cars of all eras; no classes or awards", "cost": "$21 per day (kids 11 and under free); show cars pay cash at the gate", "organizer": "Daytona Beach Street Rods / Daytona Beach Racing & Recreational Facilities District", "sourceUrl": "https://www.turkeyrun.com/", "registerUrl": null, "lastConfirmed": "2026-11-06", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/f0bccedd0a21ab748165.png", "page": "https://www.turkeyrun.com/", "background": "#F2F2F4", "crop": [0.0, 0.0, 1.0, 1.0]}, "circuit": null, "about": {"text": "53rd Annual Daytona Turkey Run®, November 25–29, 2026 at Daytona International Speedway.", "source": "organizer", "page": "https://www.turkeyrun.com/"}, "notes": "Combined car show, swap meet and car corral in the speedway infield; Sunday closes at 2 PM.", "membersOnly": false, "series": "920c256e89", "summary": "Daytona Beach Street Rods / Daytona Beach Racing & Recreational Facilities District runs a car show at Daytona International Speedway in Daytona Beach, FL on Wednesday, November 25, 2026, 8 AM to 4 PM. Combined car show, swap meet and car corral in the speedway infield; Sunday closes at 2 PM.", "near": "About 50 miles northeast of Orlando, as the crow flies.", "roads": [{"n": "Ormond Scenic Loop and Trail", "s": "ormond-scenic-loop", "m": 21.9, "d": 7}, {"n": "A1A: Flagler Beach to Ormond Beach", "s": "a1a-flagler-beach-ormond", "m": 13.9, "d": 8}, {"n": "A1A: St. Augustine to Flagler Beach", "s": "a1a-st-augustine-flagler-beach", "m": 30.9, "d": 21}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

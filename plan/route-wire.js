@@ -53,14 +53,6 @@ export function newUUID(randomUUID) {
   return randomUUID().toUpperCase();
 }
 
-/// A place's plain name: its label's first part, without a leading
-/// "pet friendly" or the like ("Vasona Lake Park, 333 Blossom Hill Rd" →
-/// "Vasona Lake Park").
-export function plainName(label) {
-  const first = String(label || "").split(",")[0].trim();
-  return clip(first.replace(/^(?:(?:pet|dog|kid|family)[- ]friendly|budget|luxury)\s+/i, "").trim(), MOST_LABEL_CHARACTERS) || "";
-}
-
 export function clip(text, most) {
   if (typeof text !== "string") return null;
   const trimmed = text.trim();
@@ -98,6 +90,56 @@ function styleKeys(style) {
   if (style === "shortest") return { routingPreference: "shortest" };
   if (style === "scenic") return { routingPreference: "scenic" };
   return {};
+}
+
+/// Metres between two [lon, lat] points (haversine).
+function metresBetween([lon1, lat1], [lon2, lat2]) {
+  const r = Math.PI / 180;
+  const a = Math.sin(((lat2 - lat1) * r) / 2) ** 2 + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(((lon2 - lon1) * r) / 2) ** 2;
+  return 2 * 6371008.8 * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+/// Each leg's planned drive time in seconds, for the pre-run report (App
+/// Dev's, 11/9): legs run from the start through each stop (not markers),
+/// in order, to the end (the start again on a loop), as
+/// drive_prerun_timings counts them. The route's time is shared out by
+/// distance along its road; time at stops isn't in it. Null without a road
+/// or a time.
+export function legDurationsSeconds(plan) {
+  const line = plan?.path?.geometry;
+  const total = plan?.path?.durationSeconds;
+  if (!Array.isArray(line) || line.length < 2 || !(total > 0)) return null;
+  const along = [0];
+  for (let i = 1; i < line.length; i++) along.push(along[i - 1] + metresBetween(line[i - 1], line[i]));
+  const length = along[along.length - 1];
+  if (!(length > 0)) return null;
+  // Each stop at its nearest point on the road after the one before: the
+  // first pass within 150 m, else the nearest of what's left.
+  const cuts = [0];
+  let from = 0;
+  for (const s of (plan.waypoints || []).filter((w) => w.type === "stop")) {
+    let best = -1, bestD = Infinity;
+    for (let i = from; i < line.length; i++) {
+      const d = metresBetween(line[i], [s.lon, s.lat]);
+      if (d < bestD) { best = i; bestD = d; }
+      if (bestD <= 150 && d > 400) break;
+    }
+    if (best < 0) continue;
+    cuts.push(along[best]);
+    from = best;
+  }
+  cuts.push(length);
+  const legs = [];
+  for (let i = 1; i < cuts.length; i++) legs.push(Math.round(((cuts[i] - cuts[i - 1]) / length) * total));
+  return legs;
+}
+
+/// A place's plain name for "meet at" (DevOps, 11/9): the label's first
+/// part, without the address after it or a search's lead-in ("Pet
+/// Friendly", "Budget"…). "" when there's none.
+export function plainName(label) {
+  const first = String(label || "").split(",")[0].trim();
+  return clip(first.replace(/^(?:(?:pet|dog|kid|family)[- ]friendly|budget|luxury)\s+/i, "").trim(), MOST_LABEL_CHARACTERS) || "";
 }
 
 /// The Route payload. `plan` is the page's own state:
@@ -141,16 +183,34 @@ export function routePayload(plan, now = appleDate()) {
   if (plan.elevationProfile) payload.elevationProfile = plan.elevationProfile;
   if (plan.blurb) payload.blurb = plan.blurb;
   if (all.length > OLDER_BUILDS_WAYPOINT_LIMIT) payload.allWaypoints = all;
-  // The start's and end's plain names, beside the route (as club-v2 saves
-  // them, 11/10): a drive day's title and its "meet at"; the apps skip keys
-  // they don't know.
+  // The planned time of each leg (DevOps, 11/9), for the pre-run report;
+  // the apps skip keys they don't know.
+  // The start's plain name: route_drive's "meet at" on the drive's link.
   const startName = plainName(plan.start?.label);
   if (startName) payload.startName = startName;
   else delete payload.startName;
+  // And the end's: a drive day's title on Share, "Clayton → Bridgeport" (Chris, 11/10).
   const endName = plan.end ? plainName(plan.end.label) : "";
   if (endName) payload.endName = endName;
   else delete payload.endName;
+  const legs = legDurationsSeconds(plan);
+  if (legs) payload.legDurationsSeconds = legs;
+  else delete payload.legDurationsSeconds;
   return payload;
+}
+
+/// A drive day's route copied for a duplicated drive (Chris, 11/10): the
+/// same route, a new one owned by `ownerId`, with its own id and link, so
+/// the original drive's links never change. → { row, payload }, or null
+/// when the payload hasn't what a saved route needs.
+export function routeCopy(source, { id, token, ownerId, now = Date.now() }) {
+  if (!source?.start || !source?.end || !Array.isArray(source.pathGeometry) || source.pathGeometry.length < 2) return null;
+  const payload = JSON.parse(JSON.stringify(source));
+  payload.id = id.toUpperCase();
+  payload.shareToken = token;
+  payload.createdAt = payload.updatedAt = appleDate(now);
+  payload.waypoints ||= [];
+  return { row: routeRow({ id }, ownerId, payload), payload };
 }
 
 /// The `routes` row the app pushes (SupabaseRoutes.swift RemoteRoutePush):

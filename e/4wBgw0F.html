@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/4wBgw0F">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/austin-san-antonio/">More car events in the Austin and San Antonio area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "e6eaccd9-ace5-48a6-af07-c8a490cd93fb", "token": "4wBgw0F", "kind": "coffee", "name": "Caffeine and Chrome Holiday Party – Gateway Classic Cars San Antonio", "venue": "Gateway Classic Cars – San Antonio showroom", "address": "679 Holcan Dr, Suite 105, New Braunfels, TX 78130", "locality": "New Braunfels, TX", "lat": 29.727166, "lon": -98.058762, "timeZone": "America/Chicago", "next": [{"start": "2026-12-05T14:00:00Z", "end": "2026-12-05T23:00:00Z"}], "repeats": null, "cars": "Classics, collectibles or daily drivers – all makes", "cost": "Free", "organizer": "Gateway Classic Cars", "sourceUrl": "https://www.gatewayclassiccars.com/caffeine-and-chrome", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": null, "logo": {"url": "https://carve.run/events/media/8ded441d9581e74ee66d.jpg", "page": "https://www.gatewayclassiccars.com/", "background": "#FFFFFF", "crop": [0.223, 0.345, 0.554, 0.312]}, "circuit": null, "about": {"text": "Gateway's 2026 list skips November and ends with this Dec 5 holiday edition; start time and each showroom's participation aren't posted.", "source": "carve", "page": null}, "notes": "Gateway's 2026 list skips November and ends with this Dec 5 holiday edition; start time and each showroom's participation aren't posted.", "membersOnly": false, "series": "634645dc92", "summary": "Gateway Classic Cars runs a Cars & Coffee meet at Gateway Classic Cars – San Antonio showroom in New Braunfels, TX on Saturday, December 5, 2026. Gateway's 2026 list skips November and ends with this Dec 5 holiday edition; start time and each showroom's participation aren't posted.", "near": "About 10 miles south of Austin, as the crow flies.", "roads": [{"n": "River Road: New Braunfels to Canyon Lake", "s": "river-road-new-braunfels", "m": 14.8, "d": 4}, {"n": "RR 12: San Marcos to Wimberley", "s": "rr-12-san-marcos-wimberley", "m": 11.4, "d": 13}, {"n": "Devil's Backbone", "s": "devils-backbone-texas", "m": 10.5, "d": 15}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

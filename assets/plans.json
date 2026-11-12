@@ -1,0 +1,41 @@
+{
+  "about": "Carve's plans, in one place (club sprint item 5). scripts/pricing/build_plans.py writes, from this, the pricing page's organizer card, plan lines and Individual's prices, and web/assets/plans.js?v=a1e99a533b; the server's plan_limits holds the same organizers (a test checks they match); Stripe's prices are set by the lookup keys carve_<plan>_<interval> (docs/Stripe-Setup.md on club-stripe). Three plans (Chris, 11/10 afternoon: one plan for organizers): for drivers, Free and Individual (the store Apex); for organizers, Club, $499 a year, with multi-day drives, pre-drives, smart planning for every organizer and 5 organizers, and no driver cap shown. Club starts with a 30-day free trial in Stripe, card at checkout, charged on day 31 unless cancelled. Group is gone: an org still on the old 'group' tier reads as Club (oldTiers). Custom quotes (more than 5 organizers, invoicing, event help) are by contact. drivers: 0, no club drives; null, no driver cap shown.",
+  "contact": "chris@carve.run",
+  "plans": [
+    {
+      "plan": "free",
+      "tier": "none",
+      "name": "Free",
+      "for": "drivers",
+      "drivers": 0,
+      "organizers": 1,
+      "year": "0"
+    },
+    {
+      "plan": "solo",
+      "tier": "solo",
+      "name": "Individual",
+      "for": "drivers",
+      "tagline": "Apex for one driver",
+      "drivers": 0,
+      "organizers": 1,
+      "year": "49.99",
+      "month": "5.99",
+      "trialDays": 14
+    },
+    {
+      "plan": "club",
+      "tier": "club",
+      "name": "Club",
+      "for": "organizers",
+      "tagline": "For car clubs and chapters",
+      "drivers": null,
+      "organizers": 5,
+      "year": "499",
+      "trialDays": 30,
+      "oldTiers": [
+        "group"
+      ]
+    }
+  ]
+}

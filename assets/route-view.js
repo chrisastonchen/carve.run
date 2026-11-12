@@ -9,7 +9,7 @@
 // and the apps redeem it; a page without one (no token, no network, no
 // WebGL) keeps its picture of the road and still reads.
 import { markerLabels, turnKind, formatDistance, formatDuration, usesMiles } from "/plan/route-wire.js";
-import { session, signedIn } from "/assets/site-bar.js?v=bfd0517f5a";
+import { session, signedIn } from "/assets/site-bar.js?v=26e2ebbc13";
 
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
@@ -484,7 +484,23 @@ function wireBanner() {
   });
 }
 
+/// A road's guide: Plan a drive on this road hands the road to the planner
+/// (plan.js takeHandoff, "road"), in this tab's sessionStorage, never the
+/// address. A new tab or window goes to a plain planner.
+function wirePlanRoad() {
+  const link = document.querySelector("[data-plan-road]");
+  link?.addEventListener("click", (event) => {
+    if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    try {
+      sessionStorage.setItem("carve.plan.handoff", JSON.stringify({ kind: "road", slug: link.dataset.planRoad, at: Date.now() }));
+    } catch {
+      // No storage: the planner opens as it is.
+    }
+  });
+}
+
 async function start() {
+  wirePlanRoad();
   // Someone signed in to Carve has the app's pitch already.
   if (signedIn) $("rv-app")?.setAttribute("hidden", "");
   const host = $("rv-map");

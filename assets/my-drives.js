@@ -3,7 +3,7 @@
 // routes you made live here). On a computer each one opens in the planner
 // to change; on a phone, its page, which opens it in the app.
 
-import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=517867446e";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=a3869ea508";
 
 const MOST = 500;
 

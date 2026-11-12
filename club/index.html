@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your club | Carve</title>
+<!-- A club's own page on Carve, signed in: never in search results (the club sprint, item 5). -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1210"><meta name="theme-color" content="#1D5B3A">
+<link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
+<link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=ce0bec7a67">
+<link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
+<link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
+<link rel="stylesheet" href="/assets/club-v2.css?v=73a85cdfb1">
+<link rel="stylesheet" href="/assets/home.css?v=b27fea7e01">
+<link rel="stylesheet" href="/assets/club-intro.css?v=6112010493">
+<meta name="apple-itunes-app" content="app-id=6808087716">
+
+</head>
+<body>
+<!-- The site's bar, as on the planner and the route pages (page_parts.py
+     ROUTE_HEAD; the user, 2026-10-29), styled and wired by the site-bar
+     stylesheet and script in assets. -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-wordmark" viewBox="0 0 300 45"><path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+  <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M18.44 5.56c-.68 1.17-1.35 2.33-2.03 3.5l-.11-.04c-1.82-.7-3.48-.8-4.42-.79-1.86.02-3.35.46-4.26.82-.08-.15-1.75-3.02-2.02-3.49a1.15 1.15 0 0 0-.14-.19c-.33-.36-.91-.49-1.38-.2-.48.28-.71.94-.39 1.5 1.95 3.37-.1-.21 1.95 3.36.02.03-.5.26-1.39 1.02C2.9 12.18.45 14.77 0 18.99h24c-.12-1.11-.37-2.1-.75-3.07-.74-1.91-1.84-3.29-2.74-4.18a12.1 12.1 0 0 0-2.13-1.69c.66-1.12 1.31-2.26 1.96-3.38.21-.36.19-.8-.01-1.12a1.1 1.1 0 0 0-.85-.53c-.52-.05-.94.31-1.05.54zM18.4 14.02c.39.59.32 1.33-.16 1.65-.48.32-1.19.1-1.58-.49-.39-.59-.32-1.33.16-1.65.47-.32 1.18-.11 1.58.49zM7.21 13.53c.48.32.55 1.06.16 1.65-.4.59-1.1.81-1.59.49-.48-.32-.55-1.06-.16-1.65.4-.6 1.11-.81 1.59-.49z"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 15l1.6-4.2A2 2 0 0 1 7.5 9.5h9a2 2 0 0 1 1.9 1.3L20 15v3h-2.2M6.2 18H4v-3h16M8.5 18h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.3" cy="18" r="1.6" fill="currentColor"/><circle cx="16.7" cy="18" r="1.6" fill="currentColor"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+</svg>
+<header class="bar">
+  <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
+  <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" aria-current="page" class="wide-only">For Clubs</a>
+    <a href="/drives/">Explore</a>
+    <a href="/events/" class="wide-only">Events</a>
+    <a href="/pricing/">Pricing</a>
+    <a href="/support/">Support</a>
+  </nav>
+  <span class="grow"></span>
+  <a class="pill white wide-only" id="sign-in" href="/plan/#sign-in" hidden>Sign in</a>
+  <div class="who wide-only" id="who" hidden>
+    <button type="button" class="who-btn" id="who-btn" aria-haspopup="menu" aria-expanded="false">
+      <span class="avatar" id="avatar"><svg aria-hidden="true"><use href="#i-car"/></svg></span>
+      <span id="who-name"></span>
+      <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+    </button>
+    <div class="who-menu" id="who-menu" role="menu" hidden>
+      <button type="button" role="menuitem" id="sign-out">Sign out</button>
+    </div>
+  </div>
+  <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+</header>
+<nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/" aria-current="page">For Clubs</a>
+  <a href="/drives/">Explore</a>
+  <a href="/events/">Events</a>
+  <a href="/pricing/">Pricing</a>
+  <a href="/support/">Support</a>
+  <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
+</nav>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="apple" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
+  </symbol>
+  <!-- CarPlay's mark: a ring open on the right, round a play triangle. -->
+  <symbol id="carplay" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/>
+    <path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/>
+  </symbol>
+  <!-- Android and Android Auto, from Simple Icons (CC0). -->
+  <symbol id="android" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/>
+  </symbol>
+  <symbol id="androidauto" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/>
+  </symbol>
+  <symbol id="wordmark" viewBox="0 0 300 45">
+    <path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z"/>
+    <path fill="currentColor" d="M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z"/>
+    <path fill="currentColor" d="M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z"/>
+    <path fill="currentColor" d="M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z"/>
+    <path fill="currentColor" d="M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/>
+  </symbol>
+</svg>
+
+
+<main class="home cp o-page">
+  <p class="cp-note" id="cp-status" role="status">Loading…</p>
+
+  <!-- For Clubs, signed out (board F1; Product's spec 11/11, Chris's yes with every
+       driver's Apex): the price, the trial and its terms, Log in; club-intro.js fills
+       the price, terms and maths from plans.js. -->
+  <section class="f1" id="o-signin" hidden>
+    <div class="f1-hero">
+      <div class="f1-copy">
+        <p class="f1-eyebrow">Carve Club</p>
+        <h1>Plan your club's drives.</h1>
+        <p class="f1-sub">Plan on the web, share one link for each day, and every driver follows your route in the free Carve app.</p>
+        <p class="f1-price"><b id="f1-price">$499 a year</b><span class="f1-chip" id="f1-trial">First 30 days free</span></p>
+        <p class="f1-every">Includes Carve Apex for every driver on your drives.</p>
+        <button type="button" class="go f1-go" id="o-signin-go">Start your free trial</button>
+        <p class="f1-terms" id="f1-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
+        <button type="button" class="textlink f1-login" id="o-login">Already have a club? Log in</button>
+      </div>
+      <div class="f1-phone" aria-hidden="true">
+        <div class="f1-screen" id="f1-screen"><img src="/assets/app/group.jpg?v=f50902c121" alt="" width="390" height="844" id="f1-poster"></div>
+      </div>
+    </div>
+
+    <section class="f1-apex" aria-labelledby="f1-apex-h">
+      <h2 id="f1-apex-h">Every driver gets Carve Apex on your drives</h2>
+      <p>Your drivers don't buy anything. Club covers Carve Apex for everyone on your drive's routes, from 14 days before the drive through the day after it ends.</p>
+      <ul class="f1-feats">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Offline navigation</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/></svg>3D preview</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9.5 17h-19zM12 10v4.5M12 17.6v.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Road conditions</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Popular times, where available</li>
+      </ul>
+      <dl class="f1-maths">
+        <div><dt>100 drivers a year, each buying Individual</dt><dd id="f1-many">$4,999 a year</dd></div>
+        <div class="club"><dt>Club, for every driver on your drives</dt><dd id="f1-club">$499 a year</dd></div>
+      </dl>
+      <p class="f1-small">Drivers open your link in the free Carve app. No card or account needed.</p>
+    </section>
+
+    <section class="f1-band" aria-labelledby="f1-get-h">
+      <h2 id="f1-get-h">What organizers get</h2>
+      <ul class="f1-list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Multi-day drives</b> — a route and a link for each day</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Pre-drives with your crew</b> — they drive it first and note what to know</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Smart planning for every organizer</b> — meeting places and stops along the route</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>5 organizers</b> — each with Apex all year</span></li>
+      </ul>
+    </section>
+
+    <section class="f1-band" aria-labelledby="f1-how-h">
+      <h2 id="f1-how-h">How it works</h2>
+      <ol class="f1-steps">
+        <li><b>Plan on the web</b><span>Days, meet and leave times, and a route for each day, with its stops.</span></li>
+        <li><b>Share one link for each day</b><span>Drivers open it on their phone. A QR code works too.</span></li>
+        <li><b>Drive it in the app</b><span>Turn-by-turn on the roads you chose, with your group on the map and on CarPlay and Android Auto. Drivers get Carve Apex free on your routes.</span></li>
+      </ol>
+    </section>
+
+    <section class="f1-close" aria-labelledby="f1-close-h">
+      <h2 id="f1-close-h">Try Club free for 30 days</h2>
+      <button type="button" class="go f1-go" id="o-signin-go2">Start your free trial</button>
+      <p><a href="/pricing/#pq">Questions? See pricing and FAQ</a></p>
+      <p class="f1-small">More than 5 organizers, invoicing or event help? <a href="mailto:chris@carve.run">chris@carve.run</a></p>
+    </section>
+  </section>
+
+
+  <!-- Club v2 (CLUB_V2 in club-flags.js): Start a club (O1) and Club home (O2, O2b). -->
+  <section class="cv-start" id="v-start" hidden>
+    <h1>Start your club on Carve</h1>
+    <p class="cp-note v-login-note" id="v-login-note" hidden>This account isn't an organizer of a club yet. Start one below, or ask your club's organizer to add you.</p>
+    <p class="cp-note" id="v-trial-note">30-day free trial. Card needed, cancel any time.</p>
+    <div class="v-plans" id="v-plans" aria-label="Plan"></div>
+    <p class="cp-note" id="v-individual" hidden>Organizers get everything in Individual with Club. You can cancel Individual in your App Store or Google Play settings.</p>
+    <label class="cp-field v-name">Club name<input type="text" id="v-name" maxlength="80" autocomplete="organization" placeholder="Ridge Road Club"></label>
+    <button type="button" class="go" id="v-start-go">Start free trial</button>
+    <p class="cp-note" id="v-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
+    <p class="cp-note" id="v-start-said" role="status" aria-live="polite"></p>
+  </section>
+
+  <div class="cv-home" id="v-home" hidden>
+    <div class="cv-main">
+      <div class="cv-head">
+        <div><p class="cp-eyebrow" id="v-eyebrow"></p><h1 id="v-title"></h1></div>
+        <a class="go" id="v-new" href="/club/drive/">Plan a drive</a>
+      </div>
+      <label class="cp-field" id="v-pick-row" hidden>Your clubs<select id="v-pick"></select></label>
+      <p class="cp-note" id="v-drives-said" role="status" aria-live="polite"></p>
+      <div class="cv-empty" id="v-empty" hidden>
+        <span class="v-thumb big" aria-hidden="true"></span>
+        <h2>No drives yet</h2>
+        <p class="cp-note">Pick the days, build a route for each one, then share one link with your drivers.</p>
+        <a class="go" id="v-empty-new" href="/club/drive/">Plan a drive</a>
+      </div>
+      <section class="cv-list" id="v-up" aria-labelledby="v-up-h" hidden>
+        <h2 class="cp-eyebrow" id="v-up-h">Upcoming</h2>
+        <ul id="v-up-list"></ul>
+        <p class="cp-note" id="v-up-none" hidden>Nothing coming up. Plan the next drive.</p>
+      </section>
+      <section class="cv-list" id="v-past" aria-labelledby="v-past-h" hidden>
+        <h2 class="cp-eyebrow" id="v-past-h">Past</h2>
+        <ul id="v-past-list"></ul>
+      </section>
+    </div>
+    <aside class="cv-side">
+      <section class="cv-box" aria-labelledby="v-orgz-h">
+        <h2 class="cp-eyebrow" id="v-orgz-h">Organizers</h2>
+        <ul class="cv-orgz" id="v-orgz-list"></ul>
+        <button type="button" class="textlink" id="v-orgz-add">+ Add an organizer</button>
+        <p class="cp-note" id="v-orgz-full" hidden>Club has room for 5 organizers.</p>
+        <form class="cv-orgz-form" id="v-orgz-form" hidden>
+          <label class="cp-field">Their email<input type="email" id="v-orgz-email" maxlength="120" autocomplete="off"></label>
+          <button type="submit" class="go" id="v-orgz-go">Add</button>
+        </form>
+        <p class="cp-note" id="v-orgz-said" role="status" aria-live="polite"></p>
+      </section>
+      <a class="cv-box cv-link" id="v-settings" href="/club/settings/"><b>Club settings</b><span>Plan, billing ›</span></a>
+    </aside>
+  </div>
+
+  <section class="cp-sect" id="o-register" hidden>
+    <h1>Register your club</h1>
+    <p class="cp-note">Plan group drives and email everyone their details and their group. Try Club free for 30 days.</p>
+    <fieldset>
+      <legend>Who's it for?</legend>
+      <div class="cp-options">
+        <label class="cp-option"><input type="radio" name="o-kind" value="club" checked><span><b>A club</b><small>A car club or chapter in our directory</small></span></label>
+        <label class="cp-option"><input type="radio" name="o-kind" value="group"><span><b>A group</b><small>Any group, like Sunday Canyon Crew</small></span></label>
+        <label class="cp-option"><input type="radio" name="o-kind" value="solo"><span><b>Just me</b><small>Drives you run yourself</small></span></label>
+      </div>
+    </fieldset>
+    <div class="o-club-pick" id="o-club-pick">
+      <div id="o-club-search">
+        <label class="cp-field">Find your club<input type="search" id="o-club-q" autocomplete="off" placeholder="Porsche Club of America, BMW CCA…"></label>
+        <ul class="o-hits" id="o-club-hits"></ul>
+      </div>
+      <div id="o-club-chosen" hidden>
+        <p class="o-chosen"><b id="o-club-name"></b> <button type="button" class="textlink" id="o-club-change">Change</button></p>
+        <label class="cp-field">Chapter or region (optional)<input type="search" id="o-region-q" autocomplete="off" placeholder="Golden Gate, Northern California…"></label>
+        <ul class="o-hits" id="o-region-hits"></ul>
+      </div>
+    </div>
+    <label class="cp-field" id="o-name-row"><span id="o-name-label">Name on Carve</span><input type="text" id="o-name" maxlength="80" autocomplete="organization"></label>
+    <label class="cp-field">Replies go to<input type="email" id="o-contact" maxlength="120" autocomplete="email"></label>
+    <p class="cp-note">Emails to your drivers come from Carve, with replies to this address.</p>
+    <button type="button" class="go" id="o-register-go">Register</button>
+    <p class="cp-note" id="o-reg-said" role="status" aria-live="polite"></p>
+    <p class="cp-note">We approve new clubs by hand, usually the same day. Until then you can plan drives and send them to yourself.</p>
+  </section>
+
+  <div class="cp-inner" id="o-org" hidden>
+    <div><p class="cp-eyebrow" id="o-kind"></p><h1 id="o-title"></h1><p class="cp-mine dim" id="o-approval" hidden></p></div>
+    <label class="cp-field" id="o-pick-row" hidden>Your clubs<select id="o-pick"></select></label>
+    <p><a class="go" id="o-plan-link" href="/plan/?group">Plan a group drive</a></p>
+
+    <section class="cp-sect" id="o-plan" aria-labelledby="o-plan-h" hidden>
+      <h2 id="o-plan-h">Plan</h2>
+      <p class="o-strong" id="o-plan-line"></p>
+      <p class="cp-note" id="o-renew"></p>
+      <p class="cp-note" id="o-free"></p>
+      <ul class="o-plans" id="o-plans"></ul>
+      <button type="button" class="go dark" id="o-portal" hidden>Manage billing</button>
+      <p class="cp-note" id="o-plan-said" role="status" aria-live="polite"></p>
+      <p class="cp-note" id="o-bigger">More than 5 organizers, invoicing or event help? Write to <a id="o-bigger-link" href="mailto:chris@carve.run">chris@carve.run</a>.</p>
+    </section>
+
+    <section class="cp-sect" id="o-members" aria-labelledby="o-members-h" hidden>
+      <h2 id="o-members-h">Organizers</h2>
+      <p class="cp-note">People who can plan and send your club's drives. They all have the same access, and each gets Apex all year.</p>
+      <p class="o-strong" id="o-seats"></p>
+      <div class="o-meter" id="o-seat-meter" role="presentation"><span></span></div>
+      <p class="cp-mine" id="o-full" hidden></p>
+      <div class="o-invite" id="o-invite-box" hidden>
+        <p class="cp-field">Invite by email</p>
+        <div class="o-invite-rows" id="o-invite-rows"></div>
+        <div class="o-row"><button type="button" class="textlink" id="o-invite-add">+ Add row</button><button type="button" class="go" id="o-invite-go">Invite</button></div>
+      </div>
+      <p class="cp-note" id="o-members-said" role="status" aria-live="polite"></p>
+      <ul class="o-members" id="o-member-list"></ul>
+      <h3 id="o-former-h" hidden>Former organizers</h3>
+      <ul class="o-members" id="o-former"></ul>
+    </section>
+
+    <!-- The club's address book (Chris, 11/9): for "Pick from your club's members" when inviting to a drive. No access, no Apex, no Carve account needed. -->
+    <section class="cp-sect" id="o-book" aria-labelledby="o-book-h" hidden>
+      <h2 id="o-book-h">Members</h2>
+      <p class="cp-note">Your club's list, for inviting to drives. Members don't need a Carve account and don't get access to the club. Everyone going on a drive gets Apex for that drive.</p>
+      <p class="o-strong" id="o-book-count"></p>
+      <div class="o-invite">
+        <p class="cp-field">Add members</p>
+        <div class="o-invite-rows" id="o-book-rows"></div>
+        <div class="o-row"><button type="button" class="textlink" id="o-book-add-row">+ Add row</button><button type="button" class="textlink" id="o-book-paste-open">Paste many at once</button><button type="button" class="go" id="o-book-add">Add</button></div>
+        <label class="cp-field" id="o-book-paste-box" hidden>Paste emails, one per line (names too: "Ray Kim &lt;ray@x.com&gt;")<textarea id="o-book-paste" rows="4"></textarea></label>
+      </div>
+      <p class="cp-note" id="o-book-said" role="status" aria-live="polite"></p>
+      <ul class="o-members" id="o-book-list"></ul>
+    </section>
+
+    <section class="cp-sect" id="o-details" aria-labelledby="o-details-h" hidden>
+      <h2 id="o-details-h">Details</h2>
+      <label class="cp-field">Name on Carve<input type="text" id="o-org-name" maxlength="80"></label>
+      <label class="cp-field">Replies go to<input type="email" id="o-reply" maxlength="120"></label>
+      <div class="o-row"><button type="button" class="go" id="o-save">Save</button><span class="cp-note" id="o-details-said" role="status" aria-live="polite"></span></div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Carve — for the roads worth driving.</span>
+    <div class="links">
+      <a href="/drives/">Drives</a>
+      <a href="/compare/">Compare</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/support/">Support</a>
+    </div>
+    <span>iPhone · CarPlay · Android · Android Auto</span>
+  </div>
+</footer>
+
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
+<script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
+<script type="module" src="/assets/club-load.js?v=ca475e4d36"></script>
+</body>
+</html>

@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/NXJDQkP">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/phoenix/">More car events in the Phoenix area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "a54adcf7-b27b-4177-8b44-c0f0b15c3172", "token": "NXJDQkP", "kind": "coffee", "name": "Anthem Cars + Coffee", "venue": "Outlets North Phoenix (Outlets at Anthem)", "address": "4250 W Anthem Way, Anthem, AZ 85086", "locality": "Anthem, AZ", "lat": 33.8741, "lon": -112.1486, "timeZone": "America/Phoenix", "next": [{"start": "2026-11-29T15:00:00Z", "end": "2026-11-29T17:00:00Z"}, {"start": "2026-12-27T15:00:00Z", "end": "2026-12-27T17:00:00Z"}, {"start": "2027-01-31T15:00:00Z", "end": "2027-01-31T17:00:00Z"}], "repeats": "Last Sunday monthly", "cars": "All makes welcome", "cost": "Free", "organizer": "Anthem Cars and Coffee", "sourceUrl": "https://anthemcarsandcoffee.com/listing/cars-and-coffee-az/", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/61581216e392e266e819.png", "page": "https://anthemcarsandcoffee.com/", "background": "#000000", "crop": [0.061, 0.152, 0.871, 0.704]}, "circuit": null, "about": {"text": "Organizer's listing headline says last Sunday 8–10 from October, but its body text still says last Saturday; check before going.", "source": "carve", "page": null}, "notes": "Organizer's listing headline says last Sunday 8–10 from October, but its body text still says last Saturday; check before going.", "membersOnly": false, "series": "0329a9f9eb", "summary": "Anthem Cars and Coffee runs a Cars & Coffee meet at Outlets North Phoenix (Outlets at Anthem) in Anthem, AZ on Sunday, November 29, 2026, 8 AM to 10 AM. It runs last Sunday monthly. Check before going.", "near": "About 30 miles north of Phoenix, as the crow flies.", "roads": [{"n": "Beeline Highway: Bush Highway to Payson", "s": "beeline-highway-az87", "m": 51.7, "d": 38}, {"n": "Usery Pass Road and Bush Highway", "s": "usery-pass-bush-highway", "m": 10.0, "d": 38}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

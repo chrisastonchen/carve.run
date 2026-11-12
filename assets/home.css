@@ -194,6 +194,37 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .faq2 summary { font-weight: 700; }
 .faq2 details p { color: var(--ink-2); line-height: 1.55; }
 
+/* The club journey's two actions (Club-Sprint §6), and the route door below them */
+.hero-acts { display: flex !important; flex-wrap: wrap; align-items: center; gap: 12px; }
+.hero-acts p { flex-basis: 100%; margin: 0; font-size: 15px; font-weight: 600; color: var(--ink-2); }
+.hero-acts p a { color: var(--green-ink); font-weight: 700; text-decoration: underline; }
+.hero-acts p[hidden] { display: none; }
+/* A Club organizer's menu under Plan a drive (board N2). */
+.hero-plan { position: relative; }
+.hero-plan .chev { width: 14px; height: 14px; margin-left: 8px; }
+.hero-menu { position: absolute; z-index: 20; left: 0; top: calc(100% + 8px); min-width: 340px; padding: 6px; border-radius: 16px; background: #161B18; border: 1px solid var(--rule); box-shadow: 0 14px 36px rgba(0,0,0,.4); display: flex; flex-direction: column; }
+.hero-menu[hidden] { display: none; }
+.hero-menu a { padding: 11px 12px; border-radius: 10px; color: var(--ink); font-size: 15.5px; font-weight: 700; text-decoration: none; }
+.hero-menu a:hover, .hero-menu a:focus-visible { background: var(--green-tint, #14301F); outline: none; }
+.hero-menu hr { border: 0; height: 1px; background: var(--rule); margin: 4px 6px; }
+@media not all and (prefers-color-scheme: dark) {
+  .hero-menu { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.18); }
+  .hero-menu a:hover, .hero-menu a:focus-visible { background: #EEF5F0; }
+}
+.door-label { margin: -8px 0 0; font-size: 15px; font-weight: 700; }
+.door-label a { color: var(--green-ink); }
+.door[hidden] { display: none !important; }
+/* Plan. Drive. Review. */
+.pdr { max-width: 1100px; margin: 0 auto; padding: 64px 24px 24px; display: flex; flex-direction: column; gap: 28px; }
+.pdr h2 { font-size: clamp(32px, 3.6vw, 46px); text-align: center; }
+.pdr-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: pdr; }
+.pdr-steps li { counter-increment: pdr; display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 22px; background: #161B18; border: 1px solid var(--rule); }
+.pdr-steps li::before { content: counter(pdr); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
+.pdr-steps b { font-size: 20px; }
+.pdr-steps span { color: var(--ink-2); line-height: 1.5; }
+.pdr-steps .textlink { margin-top: auto; align-self: flex-start; padding: 0; border: 0; background: none; color: var(--green-ink); font-weight: 700; text-decoration: underline; }
+@media not all and (prefers-color-scheme: dark) { .pdr-steps li { background: #fff; } }
+
 /* ═══ A PHONE ═══ */
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .wide-only-h { display: none !important; }
@@ -203,6 +234,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero h1 { font-size: 38px; }
   .hero .pitch { font-size: 17px; }
   .door, .for-app { display: none; }
+  .hero-acts { display: none !important; }
+  .pdr { padding: 40px 16px 8px; }
+  .pdr-steps { grid-template-columns: 1fr; }
   .hero-map { display: none; }
   .near { padding: 14px 0 8px; gap: 14px; }
   .near-head { padding: 0 16px; }

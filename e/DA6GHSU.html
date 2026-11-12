@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/DA6GHSU">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/seattle/">More car events in the Seattle area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "fccc2d38-6d6c-46d2-b4de-2078c3cc154a", "token": "DA6GHSU", "kind": "coffee", "name": "MINIs and Coffee", "venue": "Griot's Garage Flagship Retail Store", "address": "3333 S 38th St, Tacoma, WA 98409", "locality": "Tacoma, WA", "lat": 47.223, "lon": -122.4797, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-14T18:00:00Z", "end": "2026-11-14T20:00:00Z"}], "repeats": null, "cars": "MINI owners and fans", "cost": null, "organizer": "Griot's Garage (host)", "sourceUrl": "https://www.griotsgarage.com/events/", "registerUrl": null, "lastConfirmed": "2026-11-09", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/db5adac51e9662135809.png", "page": "https://www.griotsgarage.com/", "background": "#EA0029", "crop": [0.092, 0.058, 0.825, 0.817]}, "circuit": null, "about": {"text": "Griot's Garage hosts and attends many car shows and car club functions and the public is invited to attend and share their passion.", "source": "organizer", "page": "https://www.griotsgarage.com/events/"}, "notes": "Marque meet listed on Griot's events calendar; organizing club not named.", "membersOnly": false, "series": "6988270e61", "summary": "Griot's Garage (host) runs a Cars & Coffee meet at Griot's Garage Flagship Retail Store in Tacoma, WA on Saturday, November 14, 2026, 10 AM to 12 PM.", "near": "About 30 miles south of Seattle, as the crow flies.", "roads": [{"n": "Highway 106: Hood Canal South Shore", "s": "hood-canal-south-shore", "m": 18.8, "d": 23}, {"n": "Highway 101: Hood Canal", "s": "highway-101-hood-canal", "m": 36.8, "d": 33}, {"n": "Snoqualmie Valley: Highway 203", "s": "snoqualmie-valley-highway-203", "m": 28.0, "d": 37}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

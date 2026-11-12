@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/EQqiALi">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/socal/">More car events in Southern California</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "c744f53e-5626-43ee-a010-b45d0d50bb8c", "token": "EQqiALi", "kind": "coffee", "name": "Supercar Sunday", "venue": "Pierce College (main lot off Victory Blvd)", "address": "6201 Winnetka Ave, Woodland Hills, CA 91371", "locality": "Woodland Hills, CA", "lat": 34.1834, "lon": -118.5798, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-15T15:00:00Z", "end": "2026-11-15T18:00:00Z"}, {"start": "2026-11-22T15:00:00Z", "end": "2026-11-22T18:00:00Z"}, {"start": "2026-11-29T15:00:00Z", "end": "2026-11-29T18:00:00Z"}, {"start": "2026-12-06T15:00:00Z", "end": "2026-12-06T18:00:00Z"}, {"start": "2026-12-13T15:00:00Z", "end": "2026-12-13T18:00:00Z"}, {"start": "2026-12-20T15:00:00Z", "end": "2026-12-20T18:00:00Z"}], "repeats": "Every Sunday", "cars": "All makes welcome", "cost": null, "organizer": "Supercar Sunday", "sourceUrl": "https://www.supercarsunday.com/pages/schedule", "registerUrl": null, "lastConfirmed": "2026-11-12", "timeUnknown": null, "image": null, "logo": null, "circuit": null, "about": {"text": "Supercar Sunday is held every Sunday Join us every Sunday morning unless otherwise noted. The dates below include regular Supercar Sunday events, special marquee days, featured themes, and scheduled exceptions. Our marquee schedule is carefully coordinated with enthusiast groups and local community members.", "source": "organizer", "page": "https://supercarsunday.com/pages/schedule"}, "notes": "Use the Victory Blvd or Mason St entrances. 2nd Sunday is Porsche day; Dec 6 is the Motor4Toys show; rained out shows are posted on the site.", "membersOnly": false, "series": "016c63e335", "summary": "Supercar Sunday runs a Cars & Coffee meet at Pierce College (main lot off Victory Blvd) in Woodland Hills, CA on Sunday, November 15, 2026, 7 AM to 10 AM. It runs every Sunday. Use the Victory Blvd or Mason St entrances. 2nd Sunday is Porsche day; Dec 6 is the Motor4Toys show; rained out shows are posted on the site.", "near": "About 20 miles northwest of Los Angeles, as the crow flies.", "roads": [{"n": "Topanga Canyon Boulevard", "s": "topanga-canyon-boulevard", "m": 11.9, "d": 2}, {"n": "Mulholland Drive", "s": "mulholland-drive-los-angeles", "m": 11.3, "d": 7}, {"n": "Stunt Road and Saddle Peak Road", "s": "stunt-road-saddle-peak", "m": 5.1, "d": 8}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

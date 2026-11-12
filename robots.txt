@@ -5,5 +5,10 @@ User-agent: *
 Content-Signal: search=yes, ai-input=yes
 Allow: /
 Disallow: /profile/
+# A group drive's pages from its emails: personal links, never for search.
+Disallow: /a/
+Disallow: /d/
+Disallow: /u/
+Disallow: /club/
 
 Sitemap: https://carve.run/sitemap.xml

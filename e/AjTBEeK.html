@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/AjTBEeK">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/las-vegas/">More car events in the Las Vegas area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "1623581d-26fa-4e4c-899b-571a1b4967e6", "token": "AjTBEeK", "kind": "track", "name": "ClubSport Experience HPDE at Spring Mountain (East A)", "venue": "Spring Mountain Motor Resort", "address": "4767 S Highway 160, Pahrump, NV 89048", "locality": "Pahrump, NV", "lat": 36.17571, "lon": -115.9055, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-15T16:00:00Z", "end": "2026-11-16T01:00:00Z"}], "repeats": null, "cars": "Any mechanically sound car; beginner-friendly", "cost": null, "organizer": "ClubSport Experience", "sourceUrl": "https://www.motorsportreg.com/events/clubsport-experience-spring-mountain-east-a-hpde-724381", "registerUrl": "https://web.clubsportexperience.com/east-a", "lastConfirmed": "2026-11-12", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/2c0c3fb7ed9243bb6196.jpg", "credit": "ClubSport Experience via MotorsportReg", "page": "https://www.motorsportreg.com/events/clubsport-experience-spring-mountain-east-a-hpde-724381"}, "logo": null, "circuit": null, "about": {"text": "Join the ClubSport Experience at Spring Mountain Motor Resort. Beginner-friendly, premium HPDE designed for drivers of all levels. We run an extremely low car count to maximize clean track time.", "source": "organizer", "page": "https://www.motorsportreg.com/events/clubsport-experience-spring-mountain-east-a-hpde-724381"}, "notes": "Low car count HPDE on the East A layout; no refunds. Also listed on MotorsportReg.", "membersOnly": false, "series": "fadb9fb2e2", "summary": "ClubSport Experience runs a track day at Spring Mountain Motor Resort in Pahrump, NV on Sunday, November 15, 2026. Low car count HPDE on the East A layout; no refunds.", "near": "About 45 miles west of Las Vegas, as the crow flies.", "roads": [{"n": "Mount Charleston Loop", "s": "mount-charleston-loop", "m": 39.9, "d": 18}, {"n": "Red Rock Canyon Scenic Drive", "s": "red-rock-canyon-scenic-drive", "m": 11.9, "d": 23}, {"n": "Highway 159: Red Rock to Blue Diamond", "s": "highway-159-red-rock-blue-diamond", "m": 14.0, "d": 26}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>

@@ -3,8 +3,18 @@
 // the visitor's phone, and the account — Sign in, or the planner's
 // username with Sign out.
 
-const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
-const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
+// A local preview may point at a test backend (a Supabase branch):
+// localStorage "carve.dev.backend" = {"url": "https://<ref>.supabase.co",
+// "key": "<publishable key>"}. Only on localhost, never on carve.run.
+const DEV_BACKEND = (() => {
+  try {
+    return /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? JSON.parse(localStorage.getItem("carve.dev.backend") || "null") : null;
+  } catch {
+    return null;
+  }
+})();
+const SUPABASE_URL = DEV_BACKEND?.url || "https://uvaabajzkzupecemzsug.supabase.co";
+const SUPABASE_KEY = DEV_BACKEND?.key || "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
 export const SESSION_KEY = "carve.plan.session";
 
 const $ = (id) => document.getElementById(id);
@@ -76,6 +86,8 @@ function wireBar() {
     location.reload();
   });
   loadProfile();
+  // The bell, loaded only for someone signed in.
+  import("/assets/notify-bell.js?v=afa06aa693").then((m) => m.mountBell()).catch(() => {});
 }
 
 /// The planner's account, as the planner shows it: username and picture.

@@ -1,0 +1,26 @@
+/* The drive pass on a club drive's route link (route-pass.js). */
+.rp { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border-radius: 16px; background: #EEF5F0; color: #15181C; }
+.rp p { margin: 0; }
+.rp-club { font-size: 13px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: #1D5B3A; }
+.rp .rp-title { margin: 0; font-size: 20px; font-weight: 800; }
+.rp-when { color: #4A5058; }
+.rp-body { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+.rp-pass { font-size: 16px; line-height: 1.45; }
+.rp-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.rp-go { height: 46px; padding: 0 22px; border-radius: 999px; border: 0; background: #1D5B3A; color: #fff; font: inherit; font-weight: 800; font-size: 16px; cursor: pointer; }
+.rp-go.ghost { background: #fff; color: #15181C; box-shadow: inset 0 0 0 1.5px #C9D2CC; }
+.rp-go:disabled { opacity: .6; }
+.rp-link { align-self: flex-start; padding: 0; border: 0; background: none; font: inherit; font-weight: 700; color: #1D5B3A; cursor: pointer; text-decoration: underline; }
+.rp-said:empty { display: none; }
+.rp-said { color: #8A2A12; font-weight: 600; }
+.rp.folded .rp-body { flex-direction: row; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.rp-small { color: #4A5058; }
+@media (prefers-color-scheme: dark) {
+  .rp { background: #14301F; color: #EEF1EE; }
+  .rp-club { color: #6FD39A; }
+  .rp-when, .rp-small { color: #C3CAC5; }
+  .rp-go { background: #6FD39A; color: #0B0E0C; }
+  .rp-go.ghost { background: none; color: #EEF1EE; box-shadow: inset 0 0 0 1.5px #3A443E; }
+  .rp-link { color: #6FD39A; }
+  .rp-said { color: #F2A38C; }
+}

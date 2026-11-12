@@ -1,0 +1,9 @@
+/* The club planner's Attendees and Groups steps, beyond plan.css (from 11/9 evening, so the two Web Dev sessions don't meet at plan.css's end). Working styles, polish last. */
+.at-tabs { margin-top: 4px; flex-wrap: wrap; }
+.at-open { padding: 8px 12px; border-radius: 12px; background: var(--fill); }
+.at-wait-item .gb-grip { margin-right: 2px; }
+.at-wait-item.dragging { opacity: .4; }
+.at-wait-list.over { box-shadow: inset 0 0 0 2px var(--green-ink); border-radius: 10px; }
+
+/* email-rows.js without the Name column (the Pre-run step). */
+.at-mail-head.one, .at-mail-row.one { grid-template-columns: 1fr; }

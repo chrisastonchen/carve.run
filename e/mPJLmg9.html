@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=47">
-<link rel="stylesheet" href="/assets/route-view.css?v=6f826bf65e">
+<link rel="stylesheet" href="/plan/plan.css?v=60">
+<link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/events.css?v=fa1fbe7f62">
 <meta property="og:url" content="https://carve.run/e/mPJLmg9">
@@ -61,9 +61,10 @@
 <header class="bar">
   <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
   <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/club/" class="wide-only">For Clubs</a>
     <a href="/drives/">Explore</a>
-    <a href="/events/" class="wide-only" aria-current="page">Events</a>
-    <a href="/plan/" class="wide-only">Plan a Route</a>
+    <a href="/events/" aria-current="page" class="wide-only">Events</a>
     <a href="/pricing/">Pricing</a>
     <a href="/support/">Support</a>
   </nav>
@@ -82,9 +83,10 @@
   <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 <nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/club/">For Clubs</a>
   <a href="/drives/">Explore</a>
-  <a href="/events/">Events</a>
-  <a href="/plan/">Plan a Route</a>
+  <a href="/events/" aria-current="page">Events</a>
   <a href="/pricing/">Pricing</a>
   <a href="/support/">Support</a>
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
@@ -108,14 +110,14 @@
 </article>
 <p class="evx-more"><a href="/events/atlanta/">More car events in the Atlanta area</a></p>
 <nav class="rv-links" aria-label="More">
-  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
+  <a href="/drives/">Drives</a><a href="/events/">Events</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a>
 </nav>
 </div>
 </main>
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "9de316af-160d-4885-aadc-4c8909b6a377", "token": "mPJLmg9", "kind": "track", "name": "Chin Track Days – Post-Thanksgiving Road Atlanta", "venue": "Michelin Raceway Road Atlanta", "address": "5300 Winder Highway, Braselton, GA 30517", "locality": "Braselton, GA", "lat": 34.14594, "lon": -83.81493, "timeZone": "America/New_York", "next": [{"start": "2026-11-28T13:00:00Z", "end": "2026-11-28T22:00:00Z"}, {"start": "2026-11-29T13:00:00Z", "end": "2026-11-29T22:00:00Z"}], "repeats": null, "cars": "Street and track cars; novice through advanced run groups", "cost": null, "organizer": "Chin Track Days", "sourceUrl": "https://chintrackdays.com/schedule.aspx", "registerUrl": "https://chintrackdays.com/schedule.aspx", "lastConfirmed": "2026-11-11", "timeUnknown": true, "image": null, "logo": {"url": "https://carve.run/events/media/0408cae0354555706644.png", "page": "https://www.chintrackdays.com/", "background": "#F2F2F4", "crop": [0.0, 0.005, 1.0, 0.99]}, "circuit": null, "about": {"text": "Chin Track Days is the leading provider of non-competition sports car track events in the USA. No other provider offers as many dates, at as many venues.", "source": "organizer", "page": "https://chintrackdays.com/schedule.aspx"}, "notes": "Chin's yearly post-Thanksgiving weekend; also on Road Atlanta's track-day schedule.", "membersOnly": false, "series": "008440f3ba", "summary": "Chin Track Days runs a track day at Michelin Raceway Road Atlanta in Braselton, GA on Saturday, November 28, 2026. Chin's yearly post-Thanksgiving weekend.", "near": "About 45 miles northeast of Atlanta, as the crow flies.", "roads": [{"n": "Highway 60: Dahlonega to Morganton", "s": "ga-60-woody-gap-suches", "m": 33.5, "d": 34}, {"n": "Neels Gap: US 129", "s": "neels-gap-us-129", "m": 10.4, "d": 36}, {"n": "Highway 197: Clarkesville to Lake Burton", "s": "ga-197-clarkesville-lake-burton", "m": 24.0, "d": 37}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=03630d7724"></script>
+<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
@@ -155,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=01e2d5b98e" defer></script>
+<script src="/assets/carve-site.js?v=b592089c5a" defer></script>
 </body>
 </html>
