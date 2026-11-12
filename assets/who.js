@@ -2,7 +2,7 @@
 // store Apex (apex_mine), asked once and kept for the browser session, so a
 // page load doesn't ask again. → { state, clubs }
 import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=a3869ea508";
-import { clubsOf, stateOf } from "/assets/who-words.js?v=39abf98d28";
+import { clubsOf, stateOf } from "/assets/who-words.js?v=f3fe2a71de";
 import { PLANS } from "/assets/plans.js?v=a1e99a533b";
 
 const KEPT = "carve.who";

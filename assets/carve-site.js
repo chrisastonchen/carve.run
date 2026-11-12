@@ -224,8 +224,8 @@
 
   // MARK: - My Drives
 
-  // Signed in (the planner's sign-in, kept in this browser), the bar and the
-  // phone's menu are drawn for who's looking (site-nav.js, Chris 11/11).
+  // Signed in (the planner's sign-in, kept in this browser): My Drives and
+  // Sign out in the phone's bar and menu.
   function myDrivesLink() {
     var session = safe(function () { return JSON.parse(localStorage.getItem("carve.plan.session") || "null"); }, null);
     if (!session || !session.user) return;
@@ -263,9 +263,6 @@
       if (/^\/profile\//.test(location.pathname)) mine.setAttribute("aria-current", "page");
       sheet.append(mine, out);
     }
-    // The bar by who's looking (boards N3–N5): Free, Individual or a Club
-    // organizer, with Saved; site-nav.js draws it.
-    safe(function () { import("/assets/site-nav.js?v=1b4ee1665d").catch(function () {}); });
   }
 
   // MARK: - Sign in on a phone
@@ -683,7 +680,13 @@
     });
   };
 
-  function ready() { tagLinks(); tagBanner(); myDrivesLink(); phoneSignIn(); sheetApp(); whoProfile(); }
+  // The bar and the phone's menu by who's looking, signed out too (boards
+  // N3–N5; Plan ▾ for everyone, Chris 11/12): site-nav.js draws them.
+  function siteNav() {
+    safe(function () { import("/assets/site-nav.js?v=fbdd218a52").catch(function () {}); });
+  }
+
+  function ready() { tagLinks(); tagBanner(); myDrivesLink(); siteNav(); phoneSignIn(); sheetApp(); whoProfile(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
   else ready();
 

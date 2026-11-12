@@ -49,6 +49,9 @@ export const clubsOf = (orgs = [], clubTiers = ["club", "group"], now = Date.now
 /// A club's New drive (O3).
 export const newDriveHref = (club) => `/club/drive/?org=${encodeURIComponent(club.id)}`;
 export const FOR_MYSELF = { label: "Plan a drive for myself", href: "/plan/" };
+/// Plan ▾'s first item for everyone (Chris, 11/12): without Club it's the
+/// For Clubs page, to start one.
+export const GROUP_OR_CLUB = "Plan a group or club drive";
 /// When an organizer has no club by name (shouldn't happen: the plan and the
 /// club are made together).
 export const NO_CLUB_NAME = "My club or group";
@@ -71,7 +74,7 @@ export function homeMenu(clubs) {
 /// href, note? }] }.
 export function navFor(state, clubs = []) {
   const link = (key, label, href) => ({ key, label, href });
-  const plan = state === "out" ? link("plan", "Plan", "/plan/") : { key: "plan", label: "Plan", menu: planMenu(state, clubs) };
+  const plan = { key: "plan", label: "Plan", menu: planMenu(state, clubs) };
   const clubsItem = state === "club" ? { key: "clubs", label: "My Clubs", menu: myClubsMenu(clubs) } : link("clubs", "For Clubs", "/club/");
   return [
     plan,
@@ -84,14 +87,17 @@ export function navFor(state, clubs = []) {
   ];
 }
 
-/// Plan ▾ (board N4): an organizer's clubs, each to its New drive, then the
-/// map planner for themselves, then Drafts (N6).
+/// Plan ▾ (board N4): a group or club drive (an organizer's clubs, each to
+/// its New drive; anyone else, For Clubs), then the map planner for
+/// themselves, then Drafts (N6) once signed in.
 export const DRAFTS = { label: "Drafts", href: "/drafts/" };
 export function planMenu(state, clubs = []) {
   return [
-    ...(state === "club" ? clubs.map((c) => ({ label: `Plan a drive for ${c.name || NO_CLUB_NAME}`, href: newDriveHref(c) })) : []),
+    ...(state === "club" && clubs.length
+      ? clubs.map((c) => ({ label: clubs.length === 1 ? GROUP_OR_CLUB : `${GROUP_OR_CLUB} for ${c.name || NO_CLUB_NAME}`, href: newDriveHref(c) }))
+      : [{ label: GROUP_OR_CLUB, href: "/club/" }]),
     FOR_MYSELF,
-    DRAFTS,
+    ...(state === "out" ? [] : [DRAFTS]),
   ];
 }
 

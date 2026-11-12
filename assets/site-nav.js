@@ -1,10 +1,11 @@
 // The site's bar and the phone's menu by who's looking (boards N3–N5;
-// Chris 11/11): carve-site.js loads this when someone is signed in. The
-// pages carry the signed-out bar (Plan · For Clubs · Explore · Events ·
-// Pricing · Support); this draws Free's, Individual's or a Club organizer's
-// from who-words.js navFor: Plan ▾ and My Clubs ▾ menus, Saved, Upgrade.
-import { who, whoNow } from "/assets/who.js?v=a86c218f65";
-import { currentKey, navFor } from "/assets/who-words.js?v=39abf98d28";
+// Chris 11/11): carve-site.js loads this on every page. The pages carry
+// the signed-out bar (Plan · For Clubs · Explore · Events · Pricing ·
+// Support); this draws it from who-words.js navFor for whoever's looking,
+// signed out too (Plan ▾, Chris 11/12): Plan ▾ and My Clubs ▾ menus,
+// Saved, Upgrade.
+import { who, whoNow } from "/assets/who.js?v=4b12d2f422";
+import { currentKey, navFor } from "/assets/who-words.js?v=f3fe2a71de";
 
 const CSS = `
 .bar .links .nav-m { position: relative; display: inline-flex; }
@@ -114,7 +115,6 @@ function sheetItems(items, cur) {
 }
 
 export function drawNav({ state, clubs }) {
-  if (state === "out") return;
   const items = navFor(state, clubs);
   const cur = currentKey(location.pathname);
   document.querySelectorAll(".bar nav.links").forEach((nav) => nav.replaceChildren(...items.map((item) => barItem(item, cur))));

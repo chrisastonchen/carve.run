@@ -8,9 +8,9 @@
 import { $, billing, el, myOrgs, rpc, sessionEmail, signedIn } from "/assets/club-api.js?v=2060100765";
 import { STAGE_WORDS, datesText, planCards, planEyebrow, priceText, renewalTerms, trialDays, splitHome, stageOf, trialStatus } from "/assets/club-words.js?v=e4108d1a92";
 import { organizersBox } from "/assets/club-organizers.js?v=a0226bf956";
-import { billsToday } from "/assets/who-words.js?v=39abf98d28";
+import { billsToday } from "/assets/who-words.js?v=f3fe2a71de";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=55f6349230";
-import { forgetWho } from "/assets/who.js?v=a86c218f65";
+import { forgetWho } from "/assets/who.js?v=4b12d2f422";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
