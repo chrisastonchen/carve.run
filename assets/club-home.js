@@ -173,18 +173,19 @@ async function load(prefer) {
 // ── Start a club (O1) ──
 
 function renderStart() {
-  $("v-plans").replaceChildren(...planCards(PLANS).map((c) => {
-    const card = el("div", "v-plan");
-    const body = el("span", "v-plan-body");
-    body.append(el("b", "v-plan-name", c.name), el("span", "v-plan-price", c.price));
-    const list = el("ul", "v-plan-lines");
-    for (const line of c.lines) list.append(el("li", "", line));
-    body.append(list);
-    card.append(body);
-    return card;
-  }));
+  // The plan on top (O1 redesign, Chris 11/12): its name and price, and
+  // what it has in one plain row, from plans.js.
+  const club = planCards(PLANS)[0];
+  if (club) {
+    $("v-price").textContent = `Carve ${club.name} · ${club.price}`;
+    $("v-perks").textContent = ["Offline navigation", ...club.lines].join(" · ");
+  }
+  $("v-trial-chip").textContent = `First ${trialDays(BY_TIER.club)} days free`;
   // A club made already, with no plan yet (Checkout left): its name stays.
   if (org && !$("v-name").value) $("v-name").value = org.name;
+  nameTyped();
+  $("v-start-changed").hidden = true;
+  setTimeout(() => $("v-name").focus({ preventScroll: true }), 0);
   // No second trial: a club sharing an organizer with one that had a plan
   // is billed today (board N5; 0058's org_trial_used, 0090's had_plan). A
   // guess for the first paint: a club made already asks org-billing, whose
@@ -213,11 +214,17 @@ function showTerms({ trial, terms, amount }) {
   shown = !!trial;
   // The price from plans.js, so a price change follows the runbook in one place; org-billing's when it says.
   const price = Number.isFinite(amount) ? priceText(amount / 100) : Number.isFinite(BY_TIER.club?.year) ? priceText(BY_TIER.club.year) : "";
-  $("v-trial-note").textContent = trial ? `${trialDays(BY_TIER.club)}-day free trial. Card needed, cancel any time.`
+  // A trial: the chip. None: the note, in the chip's place.
+  $("v-trial-chip").hidden = !trial;
+  $("v-trial-note").hidden = !!trial;
+  $("v-trial-note").textContent = trial ? ""
     : `No free trial${hadPlan ? ", because you've had a Club plan before" : " for this club"}. You'll be billed ${price} today, and you can cancel any time.`;
   $("v-start-go").textContent = trial ? "Start free trial" : `Start Club for ${price}`;
   $("v-terms").textContent = terms || renewalTerms(BY_TIER.club, trial);
 }
+
+/// The button waits for a name (O1 redesign); Enter starts it as a press does.
+const nameTyped = () => { $("v-start-go").disabled = !$("v-name").value.trim(); };
 
 /// org-billing's word on this club's Checkout: {trial, terms, amount, …}.
 const preview = () => billing({ action: "preview", org_id: org.id, plan: "club", interval: "year" });
@@ -230,6 +237,9 @@ export const TERMS_CHANGED = {
 
 async function startTrial() {
   const say = (t) => { $("v-start-said").textContent = t; };
+  // Checkout would differ from what the page said: above the question.
+  const changed = (t) => { $("v-start-changed").textContent = t; $("v-start-changed").hidden = !t; };
+  changed("");
   const name = $("v-name").value.trim();
   if (!name) return say("Add your club's name.");
   $("v-start-go").disabled = true;
@@ -247,7 +257,8 @@ async function startTrial() {
     const answer = await preview().catch(() => null);
     if (answer && !!answer.trial !== shown) {
       showTerms(answer);
-      say(answer.trial ? TERMS_CHANGED.trial(trialDays(BY_TIER.club)) : TERMS_CHANGED.today);
+      say("");
+      changed(answer.trial ? TERMS_CHANGED.trial(trialDays(BY_TIER.club)) : TERMS_CHANGED.today);
       $("v-start-go").disabled = false;
       return;
     }
@@ -362,7 +373,8 @@ function closeMenus() {
 }
 
 function wire() {
-  $("v-start-go").addEventListener("click", startTrial);
+  $("v-start-form").addEventListener("submit", (e) => { e.preventDefault(); if (!$("v-start-go").disabled) startTrial(); });
+  $("v-name").addEventListener("input", nameTyped);
   document.addEventListener("click", (e) => { if (!e.target.closest(".v-drive-row .cv-more")) closeMenus(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenus(); });
   $("v-pick").addEventListener("change", (e) => {

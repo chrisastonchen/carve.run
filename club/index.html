@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/styles.css?v=ce0bec7a67">
 <link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
-<link rel="stylesheet" href="/assets/club-v2.css?v=11e2587e1f">
+<link rel="stylesheet" href="/assets/club-v2.css?v=aa50fdd16d">
 <link rel="stylesheet" href="/assets/home.css?v=b27fea7e01">
 <link rel="stylesheet" href="/assets/club-intro.css?v=33c22d52ac">
 <meta name="apple-itunes-app" content="app-id=6808087716">
@@ -171,16 +171,29 @@
 
 
   <!-- Club v2 (CLUB_V2 in club-flags.js): Start a club (O1) and Club home (O2, O2b). -->
-  <section class="cv-start" id="v-start" hidden>
-    <h1>Start your club on Carve</h1>
+  <!-- Start a club (O1), redesigned (Chris 11/12; Product's mock): the plan
+       on top, then one question, Typeform-style. club-home.js fills the
+       price, the chip or the no-trial note, and the button's words. -->
+  <section class="cv-start cv-o1" id="v-start" hidden>
+    <div class="o1-head" aria-label="Club plan">
+      <p class="o1-price"><b id="v-price">Carve Club · $499 a year</b><span class="o1-chip" id="v-trial-chip">First 30 days free</span></p>
+      <p class="cp-note o1-today" id="v-trial-note" hidden></p>
+      <p class="o1-apex">Every driver on your drives gets Carve Apex at no extra cost (usually $49.99 a year).</p>
+      <p class="o1-perks" id="v-perks"></p>
+    </div>
     <p class="cp-note v-login-note" id="v-login-note" hidden>This account isn't an organizer of a club yet. Start one below, or ask your club's organizer to add you.</p>
-    <p class="cp-note" id="v-trial-note">30-day free trial. Card needed, cancel any time.</p>
-    <div class="v-plans" id="v-plans" aria-label="Plan"></div>
     <p class="cp-note" id="v-individual" hidden>Organizers get everything in Individual with Club. You can cancel Individual in your App Store or Google Play settings.</p>
-    <label class="cp-field v-name">Club name<input type="text" id="v-name" maxlength="80" autocomplete="organization" placeholder="Ridge Road Club"></label>
-    <button type="button" class="go" id="v-start-go">Start free trial</button>
-    <p class="cp-note" id="v-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
-    <p class="cp-note" id="v-start-said" role="status" aria-live="polite"></p>
+    <p class="cp-note o1-changed" id="v-start-changed" role="status" aria-live="polite" hidden></p>
+    <form class="o1-ask" id="v-start-form" autocomplete="off">
+      <div class="o1-q">
+        <span class="o1-n" aria-hidden="true">1</span>
+        <h1><label for="v-name">What's your club called?</label></h1>
+      </div>
+      <input type="text" class="o1-name" id="v-name" maxlength="80" autocomplete="organization" placeholder="Ridge Road Club">
+      <button type="submit" class="go o1-go" id="v-start-go" disabled>Start free trial</button>
+      <p class="cp-note o1-terms" id="v-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
+      <p class="cp-note o1-said" id="v-start-said" role="status" aria-live="polite"></p>
+    </form>
   </section>
 
   <div class="cv-home" id="v-home" hidden>
@@ -328,6 +341,6 @@
 
 <script src="/assets/carve-site.js?v=3989e8c97e" defer></script>
 <script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
-<script type="module" src="/assets/club-load.js?v=4b0887e015"></script>
+<script type="module" src="/assets/club-load.js?v=4fb3bafb78"></script>
 </body>
 </html>
