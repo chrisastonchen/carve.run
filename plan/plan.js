@@ -22,7 +22,7 @@ import {
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=8";
 import { addPins } from "/assets/events.js?v=bb6f2616de";
 import { closures, closureTitle, closureWords } from "./closures.js?v=3";
-import { initSuggest } from "./suggest.js?v=6";
+import { initSuggest } from "./suggest.js?v=7";
 import { initPills } from "./place-pills.js?v=1";
 import { initLayers } from "./layers.js?v=1";
 

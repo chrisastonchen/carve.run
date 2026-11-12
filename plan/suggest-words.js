@@ -21,8 +21,9 @@ export function needsFirst(which, plan) {
 
 const loops = (plan) => plan?.trip === "roundTrip" || plan?.trip === "outAndBack";
 
-/// Not on Solo: the label beside the action, and what opening it says.
-export const SOLO = { label: "Solo", note: "Suggestions are on Solo.", see: "See Solo", signIn: "Sign in" };
+/// Without Apex: what tapping an action says (no label beside it; Chris,
+/// 11/11: "Very ugly").
+export const SOLO = { note: "Suggestions are on Solo.", see: "See Solo", signIn: "Sign in" };
 
 /// A pin's short label, by kind.
 const PIN = { gas: "Gas", coffee: "Coffee", food: "Food", rest_area: "Rest", viewpoint: "View", attraction: "Sight", park: "Park", parking: "Parking" };

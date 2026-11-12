@@ -4,10 +4,10 @@
 // Suggestions are map pins, labelled by kind, with a card: what it is,
 // where, Use as start / Add as a stop / Use as destination, Google Maps ↗.
 // Nothing on the route changes until one is picked. Solo, and a paid
-// club's organizers (who hold Apex): others see a Solo label that opens
-// the upsell; the planner's 403 says the same.
+// club's organizers (who hold Apex): for others, tapping an action opens
+// the upsell (no label beside it); the planner's 403 says the same.
 
-import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=5";
+import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=6";
 
 /// Each kind's icon (24 px, stroked in the pin's colour; no emoji).
 const ICONS = {
@@ -75,7 +75,6 @@ export function initSuggest(h) {
       li.append(hide);
     }
     const locked = h.smart() === false;
-    if (locked) li.append(h.el("span", "suggest-solo", SOLO.label));
     const note = h.el("p", "suggest-said", said[which]);
     note.id = `suggest-said-${which}`;
     note.setAttribute("role", "status");
