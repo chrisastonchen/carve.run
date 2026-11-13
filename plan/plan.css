@@ -1369,6 +1369,9 @@ body.gshell .place-bar { left: 768px; }
 .layers:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
 .layers:not([hidden]) ~ .legend { left: 612px; }
 @media (min-width: 1400px) { .layers { left: 562px; } .layers:not([hidden]) ~ .legend { left: 662px; } }
+/* Below 1024 there's no room beside the tile (QA, 11/12: the key ran off
+   the right at 768): the key sits on top of it instead, on one line. */
+@media (max-width: 1023px) { .layers:not([hidden]) ~ .legend { left: 512px; bottom: 114px; } }
 /* …and the Layers tile beside that panel, on the route step only. */
 body.gshell .layers { left: 768px; }
 body.gshell .layers:not([hidden]) ~ .legend { left: 868px; }

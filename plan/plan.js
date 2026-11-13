@@ -27,9 +27,9 @@ import { initDraftsEntry } from "./drives-list.js?v=2";
 import { initDriveDay } from "./drive-day.js?v=6";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
-import { initSuggest } from "./suggest.js?v=8";
+import { initSuggest } from "./suggest.js?v=9";
 import { fitTo } from "./fit.js?v=1";
-import { initPills } from "./place-pills.js?v=1";
+import { initPills } from "./place-pills.js?v=3";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
 
