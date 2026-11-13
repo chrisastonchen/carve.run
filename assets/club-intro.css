@@ -1,6 +1,7 @@
 /* For Clubs, signed out or with no club (Sales and Marketing's layout, Chris's
    yes 11/12): full width and dark in both themes, as the layout has it.
-   club-intro.js. */
+   club-intro.js. (11/13: a new version stamp, after Cloudflare kept an
+   early fetch of the old file under the new one.) */
 main.cp:has(> .fc:not([hidden])) { max-width: none; padding: 0; gap: 0; }
 main.cp:has(> .fc:not([hidden])) > #cp-status { display: none; }
 .cp .fc { --fc-bg: #0E1210; --fc-card: #161B18; --fc-rule: #2A332E; --fc-ink: #EEF1EE; --fc-ink-2: #D3D9D5; --fc-mute: #A3ACA6; --fc-green: #6FD39A;
