@@ -3064,6 +3064,9 @@ async function editOwn(id) {
   }
 }
 
+/// A GPX file by its name or type (a .gpx, or XML a device saved).
+const isGpxFile = (file) => /\.(gpx|xml)$/i.test(file?.name || "") || /gpx|xml/i.test(file?.type || "");
+
 async function importFile(file) {
   if (!file) return;
   if (file.size > 50 * 1024 * 1024) return toast("That file is too big to be a drive.", true);
@@ -3914,27 +3917,54 @@ function wire() {
   syncImportButton();
   $("gpx-btn").addEventListener("click", () => $("gpx").click());
   $("gpx").addEventListener("change", () => importFile($("gpx").files[0]));
-  const app = document.querySelector(".app");
   // On the Import tab its drop box lights up for a file; elsewhere the
-  // whole window does. Dropped anywhere, it comes in.
+  // whole window does. Dropped anywhere, a GPX comes in. Whatever happens
+  // the overlay goes (Chris, 11/13: a file dragged on hung the page under
+  // it): leaving the window, a drop of anything, Esc, a click, or no drag
+  // heard for a moment (a leave some browsers never send).
   const dropBox = $("gpx-btn");
-  app.addEventListener("dragover", (event) => {
-    if (![...event.dataTransfer.types].includes("Files")) return;
-    event.preventDefault();
-    if (!$("bring").hidden && !saved) dropBox.classList.add("over");
-    else $("drop").hidden = false;
-  });
-  app.addEventListener("dragleave", (event) => {
-    if (!event.relatedTarget || !app.contains(event.relatedTarget)) dropBox.classList.remove("over");
-  });
-  $("drop").addEventListener("dragleave", () => ($("drop").hidden = true));
-  app.addEventListener("drop", (event) => {
-    if (!event.dataTransfer.files.length) return;
-    event.preventDefault();
+  let dragDepth = 0;
+  let dragQuiet = null;
+  const hasFiles = (event) => [...(event.dataTransfer?.types || [])].includes("Files");
+  const dropOff = () => {
+    dragDepth = 0;
+    clearTimeout(dragQuiet);
     $("drop").hidden = true;
     dropBox.classList.remove("over");
-    importFile(event.dataTransfer.files[0]);
+  };
+  const dropOn = () => {
+    if (!$("bring").hidden && !saved) dropBox.classList.add("over");
+    else $("drop").hidden = false;
+    clearTimeout(dragQuiet);
+    dragQuiet = setTimeout(dropOff, 1200);
+  };
+  window.addEventListener("dragenter", (event) => {
+    if (!hasFiles(event)) return;
+    dragDepth += 1;
+    dropOn();
   });
+  window.addEventListener("dragover", (event) => {
+    if (!hasFiles(event)) return;
+    // Never the browser's own drop (it would open the file in place of the page).
+    event.preventDefault();
+    dropOn();
+  });
+  window.addEventListener("dragleave", (event) => {
+    if (!hasFiles(event)) return;
+    dragDepth = Math.max(0, dragDepth - 1);
+    if (!dragDepth || !event.relatedTarget) dropOff();
+  });
+  window.addEventListener("drop", (event) => {
+    const file = event.dataTransfer?.files?.[0];
+    if (hasFiles(event)) event.preventDefault();
+    dropOff();
+    if (!file) return;
+    if (!isGpxFile(file)) return toast("Only GPX files can be imported.", true);
+    importFile(file);
+  });
+  window.addEventListener("dragend", dropOff);
+  $("drop").addEventListener("click", dropOff);
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("drop").hidden) dropOff(); });
   $("save").addEventListener("click", () => (DRIVE ? driveDone() : save()));
   $("edit").addEventListener("click", showPlan);
   $("plan-another").addEventListener("click", planAnother);
