@@ -190,3 +190,66 @@
   .cv-drive .cv-head .v-pill, .cv-more { margin-top: 0; }
 }
 .cv .cv-day-h { margin: 0; font-size: 18px; font-weight: 800; }
+
+/* The pre-drive card's actions (O4-6): See the report, the links quieter beside it. */
+.cv-pr-acts { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.cv-pr-acts [hidden] { display: none; }
+/* .go and .textlink each ask for flex-start; here they sit on one line (QA, 11/13: the link 9 px high). */
+.cp.cv .cv-pr-acts > * { align-self: center; }
+
+/* The pre-drive report (O6b): a day at a time; reviews, then times. Early
+   reads green and late orange, and they differ in lightness too, with
+   words beside them (faster, slower). */
+.cv-report { display: flex; flex-direction: column; gap: 20px; }
+.cv-report h1 { margin: 0; }
+.r-days { flex-wrap: wrap; }
+.r-days[hidden] { display: none; }
+.r-sect { display: flex; flex-direction: column; gap: 14px; }
+.r-sect [hidden] { display: none; }
+.r-reviews { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.r-review { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 14px; background: var(--paper-2); border: 1px solid var(--rule); }
+.r-review p { margin: 0; }
+.r-rating { font-size: 16px; }
+.r-review.great .r-rating { color: var(--green-ink); }
+.r-review.bad .r-rating { color: #B4500F; }
+.r-road { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 15px; }
+.r-verdict { font-size: 12px; font-weight: 800; border-radius: 999px; padding: 2px 8px; }
+.r-verdict.good { background: #DCEFE2; color: #1D5B3A; }
+.r-verdict.bad { background: #FBE5D3; color: #8A3B06; }
+.r-why { width: 100%; font-size: 14px; color: var(--ink-2); }
+.r-note { font-size: 15px; font-style: normal; }
+.r-table-box { overflow-x: auto; }
+.r-table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+.r-table th, .r-table td { padding: 10px 8px; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.r-table th:first-child { text-align: left; white-space: normal; }
+.r-table thead th { font-size: 13px; color: var(--ink-3); font-weight: 700; }
+.r-table tr.stop th { font-weight: 500; color: var(--ink-2); padding-left: 20px; }
+.r-table tfoot th, .r-table tfoot td { font-weight: 800; border-bottom: 0; }
+.r-diff.early { color: #0D5530; }
+.r-diff.late { color: #A3480C; }
+.r-diff.even { color: var(--ink-2); }
+.r-small { font-size: 13px; }
+.r-timers { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.r-changes { margin: 0; padding-left: 20px; }
+/* 0103: reviews and times from a route swapped out of the day, tagged. */
+.r-earlier { display: inline-block; align-self: flex-start; margin: 0; font-size: 12px; font-weight: 800; color: var(--ink-2); background: var(--rule); border-radius: 999px; padding: 3px 10px; }
+.r-earlier-list { display: flex; flex-direction: column; gap: 14px; }
+.r-earlier-list:empty { display: none; }
+.r-earlier-box { display: flex; flex-direction: column; gap: 6px; }
+/* A phone: each row stacks, its leg or stop across, then the three times
+   side by side, each labelled (DevOps, 11/13: no sideways scroll). */
+@media (max-width: 480px) {
+  .r-table thead { display: none; }
+  .r-table tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 10px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .r-table tfoot tr { border-bottom: 0; }
+  .r-table th, .r-table td { padding: 0; border: 0; text-align: left; white-space: normal; }
+  .r-table th { grid-column: 1 / -1; }
+  .r-table tr.stop th { padding-left: 0; }
+  .r-table td::before { content: attr(data-label); display: block; font-size: 12px; font-weight: 600; color: var(--ink-3); }
+}
+@media (prefers-color-scheme: dark) {
+  .r-verdict.good { background: #1B3A27; color: #8FDCAF; }
+  .r-verdict.bad { background: #3E2614; color: #F3B184; }
+  .r-review.bad .r-rating, .r-diff.late { color: #F2A65A; }
+  .r-diff.early { color: #6FD39A; }
+}

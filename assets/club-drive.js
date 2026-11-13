@@ -31,6 +31,8 @@ const miles = () => /^en(-(US|GB))?$/i.test(navigator.language || "en-US");
 /// are the day's own route page, carve.run/<token>, in the club's view
 /// (share_page.js and club-share.js).
 export const plannerUrl = (driveId, n) => `/plan/?drive=${encodeURIComponent(driveId)}&day=${n}`;
+/// The pre-drive report (O6b) on day n.
+export const reportUrl = (driveId, n) => `/club/drive/report/?id=${encodeURIComponent(driveId)}&day=${n}`;
 export const shareUrl = (token, driveId, n, prerun = false) => `/${encodeURIComponent(token)}?club=${encodeURIComponent(driveId)}&day=${n}${prerun ? "&prerun" : ""}`;
 
 let org = null;
@@ -359,11 +361,26 @@ function renderDrive() {
     $("d-pr-line").textContent = prerunLine(pr.date);
     // The first day with a route: the crew drives the same links.
     const first = ds.findIndex((d) => d.routed);
-    if (first >= 0) {
-      $("d-pr-go").setAttribute("href", shareUrl(ds[first].route.share_token, drive.id, first + 1, true));
+    const links = first >= 0 ? shareUrl(ds[first].route.share_token, drive.id, first + 1, true) : null;
+    // Once the crew has driven or reviewed it (0101's report_ready), the
+    // card opens the report (O4-6, O6b) on the first day with something
+    // in it; the links stay, quieter.
+    const ready = !!pr.report_ready;
+    $("d-pr-links").hidden = !ready || !links;
+    if (links) $("d-pr-links").setAttribute("href", links);
+    if (ready) {
+      $("d-pr-line").textContent = "Your crew's pre-drive is in.";
+      $("d-pr-go").textContent = "See the report";
+      $("d-pr-go").setAttribute("href", reportUrl(drive.id, (pr.days_with_report || [])[0] || 1));
+      $("d-pr-go").removeAttribute("aria-disabled");
+      $("d-pr-go").removeAttribute("title");
+    } else if (links) {
+      $("d-pr-go").textContent = "Pre-drive links";
+      $("d-pr-go").setAttribute("href", links);
       $("d-pr-go").removeAttribute("aria-disabled");
       $("d-pr-go").removeAttribute("title");
     } else {
+      $("d-pr-go").textContent = "Pre-drive links";
       $("d-pr-go").removeAttribute("href");
       $("d-pr-go").setAttribute("aria-disabled", "true");
       $("d-pr-go").title = "Plan a route first";
