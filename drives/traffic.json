@@ -1,20 +1,12 @@
 {
  "flagged": {
-  "arthur-highway-sorell-port-arthur": {
-   "coverage": 0.72,
-   "since": "2026-11-06"
-  },
-  "badlands-loop-road": {
-   "coverage": 0.49,
-   "since": "2026-11-06"
-  },
   "beartooth-highway": {
    "coverage": 0.55,
    "since": "2026-10-24"
   },
-  "blue-ridge-parkway-roanoke-mabry-mill": {
-   "coverage": 0.58,
-   "since": "2026-11-08"
+  "beaver-canyon-highway-153": {
+   "coverage": 0.05,
+   "since": "2026-11-12"
   },
   "cayuga-lake-highway-90": {
    "coverage": 0.48,
@@ -43,10 +35,6 @@
   "guardsman-pass": {
    "coverage": 0.27,
    "since": "2026-11-01"
-  },
-  "highway-1-finland-ely": {
-   "coverage": 0.42,
-   "since": "2026-11-09"
   },
   "highway-131-kickapoo-valley": {
    "coverage": 0.67,
@@ -93,7 +81,7 @@
    "since": "2026-11-01"
   },
   "monument-valley-us-163": {
-   "coverage": 0.58,
+   "coverage": 0.56,
    "since": "2026-11-06"
   },
   "north-cape-coastal-drive": {
@@ -138,5 +126,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-12T14:10:58Z"
+ "updated": "2026-11-13T15:44:32Z"
 }
