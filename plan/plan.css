@@ -1459,13 +1459,14 @@ body.drive-day .app { top: calc(var(--bar) + var(--drive-bar)); }
    ✕ and handle on its line. No date and time pill: the leave time is the
    drive's, changed in Edit details. */
 .drive-mode #leave-btn { display: none; }
-.rows.timed-rows .row { gap: 6px; padding-left: 8px; }
+.rows.timed-rows .row { gap: 6px; padding-left: 8px; padding-right: 6px; }
 .rows.timed-rows .row > .clock { width: 40px; }
 .rows.timed-rows .row .field-line { gap: 6px; }
 .rows.timed-rows .row .row-input { font-size: 15.5px; padding-left: 12px; }
 .rows.timed-rows .row .row-input.timed { padding-right: 42px; }
-.rows.timed-rows .kind select { width: 86px; padding: 0 20px 0 9px; font-size: 13.5px; }
-.rows.timed-rows .kind svg { right: 9px; }
+/* Sized by its words, the longest being "Waypoint", in whatever font the browser draws (Chris, 11/13: "Waypoin|t" in his); the chevron in its own padding. The name gives way. */
+.rows.timed-rows .kind select { width: auto; min-width: 0; padding: 0 26px 0 10px; font-size: 13.5px; }
+.rows.timed-rows .kind svg { right: 10px; }
 .rows.timed-rows .row > .grip { width: 26px; margin-top: 1px; }
 .rows.timed-rows .row > .clear { margin-top: 8px; margin-left: -2px; }
 .rows.timed-rows .leg-next { padding-left: 72px; }
