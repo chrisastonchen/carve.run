@@ -28,9 +28,9 @@ import { initDriveDay } from "./drive-day.js?v=7";
 import { breakLine, clock, legLine, scheduleOf } from "./schedule.js?v=2";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
-import { initSuggest } from "./suggest.js?v=9";
+import { initSuggest } from "./suggest.js?v=10";
 import { fitTo } from "./fit.js?v=1";
-import { initPills } from "./place-pills.js?v=3";
+import { initPills } from "./place-pills.js?v=4";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
 
@@ -2372,7 +2372,8 @@ function scheduleRows(list) {
       legNote(li, stop, s.stay ? `Leave ${clock(s.leave)} · ` : "");
     } else if (role === "end" || (li.classList.contains("dest") && !role)) {
       li.prepend(time(plan_.arrive, "arrive"));
-    } else {
+    } else if (!li.classList.contains("suggest-row")) {
+      // The add row keeps the column; a suggest line lines up with the fields by its own indent.
       li.prepend(el("span", "clock"));
     }
   }

@@ -7,9 +7,9 @@ import { clockText, spotWords } from "./meet-words.js";
 
 /// The three actions: the link under the field, and what a pick does.
 export const SUGGEST = {
-  start: { link: "✦ Suggest a meeting place", pick: "Use as start", looking: "Looking for meeting places…" },
-  along: { link: "✦ Suggest stops along the route", pick: "Add as a stop", looking: "Looking along the route…" },
-  end: { link: "✦ Suggest near the end", pick: "Use as destination", looking: "Looking near the destination…" },
+  start: { link: "✦ Suggest a meeting place", pick: "Use as start", looking: "Looking for meeting places…", list: "Meeting places" },
+  along: { link: "✦ Suggest stops along the route", pick: "Add as a stop", looking: "Looking along the route…", list: "Stops along the route" },
+  end: { link: "✦ Suggest near the end", pick: "Use as destination", looking: "Looking near the destination…", list: "Near the destination" },
 };
 
 /// What the action needs first, said beside it; null when it can run.

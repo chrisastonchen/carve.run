@@ -7,7 +7,7 @@
 // club's organizers (who hold Apex): for others, tapping an action opens
 // the upsell (no label beside it); the planner's 403 says the same.
 
-import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=7";
+import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=8";
 import { fitTo } from "./fit.js?v=1";
 
 /// Each kind's icon (24 px, stroked in the pin's colour; no emoji).
@@ -41,11 +41,54 @@ export function initSuggest(h) {
   };
 
   function close() {
+    listing(false);
     if (!open) return;
     open.popup?.remove();
     for (const m of open.pins) m.remove();
     open = null;
   }
+
+  // ── The list (Chris, 11/13): the same places the map pins show, in a
+  // list in place of the schedule, ‹ Back to the schedule; each row's
+  // button does what its pin card's does. Opens only with places to show.
+  const $ = (id) => document.getElementById(id);
+  function listing(on) {
+    $("plan-view")?.classList.toggle("listing", on);
+    if ($("suggest-list")) $("suggest-list").hidden = !on;
+  }
+  function list(which) {
+    if (!open || !$("suggest-list")) return;
+    $("suggest-list-h").textContent = SUGGEST[which].list;
+    $("suggest-list-said").textContent = said[which] || "";
+    $("suggest-items").replaceChildren(...open.items.map((item, i) => {
+      const li = h.el("li", `suggest-item${open.active === i ? " on" : ""}`);
+      const see = h.el("button", "suggest-item-go");
+      see.type = "button";
+      const mark = h.el("span", "suggest-item-icon");
+      mark.dataset.kind = item.icon;
+      mark.innerHTML = icon(item.icon);
+      const words = h.el("span", "suggest-item-words");
+      words.append(h.el("b", "", item.title), h.el("span", "", [item.kind, item.where].filter(Boolean).join(" · ")));
+      for (const f of item.facts || []) words.append(h.el("span", "suggest-item-fact", f));
+      see.append(mark, words);
+      see.setAttribute("aria-label", `${item.title}, ${item.kind}: show on the map`);
+      see.addEventListener("click", () => { card(i, { focus: false }); markList(); });
+      const pick = h.el("button", "pill green small suggest-pick", SUGGEST[which].pick);
+      pick.type = "button";
+      pick.addEventListener("click", () => use(which, item.place));
+      li.append(see, pick);
+      return li;
+    }));
+    listing(true);
+    $("suggest-list-h").focus({ preventScroll: true });
+  }
+  const markList = () => [...document.querySelectorAll("#suggest-items .suggest-item")].forEach((li, n) => li.classList.toggle("on", n === open?.active));
+  function backToSchedule() {
+    const which = open?.which;
+    listing(false);
+    if (which) document.querySelector(`.suggest-row[data-suggest="${which}"] .suggest-go`)?.focus();
+  }
+  $("suggest-back")?.addEventListener("click", backToSchedule);
 
   function rerender() {
     for (const which of ["start", "along", "end"]) {
@@ -185,12 +228,13 @@ export function initSuggest(h) {
     });
     if (inView) map.easeTo({ center: bounds.getCenter(), padding, duration: 400 });
     else fitTo(map, bounds, padding, { maxZoom: 14, duration: 400 });
-    card(0);
+    card(0, { focus: false });
     rerender();
+    list(which);
   }
 
   /// One suggestion's card, over its pin.
-  function card(i) {
+  function card(i, { focus = true } = {}) {
     if (!open) return;
     const item = open.items[i];
     open.active = i;
@@ -216,7 +260,8 @@ export function initSuggest(h) {
     open.popup?.remove();
     open.popup = new window.maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 18, maxWidth: "280px", className: "suggest-popup" })
       .setLngLat([item.place.lon, item.place.lat]).setDOMContent(box).addTo(h.map());
-    pick.focus({ preventScroll: true });
+    if (focus) pick.focus({ preventScroll: true });
+    markList();
   }
 
   /// A pick: the field takes it, and the suggestions go.

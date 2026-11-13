@@ -557,7 +557,7 @@ a { color: var(--green-ink); }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
 @media not all and (prefers-color-scheme: dark) {
-  html:not(.night) { color-scheme: light; --green-tint: #EEF5F0; --mint: #DCF1E2; --ink: #15181C; --ink-2: #4A5058; --ink-3: #5D636C; --fill: #F1F1EF; --fill-2: #F7F6F2; --line: #ECEAE4; --map: #EFEDE6; --shadow: 0 10px 30px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); --green-ink: #1D5B3A; }
+  html:not(.night) { color-scheme: light; --field: #fff; --field-line: 0 1px 2px rgba(0,0,0,.08); --field-ring: 0 0 0 3px var(--green); --field-hint: #8B9098; --knob: #F1F1EF; --green-tint: #EEF5F0; --mint: #DCF1E2; --ink: #15181C; --ink-2: #4A5058; --ink-3: #5D636C; --fill: #F1F1EF; --fill-2: #F7F6F2; --line: #ECEAE4; --map: #EFEDE6; --shadow: 0 10px 30px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); --green-ink: #1D5B3A; }
   :where(html:not(.night)) a { color: var(--green); }
   :where(html:not(.night)) .dim { color: var(--ink-3); }
   :where(html:not(.night)) .eyebrow { color: var(--ink-3); }
@@ -1436,14 +1436,10 @@ body.drive-day .app { top: calc(var(--bar) + var(--drive-bar)); }
 .rows .brk { flex-basis: 100%; margin: 4px 0 4px 88px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #2A2418; border-radius: 12px; padding: 8px 10px; font-size: 13.5px; color: #F2C46B; font-weight: 600; }
 .rows .brk .linkish { margin-left: auto; min-height: 0; padding: 0; color: #6FD39A; font-weight: 800; }
 .rows.timed-rows .row .cell { flex-basis: 0; }
-/* A drive's day (Chris, 11/13): the stop's name gets the whole width; the
-   Stop / Waypoint select and the handle go on their own line under it. */
+/* A drive's day (Chris, 11/13): rows lined up at the top, the clock and badge on the name's line. */
 .rows.timed-rows .row { align-items: flex-start; }
 .rows.timed-rows .row > .clock { margin-top: 6px; }
 .rows.timed-rows .row > .badge { margin-top: 12px; }
-.rows.timed-rows .row[data-role="waypoint"] .field-line { flex-wrap: wrap; }
-.rows.timed-rows .row[data-role="waypoint"] .input-wrap { flex-basis: 100%; }
-.rows.timed-rows .row[data-role="waypoint"] > .grip { position: absolute; right: 4px; top: 63px; }
 
 /* A drive's day (Chris, 11/13): the stop's timer and its ✕ on one line,
    centred on the name, alike; the totals' figures bigger, their units
@@ -1456,3 +1452,50 @@ body.drive-day .app { top: calc(var(--bar) + var(--drive-bar)); }
 .figures b .slot.unit { font-family: "Figtree", system-ui, sans-serif; font-size: .6em; font-weight: 600; display: inline-flex; align-items: flex-end; height: 1.8333em; padding-bottom: .12em; box-sizing: border-box; vertical-align: top; margin: 0; color: var(--ink-2); }
 .drive-day .figures { padding-bottom: 2px; }
 @media (max-width: 699px) { .drive-day .figures b { font-size: 22px; } }
+
+/* A drive's day, round three (Chris, 11/13): Stop / Waypoint back beside
+   the name as a compact chip, the clock and badge gutter tighter, so a
+   name of 18 to 20 letters shows whole at 1280; the timer in the field,
+   ✕ and handle on its line. No date and time pill: the leave time is the
+   drive's, changed in Edit details. */
+.drive-mode #leave-btn { display: none; }
+.rows.timed-rows .row { gap: 6px; padding-left: 8px; }
+.rows.timed-rows .row > .clock { width: 40px; }
+.rows.timed-rows .row .field-line { gap: 6px; }
+.rows.timed-rows .row .row-input { font-size: 15.5px; padding-left: 12px; }
+.rows.timed-rows .row .row-input.timed { padding-right: 42px; }
+.rows.timed-rows .kind select { width: 86px; padding: 0 20px 0 9px; font-size: 13.5px; }
+.rows.timed-rows .kind svg { right: 9px; }
+.rows.timed-rows .row > .grip { width: 26px; margin-top: 1px; }
+.rows.timed-rows .row > .clear { margin-top: 8px; margin-left: -2px; }
+.rows.timed-rows .leg-next { padding-left: 72px; }
+.rows.timed-rows .brk { margin-left: 68px; }
+/* The suggest lines and what they say: on the fields' left edge (8 + 40 - 2 + 6 + 22 + 6). */
+.rows.timed-rows .suggest-row { padding-left: 80px; }
+/* The + in its circle, drawn, so it sits in the middle whatever the font. */
+.badge.new { font-size: 0; }
+.badge.new::before { content: ""; width: 10px; height: 10px; background: linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat, linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat; }
+
+/* Suggestions as a list (Chris, 11/13; suggest.js): in place of the
+   schedule and its totals while open; ‹ Back to the schedule. */
+.view.listing .scroll > :not(.suggest-list), .view.listing > .foot { display: none !important; }
+.suggest-list { display: flex; flex-direction: column; gap: 10px; }
+.suggest-back { align-self: flex-start; min-height: 0; padding: 4px 0; font-size: 15px; }
+.suggest-list h2 { margin: 2px 0 0; font-size: 22px; }
+.suggest-list h2:focus { outline: none; }
+.suggest-list .dim:empty { display: none; }
+.suggest-items { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.suggest-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--field); box-shadow: var(--field-line); }
+.suggest-item.on { box-shadow: inset 0 0 0 2px var(--green-ink); }
+.suggest-item-go { flex: 1; min-width: 0; display: flex; align-items: flex-start; gap: 10px; background: none; border: 0; padding: 0; text-align: left; color: var(--ink); cursor: pointer; }
+.suggest-item-icon { flex: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--knob); color: var(--green-ink); }
+.suggest-item-icon svg { width: 18px; height: 18px; }
+.suggest-item-words { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.suggest-item-words b { font-size: 15.5px; overflow-wrap: anywhere; }
+.suggest-item-words span { font-size: 13.5px; color: var(--ink-3); }
+.suggest-item-fact { font-size: 13px !important; }
+.suggest-item .suggest-pick { flex: none; }
+.suggest-item-go:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 3px; border-radius: 10px; }
+/* The dark club planner's picks (Chris, 11/13): mint for every action, #0E1210 on it; the light /plan/ keeps its green. */
+html.night .pill.green.suggest-pick { background: #6FD39A; color: #0E1210; }
+html.night .pill.green.suggest-pick:hover:not(:disabled) { background: #8BDDAE; }
