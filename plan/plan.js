@@ -2270,7 +2270,8 @@ function roll(node, text) {
   const reels = [];
   [...text].forEach((ch, i) => {
     // Not a digit: in a box like a reel's, so it sits on the same line.
-    if (!/\d/.test(ch)) return shown.append(el("span", "slot", ch === " " ? "\u00a0" : ch));
+    // A unit ("mi", "h") in the site's words font (club flow v11: figures Oxanium, units Figtree).
+    if (!/\d/.test(ch)) return shown.append(el("span", /[a-z]/i.test(ch) ? "slot unit" : "slot", ch === " " ? "\u00a0" : ch));
     const slot = el("span", "slot");
     const reel = el("span", "reel");
     reel.innerHTML = "0123456789".repeat(2).split("").map((d) => `<span>${d}</span>`).join("");

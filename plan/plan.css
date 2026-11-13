@@ -29,6 +29,8 @@
   --ink-3: #9AA39D;
   --fill: #1D2420;
   --fill-2: #161B18;
+  /* A dark field: a step lighter than the sheet, with a hairline (Chris, 11/13: the fields didn't show). */
+  --field: #232A26; --field-line: inset 0 0 0 1px rgba(255,255,255,.06); --field-ring: 0 0 0 3px #6FD39A; --field-hint: #8E9792; --knob: #2E3732;
   --line: #2A332E;
   --map: #0E1210;
   --start: #2E9E52;
@@ -97,10 +99,11 @@ a { color: var(--green-ink); }
 .linkish svg { width: 17px; height: 17px; }
 .linkish.grey { color: var(--ink-3); }
 .field {
-  width: 100%; height: 54px; border: none; border-radius: 14px; background: var(--fill);
+  width: 100%; height: 54px; border: none; border-radius: 14px; background: var(--field); box-shadow: var(--field-line);
   padding: 0 16px; font-size: 18px; font-weight: 600;
 }
-.field::placeholder { color: #737C76; font-weight: 500; }
+.field::placeholder { color: var(--field-hint); font-weight: 500; }
+.field:focus { outline: none; box-shadow: var(--field-ring); }
 /* Sign-up's one question (the user, 2026-11-04): pick any. */
 .intents { border: 0; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .intent { display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 12px 16px; border-radius: 14px; background: var(--fill); font-size: 17px; font-weight: 700; cursor: pointer; }
@@ -242,20 +245,20 @@ a { color: var(--green-ink); }
 .field-line { display: flex; align-items: center; gap: 8px; }
 .input-wrap { position: relative; display: flex; flex: 1 1 auto; min-width: 0; }
 .row-input {
-  width: 100%; height: 46px; border: none; border-radius: 12px; background: #161B18;
+  width: 100%; height: 46px; border: none; border-radius: 12px; background: var(--field); box-shadow: var(--field-line);
   padding: 0 14px; font-size: 17px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08);
   /* A long name ends in … rather than under the stay timer (QA, 11/12); the full name is its title. */
   text-overflow: ellipsis;
 }
-.row-input::placeholder { color: #737C76; font-weight: 500; }
-.row-input:focus { outline: none; box-shadow: 0 0 0 3px var(--green); }
+.row-input::placeholder { color: var(--field-hint); font-weight: 500; }
+.row-input:focus { outline: none; box-shadow: var(--field-ring); }
 .row-input.empty { padding-right: 14px; }
 .row-input.timed { padding-right: 46px; }
 /* Remove: past the handle, shown on the row being pointed at (always on
    touch screens, which can't point). */
 .clear {
   flex: none; margin-left: -6px;
-  width: 30px; height: 30px; border: none; border-radius: 999px; background: var(--fill);
+  width: 30px; height: 30px; border: none; border-radius: 999px; background: var(--knob);
   color: var(--ink-3); font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center;
 }
 .clear:hover { background: #242C27; color: var(--ink); }
@@ -269,13 +272,13 @@ a { color: var(--green-ink); }
 .grip.off { visibility: hidden; }
 .kind { flex: none; position: relative; display: inline-flex; align-items: center; }
 /* A box like the fields', ending where the start's and destination's do. */
-.kind select { appearance: none; -webkit-appearance: none; width: 116px; height: 46px; padding: 0 30px 0 14px; border: none; border-radius: 12px; background: #161B18; box-shadow: 0 1px 2px rgba(0,0,0,.08); font-size: 15px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
+.kind select { appearance: none; -webkit-appearance: none; width: 116px; height: 46px; padding: 0 30px 0 14px; border: none; border-radius: 12px; background: var(--field); box-shadow: var(--field-line); font-size: 15px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
 .kind select:hover { color: var(--ink); }
-.kind select:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--green); }
+.kind select:focus-visible { outline: none; box-shadow: var(--field-ring); }
 .kind svg { position: absolute; right: 13px; width: 12px; height: 12px; pointer-events: none; color: var(--ink-3); }
 /* A stop's stay: a timer in a circle inside the field, left of the ×. The
    select sits invisibly over it, so picking is the browser's own list. */
-.stay { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 999px; background: var(--fill); color: var(--ink-3); display: flex; align-items: center; justify-content: center; }
+.stay { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 999px; background: var(--knob); color: var(--ink-3); display: flex; align-items: center; justify-content: center; }
 .stay:hover { background: #242C27; color: var(--ink); }
 .stay.set { background: var(--stop); color: #fff; }
 .stay svg { width: 17px; height: 17px; pointer-events: none; }
@@ -304,7 +307,7 @@ a { color: var(--green-ink); }
 .bring { display: flex; flex-direction: column; gap: 22px; padding-top: 4px; }
 .bring .paste input { background: var(--fill); }
 .paste { display: flex; gap: 8px; }
-.paste input { flex: 1 1 auto; min-width: 0; height: 52px; border: none; border-radius: 14px; background: #161B18; padding: 0 14px; font-size: 17px; font-weight: 600; }
+.paste input { flex: 1 1 auto; min-width: 0; height: 52px; border: none; border-radius: 14px; background: var(--field); box-shadow: var(--field-line); padding: 0 14px; font-size: 17px; font-weight: 600; }
 .paste .pill { height: 52px; }
 .sources { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; font-weight: 600; color: #C3CAC5; }
 .sources span { display: inline-flex; align-items: center; gap: 6px; }
@@ -1432,8 +1435,6 @@ body.drive-day .app { top: calc(var(--bar) + var(--drive-bar)); }
 .rows .leg-next { flex-basis: 100%; padding: 2px 0 2px 92px; font-size: 13px; color: var(--ink-3); }
 .rows .brk { flex-basis: 100%; margin: 4px 0 4px 88px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #2A2418; border-radius: 12px; padding: 8px 10px; font-size: 13.5px; color: #F2C46B; font-weight: 600; }
 .rows .brk .linkish { margin-left: auto; min-height: 0; padding: 0; color: #6FD39A; font-weight: 800; }
-.drive-day .figures span { font-size: 13px; }
-.drive-day .figures b { font-size: 24px; }
 .rows.timed-rows .row .cell { flex-basis: 0; }
 /* A drive's day (Chris, 11/13): the stop's name gets the whole width; the
    Stop / Waypoint select and the handle go on their own line under it. */
@@ -1443,3 +1444,15 @@ body.drive-day .app { top: calc(var(--bar) + var(--drive-bar)); }
 .rows.timed-rows .row[data-role="waypoint"] .field-line { flex-wrap: wrap; }
 .rows.timed-rows .row[data-role="waypoint"] .input-wrap { flex-basis: 100%; }
 .rows.timed-rows .row[data-role="waypoint"] > .grip { position: absolute; right: 4px; top: 63px; }
+
+/* A drive's day (Chris, 11/13): the stop's timer and its ✕ on one line,
+   centred on the name, alike; the totals' figures bigger, their units
+   and labels Figtree. */
+.rows.timed-rows .row > .clear { margin-top: 8px; margin-left: 0; }
+.rows.timed-rows .row[data-role="waypoint"] .input-wrap .row-input.timed { padding-right: 46px; }
+.drive-day .figures > div > span { font-size: 13px; color: var(--ink-3); }
+.drive-day .figures b { font-size: 24px; line-height: 1.2; }
+/* The digits are reels (inline-blocks): a unit sits on their foot, a line of the figure's height (1.1em of it) at .6 of its size. */
+.figures b .slot.unit { font-family: "Figtree", system-ui, sans-serif; font-size: .6em; font-weight: 600; display: inline-flex; align-items: flex-end; height: 1.8333em; padding-bottom: .12em; box-sizing: border-box; vertical-align: top; margin: 0; color: var(--ink-2); }
+.drive-day .figures { padding-bottom: 2px; }
+@media (max-width: 699px) { .drive-day .figures b { font-size: 22px; } }

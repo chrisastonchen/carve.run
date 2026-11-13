@@ -577,3 +577,9 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 body:has(main.cv-dash) { --green: #6FD39A; }
 .cv-dash.home .cv-nav a { color: var(--ink); }
 .cv-dash.home .cv-nav a.cv-back { color: var(--ink-3); }
+/* Dark fields that show (Chris, 11/13): a step lighter than the card, a
+   hairline, a mint ring in focus; Plan a drive's and Start's names keep
+   their underline. */
+.cv-dash input[type="text"], .cv-dash input[type="email"], .cv-dash input[type="search"], .cv-dash select, .cv-dash textarea { background: #232A26; border-color: rgba(255, 255, 255, .06); }
+.cv-dash input[type="text"]::placeholder, .cv-dash input[type="email"]::placeholder, .cv-dash input[type="search"]::placeholder, .cv-dash textarea::placeholder { color: #8E9792; }
+.cv-dash input[type="text"]:focus, .cv-dash input[type="email"]:focus, .cv-dash input[type="search"]:focus, .cv-dash select:focus, .cv-dash textarea:focus { outline: none; border-color: #6FD39A; box-shadow: 0 0 0 2px rgba(111, 211, 154, .45); }
