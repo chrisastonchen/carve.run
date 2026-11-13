@@ -10,9 +10,17 @@
   src: url("/assets/fonts/figtree.woff2?v=eddba2ef40") format("woff2");
   font-weight: 300 900; font-style: normal; font-display: swap;
 }
+/* Numbers (Chris, 11/13): Oxanium for the figure itself; labels, units and
+   numbers inside a sentence stay Figtree. */
+@font-face {
+  font-family: "Oxanium";
+  src: url("/assets/fonts/oxanium.woff2?v=f687b1df34") format("woff2");
+  font-weight: 300 600; font-style: normal; font-display: swap;
+}
 
 :root {
   color-scheme: dark;
+  --num: "Oxanium", "Figtree", -apple-system, system-ui, sans-serif;
   --green: #1D5B3A;
   --green-tint: #14301F;
   --mint: #14301F;
@@ -40,6 +48,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 button, input, select { font: inherit; color: inherit; }
+/* The figures: totals, route facts, date and time fields, the calendar's days. */
+input[type="date"], input[type="time"], input[type="number"], .num, .figures b, .facts b, .cal button, #leave-time, #elev-text { font-family: var(--num); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+input[type="date"], input[type="time"], input[type="number"], .num, .facts b, .cal button, #leave-time, #elev-text { font-weight: 500; }
 button { cursor: pointer; }
 button:disabled { cursor: default; }
 h1, h2, p { margin: 0; }
@@ -308,7 +319,7 @@ a { color: var(--green-ink); }
 .gpx-drop u { color: var(--green-ink); text-decoration: none; font-weight: 700; }
 .gpx-drop:hover, .gpx-drop.over { border-color: var(--green); background: var(--green-tint); color: var(--ink-2); }
 .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 4px; }
-.figures b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+.figures b { display: block; font-size: 28px; font-weight: 500; letter-spacing: 0; line-height: 1.1; }
 /* The figures roll to a new value, slot-machine style (plan.js roll). */
 .figures b { font-variant-numeric: tabular-nums; }
 .figures b span { font-size: inherit; color: inherit; }
@@ -543,155 +554,155 @@ a { color: var(--green-ink); }
 
 /* light theme (scripts/light_theme.py): the device's light setting */
 @media not all and (prefers-color-scheme: dark) {
-  :root { color-scheme: light; --green-tint: #EEF5F0; --mint: #DCF1E2; --ink: #15181C; --ink-2: #4A5058; --ink-3: #5D636C; --fill: #F1F1EF; --fill-2: #F7F6F2; --line: #ECEAE4; --map: #EFEDE6; --shadow: 0 10px 30px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); --green-ink: #1D5B3A; }
-  a { color: var(--green); }
-  .dim { color: var(--ink-3); }
-  .eyebrow { color: var(--ink-3); }
-  .pill.green { color: #fff; }
-  .pill.green:disabled { background: #EDECE8; color: #6B7079; }
-  .pill.white { background: #fff; color: var(--ink); }
-  .pill.grey { background: var(--fill); color: var(--ink); }
-  .pill.grey:hover, .pill.white:hover { background: #E8E7E3; }
-  .pill.black { background: #000; color: #fff; }
-  .pill.outline { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #DADCE0; }
-  .round { background: var(--fill); color: var(--ink); }
-  .linkish { background: none; color: var(--green); }
-  .linkish.grey { color: var(--ink-3); }
-  .field { background: var(--fill); }
-  .field::placeholder { color: #8B9098; }
-  .bar { background: var(--green); color: #fff; box-shadow: none; }
-  .brand { color: #fff; }
-  .links a { color: rgba(255,255,255,.86); }
-  .links a:hover { color: #fff; background: rgba(255,255,255,.08); }
-  .links a[aria-current="page"] { color: #fff; background: rgba(255,255,255,.16); }
-  .bar .pill.white { background: #fff; color: var(--green); }
-  .who-btn { background: rgba(255,255,255,.14); color: #fff; }
-  .avatar { background: #F2C94C; color: var(--ink); }
-  .who-menu { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); color: var(--ink); }
-  .who-menu button { background: none; }
-  .who-menu button:hover { background: var(--fill); }
-  .menu-btn { background: rgba(255,255,255,.14); color: #fff; }
-  .sheet { background: var(--green); }
-  .sheet a { color: #fff; }
-  .phone-gate { background: #FBF8EF; }
-  .gate-tile { box-shadow: -9px 9px 0 #A9BC9E, -34px 34px 46px rgba(0,0,0,.18); }
-  .phone-gate p { color: var(--ink-2); }
-  .no-map p { background: #fff; box-shadow: var(--shadow); color: var(--ink-2); }
-  .panel { background: #fff; box-shadow: var(--shadow); }
-  .textlink { background: none; color: var(--green); }
-  .seg { background: var(--fill); }
-  .seg button { background: none; color: var(--ink-3); }
-  .seg button:hover { color: var(--ink); }
-  .seg button[aria-selected="true"], .seg button[aria-checked="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
-  .notice { background: var(--mint); }
-  .notice .tick { color: var(--green); }
-  .notice span { color: #2F4A3A; }
-  .notice .x { background: none; color: #2F4A3A; }
-  .bot-check { background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.22); }
-  .rows { background: var(--fill-2); }
-  .row { background: var(--fill-2); }
-  .row.searching { background: #fff; }
-  .row.drop-before { box-shadow: inset 0 3px 0 var(--green); }
-  .badge { color: #fff; }
-  .badge.start { background: var(--start); }
-  .badge.dest { background: var(--ink); }
-  .badge.stop { background: var(--stop); }
-  .badge.wp { background: var(--wp); }
-  .badge.new { box-shadow: inset 0 0 0 2px #B5B8BD; color: #8B9098; }
-  .row-input { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
-  .row-input::placeholder { color: #8B9098; }
-  .row-input:focus { box-shadow: 0 0 0 3px var(--green); }
-  .clear { background: var(--fill); color: var(--ink-3); }
-  .clear:hover { background: #E4E3DE; color: var(--ink); }
-  .grip { background: none; color: #B5B8BD; }
-  .kind select { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); color: var(--ink-2); }
-  .kind select:hover { color: var(--ink); }
-  .kind select:focus-visible { box-shadow: 0 0 0 3px var(--green); }
-  .kind svg { color: var(--ink-3); }
-  .stay { background: var(--fill); color: var(--ink-3); }
-  .stay:hover { background: #E4E3DE; color: var(--ink); }
-  .stay.set { background: var(--stop); color: #fff; }
-  .stay:focus-within { box-shadow: 0 0 0 3px var(--green); }
-  .suggest { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.22), 0 1px 3px rgba(0,0,0,.08); }
-  .suggest li[aria-selected="true"], .suggest li:hover { background: var(--green-tint); }
-  .suggest svg { color: #8B9098; }
-  .suggest li[aria-selected="true"] svg { color: var(--green); }
-  .suggest .a { color: var(--ink-3); }
-  .suggest .none { color: var(--ink-3); }
-  .hint { color: var(--ink-3); }
-  .select select { background: var(--fill); }
-  .select svg { color: var(--ink-2); }
-  .bring .paste input { background: var(--fill); }
-  .paste input { background: #fff; }
-  .sources { color: #2F4A3A; }
-  .gpx-drop { border: 2px dashed #D3D1CB; background: var(--fill-2); color: var(--ink-3); }
-  .gpx-drop u { color: var(--green); }
-  .gpx-drop:hover, .gpx-drop.over { border-color: var(--green); background: var(--green-tint); color: var(--ink-2); }
-  .figures b span { color: inherit; }
-  .figures span { color: var(--ink-3); }
-  .ok { color: #1D7A3E; }
-  .ok svg { color: #1D7A3E; }
-  .facts { color: #6E6E73; }
-  .facts b { color: #111113; }
-  .facts .sep { background: #8E8E93; }
-  .chip { color: #fff; }
-  .scan { background: #F2F2F7; }
-  .qr { background: #fff; }
-  #link-out { background: #F2F2F7; }
-  #blurb { color: #3A3A3C; }
-  .shimmer i { background: linear-gradient(90deg, #ECECF1 0%, #F7F7FA 40%, #ECECF1 80%); }
-  .along-list li { border-bottom: 1px solid var(--line); }
-  .along-list li:last-child { border-bottom: 0; }
-  .near-cards a { color: inherit; }
-  .near-cards img { background: var(--fill); }
-  .near-cards .m { color: var(--ink-3); }
-  .near-cards a:hover .n { color: var(--green); }
-  .key { color: #6E6E73; }
-  .key i { background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }
-  .legend, .toast { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.14); }
-  .legend { color: #3A3A3C; }
-  .legend i { color: #fff; }
-  .k-start { background: var(--start); }
-  .k-stop { background: var(--stop); }
-  .k-wp { background: var(--wp); }
-  .k-end { background: var(--ink); }
-  .toast.bad { background: #FFF1F0; color: #8A1C12; }
-  .click-menu { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); }
-  .click-menu button { border: none; background: none; }
-  .click-menu button:hover, .click-menu button:focus-visible, .click-menu button.on { background: var(--green-tint); }
-  .click-menu .cancel { border-top: 1px solid var(--line); color: var(--ink-3); }
-  .drop { background: rgba(29,91,58,.18); }
-  .drop span { background: #fff; box-shadow: var(--shadow); }
-  .pin { color: #fff; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
-  .pin.start { background: var(--start); }
-  .pin.dest { background: var(--ink); }
-  .pin.stop { background: var(--stop); }
-  .pin.wp { background: var(--wp); }
-  .pin-tip { background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
-  .pin-tip .pt-start { color: var(--start); }
-  .pin-tip .pt-dest { color: var(--ink); }
-  .pin-tip .pt-stop { color: var(--stop); }
-  .pin-tip .pt-wp { color: var(--wp); }
-  .k-road { border-top: 3px dashed #6A4CFF; }
-  .key-tip { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.18); color: var(--ink-2); }
-  .key-tip b { color: var(--ink); }
-  .pin.temp { background: var(--ink); }
-  .road-chip { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); color: #1660B8; }
-  .maplibregl-ctrl-group { box-shadow: 0 0 0 1px rgba(21,24,28,.16), 0 6px 18px rgba(0,0,0,.18) !important; }
-  .sheet-dialog { border: none; box-shadow: 0 30px 80px rgba(0,0,0,.3); color: var(--ink); }
-  .sheet-dialog::backdrop { background: rgba(10,28,19,.48); }
-  .sheet-dialog p.dim { color: var(--ink-2); }
-  .error { background: #FFF1F0; color: #8A1C12; }
-  .road-hover { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.18), 0 0 0 1.5px #6A4CFF; }
-  .twist { box-shadow: 0 0 0 1.5px #fff inset; }
-  .twist.bare { background: none !important; box-shadow: none; }
-  .road-head { border-bottom: 1px solid var(--line); }
-  .road-head img { background: var(--fill); }
-  .rh-facts { color: var(--ink-2); }
-  .rh-facts .fig + .fig::before { color: var(--ink-3); }
-  .rh-body a { color: var(--green); }
-  .click-menu .badge.whole { background: #EEEBFF; color: #6A4CFF; }
-  .click-menu .two small { color: var(--ink-3); }
+  html:not(.night) { color-scheme: light; --green-tint: #EEF5F0; --mint: #DCF1E2; --ink: #15181C; --ink-2: #4A5058; --ink-3: #5D636C; --fill: #F1F1EF; --fill-2: #F7F6F2; --line: #ECEAE4; --map: #EFEDE6; --shadow: 0 10px 30px rgba(0,0,0,.12), 0 1px 3px rgba(0,0,0,.06); --green-ink: #1D5B3A; }
+  :where(html:not(.night)) a { color: var(--green); }
+  :where(html:not(.night)) .dim { color: var(--ink-3); }
+  :where(html:not(.night)) .eyebrow { color: var(--ink-3); }
+  :where(html:not(.night)) .pill.green { color: #fff; }
+  :where(html:not(.night)) .pill.green:disabled { background: #EDECE8; color: #6B7079; }
+  :where(html:not(.night)) .pill.white { background: #fff; color: var(--ink); }
+  :where(html:not(.night)) .pill.grey { background: var(--fill); color: var(--ink); }
+  :where(html:not(.night)) .pill.grey:hover, :where(html:not(.night)) .pill.white:hover { background: #E8E7E3; }
+  :where(html:not(.night)) .pill.black { background: #000; color: #fff; }
+  :where(html:not(.night)) .pill.outline { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #DADCE0; }
+  :where(html:not(.night)) .round { background: var(--fill); color: var(--ink); }
+  :where(html:not(.night)) .linkish { background: none; color: var(--green); }
+  :where(html:not(.night)) .linkish.grey { color: var(--ink-3); }
+  :where(html:not(.night)) .field { background: var(--fill); }
+  :where(html:not(.night)) .field::placeholder { color: #8B9098; }
+  :where(html:not(.night)) .bar { background: var(--green); color: #fff; box-shadow: none; }
+  :where(html:not(.night)) .brand { color: #fff; }
+  :where(html:not(.night)) .links a { color: rgba(255,255,255,.86); }
+  :where(html:not(.night)) .links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+  :where(html:not(.night)) .links a[aria-current="page"] { color: #fff; background: rgba(255,255,255,.16); }
+  :where(html:not(.night)) .bar .pill.white { background: #fff; color: var(--green); }
+  :where(html:not(.night)) .who-btn { background: rgba(255,255,255,.14); color: #fff; }
+  :where(html:not(.night)) .avatar { background: #F2C94C; color: var(--ink); }
+  :where(html:not(.night)) .who-menu { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); color: var(--ink); }
+  :where(html:not(.night)) .who-menu button { background: none; }
+  :where(html:not(.night)) .who-menu button:hover { background: var(--fill); }
+  :where(html:not(.night)) .menu-btn { background: rgba(255,255,255,.14); color: #fff; }
+  :where(html:not(.night)) .sheet { background: var(--green); }
+  :where(html:not(.night)) .sheet a { color: #fff; }
+  :where(html:not(.night)) .phone-gate { background: #FBF8EF; }
+  :where(html:not(.night)) .gate-tile { box-shadow: -9px 9px 0 #A9BC9E, -34px 34px 46px rgba(0,0,0,.18); }
+  :where(html:not(.night)) .phone-gate p { color: var(--ink-2); }
+  :where(html:not(.night)) .no-map p { background: #fff; box-shadow: var(--shadow); color: var(--ink-2); }
+  :where(html:not(.night)) .panel { background: #fff; box-shadow: var(--shadow); }
+  :where(html:not(.night)) .textlink { background: none; color: var(--green); }
+  :where(html:not(.night)) .seg { background: var(--fill); }
+  :where(html:not(.night)) .seg button { background: none; color: var(--ink-3); }
+  :where(html:not(.night)) .seg button:hover { color: var(--ink); }
+  :where(html:not(.night)) .seg button[aria-selected="true"], :where(html:not(.night)) .seg button[aria-checked="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  :where(html:not(.night)) .notice { background: var(--mint); }
+  :where(html:not(.night)) .notice .tick { color: var(--green); }
+  :where(html:not(.night)) .notice span { color: #2F4A3A; }
+  :where(html:not(.night)) .notice .x { background: none; color: #2F4A3A; }
+  :where(html:not(.night)) .bot-check { background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.22); }
+  :where(html:not(.night)) .rows { background: var(--fill-2); }
+  :where(html:not(.night)) .row { background: var(--fill-2); }
+  :where(html:not(.night)) .row.searching { background: #fff; }
+  :where(html:not(.night)) .row.drop-before { box-shadow: inset 0 3px 0 var(--green); }
+  :where(html:not(.night)) .badge { color: #fff; }
+  :where(html:not(.night)) .badge.start { background: var(--start); }
+  :where(html:not(.night)) .badge.dest { background: var(--ink); }
+  :where(html:not(.night)) .badge.stop { background: var(--stop); }
+  :where(html:not(.night)) .badge.wp { background: var(--wp); }
+  :where(html:not(.night)) .badge.new { box-shadow: inset 0 0 0 2px #B5B8BD; color: #8B9098; }
+  :where(html:not(.night)) .row-input { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  :where(html:not(.night)) .row-input::placeholder { color: #8B9098; }
+  :where(html:not(.night)) .row-input:focus { box-shadow: 0 0 0 3px var(--green); }
+  :where(html:not(.night)) .clear { background: var(--fill); color: var(--ink-3); }
+  :where(html:not(.night)) .clear:hover { background: #E4E3DE; color: var(--ink); }
+  :where(html:not(.night)) .grip { background: none; color: #B5B8BD; }
+  :where(html:not(.night)) .kind select { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); color: var(--ink-2); }
+  :where(html:not(.night)) .kind select:hover { color: var(--ink); }
+  :where(html:not(.night)) .kind select:focus-visible { box-shadow: 0 0 0 3px var(--green); }
+  :where(html:not(.night)) .kind svg { color: var(--ink-3); }
+  :where(html:not(.night)) .stay { background: var(--fill); color: var(--ink-3); }
+  :where(html:not(.night)) .stay:hover { background: #E4E3DE; color: var(--ink); }
+  :where(html:not(.night)) .stay.set { background: var(--stop); color: #fff; }
+  :where(html:not(.night)) .stay:focus-within { box-shadow: 0 0 0 3px var(--green); }
+  :where(html:not(.night)) .suggest { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.22), 0 1px 3px rgba(0,0,0,.08); }
+  :where(html:not(.night)) .suggest li[aria-selected="true"], :where(html:not(.night)) .suggest li:hover { background: var(--green-tint); }
+  :where(html:not(.night)) .suggest svg { color: #8B9098; }
+  :where(html:not(.night)) .suggest li[aria-selected="true"] svg { color: var(--green); }
+  :where(html:not(.night)) .suggest .a { color: var(--ink-3); }
+  :where(html:not(.night)) .suggest .none { color: var(--ink-3); }
+  :where(html:not(.night)) .hint { color: var(--ink-3); }
+  :where(html:not(.night)) .select select { background: var(--fill); }
+  :where(html:not(.night)) .select svg { color: var(--ink-2); }
+  :where(html:not(.night)) .bring .paste input { background: var(--fill); }
+  :where(html:not(.night)) .paste input { background: #fff; }
+  :where(html:not(.night)) .sources { color: #2F4A3A; }
+  :where(html:not(.night)) .gpx-drop { border: 2px dashed #D3D1CB; background: var(--fill-2); color: var(--ink-3); }
+  :where(html:not(.night)) .gpx-drop u { color: var(--green); }
+  :where(html:not(.night)) .gpx-drop:hover, :where(html:not(.night)) .gpx-drop.over { border-color: var(--green); background: var(--green-tint); color: var(--ink-2); }
+  :where(html:not(.night)) .figures b span { color: inherit; }
+  :where(html:not(.night)) .figures span { color: var(--ink-3); }
+  :where(html:not(.night)) .ok { color: #1D7A3E; }
+  :where(html:not(.night)) .ok svg { color: #1D7A3E; }
+  :where(html:not(.night)) .facts { color: #6E6E73; }
+  :where(html:not(.night)) .facts b { color: #111113; }
+  :where(html:not(.night)) .facts .sep { background: #8E8E93; }
+  :where(html:not(.night)) .chip { color: #fff; }
+  :where(html:not(.night)) .scan { background: #F2F2F7; }
+  :where(html:not(.night)) .qr { background: #fff; }
+  :where(html:not(.night)) #link-out { background: #F2F2F7; }
+  :where(html:not(.night)) #blurb { color: #3A3A3C; }
+  :where(html:not(.night)) .shimmer i { background: linear-gradient(90deg, #ECECF1 0%, #F7F7FA 40%, #ECECF1 80%); }
+  :where(html:not(.night)) .along-list li { border-bottom: 1px solid var(--line); }
+  :where(html:not(.night)) .along-list li:last-child { border-bottom: 0; }
+  :where(html:not(.night)) .near-cards a { color: inherit; }
+  :where(html:not(.night)) .near-cards img { background: var(--fill); }
+  :where(html:not(.night)) .near-cards .m { color: var(--ink-3); }
+  :where(html:not(.night)) .near-cards a:hover .n { color: var(--green); }
+  :where(html:not(.night)) .key { color: #6E6E73; }
+  :where(html:not(.night)) .key i { background: linear-gradient(90deg, #8FD8FF, #5B7CFA, #9B4DEB, #FF3D8B); }
+  :where(html:not(.night)) .legend, :where(html:not(.night)) .toast { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.14); }
+  :where(html:not(.night)) .legend { color: #3A3A3C; }
+  :where(html:not(.night)) .legend i { color: #fff; }
+  :where(html:not(.night)) .k-start { background: var(--start); }
+  :where(html:not(.night)) .k-stop { background: var(--stop); }
+  :where(html:not(.night)) .k-wp { background: var(--wp); }
+  :where(html:not(.night)) .k-end { background: var(--ink); }
+  :where(html:not(.night)) .toast.bad { background: #FFF1F0; color: #8A1C12; }
+  :where(html:not(.night)) .click-menu { background: #fff; box-shadow: 0 14px 36px rgba(0,0,0,.2); }
+  :where(html:not(.night)) .click-menu button { border: none; background: none; }
+  :where(html:not(.night)) .click-menu button:hover, :where(html:not(.night)) .click-menu button:focus-visible, :where(html:not(.night)) .click-menu button.on { background: var(--green-tint); }
+  :where(html:not(.night)) .click-menu .cancel { border-top: 1px solid var(--line); color: var(--ink-3); }
+  :where(html:not(.night)) .drop { background: rgba(29,91,58,.18); }
+  :where(html:not(.night)) .drop span { background: #fff; box-shadow: var(--shadow); }
+  :where(html:not(.night)) .pin { color: #fff; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+  :where(html:not(.night)) .pin.start { background: var(--start); }
+  :where(html:not(.night)) .pin.dest { background: var(--ink); }
+  :where(html:not(.night)) .pin.stop { background: var(--stop); }
+  :where(html:not(.night)) .pin.wp { background: var(--wp); }
+  :where(html:not(.night)) .pin-tip { background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  :where(html:not(.night)) .pin-tip .pt-start { color: var(--start); }
+  :where(html:not(.night)) .pin-tip .pt-dest { color: var(--ink); }
+  :where(html:not(.night)) .pin-tip .pt-stop { color: var(--stop); }
+  :where(html:not(.night)) .pin-tip .pt-wp { color: var(--wp); }
+  :where(html:not(.night)) .k-road { border-top: 3px dashed #6A4CFF; }
+  :where(html:not(.night)) .key-tip { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.18); color: var(--ink-2); }
+  :where(html:not(.night)) .key-tip b { color: var(--ink); }
+  :where(html:not(.night)) .pin.temp { background: var(--ink); }
+  :where(html:not(.night)) .road-chip { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 0 0 1.5px var(--route); color: #1660B8; }
+  :where(html:not(.night)) .maplibregl-ctrl-group { box-shadow: 0 0 0 1px rgba(21,24,28,.16), 0 6px 18px rgba(0,0,0,.18) !important; }
+  :where(html:not(.night)) .sheet-dialog { border: none; box-shadow: 0 30px 80px rgba(0,0,0,.3); color: var(--ink); }
+  :where(html:not(.night)) .sheet-dialog::backdrop { background: rgba(10,28,19,.48); }
+  :where(html:not(.night)) .sheet-dialog p.dim { color: var(--ink-2); }
+  :where(html:not(.night)) .error { background: #FFF1F0; color: #8A1C12; }
+  :where(html:not(.night)) .road-hover { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.18), 0 0 0 1.5px #6A4CFF; }
+  :where(html:not(.night)) .twist { box-shadow: 0 0 0 1.5px #fff inset; }
+  :where(html:not(.night)) .twist.bare { background: none !important; box-shadow: none; }
+  :where(html:not(.night)) .road-head { border-bottom: 1px solid var(--line); }
+  :where(html:not(.night)) .road-head img { background: var(--fill); }
+  :where(html:not(.night)) .rh-facts { color: var(--ink-2); }
+  :where(html:not(.night)) .rh-facts .fig + .fig::before { color: var(--ink-3); }
+  :where(html:not(.night)) .rh-body a { color: var(--green); }
+  :where(html:not(.night)) .click-menu .badge.whole { background: #EEEBFF; color: #6A4CFF; }
+  :where(html:not(.night)) .click-menu .two small { color: var(--ink-3); }
 }
 /* end light theme */
 
@@ -733,7 +744,7 @@ a { color: var(--green-ink); }
 .cal-nav:disabled { opacity: .3; cursor: default; }
 .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; }
 .cal .dow { font-size: 12px; color: var(--ink-3); padding-bottom: 2px; }
-.cal button { aspect-ratio: 1; border: none; border-radius: 50%; background: none; color: var(--ink); font: inherit; font-size: 14px; font-variant-numeric: tabular-nums; cursor: pointer; }
+.cal button { aspect-ratio: 1; border: none; border-radius: 50%; background: none; color: var(--ink); font: inherit; font-family: var(--num); font-weight: 500; font-size: 14px; font-variant-numeric: tabular-nums; cursor: pointer; }
 .cal button:hover:not(:disabled) { background: var(--fill); }
 .cal button:disabled { color: #4A544E; cursor: default; }
 .cal button.today { box-shadow: inset 0 0 0 1.5px var(--line); }
@@ -761,15 +772,15 @@ a { color: var(--green-ink); }
 .closures li.forecast[hidden], .s-forecast[hidden] { display: none; }
 .s-forecast { margin: 0; color: var(--ink-2); font-size: 14.5px; }
 @media not all and (prefers-color-scheme: dark) {
-  .cal button:disabled { color: #B9BCB6; }
-  .faces > * { border-color: #fff; }
+  :where(html:not(.night)) .cal button:disabled { color: #B9BCB6; }
+  :where(html:not(.night)) .faces > * { border-color: #fff; }
 }
 @media not all and (prefers-color-scheme: dark) {
-  .ctl:hover { background: #E9E8E3; }
-  .pop { background: #fff; box-shadow: 0 18px 50px rgba(0,0,0,.2), inset 0 0 0 1px var(--line); }
-  .seg3 button[aria-pressed="true"], .seg3 button[aria-checked="true"] { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.14); }
-  .tg input { background: #D5D4CF; }
-  .closures li b { color: #9A5B00; }
+  :where(html:not(.night)) .ctl:hover { background: #E9E8E3; }
+  :where(html:not(.night)) .pop { background: #fff; box-shadow: 0 18px 50px rgba(0,0,0,.2), inset 0 0 0 1px var(--line); }
+  :where(html:not(.night)) .seg3 button[aria-pressed="true"], :where(html:not(.night)) .seg3 button[aria-checked="true"] { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.14); }
+  :where(html:not(.night)) .tg input { background: #D5D4CF; }
+  :where(html:not(.night)) .closures li b { color: #9A5B00; }
 }
 
 /* Plan a group drive (/plan/?group; group.js): a step bar over the planner */
@@ -826,7 +837,7 @@ a { color: var(--green-ink); }
 .map-note { padding: 4px 9px; border-radius: 8px; background: #E8A13A; color: #15181C; font-size: 12.5px; font-weight: 800; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
 .click-menu .badge.note { background: #E8A13A; color: #15181C; }
 @media not all and (prefers-color-scheme: dark) {
-  .g-problem { color: #B3261E; }
+  :where(html:not(.night)) .g-problem { color: #B3261E; }
 }
 .g-counts { font-weight: 700; color: var(--ink-2); }
 .g-label { font-size: 14px; font-weight: 600; color: var(--ink-2); }
@@ -854,10 +865,10 @@ a { color: var(--green-ink); }
 .chip.no { background: #3A1C18; color: #FF9B8A; }
 .chip.first { background: #1D2A3A; color: #8CC4FF; }
 @media not all and (prefers-color-scheme: dark) {
-  .chip.registered, .chip.going { background: #DCF1E2; color: #1D5B3A; }
-  .chip.maybe { background: #FFF1CC; color: #7A5600; }
-  .chip.no { background: #FDE4E0; color: #8A1C12; }
-  .chip.first { background: #E3EEFB; color: #1660B8; }
+  :where(html:not(.night)) .chip.registered, :where(html:not(.night)) .chip.going { background: #DCF1E2; color: #1D5B3A; }
+  :where(html:not(.night)) .chip.maybe { background: #FFF1CC; color: #7A5600; }
+  :where(html:not(.night)) .chip.no { background: #FDE4E0; color: #8A1C12; }
+  :where(html:not(.night)) .chip.first { background: #E3EEFB; color: #1660B8; }
 }
 /* Send (send.js) */
 .sd-box, .sd-ready { display: flex; flex-direction: column; gap: 10px; }
@@ -889,7 +900,8 @@ a { color: var(--green-ink); }
 .pd-drafts { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
 .pd-drafts[hidden], #pd-said:empty { display: none; }
 .pd-drafts h2 { margin: 0; }
-@media not all and (prefers-color-scheme: dark) { .dl-delete[data-armed="1"] { color: #B3261E; } }
+@media not all and (prefers-color-scheme: dark) { :where(html:not(.night)) .dl-delete[data-armed="1"] { color: #B3261E; }
+}
 .dl-row { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 14px; border: none; background: var(--fill); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
 .dl-row:hover { background: var(--line); }
 .dl-row:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
@@ -918,7 +930,7 @@ a { color: var(--green-ink); }
 .dp-table caption { text-align: left; font-weight: 700; padding: 6px 8px; }
 .dp-table td:first-child { white-space: normal; max-width: 220px; }
 @media not all and (prefers-color-scheme: dark) {
-  .dp-meter.over span { background: #B3261E; }
+  :where(html:not(.night)) .dp-meter.over span { background: #B3261E; }
 }
 /* The Groups board (groups-board.js): the panel widens over the map */
 #panel.group-mode[data-step="groups"] { width: auto; right: 16px; }
@@ -968,13 +980,13 @@ a { color: var(--green-ink); }
 .ck td, .ck th { border-bottom: 1px solid #ccc; padding: 4pt; text-align: left; font-size: 11pt; }
 .ck .box { width: 18pt; font-size: 14pt; }
 @media not all and (prefers-color-scheme: dark) {
-  .gb-late { background: #FFF1CC; color: #7A5600; }
-  .gb-label, .gb-role, .gb-leave, .gb-card { background: #fff; }
-  .chip.style-spirited { background: #FDE4E0; color: #8A1C12; }
-  .chip.style-touring { background: #DCF1E2; color: #1D5B3A; }
-  .chip.style-relaxed { background: #E3EEFB; color: #1660B8; }
-  .chip.exp { background: #ECE7FF; color: #4B32B5; }
-  .chip.warn { background: #FFF1CC; color: #7A5600; }
+  :where(html:not(.night)) .gb-late { background: #FFF1CC; color: #7A5600; }
+  :where(html:not(.night)) .gb-label, :where(html:not(.night)) .gb-role, :where(html:not(.night)) .gb-leave, :where(html:not(.night)) .gb-card { background: #fff; }
+  :where(html:not(.night)) .chip.style-spirited { background: #FDE4E0; color: #8A1C12; }
+  :where(html:not(.night)) .chip.style-touring { background: #DCF1E2; color: #1D5B3A; }
+  :where(html:not(.night)) .chip.style-relaxed { background: #E3EEFB; color: #1660B8; }
+  :where(html:not(.night)) .chip.exp { background: #ECE7FF; color: #4B32B5; }
+  :where(html:not(.night)) .chip.warn { background: #FFF1CC; color: #7A5600; }
 }
 /* Days and legs (multi-day, §3) */
 .g-days { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -986,7 +998,8 @@ a { color: var(--green-ink); }
 .g-legs { display: flex; flex-direction: column; gap: 8px; }
 .g-leg-name { height: 40px; }
 .g-remove { align-self: flex-start; color: #FF8A7A; }
-@media not all and (prefers-color-scheme: dark) { .g-remove { color: #B3261E; } }
+@media not all and (prefers-color-scheme: dark) { :where(html:not(.night)) .g-remove { color: #B3261E; }
+}
 /* Search results as numbered pins (attachSearch), numbered in the list too */
 .search-pin { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; background: #1D5B3A; color: #fff; font: 800 13px/1 "Figtree", system-ui, sans-serif; display: grid; place-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.3); cursor: pointer; padding: 0; transition: transform .12s; }
 /* Stops along the way (item 8): the break check's warnings and places */
@@ -1055,7 +1068,8 @@ a { color: var(--green-ink); }
 .ask-ok { height: 46px; padding: 0 24px; border: 0; border-radius: 12px; background: var(--green); color: #fff; font: inherit; font-size: 17px; font-weight: 800; cursor: pointer; }
 .ask-hint { font-size: 14px; color: var(--ink-3); }
 .ask-problem { margin: 0; font-weight: 600; color: #FF8A7A; }
-@media not all and (prefers-color-scheme: dark) { .ask-problem { color: #B3261E; } }
+@media not all and (prefers-color-scheme: dark) { :where(html:not(.night)) .ask-problem { color: #B3261E; }
+}
 .ask-choices { display: flex; flex-direction: column; gap: 10px; max-width: 460px; }
 .ask-choice { display: flex; align-items: center; gap: 14px; min-height: 58px; padding: 10px 18px; border: 2px solid var(--line); border-radius: 14px; background: var(--fill); font: inherit; font-size: 19px; font-weight: 700; color: var(--ink); text-align: left; cursor: pointer; }
 .ask-choice:hover, .ask-choice.on { border-color: var(--green-ink); }
@@ -1098,8 +1112,8 @@ body.gshell:not([data-gstep="route"]) :is(.map, .legend, .place-bar, .layers) { 
 body.gshell:not([data-gstep="route"]) #figures { display: none !important; }
 body.gshell :is(#g-steps, .g-head h1) { display: none; }
 @media not all and (prefers-color-scheme: dark) {
-  .g-rail { background: #F6F3EB; border-right-color: #E2DCCC; }
-  .g-rail-step:hover, .g-rail-step[aria-current="step"] { background: #fff; }
+  :where(html:not(.night)) .g-rail { background: #F6F3EB; border-right-color: #E2DCCC; }
+  :where(html:not(.night)) .g-rail-step:hover, :where(html:not(.night)) .g-rail-step[aria-current="step"] { background: #fff; }
 }
 
 /* When and how many as questions (the mock, 11/9): the old fields for the
@@ -1260,7 +1274,8 @@ section.along h3 { margin: 0; font-size: 17px; }
 #along-go { align-self: flex-start; }
 #along-go[hidden] { display: none; }
 body.gshell .suggest-row { display: none !important; }
-@media not all and (prefers-color-scheme: dark) { section.along { background: #fff; } }
+@media not all and (prefers-color-scheme: dark) { :where(html:not(.night)) section.along { background: #fff; }
+}
 
 /* Send the route as the mock has it (11/9): the audiences as cards, the
    email beside them in its own frame. Working styles. */
@@ -1346,13 +1361,13 @@ body.gshell .suggest-row { display: none !important; }
 @media (min-width: 1400px) { .place-bar { left: 562px; } }
 .maplibregl-popup.suggest-popup { z-index: 4; }
 @media not all and (prefers-color-scheme: dark) {
-  .place-pill, .place-chip, .place-said { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.14); }
-  .place-pill { color: #1C1C1E; }
-  .place-pill svg { color: var(--green); }
-  .place-pill:hover, .place-chip:hover { background: #F2F2EF; }
-  .place-pill[aria-pressed="true"] { background: var(--green); color: #fff; }
-  .place-chip { color: var(--green); }
-  .place-said { color: #3A3A3C; }
+  :where(html:not(.night)) .place-pill, :where(html:not(.night)) .place-chip, :where(html:not(.night)) .place-said { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.14); }
+  :where(html:not(.night)) .place-pill { color: #1C1C1E; }
+  :where(html:not(.night)) .place-pill svg { color: var(--green); }
+  :where(html:not(.night)) .place-pill:hover, :where(html:not(.night)) .place-chip:hover { background: #F2F2EF; }
+  :where(html:not(.night)) .place-pill[aria-pressed="true"] { background: var(--green); color: #fff; }
+  :where(html:not(.night)) .place-chip { color: var(--green); }
+  :where(html:not(.night)) .place-said { color: #3A3A3C; }
 }
 /* The group flow: the panel starts at 272 px. */
 body.gshell .place-bar { left: 768px; }
@@ -1376,3 +1391,55 @@ body.gshell .place-bar { left: 768px; }
 body.gshell .layers { left: 768px; }
 body.gshell .layers:not([hidden]) ~ .legend { left: 868px; }
 @media (min-width: 1400px) { body.gshell .layers { left: 818px; } body.gshell .layers:not([hidden]) ~ .legend { left: 918px; } }
+
+/* A club drive's day: dark in either device setting (club flow mock v11), the device's dark rules too. */
+
+:where(html.night) .maplibregl-ctrl-group { background: #161B18 !important; box-shadow: 0 6px 18px rgba(0,0,0,.4), inset 0 0 0 1px #2A332E !important; }
+:where(html.night) .maplibregl-ctrl-group button + button { border-top: 1px solid #2A332E !important; }
+:where(html.night) .maplibregl-ctrl-group button:hover { background-color: #1D2420 !important; }
+:where(html.night) .maplibregl-ctrl button .maplibregl-ctrl-icon { filter: invert(1) brightness(.92); }
+:where(html.night) .whole-route { color: #EEF1EE; }
+:where(html.night) .maplibregl-ctrl-attrib, :where(html.night) .maplibregl-ctrl.maplibregl-ctrl-attrib { background: rgba(14, 18, 16, .78) !important; color: #9AA39D; }
+:where(html.night) .maplibregl-ctrl-attrib a { color: #C3CAC5 !important; }
+:where(html.night) .maplibregl-ctrl-attrib-button { filter: invert(1); background-color: transparent !important; }
+:where(html.night) .maplibregl-popup-content { background: #161B18 !important; color: #EEF1EE; }
+:where(html.night) .maplibregl-popup-tip { border-top-color: #161B18 !important; border-bottom-color: #161B18 !important; }
+
+/* A club drive's day (club flow mock v11, Chris 11/13): the night drive bar
+   across the top, the day as a schedule (clock times, each leg, the
+   90-minute break), totals as distance / driving / arrive. Mint for the
+   actions, #0E1210 on mint. */
+body.drive-day { --drive-bar: 56px; }
+body.drive-day .app { top: calc(var(--bar) + var(--drive-bar)); }
+.drive-day .drive-bar { position: fixed; z-index: 18; top: var(--bar); left: 0; right: 0; height: var(--drive-bar); flex-wrap: nowrap; gap: 16px; padding: 0 18px; background: #0E1210; border-bottom: 1px solid #2A332E; }
+.drive-day .db-back { flex: none; color: #6FD39A; font-size: 14px; font-weight: 800; }
+.db-title { flex: 1 1 auto; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #EEF1EE; font-size: 15.5px; }
+.db-title b { font-weight: 800; }
+.db-title span { color: #A3ACA6; font-weight: 600; }
+.drive-day .db-days { flex: none; flex-basis: auto; gap: 0; padding: 3px; border-radius: 999px; background: rgba(238, 241, 238, .08); overflow: visible; }
+.drive-day .db-day { height: 30px; padding: 0 14px; border: 0; border-radius: 999px; background: none; color: #D3D9D5; font-size: 13.5px; font-weight: 800; }
+.drive-day .db-day[aria-pressed="true"] { background: #6FD39A; color: #0E1210; }
+.db-done { flex: none; height: 38px; padding: 0 20px; border: 0; border-radius: 999px; background: #6FD39A; color: #0E1210; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; }
+.db-done:disabled { opacity: .5; cursor: default; }
+.drive-bar:not([hidden]) ~ .view #save, .drive-day #save { display: none; }
+.drive-day .panel { top: 16px; }
+@media (max-width: 760px) { .db-title span { display: none; } }
+
+/* The schedule beside the rows. */
+.rows.timed-rows .row { flex-wrap: wrap; row-gap: 4px; }
+.rows .clock { flex: none; width: 46px; margin-right: -2px; display: flex; flex-direction: column; align-items: flex-end; font-family: var(--num); font-variant-numeric: tabular-nums; font-weight: 500; font-size: 15px; line-height: 1.1; color: var(--ink); }
+.rows .clock small { font-family: "Figtree", system-ui, sans-serif; font-size: 11px; font-weight: 700; color: var(--ink-3); }
+.rows .leg-next { flex-basis: 100%; padding: 2px 0 2px 92px; font-size: 13px; color: var(--ink-3); }
+.rows .brk { flex-basis: 100%; margin: 4px 0 4px 88px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #2A2418; border-radius: 12px; padding: 8px 10px; font-size: 13.5px; color: #F2C46B; font-weight: 600; }
+.rows .brk .linkish { margin-left: auto; min-height: 0; padding: 0; color: #6FD39A; font-weight: 800; }
+.drive-day .figures span { font-size: 13px; }
+.drive-day .figures b { font-size: 24px; }
+.rows.timed-rows .row .cell { flex-basis: 0; }
+/* A drive's day (Chris, 11/13): the stop's name gets the whole width; the
+   Stop / Waypoint select and the handle go on their own line under it. */
+.rows.timed-rows .row { align-items: flex-start; }
+.rows.timed-rows .row > .clock { margin-top: 6px; }
+.rows.timed-rows .row > .badge { margin-top: 12px; }
+.rows.timed-rows .row[data-role="waypoint"] .field-line { flex-wrap: wrap; }
+.rows.timed-rows .row[data-role="waypoint"] .input-wrap { flex-basis: 100%; }
+.rows.timed-rows .row[data-role="waypoint"] > .grip { position: absolute; right: 4px; top: 63px; }

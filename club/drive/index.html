@@ -10,10 +10,10 @@
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=b2f2ed02ae">
+<link rel="stylesheet" href="/styles.css?v=c93f09caa8">
 <link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
-<link rel="stylesheet" href="/assets/club-v2.css?v=97ca812cdb">
+<link rel="stylesheet" href="/assets/club-v2.css?v=ac31cdb17a">
 <link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 
@@ -89,7 +89,7 @@
 </svg>
 
 
-<main class="home cp o-page cv">
+<main class="home cp o-page cv cv-dash">
   <p class="cp-note" id="cp-status" role="status">Loading…</p>
 
   <section class="cp-sect" id="o-signin" hidden>
@@ -98,42 +98,60 @@
     <button type="button" class="go" id="o-signin-go">Sign in</button>
   </section>
 
-  <!-- New drive and Edit details (club v2's O3): one day to start; Day N labels only after + Add a day (Group and Club); the pre-run on Club only. -->
-  <form class="cv-form" id="f-page" hidden novalidate>
-    <a class="cv-back" id="f-back" href="/club/">‹ Your club</a>
-    <h1 id="f-title">Plan a drive</h1>
+  <!-- New drive and Edit details (club v2's O3; club flow mock v11, Chris
+       11/13): one question at a time, as Start a club. Each day one row of
+       friendly pickers (date, meet, leave) over the browser's own; the
+       pre-drive as Yes / No cards, its date inside Yes. Same fields. -->
+  <form class="cv-form cd-ask" id="f-page" hidden novalidate>
+    <a class="cd-back" id="f-back" href="/club/">‹ Your club</a>
+    <h1 class="cd-title" id="f-title">Plan a drive</h1>
     <p class="cp-note" id="f-copy-note" hidden></p>
-    <label class="cp-field">What's this Drive called?<input type="text" id="f-name" maxlength="80" autocomplete="off" placeholder="Coastal Run to Carmel"></label>
-    <div class="cv-days" id="f-days"></div>
-    <button type="button" class="textlink" id="f-add-day">+ Add a day</button>
+    <div class="cd-q">
+      <span class="cd-n" aria-hidden="true">1</span>
+      <h2><label for="f-name">What's this Drive called?</label></h2>
+    </div>
+    <input type="text" class="cd-big" id="f-name" maxlength="80" autocomplete="off" placeholder="Coastal Run to Carmel">
+    <div class="cd-q">
+      <span class="cd-n" aria-hidden="true">2</span>
+      <h2 id="f-when-h">When is it?</h2>
+    </div>
+    <div class="cd-days-ask" role="group" aria-labelledby="f-when-h">
+      <div class="cv-days" id="f-days"></div>
+      <button type="button" class="textlink cd-add" id="f-add-day">+ Add a day</button>
+    </div>
     <section class="cv-prerun" id="f-prerun" role="group" aria-labelledby="f-pr-h" hidden>
-      <div class="cv-pr-head">
-        <div>
-          <p class="cv-pr-q" id="f-pr-h">Will there be a pre-drive?</p>
-          <p class="cp-note">Your crew drives the route ahead of time. Scout the roads, and make adjustments as needed.</p>
+      <div class="cd-q">
+        <span class="cd-n" aria-hidden="true">3</span>
+        <div><h2 id="f-pr-h">Will there be a pre-drive?</h2>
+        <p class="cp-note">Your crew drives the route ahead of time. Scout the roads, and make adjustments as needed.</p></div>
+      </div>
+      <div class="cd-yn">
+        <div class="cd-opt" id="f-pr-yes-card">
+          <button type="button" class="cd-opt-go" id="f-pr-yes" aria-pressed="false"><b>Yes</b><span>Your crew gets the day links early.</span></button>
+          <label class="cd-pick cv-time" id="f-pr-pick" hidden><small>Pre-drive date</small><b id="f-pr-shown"></b><input type="date" id="f-pr-date" aria-label="Pre-drive date"></label>
         </div>
-        <div class="cv-chips" role="group" aria-labelledby="f-pr-h">
-          <button type="button" class="cv-chip" id="f-pr-yes" aria-pressed="false">Yes</button>
-          <button type="button" class="cv-chip" id="f-pr-no" aria-pressed="true">No</button>
+        <div class="cd-opt">
+          <button type="button" class="cd-opt-go" id="f-pr-no" aria-pressed="true"><b>No</b><span>Go straight to planning routes.</span></button>
         </div>
       </div>
-      <input type="date" id="f-pr-date" aria-label="Pre-drive date" hidden>
     </section>
     <p class="cp-note cv-said" id="f-said" role="status" aria-live="polite"></p>
     <!-- One primary action, with room above it; Cancel a quiet link on its row (Chris, 11/10). -->
-    <div class="cv-actions"><a class="cv-cancel" id="f-cancel" href="/club/">Cancel</a><button type="submit" class="go" id="f-go">Create the drive</button></div>
+    <div class="cv-actions cd-foot"><a class="cv-cancel" id="f-cancel" href="/club/">Cancel</a><button type="submit" class="go" id="f-go">Create drive</button></div>
   </form>
 
-  <!-- The drive page (club v2's O4): a card per day, Plan or Edit route, Share once it has one; the pre-run card. -->
+  <!-- The drive page (club flow mock v11, Chris 11/13): a slim band with the
+       name, dates and countdown; then in order the pre-drive, each day with
+       its route's shape and facts, and a routed day's share panel (QR, link,
+       Copy link, when drivers get Apex, when it last changed) under it. -->
   <div class="cv-drive" id="d-page" hidden>
-    <a class="cv-back" id="d-back" href="/club/">‹ Your club</a>
-    <div class="cv-head">
-      <div class="cv-head-words">
-        <p class="cp-eyebrow" id="d-club"></p>
+    <header class="cd-band glow">
+      <div class="cd-who">
+        <a class="cd-back" id="d-back" href="/club/">‹ Your club</a>
         <h1 id="d-name"></h1>
-        <p class="cp-note" id="d-line"></p>
+        <p class="cd-meta" id="d-line"></p>
       </div>
-      <span class="v-pill" id="d-stage"></span>
+      <span class="cd-chip dark" id="d-stage"></span>
       <div class="cv-more">
         <button type="button" class="cv-more-btn" id="d-more" aria-haspopup="menu" aria-expanded="false" aria-label="More for this drive">⋯</button>
         <div class="cv-menu" id="d-menu" role="menu" hidden>
@@ -141,18 +159,20 @@
           <button type="button" role="menuitem" id="d-delete">Delete drive</button>
         </div>
       </div>
-    </div>
+    </header>
     <div class="cv-confirm" id="d-del-box" hidden>
       <p class="o-strong">Delete this drive? It comes off your club's drives, and you can't get it back.</p>
       <div class="o-row"><button type="button" class="go danger" id="d-del-go">Delete drive</button><button type="button" class="textlink" id="d-del-keep">Keep it</button></div>
     </div>
     <p class="cp-note" id="d-said" role="status" aria-live="polite"></p>
-    <h2 class="cp-eyebrow" id="d-planned"></h2>
-    <ul class="cv-day-cards" id="d-days"></ul>
-    <section class="cv-box cv-pr-card" id="d-pr" aria-labelledby="d-pr-h" hidden>
-      <div class="cv-day-words"><h2 class="cv-day-h" id="d-pr-h"></h2><p class="cp-note" id="d-pr-line"></p></div>
-      <div class="cv-pr-acts"><a class="go ghost" id="d-pr-go" href="#">Pre-drive links</a><a class="textlink" id="d-pr-links" hidden>Pre-drive links</a></div>
+    <section class="cd-seq" id="d-pr" aria-labelledby="d-pr-n" hidden>
+      <h2 class="cd-seqn" id="d-pr-n">Pre-drive</h2>
+      <div class="cd-pre">
+        <div class="cd-pre-words"><b id="d-pr-h"></b><span id="d-pr-line"></span></div>
+        <a class="go ghost" id="d-pr-go" href="#">View pre-drive</a>
+      </div>
     </section>
+    <div class="cd-days" id="d-days"></div>
   </div>
 </main>
 
@@ -172,8 +192,9 @@
   </div>
 </footer>
 
-<script src="/assets/carve-site.js?v=2f5e1908ff" defer></script>
+<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
 <script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
-<script type="module" src="/assets/club-drive.js?v=8f555aa605"></script>
+<script src="/plan/vendor/qrcode.js?v=144" defer></script>
+<script type="module" src="/assets/club-drive.js?v=fa271284de"></script>
 </body>
 </html>

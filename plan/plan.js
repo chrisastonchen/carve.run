@@ -24,7 +24,8 @@ import { addPins } from "/assets/events.js?v=bb6f2616de";
 import { closures, closureTitle, closureWords } from "./closures.js?v=3";
 import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
-import { initDriveDay } from "./drive-day.js?v=6";
+import { initDriveDay } from "./drive-day.js?v=7";
+import { breakLine, clock, legLine, scheduleOf } from "./schedule.js?v=2";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
 import { initSuggest } from "./suggest.js?v=9";
@@ -56,7 +57,8 @@ const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 const FUNCTIONS = LOCAL && !DEV_BACKEND ? `${location.origin}/functions/v1` : `${SUPABASE_URL}/functions/v1`;
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
-const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
+// A club drive's day is dark either way, its map too (index.html's html.night; club flow mock v11).
+const LIGHT_DEVICE = !document.documentElement.classList.contains("night") && !window.matchMedia("(prefers-color-scheme: dark)").matches;
 const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=a36458fffd";
 const SITE = "https://carve.run";
 const APP_STORE = "https://apps.apple.com/app/carve-route-planner/id6808087716";
@@ -906,6 +908,8 @@ const driveKey = () => {
 
 async function startDriveDay() {
   $("panel").classList.add("drive-mode");
+  // Done in the night bar (mock v11): the panel's own Done, which it hides.
+  $("db-done").addEventListener("click", () => { if (!$("save").disabled) $("save").click(); });
   // No Name field: the drive is named already (Chris, 11/10).
   $("route-name").hidden = true;
   document.querySelector('label[for="route-name"]').hidden = true;
@@ -2198,6 +2202,7 @@ function render({ keepTyping = false } = {}) {
   findTowns();
   // A drive's day: Done, back to the drive page, with or without a route.
   $("save").disabled = DRIVE ? !driveDay : !plan.path;
+  if (DRIVE) $("db-done").disabled = $("save").disabled;
   $("save").textContent = DRIVE ? "Done" : plan.id ? "Save changes" : "Save and get the link";
   for (const hook of planHooks) hook();
 }
@@ -2217,6 +2222,7 @@ function syncImportButton() {
 }
 
 function renderFigures() {
+  if (DRIVE) return driveFigures();
   const distance = plan.path ? formatDistance(plan.path.distanceMeters, miles) : null;
   roll($("fig-dist"), distance ? distance.value : "–");
   $("fig-dist-unit").textContent = distance ? distance.unit : miles ? "miles" : "km";
@@ -2225,6 +2231,19 @@ function renderFigures() {
   const stops = stopCount();
   roll($("fig-stops"), String(stops));
   $("fig-stops-unit").textContent = stops === 1 ? "stop" : "stops";
+}
+
+/// A drive's day (mock v11): distance, driving (the road's time, the stops'
+/// timers in the arrive time) and the arrive clock time.
+function driveFigures() {
+  const distance = plan.path ? formatDistance(plan.path.distanceMeters, miles) : null;
+  roll($("fig-dist"), distance ? `${distance.value} ${distance.unit === "miles" ? "mi" : "km"}` : "–");
+  $("fig-dist-unit").textContent = "distance";
+  roll($("fig-time"), plan.path ? formatDuration(plan.path.durationSeconds) : "–");
+  $("fig-time-unit").textContent = "driving";
+  const day = scheduleOf(plan, leaveMinutes());
+  roll($("fig-stops"), day ? clock(day.arrive) : "–");
+  $("fig-stops-unit").textContent = "arrive";
 }
 
 const STILL = window.matchMedia?.("(prefers-reduced-motion: reduce)");
@@ -2290,6 +2309,7 @@ function renderRows() {
     list.append(placeRow({ role: "end", point: plan.end, placeholder: "Choose a destination" }));
     if (suggest) list.append(suggest.row("end"));
   }
+  if (DRIVE) scheduleRows(list);
   // The empty panel already says to search or click the map.
   $("rows-hint").hidden = plan.waypoints.length < 2 || startMode === "import";
   $("rows-hint").textContent = "Drag a row to reorder.";
@@ -2297,6 +2317,63 @@ function renderRows() {
     const target = list.querySelector(focusAfterRender);
     focusAfterRender = null;
     target?.focus();
+  }
+}
+
+/// The day's leave time in minutes after midnight: the Leave picked here,
+/// else the day's own (drive-day.js), else none.
+function leaveMinutes() {
+  if (plan.leaveAt) {
+    const d = new Date(plan.leaveAt);
+    return d.getHours() * 60 + d.getMinutes();
+  }
+  const m = /^(\d{1,2}):(\d{2})/.exec(driveDay?.day()?.leave || "");
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+}
+
+/// A drive's day as a schedule (club flow mock v11): the clock time beside
+/// the start, each stop and the end; each leg's time and distance under the
+/// row it leaves from; a leg over two hours said there, with Add a stop.
+/// Naming a place for the break would need the planner's `along` search on
+/// every change, so it isn't (DevOps, 11/13).
+function scheduleRows(list) {
+  const plan_ = scheduleOf(plan, leaveMinutes());
+  list.classList.toggle("timed-rows", !!plan_);
+  if (!plan_) return;
+  const time = (minutes, word) => {
+    const t = el("time", "clock", clock(minutes));
+    t.append(el("small", "", word));
+    return t;
+  };
+  const legNote = (li, i, lead = "") => {
+    const leg = plan_.legs[i];
+    if (!leg) return;
+    li.append(el("div", "leg-next", `${lead}${legLine(leg, miles)}`));
+    if (!plan_.long.includes(i)) return;
+    const brk = el("div", "brk", breakLine(leg));
+    const add = el("button", "linkish", "+ Add a stop");
+    add.type = "button";
+    add.addEventListener("click", () => list.querySelector('li[data-role="add"] input')?.focus());
+    brk.append(add);
+    li.append(brk);
+  };
+  let stop = 0;
+  for (const li of list.children) {
+    const role = li.dataset.role;
+    const index = Number(li.dataset.index);
+    if (role === "start") {
+      li.prepend(time(plan_.leave, "leave"));
+      legNote(li, 0);
+    } else if (role === "waypoint" && plan.waypoints[index]?.type === "stop") {
+      const s = plan_.stops[stop];
+      li.prepend(time(s.arrive, "arrive"));
+      stop += 1;
+      legNote(li, stop, s.stay ? `Leave ${clock(s.leave)} · ` : "");
+    } else if (role === "end" || (li.classList.contains("dest") && !role)) {
+      li.prepend(time(plan_.arrive, "arrive"));
+    } else {
+      li.prepend(el("span", "clock"));
+    }
   }
 }
 

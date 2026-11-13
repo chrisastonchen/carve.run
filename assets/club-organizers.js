@@ -4,7 +4,7 @@
 // (twice, never the owner). The limit is the server's (organizer_cap),
 // else the plan's. A new address gets the invite email (org-invite-send).
 
-import { $, el, inviteSend, rpc } from "/assets/club-api.js?v=59a75ac522";
+import { $, el, inviteSend, rpc } from "/assets/club-api.js?v=dd477d6d29";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 
 
@@ -22,7 +22,9 @@ export function inviteWords(email, failure = null) {
   return "Added. They join when they sign in to Carve with that email.";
 }
 
-export function organizersBox(p, org, { removable = false } = {}) {
+/// avatars: a function giving an organizer's initials (Club home, mock
+/// v11), for a circle beside each; onData: told the members on each load.
+export function organizersBox(p, org, { removable = false, avatars = null, onData = null } = {}) {
   let data = null;
   let removing = null;
   const say = (t) => { $(`${p}-said`).textContent = t; };
@@ -38,6 +40,7 @@ export function organizersBox(p, org, { removable = false } = {}) {
 
   function render() {
     const list = data?.members || [];
+    onData?.(list, data?.organizer_cap || null);
     // org_members' count first: it's fresh after every add or remove; the
     // org's (orgs_mine, loaded once) went stale (QA, 11/11).
     const cap = data?.organizer_cap || org().organizer_cap || { limit: BY_TIER[org().tier]?.organizers ?? null, used: list.length };
@@ -46,9 +49,17 @@ export function organizersBox(p, org, { removable = false } = {}) {
       const li = el("li");
       const who = el("span", "cv-who", m.email);
       who.title = m.email; // in full, when a long one is cut short
-      li.append(who);
-      if (m.owner) li.append(el("small", "", "Owner"));
-      else if (!m.joined) li.append(el("small", "", "Invited"));
+      if (avatars) {
+        const circle = el("span", `cd-av${m.owner ? " owner" : m.joined ? "" : " invited"}`, avatars(m.email));
+        circle.setAttribute("aria-hidden", "true");
+        const words = el("span", "cd-person");
+        words.append(who, el("small", "", m.owner ? "Owner" : m.joined ? "Organizer" : "Invited"));
+        li.append(circle, words);
+      } else {
+        li.append(who);
+        if (m.owner) li.append(el("small", "", "Owner"));
+        else if (!m.joined) li.append(el("small", "", "Invited"));
+      }
       if (removable && !m.owner) {
         const b = el("button", "textlink cv-remove", removing === m.email ? "Remove for good" : "Remove");
         b.type = "button";

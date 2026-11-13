@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=61">
+<link rel="stylesheet" href="/plan/plan.css?v=63">
 <link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/share-plan.css?v=161a310cc6">
@@ -1069,10 +1069,10 @@ const RouteProfile = (() => {
       // A club drive's day: its weather and road conditions (day-extras.js),
       // only with CLUB_V2 on: the live site, without club-flags.js or with it
       // off, asks route_drive nothing.
-      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=8973216d34"); }).catch(() => {});
-      if (CLUB) import("/assets/club-share.js?v=978e7ef06f");
+      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=df47afe911"); }).catch(() => {});
+      if (CLUB) import("/assets/club-share.js?v=2a051f4b3a");
       // A club drive's day, to a driver: the drive pass (P1).
-      else import("/assets/route-pass.js?v=cb64bac2fb");
+      else import("/assets/route-pass.js?v=352e6d6019");
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";
@@ -1121,6 +1121,6 @@ const RouteProfile = (() => {
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=2f5e1908ff" defer></script>
+<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
 </body>
 </html>

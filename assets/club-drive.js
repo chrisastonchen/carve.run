@@ -14,10 +14,9 @@
 // Pages never act on a GET: every change is a tap.
 
 import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
-import { $, el, insert, myOrgs, rpc, sessionUserId, signedIn } from "/assets/club-api.js?v=59a75ac522";
+import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
-import { DRIVE_PASS_UI } from "/plan/club-flags.js?v=4";
-import { thumbPath, DEFAULT_MEET, STAGE_WORDS, TIME_MISSING, addDays, dayWhenProblem, zoneNow, leaveAfter, prerunDefault, dayLabel, dayRouted, dayText, driveLine, driversText, prerunLine, formProblem, plannedLine, routeLine, stageOf } from "/assets/club-words.js?v=e4108d1a92";
+import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, formProblem, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=768f355b17";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
@@ -88,7 +87,10 @@ function openForm(d, copy = null) {
   $("f-page").hidden = false;
   document.title = d ? "Edit details | Carve" : copy ? "Duplicate drive | Carve" : "Plan a drive | Carve";
   $("f-title").textContent = d ? "Edit details" : copy ? "Duplicate drive" : "Plan a drive";
-  $("f-go").textContent = d ? "Save" : "Create the drive";
+  // A new drive asks its questions with no title over them (mock v11); Edit and Duplicate say which.
+  $("f-title").classList.toggle("visually-hidden", !d && !copy);
+  $("f-go").textContent = d ? "Save" : "Create drive";
+  $("f-go").classList.toggle("cd-arrow", !d);
   $("f-cancel").setAttribute("href", d ? `/club/drive/?id=${encodeURIComponent(d.id)}` : `/club/?org=${encodeURIComponent(org.id)}`);
   $("f-name").value = d?.name || (copy ? `${copy.name || "Untitled drive"} (copy)` : "");
   const routed = new Set(routes.map((r) => r.day_id));
@@ -111,7 +113,7 @@ function openForm(d, copy = null) {
 function renderDays() {
   const several = days.length > 1;
   $("f-days").replaceChildren(...days.map((d, i) => {
-    const row = el("div", "cv-day-row");
+    const row = el("div", "cv-day-row cd-day-row");
     const date = input("date", d.date, several ? `Day ${i + 1} date` : "Date", (v) => {
       // Later days follow a moved day, a day apart at least (group.js's followDates).
       const before = days[i].date;
@@ -136,8 +138,8 @@ function renderDays() {
       days[i].leaveSet = true;
       missing(leave, "leave");
     });
-    // The day's label over its date, so the date lines up with the name (Chris, 11/10).
-    row.append(field(several ? `Day ${i + 1}` : "Date", date, "cv-date"), field("Meet", meet), field("Leave", leave));
+    // One row a day (mock v11): DAY N, then Date, Meet and Leave as pickers.
+    row.append(el("span", "cd-dn", `Day ${i + 1}`), field("Date", date, "cv-date"), field("Meet", meet), field("Leave", leave));
     if (several) {
       const remove = el("button", confirming === d.id ? "cv-x ask" : "cv-x", confirming === d.id ? "Remove, with its route" : "✕");
       remove.type = "button";
@@ -161,13 +163,35 @@ function input(type, value, label, set) {
   i.type = type;
   i.value = value || "";
   i.setAttribute("aria-label", label);
-  i.addEventListener(type === "date" ? "change" : "input", () => set(i.value));
+  i.addEventListener(type === "date" ? "change" : "input", () => { set(i.value); shown(i); });
   return i;
 }
+/// A friendly picker (mock v11): its label and the value as read ("Sat,
+/// Dec 12", "8:00 AM") over the browser's own field, which a tap opens.
 function field(name, control, more = "") {
-  const l = el("label", `cv-time${more ? ` ${more}` : ""}`);
-  l.append(el("span", "cv-time-name", name), control);
+  const l = el("label", `cd-pick cv-time${more ? ` ${more}` : ""}`);
+  l.append(el("small", "cv-time-name", name), el("b", ""), control);
+  shown(control);
+  pickOnTap(l, control);
   return l;
+}
+/// The value a picker shows: "Sat, Dec 12", "8:00 AM", or what to pick.
+function shown(control) {
+  const b = control.parentElement?.querySelector(":scope > b");
+  if (!b) return;
+  const v = control.value;
+  b.textContent = control.type === "date" ? dayText(v) || "Pick a date" : timeText(v) || "Pick a time";
+  b.classList.toggle("empty", !v);
+}
+/// A computer's browser opens its calendar or clock on the field's icon
+/// only; the whole picker opens it here.
+/// A phone's tap opens it already.
+function pickOnTap(box, control) {
+  box.addEventListener("click", (e) => {
+    if (!matchMedia("(pointer: fine)").matches) return;
+    if (e.target !== control) e.preventDefault();
+    try { control.showPicker(); } catch { control.focus(); }
+  });
 }
 
 /// What's wrong with a field, said under it; "" clears it.
@@ -194,8 +218,10 @@ function missing(control, which) {
 function renderPrerun() {
   $("f-pr-yes").setAttribute("aria-pressed", String(prerun.on));
   $("f-pr-no").setAttribute("aria-pressed", String(!prerun.on));
-  $("f-pr-date").hidden = !prerun.on;
+  // The date inside Yes (mock v11).
+  $("f-pr-pick").hidden = !prerun.on;
   $("f-pr-date").value = prerun.date || "";
+  shown($("f-pr-date"));
 }
 
 async function submit(e) {
@@ -290,101 +316,122 @@ async function copyRoutes(driveId) {
   }
 }
 
-// ── The drive page (O4) ──
+// ── The drive page (O4; club flow mock v11, Chris 11/13) ──
 
-const SHARE_WHY = "Plan this day's route first, then you can share it.";
-
-/// A day card's thumbnail (board O4): its route's line, start and end; an
-/// empty dashed box until it has one. Decoration: the card says it in words.
-function thumb(payload) {
-  const box = el("span", "cv-thumb");
-  box.setAttribute("aria-hidden", "true");
-  const t = thumbPath(payload, 150, 90);
-  if (!t) return box;
-  // Numbers only, from thumbPath: safe as markup.
-  box.innerHTML = `<svg viewBox="0 0 150 90"><path d="${t.d}" fill="none" stroke="var(--green, #1D5B3A)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`
-    + `<circle cx="${t.start[0]}" cy="${t.start[1]}" r="4.5" fill="#2E9E52" stroke="#fff" stroke-width="1.5"/><circle cx="${t.end[0]}" cy="${t.end[1]}" r="4.5" fill="#15181C" stroke="#fff" stroke-width="1.5"/></svg>`;
+/// The day's share panel (mock v11): its QR code, the link with Copy link,
+/// when drivers get Apex free on it (0093's window), when it last changed.
+function sharePanel(n, several, route, apex, saved) {
+  const link = `carve.run/${route.share_token}`;
+  const box = el("div", "cd-share");
+  const qr = el("span", "cd-qr");
+  qr.setAttribute("role", "img");
+  qr.setAttribute("aria-label", `QR code for ${link}`);
+  try {
+    // The vendored generator (Kazuhiko Arase, MIT): our link only, as SVG.
+    const code = window.qrcode(0, "M");
+    code.addData(`https://${link}`);
+    code.make();
+    qr.innerHTML = code.createSvgTag({ cellSize: 1, margin: 0, scalable: true });
+  } catch {
+    qr.hidden = true;
+  }
+  const words = el("div", "cd-share-words");
+  words.append(el("b", "", several ? `Share Day ${n}` : "Share the drive"));
+  words.append(el("p", "", `Drivers open the link on their phone or scan the code.${apex ? ` They get Carve Apex free on this route from ${apex}.` : ""}`));
+  // The time when the route is this organizer's (drive_routes has none; DevOps, 11/13).
+  words.append(el("p", "", [updatedAgo(saved), "Drivers get the latest when they open the link."].filter(Boolean).join(" ")));
+  const open = el("a", "cd-link", link);
+  open.href = shareUrl(route.share_token, drive.id, n);
+  words.append(open);
+  const copy = el("button", "go", "Copy link");
+  copy.type = "button";
+  copy.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(`https://${link}`);
+      copy.textContent = "Copied";
+    } catch {
+      copy.textContent = "Copy didn't work";
+    }
+    setTimeout(() => { copy.textContent = "Copy link"; }, 2000);
+  });
+  box.append(qr, words, copy);
   return box;
 }
 
-function renderDrive() {
+/// When each of this organizer's routes was last saved: { route_id: iso }.
+async function savedTimes(list) {
+  const mine = list.filter((r) => r.yours && r.route_id).map((r) => r.route_id);
+  if (!mine.length) return {};
+  try {
+    const rows = await select("routes", `select=id,updated_at&id=in.(${mine.map(encodeURIComponent).join(",")})`);
+    return Object.fromEntries((rows || []).map((r) => [r.id, r.updated_at]));
+  } catch {
+    return {};
+  }
+}
+
+async function renderDrive() {
   $("d-page").hidden = false;
   document.title = `${drive.name || "Drive"} | Carve`;
   const byDay = new Map();
   for (const r of routes) if (!byDay.has(r.day_id) || r.position < byDay.get(r.day_id).position) byDay.set(r.day_id, r);
   const ds = drive.days.map((d) => ({ ...d, routed: byDay.has(d.id), route: byDay.get(d.id) }));
-  const stage = stageOf({ days: ds });
-  $("d-club").textContent = `${org.name} · drive`;
+  const several = ds.length > 1;
   $("d-name").textContent = drive.name || "Untitled drive";
-  // The count waits with the drive pass (board O4, v41: it counts passes).
-  $("d-line").textContent = driveLine(ds, DRIVE_PASS_UI ? driversText(drive) : "");
-  $("d-stage").textContent = STAGE_WORDS[stage];
-  $("d-stage").className = `v-pill ${stage}`;
-  $("d-planned").textContent = `Routes · ${plannedLine(ds)}`;
+  $("d-line").textContent = [datesText(ds), inDays(ds)].filter(Boolean).join(" · ");
+  const chip = statusChip({ days: ds });
+  $("d-stage").textContent = chip.text;
   $("d-edit").setAttribute("href", `/club/drive/?id=${encodeURIComponent(drive.id)}&edit`);
+  const apex = apexWindow(ds);
+  const saved = await savedTimes(routes);
   $("d-days").replaceChildren(...ds.map((d, i) => {
-    const li = el("li", `cv-box cv-day-card${d.routed ? "" : " unplanned"}`);
-    li.append(thumb(d.routed ? d.route.payload : null));
-    const words = el("div", "cv-day-words");
-    words.append(el("h3", "cv-day-h", dayLabel(ds, i)));
-    const before = ds[i - 1];
-    words.append(el("p", "cp-note", d.routed ? routeLine(d.route.payload, miles()) : before?.routed ? "Not planned · starts where Day " + i + " ends" : "Not planned"));
-    const plan = el("a", d.routed ? "go ghost" : "go", d.routed ? "Edit route" : "Plan route");
-    plan.href = plannerUrl(drive.id, i + 1);
-    const share = el("a", "go ghost", "Share");
-    let hint = null;
-    if (d.routed) share.href = shareUrl(d.route.share_token, drive.id, i + 1);
+    const n = i + 1;
+    const seq = el("section", "cd-seq");
+    const label = el("h2", "cd-seqn", several ? `Day ${n}` : "The drive");
+    label.id = `d-day-${n}`;
+    seq.setAttribute("aria-labelledby", label.id);
+    const card = el("article", `cd-day${d.routed ? "" : " unplanned"}`);
+    const shape = el("div", "cd-shape");
+    const svg = d.routed ? shapeSvg(d.route.payload) : "";
+    if (svg) shape.innerHTML = svg; // numbers and our colours only (shapeSvg)
     else {
-      // Greyed, but it says why when tried, hovered or focused (Chris, 11/10).
-      share.setAttribute("aria-disabled", "true");
-      share.setAttribute("role", "link");
-      share.tabIndex = 0;
-      hint = el("p", "cv-hint");
-      hint.id = `share-why-${i + 1}`;
-      hint.setAttribute("role", "status");
-      share.setAttribute("aria-describedby", hint.id);
-      const why = () => { hint.textContent = SHARE_WHY; };
-      share.addEventListener("click", (e) => { e.preventDefault(); why(); });
-      share.addEventListener("focus", why);
-      share.addEventListener("mouseenter", why);
+      shape.classList.add("none");
+      shape.append(el("span", "", "No route yet"));
     }
-    const acts = el("div", "cv-day-acts");
-    acts.append(plan, share);
-    li.append(words, acts);
-    if (hint) li.append(hint);
-    return li;
+    if (d.routed) shape.append(el("span", "cd-chip ok", "Ready to share"));
+    const body = el("div", "cd-day-body");
+    body.append(el("h3", "", dayText(d.date) || "No date yet"));
+    const facts = routeFacts(d.routed ? d.route.payload : null, miles());
+    if (facts.length) {
+      const row = el("p", "cd-facts");
+      row.append(...facts.map((f) => { const span = el("span"); span.append(el("b", "", f.b), f.rest ? ` ${f.rest}` : ""); return span; }));
+      body.append(row);
+    }
+    const when = meetLeave(d);
+    if (when.length) {
+      const row = el("p", "cd-facts");
+      row.append(...(d.routed ? when.map((t) => el("span", "", t)) : [el("span", "", when.join(" · "))]));
+      body.append(row);
+    }
+    if (!d.routed) body.append(el("p", "cd-hint", `Plan the route to get ${several ? `Day ${n}'s` : "its"} link and QR code.`));
+    const acts = el("div", "cd-acts");
+    const plan = el("a", d.routed ? "go ghost" : "go", d.routed ? "Edit route" : "Plan route");
+    plan.href = plannerUrl(drive.id, n);
+    acts.append(plan);
+    body.append(acts);
+    card.append(shape, body);
+    if (d.routed) card.append(sharePanel(n, several, d.route, apex, saved[d.route.route_id]));
+    seq.append(label, card);
+    return seq;
   }));
   const pr = drive.prerun;
   $("d-pr").hidden = !pr;
   if (pr) {
-    $("d-pr-h").textContent = `Pre-drive · ${dayText(pr.date)}`;
-    $("d-pr-line").textContent = prerunLine(pr.date);
-    // The first day with a route: the crew drives the same links.
-    const first = ds.findIndex((d) => d.routed);
-    const links = first >= 0 ? shareUrl(ds[first].route.share_token, drive.id, first + 1, true) : null;
-    // Once the crew has driven or reviewed it (0101's report_ready), the
-    // card opens the report (O4-6, O6b) on the first day with something
-    // in it; the links stay, quieter.
-    const ready = !!pr.report_ready;
-    $("d-pr-links").hidden = !ready || !links;
-    if (links) $("d-pr-links").setAttribute("href", links);
-    if (ready) {
-      $("d-pr-line").textContent = "Your crew's pre-drive is in.";
-      $("d-pr-go").textContent = "See the report";
-      $("d-pr-go").setAttribute("href", reportUrl(drive.id, (pr.days_with_report || [])[0] || 1));
-      $("d-pr-go").removeAttribute("aria-disabled");
-      $("d-pr-go").removeAttribute("title");
-    } else if (links) {
-      $("d-pr-go").textContent = "Pre-drive links";
-      $("d-pr-go").setAttribute("href", links);
-      $("d-pr-go").removeAttribute("aria-disabled");
-      $("d-pr-go").removeAttribute("title");
-    } else {
-      $("d-pr-go").textContent = "Pre-drive links";
-      $("d-pr-go").removeAttribute("href");
-      $("d-pr-go").setAttribute("aria-disabled", "true");
-      $("d-pr-go").title = "Plan a route first";
-    }
+    $("d-pr-h").textContent = dayText(pr.date);
+    // Once the crew has driven or reviewed it (0101's report_ready), it says so.
+    $("d-pr-line").textContent = pr.report_ready ? "Your crew's pre-drive is in."
+      : `Your crew drives the route first. Send them each day's link before ${dayText(pr.date)}.`;
+    $("d-pr-go").setAttribute("href", reportUrl(drive.id, (pr.days_with_report || [])[0] || 1));
   }
 }
 
@@ -408,7 +455,8 @@ function wire() {
     renderPrerun();
   });
   $("f-pr-no").addEventListener("click", () => { prerun.on = false; renderPrerun(); });
-  $("f-pr-date").addEventListener("change", (e) => { prerun.date = e.target.value; });
+  $("f-pr-date").addEventListener("change", (e) => { prerun.date = e.target.value; shown(e.target); });
+  pickOnTap($("f-pr-pick"), $("f-pr-date"));
   const menu = (open) => { $("d-menu").hidden = !open; $("d-more").setAttribute("aria-expanded", String(open)); };
   $("d-more").addEventListener("click", () => menu($("d-menu").hidden));
   document.addEventListener("click", (e) => { if (!e.target.closest(".cv-more")) menu(false); });

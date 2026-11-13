@@ -5,12 +5,12 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, myOrgs, publicRpc, rpc, sessionEmail, signedIn } from "/assets/club-api.js?v=59a75ac522";
-import { STAGE_WORDS, datesText, planCards, planEyebrow, priceText, renewalTerms, trialDays, splitHome, stageOf, trialStatus } from "/assets/club-words.js?v=e4108d1a92";
-import { organizersBox } from "/assets/club-organizers.js?v=f44f847383";
-import { billsToday } from "/assets/who-words.js?v=f3fe2a71de";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=cdab76c206";
-import { forgetWho } from "/assets/who.js?v=4b12d2f422";
+import { $, billing, el, myOrgs, publicRpc, rpc, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
+import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=768f355b17";
+import { organizersBox } from "/assets/club-organizers.js?v=3eb3ba3078";
+import { billsToday } from "/assets/who-words.js?v=f70bdee137";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=a561cbdbdc";
+import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
@@ -20,7 +20,18 @@ const CLUB_TIERS = [...PLANS.filter((p) => p.for === "organizers").map((p) => p.
 
 let orgs = [];
 let org = null;
-const box = organizersBox("v-orgz", () => org);
+const box = organizersBox("v-orgz", () => org, { avatars: initials, onData: (members, cap) => { organizers = members.length; orgCap = cap?.limit ?? orgCap; meta(); homeSteps(); } });
+let orgCap = 5; // the plan's organizers, once org_members says
+let organizers = null; // the club's organizers, once org_members answers
+let driveCount = null; // the club's live drives, once org_drives answers
+// Miles in the US and the UK, as the planner's usesMiles.
+const miles = () => /^en(-(US|GB))?$/i.test(navigator.language || "en-US");
+/// The organizer's pages are dark (club flow mock v11); For Clubs keeps its own look.
+const dash = (on, glow = false) => {
+  const main = document.querySelector("main.cp");
+  main?.classList.toggle("cv-dash", on);
+  main?.classList.toggle("cd-glow", on && glow);
+};
 
 // ── An organizer's invite link (carve.run/club/?invite=<token>; App Dev's
 // 0096, Chris 11/11): read once, off the address at once, kept in this
@@ -67,6 +78,7 @@ async function claimInvite(token) {
 /// Log in signs in, then their Club home (or O1 with a line, no club).
 function showSignIn() {
   status("");
+  dash(false);
   showIntro({
     // Back from sign-in straight to Start a club, not For Clubs again (QA, 11/11).
     start: () => window.carveSignIn?.({ returnTo: "/club/?start=1" }),
@@ -135,7 +147,8 @@ async function start() {
   wire();
   await load(joined || undefined);
   if (said) status(said);
-  if (new URLSearchParams(location.search).get("paid")) {
+  // Back from Checkout before Stripe's word: Start a club says so, and looks again.
+  if (new URLSearchParams(location.search).get("paid") && !$("v-start").hidden) {
     $("v-start-said").textContent = "Thanks. Your plan starts as soon as Stripe confirms it, usually within a minute.";
     setTimeout(load, 4000);
   }
@@ -160,14 +173,105 @@ async function load(prefer) {
     introSeen = true;
     $("v-start").hidden = true;
     $("v-home").hidden = true;
-    return showIntro({ start: () => { hideIntro(); $("v-start").hidden = false; renderStart(); $("v-start").scrollIntoView?.({ block: "start" }); } });
+    dash(false);
+    return showIntro({ start: () => { hideIntro(); dash(true, true); $("v-start").hidden = false; renderStart(); $("v-start").scrollIntoView?.({ block: "start" }); } });
   }
   // Logged in from For Clubs with no club: O1, saying so (F1).
   $("v-login-note").hidden = !(login && !org);
+  $("v-welcome").hidden = true;
+  // Back from Checkout, the plan on: Welcome (mock v11), once.
+  if (home && new URLSearchParams(location.search).has("paid")) return showWelcome();
   $("v-start").hidden = home;
   $("v-home").hidden = !home;
+  dash(true, !home);
   if (!home) return renderStart();
   renderHome();
+}
+
+// ── First steps: Welcome after checkout, then Club home until done (mock v11) ──
+
+/// Get the app has no server data (DevOps, 11/13): opening Get ticks it, per account.
+const APP_KEY = () => `carve.club.app.${sessionUserId() || "me"}`;
+const gotApp = () => { try { return localStorage.getItem(APP_KEY()) === "1"; } catch { return false; } };
+const planHref = () => `/club/drive/?org=${encodeURIComponent(org.id)}`;
+
+/// The steps into `list`: a number (a tick once done), the words, the action.
+function drawSteps(list, data) {
+  list.replaceChildren(...firstSteps({ ...data, gotApp: gotApp() }).map((step, i) => {
+    const li = el("li", `cd-step${step.done ? " done" : ""}`);
+    const num = el("span", "cd-num", step.done ? "✓" : String(i + 1));
+    num.setAttribute("aria-hidden", "true");
+    const words = el("span", "cd-step-words");
+    words.append(el("b", "", step.title), el("span", "", step.line));
+    if (step.done) words.append(el("span", "visually-hidden", "Done."));
+    let act;
+    if (step.key === "plan") {
+      act = el("a", "go", step.action);
+      act.href = planHref();
+    } else {
+      act = el("button", "go ghost", step.action);
+      act.type = "button";
+      act.addEventListener("click", step.key === "app" ? openGet : inviteNow);
+    }
+    li.append(num, words, act);
+    return li;
+  }));
+}
+
+/// The steps on Club home, until all three are done.
+function homeSteps() {
+  if (!org || $("v-home").hidden || driveCount === null || organizers === null) return;
+  const data = { drives: driveCount, organizers, cap: orgCap };
+  const all = firstSteps({ ...data, gotApp: gotApp() }).every((s) => s.done);
+  $("v-steps-box").hidden = all;
+  if (!all) drawSteps($("v-steps"), data);
+}
+
+/// Get: the app's code and stores; opening it ticks the step.
+function openGet() {
+  try { localStorage.setItem(APP_KEY(), "1"); } catch {}
+  const box = $("v-get-qr");
+  if (!box.firstChild && window.qrcode) {
+    const code = window.qrcode(0, "M");
+    code.addData("https://carve.run/get/?ct=club-welcome");
+    code.make();
+    box.innerHTML = code.createSvgTag({ cellSize: 1, margin: 0, scalable: true });
+  }
+  $("v-get").showModal?.();
+  if (!$("v-welcome").hidden) welcomeSteps(); else homeSteps();
+}
+
+/// Invite: Club home's organizers, the email box open.
+function inviteNow() {
+  if (!$("v-welcome").hidden) {
+    $("v-welcome").hidden = true;
+    $("v-home").hidden = false;
+    dash(true);
+    renderHome();
+  }
+  $("v-orgz-add").click();
+  $("v-orgz-email").scrollIntoView?.({ block: "center" });
+}
+
+let welcome = { drives: 0, organizers: 1, cap: 5 };
+function welcomeSteps() { drawSteps($("v-welcome-steps"), welcome); }
+
+/// Welcome to Carve Club (mock v11): the club is ready, the trial's end,
+/// three steps. The address loses ?paid, so a reload is Club home.
+async function showWelcome() {
+  status("");
+  dash(true, true);
+  $("v-start").hidden = true;
+  $("v-home").hidden = true;
+  $("v-welcome").hidden = false;
+  try { history.replaceState(null, "", `/club/?org=${encodeURIComponent(org.id)}`); } catch {}
+  $("v-welcome-h").textContent = `${org.name} is ready.`;
+  $("v-welcome-line").textContent = welcomeLine(trialStatus(org));
+  if (isOwner(org)) billing({ action: "status", org_id: org.id }).then((s) => { if (s?.trial_ends_at) $("v-welcome-line").textContent = welcomeLine(s); }).catch(() => {});
+  welcomeSteps();
+  const [drives, members] = await Promise.all([rpc("org_drives", { p_org_id: org.id }).catch(() => []), rpc("org_members", { p_org_id: org.id }).catch(() => null)]);
+  welcome = { drives: Array.isArray(drives) ? drives.filter((d) => d.status !== "cancelled").length : 0, organizers: members?.members?.length || 1, cap: members?.organizer_cap?.limit ?? 5 };
+  welcomeSteps();
 }
 
 // ── Start a club (O1) ──
@@ -276,8 +380,11 @@ async function startTrial() {
 function renderHome() {
   const plan = BY_TIER[org.tier];
   $("v-title").textContent = org.name;
-  // The trial from orgs_mine at once; billing's word when it has one.
-  $("v-eyebrow").textContent = planEyebrow(plan?.name, trialStatus(org));
+  organizers = null;
+  driveCount = null;
+  meta();
+  // The trial's quiet meter from orgs_mine at once; billing's word when it has one.
+  trialPanel(plan, trialStatus(org));
   $("v-pick-row").hidden = orgs.length < 2;
   $("v-pick").replaceChildren(...orgs.map((o) => {
     const option = el("option", "", o.name);
@@ -291,10 +398,30 @@ function renderHome() {
   $("v-empty-new").setAttribute("href", planHref);
   $("v-settings").href = `/club/settings/?org=${encodeURIComponent(org.id)}`;
   // The trial's days left: org-billing's, the owner's to read.
-  if (isOwner(org)) billing({ action: "status", org_id: org.id }).then((s) => { if (s?.trial_ends_at || s?.renews_at) $("v-eyebrow").textContent = planEyebrow(plan?.name, s); }).catch(() => {});
+  if (isOwner(org)) billing({ action: "status", org_id: org.id }).then((s) => { if (s?.trial_ends_at || s?.renews_at) trialPanel(plan, s); }).catch(() => {});
   loadDrives();
   box.load();
 }
+
+/// The band's line: "3 drives · 2 organizers", each once it's known.
+function meta() {
+  const n = (k, one, many) => `${k} ${k === 1 ? one : many}`;
+  const parts = [driveCount ? n(driveCount, "drive", "drives") : "", organizers !== null ? n(organizers, "organizer", "organizers") : ""].filter(Boolean);
+  $("v-meta").replaceChildren(...parts.flatMap((t, i) => (i ? [el("span", "", "·"), el("span", "", t)] : [el("span", "", t)])));
+}
+
+function trialPanel(plan, s) {
+  const m = trialMeter(plan, s);
+  $("v-eyebrow").textContent = m.label;
+  $("v-meter").hidden = m.used === null;
+  if (m.used !== null) $("v-meter-bar").style.width = `${m.used}%`;
+  $("v-trial-line").textContent = m.text;
+  $("v-trial-line").hidden = !m.text;
+}
+
+/// Route shapes for at most this many list rows (DevOps, 11/13): one
+/// drive_routes call each; the rest show no shape.
+const ROW_SHAPES = 5;
 
 async function loadDrives() {
   $("v-drives-said").textContent = "";
@@ -307,35 +434,103 @@ async function loadDrives() {
     return;
   }
   // Which days have a route: the server's `routed` (asked of App Dev, A),
-  // else each drive's routes.
-  const known = drives.every((d) => (d.days || []).every((x) => typeof x.routed === "boolean"));
-  if (!known) {
+  // else each drive's routes, kept for the shapes too.
+  const fetched = new Map();
+  if (!drives.every((d) => (d.days || []).every((x) => typeof x.routed === "boolean"))) {
     await Promise.all(drives.map(async (d) => {
-      const routes = await rpc("drive_routes", { p_drive_id: d.id }).catch(() => []);
-      const days = new Set((routes || []).map((r) => r.day_id));
+      const list = await rpc("drive_routes", { p_drive_id: d.id }).catch(() => []);
+      fetched.set(d.id, list || []);
+      const days = new Set((list || []).map((r) => r.day_id));
       d.days = (d.days || []).map((x) => ({ ...x, routed: days.has(x.id) }));
     }));
   }
+  const routesFor = (d) => (fetched.has(d.id) ? Promise.resolve(fetched.get(d.id)) : rpc("drive_routes", { p_drive_id: d.id }).catch(() => []));
   const { upcoming, past } = splitHome(drives);
-  const none = !upcoming.length && !past.length;
+  driveCount = upcoming.length + past.length;
+  meta();
+  homeSteps();
+  const none = !driveCount;
   $("v-empty").hidden = !none;
-  // One Plan a drive: the empty state's, not the header's too (QA, 11/11).
+  // One Plan a drive: the empty state's, not the band's too (QA, 11/11).
   $("v-new").hidden = none;
   $("v-up").hidden = none;
   $("v-past").hidden = !past.length;
-  $("v-up-list").replaceChildren(...upcoming.map(row));
-  $("v-up-none").hidden = !!upcoming.length;
-  $("v-past-list").replaceChildren(...past.map(row));
+  const [next, ...later] = upcoming;
+  $("v-next").hidden = !next;
+  $("v-next-h").hidden = !next;
+  $("v-later-h").hidden = !later.length;
+  $("v-up-none").hidden = !!next;
+  // The next drive's days with their times, and every row's routes (the
+  // first few), at once.
+  const rows = [...later, ...past];
+  const [full, nextRoutes, ...rowRoutes] = await Promise.all([
+    next ? rpc("drive_get", { p_drive_id: next.id }).catch(() => null) : null,
+    next ? routesFor(next) : [],
+    ...rows.slice(0, ROW_SHAPES).map(routesFor),
+  ]);
+  const routesOf = new Map(rows.slice(0, ROW_SHAPES).map((d, i) => [d.id, rowRoutes[i] || []]));
+  if (next) nextUp({ ...next, ...(full || {}), days: mergeDays(next.days, full?.days) }, nextRoutes || []);
+  $("v-up-list").replaceChildren(...later.map((d) => row(d, routesOf.get(d.id))));
+  $("v-past-list").replaceChildren(...past.map((d) => row(d, routesOf.get(d.id))));
 }
 
-function row(d) {
+/// org_drives' days (with routed) and drive_get's (with the times).
+const mergeDays = (brief = [], full = []) => brief.map((d) => ({ ...(full || []).find((x) => x.id === d.id), ...d }));
+
+/// The next drive's card (mock v11): its route's shape, the status chip, the
+/// name, when, the stat strip, how far planned, Plan Day N and Share Day N.
+function nextUp(d, routes) {
+  const c = nextCard(d, routes, { miles: miles() });
+  const card = $("v-next");
+  const shape = el("a", "cd-shape");
+  shape.href = `/club/drive/?id=${encodeURIComponent(d.id)}`;
+  shape.setAttribute("aria-label", `Open ${d.name || "the drive"}`);
+  const svg = c.shapeDay >= 0 ? shapeSvg(routes.filter((r) => r.day_id === d.days[c.shapeDay].id).sort((a, b) => a.position - b.position)[0]?.payload) : "";
+  if (svg) shape.innerHTML = svg; // numbers and our colours only (shapeSvg)
+  else shape.classList.add("none");
+  const body = el("div", "cd-next-body");
+  const name = el("h3", "");
+  const link = el("a", "", d.name || "Untitled drive");
+  link.href = `/club/drive/?id=${encodeURIComponent(d.id)}`;
+  name.append(link);
+  const count = el("div", "cd-count");
+  count.append(...c.count.map((x) => { const box = el("div"); box.append(el("b", "", x.n), el("span", "", x.label)); return box; }));
+  const bar = el("div", "cd-prog");
+  const track = el("div", "cd-bar");
+  const fill = el("i");
+  fill.style.width = `${c.progress.pct}%`;
+  track.append(fill);
+  track.setAttribute("role", "progressbar");
+  track.setAttribute("aria-valuenow", String(c.progress.pct));
+  track.setAttribute("aria-valuemin", "0");
+  track.setAttribute("aria-valuemax", "100");
+  track.setAttribute("aria-label", "Days planned");
+  bar.append(track, el("small", "", c.progress.text));
+  const acts = el("div", "cd-acts");
+  for (const a of c.acts) {
+    const b = el("a", a.primary ? "go" : "go ghost", a.text);
+    b.href = a.kind === "plan" ? `/plan/?drive=${encodeURIComponent(d.id)}&day=${a.day}` : `/${encodeURIComponent(a.token)}?club=${encodeURIComponent(d.id)}&day=${a.day}`;
+    acts.append(b);
+  }
+  body.append(el("span", `cd-chip ${c.chip.tone}`, c.chip.text), name, el("p", "cd-when", c.when));
+  if (c.count.length) body.append(count);
+  body.append(bar, acts);
+  card.replaceChildren(shape, body, more(d));
+}
+
+function row(d, routes) {
   const li = el("li");
   const a = el("a", "v-drive");
   a.href = `/club/drive/?id=${encodeURIComponent(d.id)}`;
+  const thumb = el("span", "v-thumb");
+  thumb.setAttribute("aria-hidden", "true");
+  const first = (routes || []).slice().sort((x, y) => x.position - y.position)[0];
+  const chip = statusChip(d);
+  const svg = first ? shapeSvg(first.payload, { pins: false, muted: chip.tone === "done" }) : "";
+  if (svg) thumb.innerHTML = svg; // numbers and our colours only (shapeSvg)
   const words = el("span", "v-drive-words");
-  words.append(el("b", "", d.name || "Untitled drive"), el("span", "", datesText(d.days)));
-  const stage = stageOf(d);
-  a.append(el("span", "v-thumb"), words, el("span", `v-pill ${stage}`, STAGE_WORDS[stage]));
+  words.append(el("b", "", d.name || "Untitled drive"), el("span", "", rowLine(d.days, routes || [], miles())));
+  a.append(thumb, words, el("span", `cd-chip ${chip.tone}`, chip.text));
   li.className = "v-drive-row";
   li.append(a, more(d));
   return li;
@@ -368,14 +563,14 @@ function more(d) {
 }
 
 function closeMenus() {
-  for (const m of document.querySelectorAll(".v-drive-row .cv-menu")) m.hidden = true;
-  for (const b of document.querySelectorAll(".v-drive-row .cv-more-btn")) b.setAttribute("aria-expanded", "false");
+  for (const m of document.querySelectorAll("#v-home .cv-menu")) m.hidden = true;
+  for (const b of document.querySelectorAll("#v-home .cv-more-btn")) b.setAttribute("aria-expanded", "false");
 }
 
 function wire() {
   $("v-start-form").addEventListener("submit", (e) => { e.preventDefault(); if (!$("v-start-go").disabled) startTrial(); });
   $("v-name").addEventListener("input", nameTyped);
-  document.addEventListener("click", (e) => { if (!e.target.closest(".v-drive-row .cv-more")) closeMenus(); });
+  document.addEventListener("click", (e) => { if (!e.target.closest("#v-home .cv-more")) closeMenus(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenus(); });
   $("v-pick").addEventListener("change", (e) => {
     history.replaceState(null, "", `/club/?org=${e.target.value}`);

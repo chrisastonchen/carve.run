@@ -45,6 +45,15 @@ export function leaveAtOf(day, now = Date.now()) {
 }
 
 /// The bar's day label: "Day 1 · Sat, Dec 12".
+/// The bar's line after the drive's name: "· Sat, Dec 12 · meet 8:00 AM, leave 8:30 AM".
+export function dayWhen(day) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day?.date || "");
+  const date = m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) : "";
+  const t = (hhmm) => { const x = /^(\d{1,2}):(\d{2})/.exec(hhmm || ""); return x ? `${Number(x[1]) % 12 || 12}:${x[2]} ${Number(x[1]) < 12 ? "AM" : "PM"}` : ""; };
+  const times = [t(day?.meet) && `meet ${t(day.meet)}`, t(day?.leave) && `leave ${t(day.leave)}`].filter(Boolean).join(", ");
+  return [date, times].filter(Boolean).map((x) => `· ${x}`).join(" ");
+}
+
 export function dayChip(day, i) {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day?.date || "");
   const date = m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) : "";
@@ -98,9 +107,14 @@ export function initDriveDay({ ids, $, el, rpc, userId, planFromPayload, loadPla
     $("db-back").setAttribute("href", back());
     $("db-name").textContent = drive.name || "Your drive";
     const days = drive.days || [];
+    $("db-when").textContent = dayWhen(days[n - 1]);
+    $("route-eyebrow").textContent = `Day ${n} schedule`;
     $("db-days").hidden = days.length < 2;
     $("db-days").replaceChildren(...days.map((d, i) => {
-      const b = el("button", "db-day", dayChip(d, i));
+      // "Day 1" (mock v11), its date said to a screen reader and on hover.
+      const b = el("button", "db-day", `Day ${i + 1}`);
+      b.setAttribute("aria-label", dayChip(d, i));
+      b.title = dayChip(d, i);
       b.type = "button";
       b.setAttribute("aria-pressed", String(i + 1 === n));
       if (i + 1 !== n) b.addEventListener("click", () => done(url(i + 1)));

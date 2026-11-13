@@ -203,6 +203,36 @@ export function thumbPath(payload, w = 150, h = 90, { pad = 10, most = 120 } = {
   return { d: xy.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" "), start: xy[0], end: xy[xy.length - 1] };
 }
 
+/// A route's shape as SVG markup (club flow mock v11): the real line, the
+/// start, the stops and the end on plain ground, no tiles. Numbers and our
+/// own colours only, so it's safe as markup. "" without a line.
+/// pins: false for a list's small thumbnail (the line alone, muted when past).
+export function shapeSvg(payload, { w = 540, h = 300, pad = 34, pins = true, muted = false } = {}) {
+  const geo = (payload?.pathGeometry || []).filter((p) => Number.isFinite(p?.latitude) && Number.isFinite(p?.longitude));
+  if (geo.length < 2) return "";
+  const step = Math.max(1, Math.ceil(geo.length / 240));
+  const pts = geo.filter((_, i) => i % step === 0 || i === geo.length - 1);
+  const k = Math.cos((pts.reduce((a, p) => a + p.latitude, 0) / pts.length) * Math.PI / 180);
+  const xs = pts.map((p) => p.longitude * k), ys = pts.map((p) => p.latitude);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  const scale = Math.min((w - 2 * pad) / Math.max(x1 - x0, 1e-9), (h - 2 * pad) / Math.max(y1 - y0, 1e-9));
+  const ox = (w - (x1 - x0) * scale) / 2, oy = (h - (y1 - y0) * scale) / 2;
+  const r1 = (n) => Math.round(n * 10) / 10;
+  const at = (lat, lon) => [r1(ox + (lon * k - x0) * scale), r1(oy + (y1 - lat) * scale)];
+  const xy = pts.map((p) => at(p.latitude, p.longitude));
+  const d = xy.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" ");
+  if (!pins) return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${d}" fill="none" stroke="${muted ? "#7D857F" : "#6FD39A"}" stroke-width="${r1(w / 45)}" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const stops = (payload.allWaypoints || payload.waypoints || [])
+    .filter((p) => p?.type === "stop" && Number.isFinite(p.location?.latitude) && Number.isFinite(p.location?.longitude))
+    .map((p) => at(p.location.latitude, p.location.longitude));
+  const dot = ([x, y], r, fill) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#0E1210" stroke-width="3"/>`;
+  return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true">`
+    + `<path d="${d}" fill="none" stroke="#0E1210" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>`
+    + `<path d="${d}" fill="none" stroke="#6FD39A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`
+    + dot(xy[0], 9, "#2DA160") + stops.map((s) => dot(s, 8, "#E07B39")).join("") + dot(xy[xy.length - 1], 9, "#EEF1EE")
+    + "</svg>";
+}
+
 /// A day's route on its card: "Coastal Run · 182 mi · 3 stops" (the
 /// route's name from its saved payload).
 export function routeLine(payload, miles = true) {
@@ -286,4 +316,166 @@ export function driversText(drive) {
   const n = drive?.drivers;
   if (!Number.isInteger(n) || n < 0) return "";
   return n === 1 ? "1 driver" : `${n} drivers`;
+}
+
+// ── Club home's next-drive card and lists (club flow mock v11, Chris 11/13) ──
+
+/// A drive's status chip, saying what to do: "1 of 2 days planned" (or
+/// "No route yet" for one day), "Ready to share", "Done". tone: warn, ok, done.
+export function statusChip(drive, today = isoDay(new Date())) {
+  const stage = stageOf(drive, today);
+  if (stage === "completed") return { text: "Done", tone: "done" };
+  if (stage === "ready") return { text: "Ready to share", tone: "ok" };
+  return { text: plannedLine(drive?.days || []), tone: "warn" };
+}
+
+/// Whole days from today to the drive's first date; null with no date.
+export function daysToGo(days = [], today = isoDay(new Date())) {
+  const first = days.map((d) => d.date).filter(Boolean).sort()[0];
+  const a = parseDay(first), b = parseDay(today);
+  return a && b ? Math.max(0, Math.round((a - b) / DAY)) : null;
+}
+
+/// The next drive's card: chip, the "when" line, the stat strip, the
+/// progress bar and its two buttons. `routes`: drive_routes (each day's
+/// first route, with its payload). miles: true for mi, false for km.
+export function nextCard(drive, routes = [], { today = isoDay(new Date()), miles = true } = {}) {
+  const days = drive?.days || [];
+  const byDay = new Map();
+  for (const r of routes) if (!byDay.has(r.day_id) || r.position < byDay.get(r.day_id).position) byDay.set(r.day_id, r);
+  const ds = days.map((d) => ({ ...d, routed: d.routed ?? byDay.has(d.id), route: byDay.get(d.id) || null }));
+  const several = ds.length > 1;
+  const dayName = (i) => (several ? `Day ${i + 1}` : "");
+  const meet = timeText(ds[0]?.meet);
+  const when = [datesText(ds), meet ? `meet ${meet}` : ""].filter(Boolean).join(" · ");
+  const count = [];
+  const go = daysToGo(ds, today);
+  if (go !== null) count.push(go === 0 ? { n: "Today", label: "drive day" } : { n: String(go), label: go === 1 ? "day to go" : "days to go" });
+  const firstRouted = ds.findIndex((d) => d.route?.payload);
+  if (firstRouted >= 0) {
+    const p = ds[firstRouted].route.payload;
+    const m = Number(p.pathDistanceMeters) || 0;
+    if (m) count.push({ n: String(Math.round(miles ? m / 1609.344 : m / 1000)), label: `${miles ? "miles" : "km"}${several ? ` · Day ${firstRouted + 1}` : ""}` });
+    const stops = (p.allWaypoints || p.waypoints || []).filter((w) => w.type === "stop").length;
+    count.push({ n: String(stops), label: stops === 1 ? "stop" : "stops" });
+  }
+  const done = ds.filter((d) => d.routed).length;
+  const open = ds.findIndex((d) => !d.routed);
+  const progress = { pct: ds.length ? Math.round((done / ds.length) * 100) : 0,
+    text: open >= 0 ? (several ? `Day ${open + 1} needs a route` : "Needs a route") : several ? "Every day has a route" : "Route planned" };
+  const shareAt = ds.findIndex((d) => d.routed && d.route?.share_token);
+  const acts = [];
+  if (open >= 0) acts.push({ kind: "plan", day: open + 1, text: several ? `Plan Day ${open + 1}` : "Plan route", primary: true });
+  if (shareAt >= 0) acts.push({ kind: "share", day: shareAt + 1, token: ds[shareAt].route.share_token, text: several ? `Share Day ${shareAt + 1}` : "Share", primary: open < 0 });
+  return { chip: statusChip({ days: ds }, today), when, count, progress, acts, shapeDay: firstRouted, dayName };
+}
+
+/// A list row's line: "Mon, Jan 11 · 52 mi" (the first routed day's
+/// distance when its route is at hand).
+export function rowLine(days = [], routes = [], miles = true) {
+  const r = [...routes].sort((a, b) => a.position - b.position).find((x) => x.payload?.pathDistanceMeters);
+  const m = Number(r?.payload?.pathDistanceMeters) || 0;
+  return [datesText(days), m ? (miles ? `${Math.round(m / 1609.344)} mi` : `${Math.round(m / 1000)} km`) : ""].filter(Boolean).join(" · ");
+}
+
+/// Two letters for an organizer's circle, from their email: dana.moore@ → DM, sam@ → SA.
+export function initials(email = "") {
+  const local = String(email).split("@")[0].replace(/[0-9]+/g, " ");
+  const parts = local.split(/[._\-+ ]+/).filter(Boolean);
+  const two = parts.length > 1 ? parts[0][0] + parts[1][0] : (parts[0] || "?").slice(0, 2);
+  return two.toUpperCase();
+}
+
+/// The trial's quiet meter: { label, used (0–100), text } or, on a paid
+/// plan, no meter. status: org-billing's or orgs_mine's trial_ends_at.
+export function trialMeter(plan, status, now = Date.now()) {
+  const ends = status?.trial_ends_at ? Date.parse(status.trial_ends_at) : NaN;
+  const total = trialDays(plan) || 30;
+  const price = Number.isFinite(plan?.year) ? `${priceText(plan.year)} a year` : "";
+  if (Number.isFinite(ends) && ends > now) {
+    const left = Math.max(1, Math.ceil((ends - now) / DAY));
+    return { label: `${plan?.name || "Club"} plan · free trial`, used: Math.round(Math.min(1, Math.max(0, (total - left) / total)) * 100),
+      text: `${left} ${left === 1 ? "day" : "days"} left.${price ? ` Then ${price}.` : ""}` };
+  }
+  const renews = status?.renews_at ? Date.parse(status.renews_at) : NaN;
+  return { label: `${plan?.name || "Club"} plan`, used: null,
+    text: Number.isFinite(renews) ? `Renews ${new Date(renews).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" })}.` : "" };
+}
+
+// ── The drive page (club flow mock v11, screen 5) ──
+
+/// "in 24 days", "tomorrow", "today"; "" once it's begun or with no date.
+export function inDays(days = [], today = isoDay(new Date())) {
+  const n = daysToGo(days, today);
+  const first = days.map((d) => d.date).filter(Boolean).sort()[0];
+  if (n === null || first < today) return "";
+  return n === 0 ? "today" : n === 1 ? "tomorrow" : `in ${n} days`;
+}
+
+/// "1 h 05 min" or "52 min" from seconds.
+export function durationText(seconds) {
+  const m = Math.round((Number(seconds) || 0) / 60);
+  return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")} min`;
+}
+
+/// A routed day's facts: [{ b, rest }]: "84 mi", "2 h 50 min driving", "3 stops".
+export function routeFacts(payload, miles = true) {
+  if (!payload) return [];
+  const out = [];
+  const m = Number(payload.pathDistanceMeters) || 0;
+  if (m) out.push({ b: miles ? `${Math.round(m / 1609.344)} mi` : `${Math.round(m / 1000)} km`, rest: "" });
+  if (Number(payload.pathDurationSeconds) > 0) out.push({ b: durationText(payload.pathDurationSeconds), rest: "driving" });
+  const stops = (payload.allWaypoints || payload.waypoints || []).filter((w) => w.type === "stop").length;
+  out.push({ b: String(stops), rest: stops === 1 ? "stop" : "stops" });
+  return out;
+}
+
+/// A day's meet and leave: ["Meet 8:00 AM at Vasona Lake Park", "Leave 8:30 AM"].
+export function meetLeave(day) {
+  const meet = timeText(day?.meet), leave = timeText(day?.leave);
+  const place = day?.place?.label || day?.place_name || "";
+  return [meet ? `Meet ${meet}${place ? ` at ${place}` : ""}` : "", leave ? `Leave ${leave}` : ""].filter(Boolean);
+}
+
+/// When drivers get Apex free on the drive's routes (0093): 14 days before
+/// the first day to the day after the last. "Nov 28 to Dec 14"; "" with no dates.
+export function apexWindow(days = []) {
+  const dates = days.map((d) => d.date).filter(Boolean).sort();
+  if (!dates.length) return "";
+  const short = (iso) => dayText(iso).replace(/^\w+, /, "");
+  return `${short(addDays(dates[0], -14))} to ${short(addDays(dates[dates.length - 1], 1))}`;
+}
+
+/// "Route updated 2 min ago." from the route's last save; "" without one.
+export function updatedAgo(iso, now = Date.now()) {
+  const t = Date.parse(iso || "");
+  if (!Number.isFinite(t)) return "";
+  const min = Math.max(0, Math.round((now - t) / 60000));
+  if (min < 1) return "Route updated just now.";
+  if (min < 60) return `Route updated ${min} min ago.`;
+  const h = Math.round(min / 60);
+  if (h < 24) return `Route updated ${h} h ago.`;
+  return `Route updated ${new Date(t).toLocaleDateString("en-US", { month: "short", day: "numeric" })}.`;
+}
+
+// ── Welcome after checkout, and Club home until they're done (mock v11, screen 2) ──
+
+/// The three first steps, each ticking itself off: Plan (the club has a
+/// drive), Organizers (anyone invited), Get the app (they opened Get on
+/// this account; DevOps, 11/13: no server data for it).
+/// → [{ key, title, line, done, action }]
+export function firstSteps({ drives = 0, organizers = 1, cap = 5, gotApp = false } = {}) {
+  const more = Math.max(0, (Number(cap) || 5) - (Number(organizers) || 1));
+  return [
+    { key: "plan", title: "Plan your first drive", line: "Set the days and meet times, then a route for each day.", done: drives > 0, action: "Plan a drive" },
+    { key: "invite", title: "Add organizers", line: `Invite up to ${more} more. Each gets Carve Apex while your plan is active.`, done: organizers > 1, action: "Invite" },
+    { key: "app", title: "Get the app", line: "Drive the route turn by turn and see your group on the map.", done: !!gotApp, action: "Get" },
+  ];
+}
+
+/// "Your free trial runs until Sat, Dec 12. Three steps to your first drive."
+export function welcomeLine(status, now = Date.now()) {
+  const ends = status?.trial_ends_at ? Date.parse(status.trial_ends_at) : NaN;
+  const until = Number.isFinite(ends) && ends > now ? `Your free trial runs until ${new Date(ends).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}. ` : "";
+  return `${until}Three steps to your first drive.`;
 }

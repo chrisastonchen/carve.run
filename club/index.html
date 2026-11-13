@@ -10,10 +10,10 @@
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=b2f2ed02ae">
+<link rel="stylesheet" href="/styles.css?v=c93f09caa8">
 <link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
-<link rel="stylesheet" href="/assets/club-v2.css?v=97ca812cdb">
+<link rel="stylesheet" href="/assets/club-v2.css?v=ac31cdb17a">
 <link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
 <link rel="stylesheet" href="/assets/club-intro.css?v=ecfbfd4efb">
 <meta name="apple-itunes-app" content="app-id=6808087716">
@@ -304,44 +304,88 @@
     </form>
   </section>
 
-  <div class="cv-home" id="v-home" hidden>
-    <div class="cv-main">
-      <div class="cv-head">
-        <div><p class="cp-eyebrow" id="v-eyebrow"></p><h1 id="v-title"></h1></div>
-        <a class="go" id="v-new" href="/club/drive/">Plan a drive</a>
-      </div>
-      <label class="cp-field" id="v-pick-row" hidden>Your clubs<select id="v-pick"></select></label>
-      <p class="cp-note" id="v-drives-said" role="status" aria-live="polite"></p>
-      <div class="cv-empty" id="v-empty" hidden>
-        <span class="v-thumb big" aria-hidden="true"></span>
-        <h2>No drives yet</h2>
-        <p class="cp-note">Pick the days, build a route for each one, then share one link with your drivers.</p>
-        <a class="go" id="v-empty-new" href="/club/drive/">Plan a drive</a>
-      </div>
-      <section class="cv-list" id="v-up" aria-labelledby="v-up-h" hidden>
-        <h2 class="cp-eyebrow" id="v-up-h">Upcoming</h2>
-        <ul id="v-up-list"></ul>
-        <p class="cp-note" id="v-up-none" hidden>Nothing coming up. Plan the next drive.</p>
-      </section>
-      <section class="cv-list" id="v-past" aria-labelledby="v-past-h" hidden>
-        <h2 class="cp-eyebrow" id="v-past-h">Past</h2>
-        <ul id="v-past-list"></ul>
-      </section>
+  <!-- Welcome after checkout (club flow mock v11, Chris 11/13): on the glow,
+       the club's name, the trial's end, and three first steps that tick
+       themselves off; Club home keeps them on top until they're done. -->
+  <section class="cd-welcome" id="v-welcome" aria-labelledby="v-welcome-h" hidden>
+    <div class="cd-welcome-words">
+      <span class="cd-eyebrow">Welcome to Carve Club</span>
+      <h1 id="v-welcome-h"></h1>
+      <p class="cd-sub" id="v-welcome-line"></p>
     </div>
-    <aside class="cv-side">
-      <section class="cv-box" aria-labelledby="v-orgz-h">
-        <h2 class="cp-eyebrow" id="v-orgz-h">Organizers</h2>
-        <ul class="cv-orgz" id="v-orgz-list"></ul>
-        <button type="button" class="textlink" id="v-orgz-add">+ Add an organizer</button>
-        <p class="cp-note" id="v-orgz-full" hidden>Club has room for 5 organizers.</p>
-        <form class="cv-orgz-form" id="v-orgz-form" hidden>
-          <label class="cp-field">Their email<input type="email" id="v-orgz-email" maxlength="120" autocomplete="off"></label>
-          <button type="submit" class="go" id="v-orgz-go">Add</button>
-        </form>
-        <p class="cp-note" id="v-orgz-said" role="status" aria-live="polite"></p>
-      </section>
-      <a class="cv-box cv-link" id="v-settings" href="/club/settings/"><b>Club settings</b><span>Plan, billing ›</span></a>
-    </aside>
+    <ol class="cd-steps" id="v-welcome-steps"></ol>
+  </section>
+
+  <!-- Get: the app on their phone (mock v11): a code to scan, and the stores. -->
+  <dialog class="cd-dlg" id="v-get" aria-labelledby="v-get-h">
+    <form method="dialog"><button class="cd-x" aria-label="Close">✕</button></form>
+    <h2 id="v-get-h">Get Carve on your phone</h2>
+    <p>Scan with your phone's camera, or tap your store.</p>
+    <span class="cd-qrbig" id="v-get-qr" role="img" aria-label="QR code for carve.run/get"></span>
+    <div class="cd-stores">
+      <a class="cd-store" href="https://apps.apple.com/app/carve-route-planner/id6808087716"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.6zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.1 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg><span><small>iPhone</small><b>App Store</b></span></a>
+      <a class="cd-store" href="/android/"><svg viewBox="0 0 24 24" fill="#7CC36E" aria-hidden="true"><path d="M6 9h12v8a1 1 0 0 1-1 1h-1v3a1.5 1.5 0 0 1-3 0v-3h-2v3a1.5 1.5 0 0 1-3 0v-3H7a1 1 0 0 1-1-1zM3.5 9A1.5 1.5 0 0 1 5 10.5v5a1.5 1.5 0 0 1-3 0v-5A1.5 1.5 0 0 1 3.5 9zm17 0a1.5 1.5 0 0 1 1.5 1.5v5a1.5 1.5 0 0 1-3 0v-5A1.5 1.5 0 0 1 20.5 9zM6 8a6 6 0 0 1 12 0zm3.5-3a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm5 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z"/></svg><span><small>Android</small><b>Join early access</b></span></a>
+    </div>
+  </dialog>
+
+  <!-- Club home (club flow mock v11, Chris 11/13): the coast photo band with
+       the club's name, the first steps until they're done, the next drive's
+       card, Later and Past with their status, organizers by initials, the
+       trial's quiet meter. club-home.js fills it. -->
+  <div class="cv-home" id="v-home" hidden>
+    <header class="cd-band cd-photo" id="v-band">
+      <div class="cd-who">
+        <span class="cd-eyebrow">Your club</span>
+        <h1 id="v-title"></h1>
+        <p class="cd-meta" id="v-meta"></p>
+      </div>
+      <a class="go" id="v-new" href="/club/drive/">+ Plan a drive</a>
+    </header>
+    <label class="cp-field cd-club-pick" id="v-pick-row" hidden>Your clubs<select id="v-pick"></select></label>
+    <section class="cd-steps-box" id="v-steps-box" aria-labelledby="v-steps-h" hidden>
+      <h2 class="cd-lbl" id="v-steps-h">First steps</h2>
+      <ol class="cd-steps" id="v-steps"></ol>
+    </section>
+    <div class="cd-home">
+      <div class="cv-main">
+        <p class="cp-note" id="v-drives-said" role="status" aria-live="polite"></p>
+        <div class="cv-empty" id="v-empty" hidden>
+          <h2>No drives yet</h2>
+          <p class="cp-note">Pick the days, build a route for each one, then share one link with your drivers.</p>
+          <a class="go" id="v-empty-new" href="/club/drive/">Plan a drive</a>
+        </div>
+        <section class="cv-list" id="v-up" aria-labelledby="v-next-h" hidden>
+          <h2 class="cd-lbl" id="v-next-h">Next up</h2>
+          <article class="cd-next" id="v-next"></article>
+          <h2 class="cd-lbl" id="v-later-h">Later</h2>
+          <ul class="cd-rows" id="v-up-list"></ul>
+          <p class="cp-note" id="v-up-none" hidden>Nothing coming up. Plan the next drive.</p>
+        </section>
+        <section class="cv-list" id="v-past" aria-labelledby="v-past-h" hidden>
+          <h2 class="cd-lbl" id="v-past-h">Past</h2>
+          <ul class="cd-rows" id="v-past-list"></ul>
+        </section>
+      </div>
+      <aside class="cv-side">
+        <h2 class="cd-lbl" id="v-orgz-h">Organizers</h2>
+        <section class="cv-box cd-panel" aria-labelledby="v-orgz-h">
+          <ul class="cv-orgz cd-people" id="v-orgz-list"></ul>
+          <button type="button" class="textlink" id="v-orgz-add">+ Invite an organizer</button>
+          <p class="cp-note" id="v-orgz-full" hidden>Club has room for 5 organizers.</p>
+          <form class="cv-orgz-form" id="v-orgz-form" hidden>
+            <label class="cp-field">Their email<input type="email" id="v-orgz-email" maxlength="120" autocomplete="off"></label>
+            <button type="submit" class="go" id="v-orgz-go">Invite</button>
+          </form>
+          <p class="cp-note" id="v-orgz-said" role="status" aria-live="polite"></p>
+        </section>
+        <section class="cv-box cd-panel cd-trial" aria-labelledby="v-eyebrow">
+          <h2 class="cd-lbl" id="v-eyebrow"></h2>
+          <div class="cd-meter" id="v-meter" hidden><i id="v-meter-bar"></i></div>
+          <p id="v-trial-line" hidden></p>
+          <a class="cd-settings" id="v-settings" href="/club/settings/">Club settings ›</a>
+        </section>
+      </aside>
+    </div>
   </div>
 
   <section class="cp-sect" id="o-register" hidden>
@@ -447,8 +491,9 @@
   </div>
 </footer>
 
-<script src="/assets/carve-site.js?v=2f5e1908ff" defer></script>
+<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
 <script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
-<script type="module" src="/assets/club-load.js?v=e2a5e34a88"></script>
+<script src="/plan/vendor/qrcode.js?v=144" defer></script>
+<script type="module" src="/assets/club-load.js?v=43a0cdd0dc"></script>
 </body>
 </html>

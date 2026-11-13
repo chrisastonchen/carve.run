@@ -683,7 +683,7 @@
   // The bar and the phone's menu by who's looking, signed out too (boards
   // N3–N5; Plan ▾ for everyone, Chris 11/12): site-nav.js draws them.
   function siteNav() {
-    safe(function () { import("/assets/site-nav.js?v=0a78d1d489").catch(function () {}); });
+    safe(function () { import("/assets/site-nav.js?v=b03761f36a").catch(function () {}); });
   }
 
   function ready() { tagLinks(); tagBanner(); myDrivesLink(); siteNav(); phoneSignIn(); sheetApp(); whoProfile(); }

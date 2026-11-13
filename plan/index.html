@@ -22,8 +22,10 @@
   // A phone coming back from Apple or Google, or here to sign in, sees the
   // sign-in's full-screen pages only, never this page for computers under them.
   try { if (matchMedia("(max-width: 699px)").matches && /access_token=|^#sign-in|error/.test(location.hash + location.search)) document.documentElement.classList.add("phone-account"); } catch (e) {}
+  // A club drive's day is dark in either device setting, its map too (club flow mock v11, Chris 11/13).
+  try { if (/[?&]drive=/.test(location.search) && !/[?&]group\b/.test(location.search)) document.documentElement.classList.add("night"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=61">
+<link rel="stylesheet" href="/plan/plan.css?v=63">
 <link rel="stylesheet" href="/plan/club-steps.css">
 </head>
 <body>
@@ -134,10 +136,13 @@
   </nav>
   <aside class="panel" id="panel" aria-label="Your route">
     <!-- A club drive's day (club v2's O5, drive-day.js): back to the drive, the day switch. -->
+    <!-- The night drive bar (club flow mock v11): back to the drive, the drive
+         and day, the day switch, Done; across the top, over the map. -->
     <div class="drive-bar" id="drive-bar" hidden>
-      <a class="db-back" id="db-back" href="/club/">‹ <span id="db-name">Your drive</span></a>
-      <span class="db-state">Planning</span>
+      <a class="db-back" id="db-back" href="/club/">‹ Drive</a>
+      <p class="db-title"><b id="db-name">Your drive</b> <span id="db-when"></span></p>
       <div class="db-days" id="db-days" role="group" aria-label="Days" hidden></div>
+      <button type="button" class="db-done" id="db-done">Done</button>
     </div>
     <!-- Planning -->
     <section class="view" id="plan-view">
@@ -430,7 +435,7 @@
         </div>
         <div class="list-head" id="list-head">
           <span class="head-left" id="head-left">
-            <span class="eyebrow">Your route</span>
+            <span class="eyebrow" id="route-eyebrow">Your route</span>
           </span>
           <span class="undo" id="history-buttons">
             <button type="button" class="pill grey small" id="start-over" disabled>Start over</button>
@@ -465,7 +470,7 @@
       <div class="foot" id="foot">
         <div class="figures" id="figures">
           <div><b id="fig-dist">–</b><span id="fig-dist-unit">miles</span></div>
-          <div><b id="fig-time">–</b><span>drive time</span></div>
+          <div><b id="fig-time">–</b><span id="fig-time-unit">drive time</span></div>
           <div><b id="fig-stops">0</b><span id="fig-stops-unit">stops</span></div>
         </div>
         <label for="route-name" class="visually-hidden">Route name</label>
@@ -676,7 +681,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=117"></script>
-<script src="/assets/carve-site.js?v=2f5e1908ff" defer></script>
+<script type="module" src="/plan/plan.js?v=118"></script>
+<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
 </body>
 </html>

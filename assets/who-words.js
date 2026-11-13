@@ -81,7 +81,8 @@ export function navFor(state, clubs = []) {
     clubsItem,
     link("explore", "Explore", "/drives/"),
     link("events", "Events", "/events/"),
-    ...(state === "out" ? [] : [link("saved", "Saved", "/my-drives/")]),
+    // Saved: the routes they saved and events with reminders (Chris, 11/13); /my-drives/ stays, off the bar.
+    ...(state === "out" ? [] : [link("saved", "Saved", "/saved/")]),
     ...(state === "out" ? [link("pricing", "Pricing", "/pricing/")] : state === "free" ? [link("upgrade", "Upgrade", "/pricing/")] : []),
     link("support", "Support", "/support/"),
   ];
@@ -116,7 +117,7 @@ export function currentKey(path) {
   if (/^\/club\//.test(path)) return "clubs";
   if (/^\/(drives|roads)\//.test(path)) return "explore";
   if (/^\/(events|e)\//.test(path)) return "events";
-  if (/^\/my-drives\//.test(path)) return "saved";
+  if (/^\/(saved|my-drives)\//.test(path)) return "saved";
   if (/^\/pricing\//.test(path)) return "pricing";
   if (/^\/support\//.test(path)) return "support";
   return null;

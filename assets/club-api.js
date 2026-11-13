@@ -59,6 +59,8 @@ export const billing = (body) => call(`${SUPABASE_URL}/functions/v1/org-billing`
 export const inviteSend = (body) => call(`${SUPABASE_URL}/functions/v1/org-invite-send`, body);
 /// Rows into a table as the organizer (a duplicated drive's routes and shares).
 export const insert = (table, rows) => call(`${SUPABASE_URL}/rest/v1/${table}`, rows);
+/// Rows the organizer may read (RLS), e.g. their own routes' last saves.
+export const select = (table, query) => call(`${SUPABASE_URL}/rest/v1/${table}?${query}`, null, "GET");
 
 /// A call anyone may make, signed out too (0100's invite preview), with the
 /// site's key. → the answer, or null when it couldn't be asked.
