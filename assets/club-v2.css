@@ -325,7 +325,8 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cd-facts b { color: var(--ink); font-family: var(--num); font-variant-numeric: tabular-nums; font-weight: 500; letter-spacing: 0; }
 
 /* Club home (mock v11, screen 3). */
-.cd-photo { background-image: url("/assets/club/coast.jpg"); }
+/* The band's photo: a <picture> behind it (club/index.html), cover, at 2× from 2400 px. */
+.cd-band-pic, .cd-band-pic img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; display: block; }
 .cv-dash .cv-home { display: flex; flex-direction: column; gap: 18px; }
 .cd-home { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; margin-top: 14px; }
 .cd-home .cv-main, .cd-home .cv-side { gap: 12px; }
@@ -454,10 +455,12 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cd-ask .cd-title:not(.visually-hidden) { margin: 6px 0 0; font-size: 22px; }
 .cd-ask .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .cd-q { display: flex; gap: 14px; align-items: baseline; margin-top: 26px; }
-.cd-q h2 { margin: 0; font-size: clamp(28px, 3.6vw, 42px); font-weight: 900; line-height: 1.05; letter-spacing: -.012em; }
+/* About 20% quieter than the mock (Chris, 11/13: "very loud"); Start a club keeps its own (.o1-q). */
+.cd-q h2 { margin: 0; font-size: clamp(22px, 2.9vw, 34px); font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
 .cd-q h2 label { cursor: text; }
 .cd-q p { margin: 6px 0 0; color: var(--ink-2); font-size: 15px; }
-.cd-n { flex: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 800; color: #6FD39A; font-size: 16px; transform: translateY(-4px); }
+.cd-n { flex: none; display: inline-flex; align-items: center; gap: 5px; font-weight: 800; color: #6FD39A; font-size: 13px; transform: translateY(-3px); }
+.cd-n::after { width: 12px; height: 12px; }
 .cd-n::after, .cd-arrow::after { content: ""; width: 15px; height: 15px; background: currentColor; -webkit-mask: var(--cd-arrow) center / contain no-repeat; mask: var(--cd-arrow) center / contain no-repeat; }
 .cd-ask, .cd-ask .go { --cd-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E"); }
 .cp .cd-ask .cd-big { margin-left: 32px; width: calc(100% - 32px); box-sizing: border-box; border: 0; border-bottom: 3px solid #6FD39A; border-radius: 0; background: transparent; outline: none; height: auto; font: inherit; font-size: clamp(24px, 3vw, 36px); font-weight: 600; color: #6FD39A; padding: 6px 0 10px; caret-color: #6FD39A; }
@@ -472,7 +475,10 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cd-pick small { font-size: 11px; font-weight: 800; color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; }
 .cd-pick b { font-family: var(--num); font-variant-numeric: tabular-nums; font-weight: 500; font-size: 16px; letter-spacing: 0; white-space: nowrap; }
 .cd-pick b.empty { font-family: inherit; color: var(--ink-3); font-weight: 600; }
-.cv-dash .cd-pick input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: 0; padding: 0; margin: 0; }
+/* The browser's own field, seen and used as it is (Chris, 11/13), in the picker's look. */
+.cv-dash .cd-pick input, .cp.cv-dash .cd-pick input { position: static; opacity: 1; width: 100%; min-width: 0; height: 24px; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--ink); color-scheme: dark; font-family: var(--num); font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; cursor: pointer; }
+.cv-dash .cd-pick input::-webkit-calendar-picker-indicator { filter: invert(.8); cursor: pointer; margin-left: 2px; }
+.cv-dash .cd-pick input::-webkit-datetime-edit { padding: 0; }
 .cd-pick:focus-within { box-shadow: 0 0 0 2px #6FD39A; }
 .cd-pick:has([aria-invalid]) { box-shadow: 0 0 0 2px #F2A65A; }
 .cv-dash .cd-day-row .cv-miss { position: static; margin-top: 2px; white-space: normal; color: #F2A65A; font-size: 12px; }
@@ -495,12 +501,12 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
   .cp .cd-ask .cd-big { margin-left: 0; width: 100%; }
   .cd-days-ask, .cd-ask .cd-yn, .cd-ask .cd-foot, .cv-dash .cv-said { margin-left: 0; }
   .cd-ask .cd-yn { grid-template-columns: 1fr; }
-  .cv-dash .cd-day-row, .cv-dash .cd-day-row:has(.cv-x) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 10px; }
+  .cv-dash .cd-day-row, .cv-dash .cd-day-row:has(.cv-x) { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 10px; }
   .cv-dash .cd-day-row .cd-dn { grid-column: 1 / -1; padding: 0 2px; }
   .cv-dash .cd-day-row:has(.cv-x) .cd-dn { grid-column: 1 / 3; }
   .cv-dash .cd-day-row:has(.cv-x) .cv-x:not(.ask) { grid-row: 1; grid-column: 3; justify-self: end; height: 30px; min-width: 30px; }
   .cd-day-row .cd-pick { padding: 6px 8px; }
-  .cd-day-row .cd-pick b { font-size: 14px; }
+  .cd-day-row .cd-pick input, .cp.cv-dash .cd-day-row .cd-pick input { font-size: 14px; }
 }
 .cv-dash .cd-day-row > .cv-date, .cv-dash .cd-day-row:not(:has(.cv-x)) > .cv-date { grid-column: auto; }
 
@@ -524,7 +530,8 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cd-step-words b { font-size: 16.5px; }
 .cd-step-words span { color: var(--ink-3); font-size: 14px; }
 .cd-step .go { height: 44px; padding: 0 20px; font-size: 15px; flex: none; }
-.cd-step.done .go { display: none; }
+/* A done step's action goes, but Get stays: it opens the dialog again (Chris, 11/13). */
+.cd-step.done:not(.step-app) .go { display: none; }
 .cd-steps-box { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .cd-steps-box[hidden] { display: none; }
 .cd-steps-box .cd-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }

@@ -163,34 +163,26 @@ function input(type, value, label, set) {
   i.type = type;
   i.value = value || "";
   i.setAttribute("aria-label", label);
-  i.addEventListener(type === "date" ? "change" : "input", () => { set(i.value); shown(i); });
+  i.addEventListener(type === "date" ? "change" : "input", () => set(i.value));
   return i;
 }
-/// A friendly picker (mock v11): its label and the value as read ("Sat,
-/// Dec 12", "8:00 AM") over the browser's own field, which a tap opens.
+/// A picker (mock v11): its label over the browser's own date or time
+/// field, seen and used as it is: clicked, typed into, stepped with the
+/// arrows, in every browser (Chris, 11/13: an invisible field over our own
+/// text couldn't be clicked where there's no time popup, Safari and Firefox).
 function field(name, control, more = "") {
   const l = el("label", `cd-pick cv-time${more ? ` ${more}` : ""}`);
-  l.append(el("small", "cv-time-name", name), el("b", ""), control);
-  shown(control);
+  l.append(el("small", "cv-time-name", name), control);
   pickOnTap(l, control);
   return l;
 }
-/// The value a picker shows: "Sat, Dec 12", "8:00 AM", or what to pick.
-function shown(control) {
-  const b = control.parentElement?.querySelector(":scope > b");
-  if (!b) return;
-  const v = control.value;
-  b.textContent = control.type === "date" ? dayText(v) || "Pick a date" : timeText(v) || "Pick a time";
-  b.classList.toggle("empty", !v);
-}
-/// A computer's browser opens its calendar or clock on the field's icon
-/// only; the whole picker opens it here.
-/// A phone's tap opens it already.
+/// A click anywhere on the picker opens the browser's calendar or clock
+/// where it has one (showPicker); where it hasn't, the field has the focus.
 function pickOnTap(box, control) {
   box.addEventListener("click", (e) => {
-    if (!matchMedia("(pointer: fine)").matches) return;
-    if (e.target !== control) e.preventDefault();
-    try { control.showPicker(); } catch { control.focus(); }
+    if (e.target !== control) control.focus();
+    if (!matchMedia("(pointer: fine)").matches || typeof control.showPicker !== "function") return;
+    try { control.showPicker(); } catch {}
   });
 }
 
@@ -221,7 +213,6 @@ function renderPrerun() {
   // The date inside Yes (mock v11).
   $("f-pr-pick").hidden = !prerun.on;
   $("f-pr-date").value = prerun.date || "";
-  shown($("f-pr-date"));
 }
 
 async function submit(e) {
@@ -455,7 +446,7 @@ function wire() {
     renderPrerun();
   });
   $("f-pr-no").addEventListener("click", () => { prerun.on = false; renderPrerun(); });
-  $("f-pr-date").addEventListener("change", (e) => { prerun.date = e.target.value; shown(e.target); });
+  $("f-pr-date").addEventListener("change", (e) => { prerun.date = e.target.value; });
   pickOnTap($("f-pr-pick"), $("f-pr-date"));
   const menu = (open) => { $("d-menu").hidden = !open; $("d-more").setAttribute("aria-expanded", String(open)); };
   $("d-more").addEventListener("click", () => menu($("d-menu").hidden));

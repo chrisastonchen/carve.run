@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/styles.css?v=c93f09caa8">
 <link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
-<link rel="stylesheet" href="/assets/club-v2.css?v=ac31cdb17a">
+<link rel="stylesheet" href="/assets/club-v2.css?v=c99410bb41">
 <link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
 <link rel="stylesheet" href="/assets/club-intro.css?v=ecfbfd4efb">
 <meta name="apple-itunes-app" content="app-id=6808087716">
@@ -334,6 +334,9 @@
        trial's quiet meter. club-home.js fills it. -->
   <div class="cv-home" id="v-home" hidden>
     <header class="cd-band cd-photo" id="v-band">
+      <!-- The coast at the band's width on a retina screen (Chris, 11/13: the
+           720 px poster was pixelated): AVIF to 2400 px, the JPG for the rest. -->
+      <picture class="cd-band-pic"><source type="image/avif" srcset="/assets/club/band-coast.w640.avif?v=85439dc657 640w, /assets/club/band-coast.w1280.avif?v=cd126ea409 1280w, /assets/club/band-coast.w1920.avif?v=af2c402f77 1920w, /assets/club/band-coast.w2400.avif?v=33daca3744 2400w" sizes="100vw"><img src="/assets/club/band-coast.jpg?v=9c3a5c9ddc" alt="" width="2400" height="1018" decoding="async"></picture>
       <div class="cd-who">
         <span class="cd-eyebrow">Your club</span>
         <h1 id="v-title"></h1>
@@ -494,6 +497,6 @@
 <script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
 <script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
-<script type="module" src="/assets/club-load.js?v=43a0cdd0dc"></script>
+<script type="module" src="/assets/club-load.js?v=923dc5ddda"></script>
 </body>
 </html>

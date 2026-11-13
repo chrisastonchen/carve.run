@@ -198,7 +198,7 @@ const planHref = () => `/club/drive/?org=${encodeURIComponent(org.id)}`;
 /// The steps into `list`: a number (a tick once done), the words, the action.
 function drawSteps(list, data) {
   list.replaceChildren(...firstSteps({ ...data, gotApp: gotApp() }).map((step, i) => {
-    const li = el("li", `cd-step${step.done ? " done" : ""}`);
+    const li = el("li", `cd-step step-${step.key}${step.done ? " done" : ""}`);
     const num = el("span", "cd-num", step.done ? "✓" : String(i + 1));
     num.setAttribute("aria-hidden", "true");
     const words = el("span", "cd-step-words");
