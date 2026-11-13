@@ -111,7 +111,15 @@ function padding() {
   if (phone()) return { top: 36, bottom: 36, left: 30, right: 30 };
   const panel = document.querySelector(".rv .panel");
   const right = panel ? panel.getBoundingClientRect().right : 0;
-  return { top: 70, bottom: 80, right: 80, left: Math.round(right) + PANEL_GAP };
+  // Beside the panel, with at least 80 px of map left for the route: at 768
+  // wide the panel's padding and 80 more were wider than the map (QA, 11/12).
+  const box = document.querySelector(".rv .map")?.getBoundingClientRect();
+  const want = { top: 70, bottom: 80, right: innerWidth < 1100 ? 40 : 80, left: Math.round(right) + PANEL_GAP };
+  if (!box?.width || !box?.height) return want;
+  const fit = (a, b, room) => (a + b <= room - 80 ? [a, b] : [Math.floor((a * Math.max(0, room - 80)) / (a + b)), Math.floor((b * Math.max(0, room - 80)) / (a + b))]);
+  const [left, side] = fit(want.left, want.right, box.width);
+  const [top, bottom] = fit(want.top, want.bottom, box.height);
+  return { top, bottom, left, right: side };
 }
 
 /// MapLibre loads after this module (it's big, and nothing else waits for it).

@@ -19,6 +19,22 @@ const CSS = `
 .bar .links .nav-pop a:hover, .bar .links .nav-pop a:focus-visible { background: #1D2A22; outline: none; }
 .bar .links .nav-pop a span { font-size: 13px; font-weight: 600; color: #9AA39D; }
 .bar .links .nav-pop hr { border: 0; height: 1px; background: #2A332E; margin: 4px 6px; }
+/* One line each, and room for them all from 700 px (QA, 11/12: My Clubs in two lines at 768). */
+.bar .links a, .bar .links .nav-b { white-space: nowrap; }
+@media (min-width: 700px) and (max-width: 1023px) {
+  .bar .links { gap: 0; }
+  .bar .links a, .bar .links .nav-b { padding-left: 9px; padding-right: 9px; font-size: 15px; }
+}
+@media (min-width: 700px) and (max-width: 859px) {
+  .bar { padding-left: 16px; padding-right: 12px; gap: 8px; }
+  .bar .brand { margin-right: 2px; }
+  .bar .wordmark { width: 92px; height: 14px; }
+  .bar .links a, .bar .links .nav-b { padding-left: 5px; padding-right: 5px; font-size: 14px; }
+}
+@media (min-width: 700px) and (max-width: 759px) {
+  .bar .links a, .bar .links .nav-b { padding-left: 4px; padding-right: 4px; }
+  .bar .who-btn { gap: 6px; padding-right: 8px; }
+}
 .sheet .sheet-sub { padding: 12px 6px 12px 22px; font-size: 18px; font-weight: 600; }
 .sheet .sheet-sub:has(.sheet-note) { display: flex; flex-direction: column; gap: 2px; }
 .sheet .sheet-note { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.68); }

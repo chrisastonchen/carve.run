@@ -8,6 +8,7 @@
 // the upsell (no label beside it); the planner's 403 says the same.
 
 import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=7";
+import { fitTo } from "./fit.js?v=1";
 
 /// Each kind's icon (24 px, stroked in the pin's colour; no emoji).
 const ICONS = {
@@ -183,7 +184,7 @@ export function initSuggest(h) {
       return pt.x >= padding.left && pt.x <= box.width - padding.right && pt.y >= padding.top && pt.y <= box.height - padding.bottom;
     });
     if (inView) map.easeTo({ center: bounds.getCenter(), padding, duration: 400 });
-    else map.fitBounds(bounds, { padding, maxZoom: 14, duration: 400 });
+    else fitTo(map, bounds, padding, { maxZoom: 14, duration: 400 });
     card(0);
     rerender();
   }

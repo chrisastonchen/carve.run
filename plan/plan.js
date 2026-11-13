@@ -28,6 +28,7 @@ import { initDriveDay } from "./drive-day.js?v=6";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
 import { initSuggest } from "./suggest.js?v=8";
+import { fitTo } from "./fit.js?v=1";
 import { initPills } from "./place-pills.js?v=1";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
@@ -1851,7 +1852,7 @@ function fitRoute() {
     return true;
   }
   const bounds = line.reduce((b, c) => b.extend(c), new maplibregl.LngLatBounds(line[0], line[0]));
-  map.fitBounds(bounds, { padding: fitPadding(), maxZoom: 13, duration: 600 });
+  fitTo(map, bounds, fitPadding(), { maxZoom: 13, duration: 600 });
   return true;
 }
 
@@ -2569,7 +2570,7 @@ function attachSearch(li, input, onPick, onLeave) {
       const bounds = here.reduce((b, { place }) => b.extend([place.lon, place.lat]), new maplibregl.LngLatBounds([here[0].place.lon, here[0].place.lat], [here[0].place.lon, here[0].place.lat]));
       // Clear of the hint at the top and the edges, with room for the pins.
       const pad = fitPadding();
-      map.fitBounds(bounds, { padding: { top: pad.top + 50, bottom: pad.bottom + 40, left: pad.left + 30, right: pad.right + 30 }, maxZoom: 12, duration: 500 });
+      fitTo(map, bounds, { top: pad.top + 50, bottom: pad.bottom + 40, left: pad.left + 30, right: pad.right + 30 }, { maxZoom: 12, duration: 500 });
     }
   };
   const show = (query) => {
@@ -2702,7 +2703,7 @@ function spotPins(spots, onPick, onHover) {
   if (spots.length) {
     const bounds = spots.reduce((b, s) => b.extend([s.lon, s.lat]), new maplibregl.LngLatBounds([spots[0].lon, spots[0].lat], [spots[0].lon, spots[0].lat]));
     const pad = fitPadding();
-    map.fitBounds(bounds, { padding: { top: pad.top + 50, bottom: pad.bottom + 40, left: pad.left + 30, right: pad.right + 30 }, maxZoom: 15, duration: 500 });
+    fitTo(map, bounds, { top: pad.top + 50, bottom: pad.bottom + 40, left: pad.left + 30, right: pad.right + 30 }, { maxZoom: 15, duration: 500 });
   }
   return {
     clear: () => { for (const m of markers) m.remove(); markers.length = 0; },

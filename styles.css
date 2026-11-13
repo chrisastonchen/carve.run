@@ -139,7 +139,7 @@ nav.top .bar {
 footer { padding: 28px 0 44px; margin-top: 24px; color: var(--ink-faint); font-size: 14px;
          border-top: 1px solid var(--line); }
 footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px 28px; }
-footer .links { display: flex; gap: 20px; }
+footer .links { display: flex; flex-wrap: wrap; gap: 8px 20px; } /* wraps on a phone, or the page is 453 px wide (QA, 11/12) */
 footer .links a { color: var(--ink-dim); text-decoration: none; }
 footer .links a:hover { color: var(--ink); }
 
@@ -172,7 +172,7 @@ footer .links a:hover { color: var(--ink); }
   padding: 18px 20px; margin: 20px 0; color: var(--ink-dim); font-size: 16px;
 }
 .doc table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 15px; }
-.doc th, .doc td { text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+.doc th, .doc td { text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); overflow-wrap: anywhere; }
 .doc th { color: var(--ink-faint); font-weight: 600; }
 details { border: 1px solid var(--line); border-radius: 16px; padding: 4px 18px; margin: 10px 0; background: var(--paper-2); }
 summary { cursor: pointer; font-weight: 600; padding: 11px 0; color: var(--ink); }

@@ -455,6 +455,9 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 /* The bar on a computer (the user, 2026-11-04): Get the app and Sign in as words, Join for free the one button. */
 .bar .barlink { padding: 10px 12px; border-radius: 999px; color: rgba(255,255,255,.86); font-size: 16px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .bar .barlink:hover { color: #fff; background: rgba(255,255,255,.08); }
+/* Below laptop width the bar has no room for Get the app (QA, 11/12: the bar ran off the right at 768); the page's own Get the app stays. */
+@media (max-width: 1179px) { .bar .get-wide { display: none; } }
+@media (min-width: 700px) and (max-width: 859px) { .bar .barlink { padding-left: 8px; padding-right: 8px; font-size: 14px; } .bar .pill.white { padding: 0 14px; font-size: 15px; } }
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
   .hero .hero-sub { display: block !important; margin: 0; font-size: 17px; line-height: 1.45; color: #E6EAE7; }
   .hero .hero-join { width: 100%; height: 52px; margin-top: 26px; justify-content: center; align-items: center; font-size: 17px; font-weight: 800; box-shadow: 0 8px 24px rgba(0,0,0,.25); }

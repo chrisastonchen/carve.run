@@ -35,6 +35,11 @@ export function initPills(h) {
     b.addEventListener("click", () => tap(p.kind));
     row.append(b);
   }
+  // More to the right (a tablet shows two or three, QA 11/12): the row's
+  // end fades until it's scrolled to.
+  const more = () => row.classList.toggle("more", row.scrollLeft + row.clientWidth < row.scrollWidth - 2);
+  row.addEventListener("scroll", more, { passive: true });
+  new ResizeObserver(more).observe(row);
   chip.addEventListener("click", () => {
     chip.hidden = true;
     look(on);
