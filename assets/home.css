@@ -215,15 +215,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .door-label a { color: var(--green-ink); }
 .door[hidden] { display: none !important; }
 /* Plan. Drive. Review. */
-.pdr { max-width: 1100px; margin: 0 auto; padding: 64px 24px 24px; display: flex; flex-direction: column; gap: 28px; }
-.pdr h2 { font-size: clamp(32px, 3.6vw, 46px); text-align: center; }
-.pdr-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: pdr; }
-.pdr-steps li { counter-increment: pdr; display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 22px; background: #161B18; border: 1px solid var(--rule); }
-.pdr-steps li::before { content: counter(pdr); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
-.pdr-steps b { font-size: 20px; }
-.pdr-steps span { color: var(--ink-2); line-height: 1.5; }
-.pdr-steps .textlink { margin-top: auto; align-self: flex-start; padding: 0; border: 0; background: none; color: var(--green-ink); font-weight: 700; text-decoration: underline; }
-@media not all and (prefers-color-scheme: dark) { .pdr-steps li { background: #fff; } }
 
 /* ═══ A PHONE ═══ */
 @media (max-width: 899px), (max-height: 500px) and (pointer: coarse) {
@@ -235,8 +226,6 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
   .hero .pitch { font-size: 17px; }
   .door, .for-app { display: none; }
   .hero-acts { display: none !important; }
-  .pdr { padding: 40px 16px 8px; }
-  .pdr-steps { grid-template-columns: 1fr; }
   .hero-map { display: none; }
   .near { padding: 14px 0 8px; gap: 14px; }
   .near-head { padding: 0 16px; }
@@ -708,6 +697,8 @@ body { background: var(--cream); color: var(--ink); font-family: "Figtree", -app
 .feat-phone .screen { position: relative; display: block; aspect-ratio: 1270 / 2841; overflow: hidden; border-radius: 13% / 5.8%; background: #1B2027; }
 .feat-phone video { position: absolute; left: -1.97%; top: 0; width: 103.94%; height: auto; display: block; opacity: 0; transition: opacity .2s; }
 .feat-phone video.ready { opacity: 1; }
+/* A still in place of a clip (the hazard warning, 11/12), cropped as the clips are. */
+.feat-phone .still { position: absolute; left: -1.97%; top: 0; width: 103.94%; height: 100%; object-fit: cover; object-position: 50% 0; display: block; }
 .feat-get { margin-top: 40px; height: 56px; padding: 0 34px; font-size: 18px; }
 .badge { display: inline-flex; align-items: center; gap: 10px; width: 200px; height: 58px; padding: 0 18px; box-sizing: border-box; border-radius: 12px; background: #000; color: #fff; text-decoration: none; }
 .home .badge { color: #fff; }

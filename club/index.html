@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/site-bar.css?v=43c6a4b1bc">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
 <link rel="stylesheet" href="/assets/club-v2.css?v=68e9bbc3d5">
-<link rel="stylesheet" href="/assets/home.css?v=2482f3e846">
-<link rel="stylesheet" href="/assets/club-intro.css?v=33c22d52ac">
+<link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
+<link rel="stylesheet" href="/assets/club-intro.css?v=8993462bc9">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 
 </head>
@@ -93,9 +93,9 @@
 <main class="home cp o-page">
   <p class="cp-note" id="cp-status" role="status">Loading…</p>
 
-  <!-- For Clubs, signed out (board F1; Product's spec 11/11, Chris's yes with every
-       driver's Apex): the price, the trial and its terms, Log in; club-intro.js fills
-       the price, terms and maths from plans.js. -->
+  <!-- For Clubs, signed out or with no club (Sales and Marketing's layout, Chris's yes
+       11/12): club-intro.js fills the price, the trial and the maths from plans.js and
+       plays the clips in view (not for reduced motion or Save-Data). -->
   <!-- An organizer's invite, signed out (Chris 11/12): the club's name from
        0100's org_invite_preview, then a free account or Log in, back here for
        the claim. No price, no trial. -->
@@ -109,64 +109,172 @@
     </div>
   </section>
 
-  <section class="f1" id="o-signin" hidden>
-    <div class="f1-hero">
-      <div class="f1-copy">
-        <p class="f1-eyebrow">Carve Club</p>
-        <h1>Plan your club's drives.</h1>
-        <p class="f1-sub">Plan on the web, share one link for each day, and every driver follows your route in the free Carve app.</p>
-        <p class="f1-price"><b id="f1-price">$499 a year</b><span class="f1-chip" id="f1-trial">First 30 days free</span></p>
-        <p class="f1-every">Includes Carve Apex for every driver on your drives.</p>
-        <button type="button" class="go f1-go" id="o-signin-go">Start your free trial</button>
-        <p class="f1-terms" id="f1-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
-        <button type="button" class="textlink f1-login" id="o-login">Already have a club? Log in</button>
+  <section class="f1 fc" id="o-signin" hidden>
+    <!-- 1. Hero: the coast still across, the coast clip beside the words. -->
+    <section class="fc-hero" aria-labelledby="fc-h1">
+      <picture class="pic"><source type="image/avif" srcset="/assets/club/hero.w640.avif?v=9734f1aaf0 640w, /assets/club/hero.w1280.avif?v=fd100c8ef2 1280w" sizes="100vw"><img decoding="async" class="fc-wide fc-backdrop" src="/assets/club/hero.jpg?v=1d4b57032a" alt="" width="1600" height="679" fetchpriority="high"></picture>
+      <div class="fc-in fc-hero-row">
+        <div class="fc-hero-copy">
+          <p class="fc-eyebrow">Carve Club</p>
+          <h1 id="fc-h1">Less regrouping.<br>More driving.</h1>
+          <p class="fc-lede">Plan the drive on the web and share one link. Club gives every driver Carve Apex free on your routes: offline maps, 3D preview, road conditions.</p>
+          <div class="fc-act">
+            <button type="button" class="fc-cta" id="o-signin-go">Try Club free for 30 days</button>
+            <span class="fc-then" id="fc-then">Then $499 a year. Cancel any time.</span>
+          </div>
+          <button type="button" class="fc-login" id="o-login">Already have a club? Log in</button>
+        </div>
+        <div class="fc-tall">
+          <video class="fc-clip" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/coast.jpg?v=5809779ce1" src="/assets/club/coast.mp4?v=ce390454c7" aria-hidden="true"></video>
+        </div>
       </div>
-      <div class="f1-phone" aria-hidden="true">
-        <div class="f1-screen" id="f1-screen"><img src="/assets/app/group.jpg?v=f50902c121" alt="" width="390" height="844" id="f1-poster"></div>
+    </section>
+
+    <!-- 2. Plan it. Send it. Drive it. over the terrain footage (Chris's layout round, 11/12): three tall cards, a swipe row at 760 px and below. The graphics are simplified, as the footer says. -->
+    <section class="fc-band fc-steps" aria-labelledby="fc-steps-h">
+      <div class="fc-in">
+        <div class="fc-head">
+          <h2 id="fc-steps-h">Plan it. Send it. Drive it.</h2>
+          <p>Coast, canyon, pass or forest. You pick the roads. Carve keeps everyone on them.</p>
+        </div>
+        <ol class="fc-cards">
+          <li class="fc-card-step">
+            <picture class="pic"><source type="image/avif" srcset="/assets/club/desert.w640.avif?v=ac63e7231d 640w, /assets/club/desert.w768.avif?v=fac775e6d2 768w" sizes="(max-width: 760px) 82vw, 410px"><img decoding="async" class="fc-bg" src="/assets/club/desert.jpg?v=b6a6e74028" alt="" width="768" height="1376" loading="lazy"></picture>
+            <div class="fc-scrim"></div>
+            <div class="fc-g fc-g-plan" aria-hidden="true">
+              <svg viewBox="0 0 260 110"><rect width="260" height="110" rx="10" fill="#E6EFE4"/><path d="M0 70 C40 60 70 90 110 80 S180 40 260 55" stroke="#CFE0F2" stroke-width="10" fill="none"/><path d="M28 88 C60 70 80 30 120 42 S170 88 206 60 S228 26 236 22" stroke="#FFFFFF" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M28 88 C60 70 80 30 120 42 S170 88 206 60 S228 26 236 22" stroke="#2E92FF" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="28" cy="88" r="9" fill="#2E9E52" stroke="#FFFFFF" stroke-width="3"/><circle cx="120" cy="42" r="8" fill="#E4731C" stroke="#FFFFFF" stroke-width="3"/><circle cx="206" cy="60" r="8" fill="#E4731C" stroke="#FFFFFF" stroke-width="3"/><circle cx="236" cy="22" r="9" fill="#0E1210" stroke="#FFFFFF" stroke-width="3"/></svg>
+              <div><span>Day 1 · Canyon Loop</span><span>84 mi · 3 stops</span></div>
+            </div>
+            <div class="fc-step-copy">
+              <span class="fc-n">1 · Plan</span>
+              <h3>Plan on the web</h3>
+              <p>Plan it all on your computer: routes, stops and meet times. Your crew can drive it first.</p>
+              <a class="fc-cta fc-step-cta" href="#fc-price-h">Try Carve Club free</a>
+            </div>
+          </li>
+          <li class="fc-card-step">
+            <video class="fc-clip fc-bg" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/forest.jpg?v=cd44c138fa" src="/assets/club/forest.mp4?v=880f083b35" aria-hidden="true"></video>
+            <div class="fc-scrim"></div>
+            <div class="fc-g fc-g-send">
+              <svg class="fc-qr" viewBox="0 0 33 33" shape-rendering="crispEdges" role="img" aria-label="QR code for carve.run/club"><rect width="33" height="33" fill="#fff"/><path d="M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM14 2h1v1h-1zM15 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM24 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM27 2h1v1h-1zM28 2h1v1h-1zM29 2h1v1h-1zM30 2h1v1h-1zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM13 3h1v1h-1zM16 3h1v1h-1zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM18 4h1v1h-1zM21 4h1v1h-1zM24 4h1v1h-1zM26 4h1v1h-1zM27 4h1v1h-1zM28 4h1v1h-1zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM12 5h1v1h-1zM14 5h1v1h-1zM18 5h1v1h-1zM19 5h1v1h-1zM22 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM27 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM16 6h1v1h-1zM17 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM21 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM12 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM19 7h1v1h-1zM20 7h1v1h-1zM21 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM25 8h1v1h-1zM26 8h1v1h-1zM27 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM30 8h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM22 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM11 10h1v1h-1zM13 10h1v1h-1zM16 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM28 10h1v1h-1zM29 10h1v1h-1zM4 11h1v1h-1zM6 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM20 11h1v1h-1zM22 11h1v1h-1zM23 11h1v1h-1zM24 11h1v1h-1zM26 11h1v1h-1zM27 11h1v1h-1zM28 11h1v1h-1zM30 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM11 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM20 12h1v1h-1zM21 12h1v1h-1zM22 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM26 12h1v1h-1zM27 12h1v1h-1zM29 12h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM22 13h1v1h-1zM30 13h1v1h-1zM3 14h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM16 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM25 14h1v1h-1zM28 14h1v1h-1zM29 14h1v1h-1zM30 14h1v1h-1zM4 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM13 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM17 15h1v1h-1zM19 15h1v1h-1zM21 15h1v1h-1zM24 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM28 15h1v1h-1zM30 15h1v1h-1zM2 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM26 16h1v1h-1zM27 16h1v1h-1zM30 16h1v1h-1zM2 17h1v1h-1zM3 17h1v1h-1zM4 17h1v1h-1zM5 17h1v1h-1zM6 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM16 17h1v1h-1zM18 17h1v1h-1zM21 17h1v1h-1zM24 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM29 17h1v1h-1zM30 17h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM19 18h1v1h-1zM25 18h1v1h-1zM26 18h1v1h-1zM27 18h1v1h-1zM29 18h1v1h-1zM30 18h1v1h-1zM4 19h1v1h-1zM5 19h1v1h-1zM6 19h1v1h-1zM7 19h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM15 19h1v1h-1zM20 19h1v1h-1zM21 19h1v1h-1zM24 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM2 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM15 20h1v1h-1zM16 20h1v1h-1zM22 20h1v1h-1zM24 20h1v1h-1zM25 20h1v1h-1zM26 20h1v1h-1zM27 20h1v1h-1zM28 20h1v1h-1zM4 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM12 21h1v1h-1zM13 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM16 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM22 21h1v1h-1zM23 21h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM28 21h1v1h-1zM29 21h1v1h-1zM30 21h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM7 22h1v1h-1zM8 22h1v1h-1zM9 22h1v1h-1zM11 22h1v1h-1zM14 22h1v1h-1zM15 22h1v1h-1zM17 22h1v1h-1zM19 22h1v1h-1zM21 22h1v1h-1zM22 22h1v1h-1zM23 22h1v1h-1zM24 22h1v1h-1zM25 22h1v1h-1zM26 22h1v1h-1zM27 22h1v1h-1zM28 22h1v1h-1zM29 22h1v1h-1zM30 22h1v1h-1zM10 23h1v1h-1zM11 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM26 23h1v1h-1zM27 23h1v1h-1zM29 23h1v1h-1zM30 23h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM7 24h1v1h-1zM8 24h1v1h-1zM11 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM16 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM28 24h1v1h-1zM29 24h1v1h-1zM2 25h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM14 25h1v1h-1zM17 25h1v1h-1zM18 25h1v1h-1zM19 25h1v1h-1zM22 25h1v1h-1zM26 25h1v1h-1zM29 25h1v1h-1zM30 25h1v1h-1zM2 26h1v1h-1zM4 26h1v1h-1zM5 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM11 26h1v1h-1zM12 26h1v1h-1zM13 26h1v1h-1zM15 26h1v1h-1zM17 26h1v1h-1zM18 26h1v1h-1zM22 26h1v1h-1zM23 26h1v1h-1zM24 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM27 26h1v1h-1zM28 26h1v1h-1zM2 27h1v1h-1zM4 27h1v1h-1zM5 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM10 27h1v1h-1zM12 27h1v1h-1zM15 27h1v1h-1zM21 27h1v1h-1zM26 27h1v1h-1zM27 27h1v1h-1zM29 27h1v1h-1zM2 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM10 28h1v1h-1zM16 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM22 28h1v1h-1zM25 28h1v1h-1zM27 28h1v1h-1zM30 28h1v1h-1zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM13 29h1v1h-1zM15 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM20 29h1v1h-1zM24 29h1v1h-1zM26 29h1v1h-1zM27 29h1v1h-1zM29 29h1v1h-1zM2 30h1v1h-1zM3 30h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM7 30h1v1h-1zM8 30h1v1h-1zM11 30h1v1h-1zM16 30h1v1h-1zM18 30h1v1h-1zM20 30h1v1h-1zM21 30h1v1h-1zM24 30h1v1h-1zM25 30h1v1h-1zM27 30h1v1h-1zM29 30h1v1h-1z" fill="#111113"/><rect x="12.08" y="12.08" width="8.84" height="8.84" rx="2.36" fill="#fff"/><clipPath id="qri"><rect x="12.96" y="12.96" width="7.07" height="7.07" rx="1.77"/></clipPath><image href="/assets/icon-128.png?v=87d1534580" x="12.96" y="12.96" width="7.07" height="7.07" clip-path="url(#qri)"/></svg>
+              <div><b>Canyon Loop · Sat</b><span>carve.run/club</span><span class="fc-tag">Updated just now</span></div>
+            </div>
+            <div class="fc-step-copy">
+              <span class="fc-n">2 · Send</span>
+              <h3>Send it to the group</h3>
+              <p>Send one link. Change the route anytime, and every driver gets the update.</p>
+              <a class="fc-cta fc-step-cta" href="#fc-price-h">Try Carve Club free</a>
+            </div>
+          </li>
+          <li class="fc-card-step">
+            <video class="fc-clip fc-bg" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/redwoods.jpg?v=561e7f4b98" src="/assets/club/redwoods.mp4?v=b64a942d17" aria-hidden="true"></video>
+            <div class="fc-scrim"></div>
+            <div class="fc-g fc-g-drive" aria-hidden="true">
+              <div class="fc-turn"><svg viewBox="0 0 24 24"><path d="M7 20V11a3 3 0 0 1 3-3h8M14 4l4 4-4 4"/></svg><div><b>1.2 mi</b><span>Turn right onto Skyline Blvd</span></div></div>
+              <span class="fc-drivers"><i></i>5 drivers on the route</span>
+            </div>
+            <div class="fc-step-copy">
+              <span class="fc-n">3 · Drive</span>
+              <h3>Drive it together</h3>
+              <p>Your roads, not the fastest ones. Carve never swaps in a shortcut, so the group stays together, even with no signal.</p>
+              <a class="fc-cta fc-step-cta" href="#fc-price-h">Try Carve Club free</a>
+            </div>
+          </li>
+        </ol>
       </div>
-    </div>
-
-    <section class="f1-apex" aria-labelledby="f1-apex-h">
-      <h2 id="f1-apex-h">Every driver gets Carve Apex on your drives</h2>
-      <p>Your drivers don't buy anything. Club covers Carve Apex for everyone on your drive's routes, from 14 days before the drive through the day after it ends.</p>
-      <ul class="f1-feats">
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Offline navigation</li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/></svg>3D preview</li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9.5 17h-19zM12 10v4.5M12 17.6v.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Road conditions</li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Popular times, where available</li>
-      </ul>
-      <dl class="f1-maths">
-        <div><dt>100 drivers a year, each buying Individual</dt><dd id="f1-many">$4,999 a year</dd></div>
-        <div class="club"><dt>Club, for every driver on your drives</dt><dd id="f1-club">$499 a year</dd></div>
-      </dl>
-      <p class="f1-small">Drivers open your link in the free Carve app. No card or account needed.</p>
     </section>
 
-    <section class="f1-band" aria-labelledby="f1-get-h">
-      <h2 id="f1-get-h">What organizers get</h2>
-      <ul class="f1-list">
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Multi-day drives</b> — a route and a link for each day</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Pre-drives with your crew</b> — they drive it first and note what to know</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Smart planning for every organizer</b> — meeting places and stops along the route</span></li>
-        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>5 organizers</b> — each with Apex all year</span></li>
-      </ul>
+    <!-- 4. Every driver's Apex (the route Apex, 11/11): the window, the four features, multi-day, the maths from plans.js. -->
+    <section class="fc-band fc-tight" aria-labelledby="f1-apex-h">
+      <div class="fc-in fc-apex">
+        <div class="fc-apex-copy">
+          <p class="fc-eyebrow">Included for your drivers</p>
+          <h2 id="f1-apex-h">Your members don't pay a thing.</h2>
+          <p>Club gives every driver Carve Apex free on your routes, from 14 days before the drive through the day after it ends.</p>
+          <ul class="fc-feats">
+            <li>Offline navigation</li>
+            <li>3D preview</li>
+            <li>Road conditions</li>
+            <li>Popular times, where available</li>
+          </ul>
+          <p><b>Multi-day drives:</b> each day gets its own route, meet time, link and QR code, and Apex covers every day of the drive.</p>
+        </div>
+        <dl class="fc-maths">
+          <div><dt>100 drivers, each buying Individual</dt><dd id="f1-many">$4,999</dd></div>
+          <div class="club"><dt>Club, for every driver on your drives</dt><dd id="f1-club">$499</dd></div>
+        </dl>
+      </div>
     </section>
 
-    <section class="f1-band" aria-labelledby="f1-how-h">
-      <h2 id="f1-how-h">How it works</h2>
-      <ol class="f1-steps">
-        <li><b>Plan on the web</b><span>Days, meet and leave times, and a route for each day, with its stops.</span></li>
-        <li><b>Share one link for each day</b><span>Drivers open it on their phone. A QR code works too.</span></li>
-        <li><b>Drive it in the app</b><span>Turn-by-turn on the roads you chose, with your group on the map and on CarPlay and Android Auto. Drivers get Carve Apex free on your routes.</span></li>
-      </ol>
+    <!-- 5. Pre-drives: the clip, the lines, and the mock's report panel marked Preview (Chris, 11/12). -->
+    <section class="fc-band fc-alt" aria-labelledby="fc-pre-h">
+      <div class="fc-in fc-pre">
+        <div class="fc-tall"><video class="fc-clip" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/pov.jpg?v=bf08f2d92a" src="/assets/club/pov.mp4?v=024fbd1320" aria-hidden="true"></video></div>
+        <div class="fc-pre-copy">
+          <p class="fc-eyebrow">Pre-drives</p>
+          <h2 id="fc-pre-h">Your crew drives it first.</h2>
+          <p>Find the closed road a week early, not on the morning of the drive. Before the drive, your crew runs the route with the same links.</p>
+          <!-- The mock's Pre-drive report (Chris, 11/12: put back as mocked, with its Preview chip). -->
+          <div class="fc-report" aria-label="Pre-drive report, preview">
+            <div class="fc-report-head"><b>Pre-drive report · Day 1</b><span class="fc-chip">Preview</span></div>
+            <div class="fc-report-body">
+              <span class="fc-label">Reviews by road</span>
+              <div class="fc-road"><b>Highway 1, Ragged Point to Gorda</b><span>"One lane at the slide repair near Gorda. Expect a 5-minute signal."</span></div>
+              <div class="fc-road"><b>Nacimiento-Fergusson Road</b><span>"Fresh gravel on the first switchbacks. Pullout at the top fits about 10 cars."</span></div>
+              <span class="fc-label">Times</span>
+              <dl class="fc-times">
+                <div><dt>Driving</dt><dd>2:40</dd></div>
+                <div><dt>At stops</dt><dd>1:05</dd></div>
+                <div><dt>Lunch stop</dt><dd>12:15</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="f1-close" aria-labelledby="f1-close-h">
-      <h2 id="f1-close-h">Try Club free for 30 days</h2>
-      <button type="button" class="go f1-go" id="o-signin-go2">Start your free trial</button>
-      <p><a href="/pricing/#pq">Questions? See pricing and FAQ</a></p>
-      <p class="f1-small">More than 5 organizers, invoicing or event help? <a href="mailto:chris@carve.run">chris@carve.run</a></p>
+    <!-- 6. Organizers, then smart planning as a drawn map (Chris's layout round, 11/12). As Chris approved it. club-intro.js plays them once, 40% in view. -->
+    <section class="fc-band" aria-labelledby="fc-org-h">
+      <div class="fc-in fc-org">
+        <div>
+          <h2 id="fc-org-h">Plan it together.</h2>
+          <p>Up to five organizers work on the same drive<span id="fc-org-apex">, and each gets Carve Apex while the plan is active</span>.</p>
+        </div>
+        <article class="fc-box">
+          <h3>No driver cap</h3>
+          <p>Ten cars or a hundred. Drivers open your link in the free app, with no account needed.</p>
+        </article>
+        <article class="fc-box fc-smart">
+          <h3>Smart planning</h3>
+          <p>No more scouting gas stations on Street View.</p>
+          <div class="fc-map" id="fc-map" role="img" aria-label="A drawn route with suggested stops on it: a meeting place, gas, restrooms, a vista point and a photo spot, a suggested route, and a break check for a stop every 90 minutes">
+            <svg class="fc-map-wide" viewBox="0 0 640 360" aria-hidden="true"><path d="M0 250 C120 230 200 300 320 270 S520 160 640 190" stroke="#CFE0F2" stroke-width="26" fill="none"/><path d="M380 0 C360 80 420 140 400 360" stroke="#F5F1E6" stroke-width="10" fill="none"/><path d="M40 300 C110 250 150 170 230 190 C310 210 330 300 430 230 C530 160 560 90 610 70" stroke="#FFFFFF" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M40 300 C110 250 150 170 230 190 C310 210 330 300 430 230 C530 160 560 90 610 70" stroke="#2E92FF" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M230 190 C260 110 380 90 470 120 S580 100 610 70" stroke="#2E92FF" stroke-width="5" fill="none" stroke-dasharray="2 12" stroke-linecap="round" opacity=".7"/><circle cx="40" cy="300" r="10" fill="#2E9E52" stroke="#FFFFFF" stroke-width="4"/><circle cx="610" cy="70" r="10" fill="#0E1210" stroke="#FFFFFF" stroke-width="4"/></svg>
+            <svg class="fc-map-tall" viewBox="0 0 360 450" aria-hidden="true"><path d="M0 330 C100 300 200 380 360 340" stroke="#CFE0F2" stroke-width="26" fill="none"/><path d="M300 0 C280 120 330 300 310 450" stroke="#F5F1E6" stroke-width="10" fill="none"/><path d="M80 420 C60 350 250 350 250 290 C250 230 100 230 110 170 C120 110 270 130 280 40" stroke="#FFFFFF" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M80 420 C60 350 250 350 250 290 C250 230 100 230 110 170 C120 110 270 130 280 40" stroke="#2E92FF" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M110 170 C200 200 300 150 280 40" stroke="#2E92FF" stroke-width="5" fill="none" stroke-dasharray="2 12" stroke-linecap="round" opacity=".7"/><circle cx="80" cy="420" r="10" fill="#2E9E52" stroke="#FFFFFF" stroke-width="4"/><circle cx="280" cy="40" r="10" fill="#0E1210" stroke="#FFFFFF" stroke-width="4"/></svg>
+            <span class="fc-pin" style="--d: 0.00s; --x: 10.0%; --y: 78.0%; --mx: 22.6%; --my: 88.4%"><span><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Meeting place</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.15s; --x: 27.6%; --y: 53.3%; --mx: 58.2%; --my: 73.6%"><span><svg viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h12M6 8h6M14 10h2a2 2 0 0 1 2 2v4a1.5 1.5 0 0 0 3 0V8l-3-3"/></svg>Gas</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.30s; --x: 51.7%; --y: 69.0%; --mx: 57.8%; --my: 54.2%"><span><svg viewBox="0 0 24 24"><circle cx="7" cy="5" r="2"/><circle cx="17" cy="5" r="2"/><path d="M5 21v-6H4l1.5-6h3L10 15H9v6M15 21v-7h-1v-5h6v5h-1v7M12 3v18"/></svg>Restrooms</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.45s; --x: 78.7%; --y: 46.8%; --mx: 34.2%; --my: 32.8%"><span><svg viewBox="0 0 24 24"><path d="M3 20l6-10 4 6 3-4 5 8z"/><circle cx="17" cy="6" r="2"/></svg>Vista point</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.60s; --x: 89.8%; --y: 26.0%; --mx: 66.9%; --my: 21.4%"><span><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo spot</span><i></i><b></b></span>
+            <span class="fc-sugg" style="--d: 0.75s"><svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h7"/></svg>Suggested route</span>
+            <span class="fc-break" style="--d: 0.85s"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>Break check: a stop every 90 min</span>
+          </div>
+        </article>
+      </div>
     </section>
+
+    <!-- 7. Price over the alpine convoy. -->
+    <section class="fc-price" id="fc-price" aria-labelledby="fc-price-h">
+      <picture class="pic"><source type="image/avif" srcset="/assets/club/price.w640.avif?v=302905c5bc 640w, /assets/club/price.w1280.avif?v=aaae99e13f 1280w" sizes="100vw"><img decoding="async" class="fc-wide fc-backdrop" src="/assets/club/price.jpg?v=97728c2a75" alt="" width="1600" height="679" loading="lazy"></picture>
+      <div class="fc-in fc-price-in">
+        <h2 id="fc-price-h"><span id="f1-price">$499 a year.</span><br><span id="f1-trial">First 30 days free.</span></h2>
+        <p>Apex for your organizers, and for every driver on your routes. Cancel any time in Club settings.</p>
+        <button type="button" class="fc-cta" id="o-signin-go2">Try Club free for 30 days</button>
+        <p class="fc-small">Card required. Renews every year until you cancel. <a href="/terms/">Terms</a>.</p>
+        <p class="fc-small">More than 5 organizers, invoicing or event help? <a href="mailto:chris@carve.run">chris@carve.run</a></p>
+      </div>
+    </section>
+
+    <p class="fc-note">Driving footage is AI-generated for illustration. Step graphics are simplified.</p>
   </section>
 
 
@@ -341,6 +449,6 @@
 
 <script src="/assets/carve-site.js?v=2f5e1908ff" defer></script>
 <script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
-<script type="module" src="/assets/club-load.js?v=4fb3bafb78"></script>
+<script type="module" src="/assets/club-load.js?v=e2a5e34a88"></script>
 </body>
 </html>

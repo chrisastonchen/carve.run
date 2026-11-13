@@ -9,7 +9,7 @@ import { $, billing, el, myOrgs, publicRpc, rpc, sessionEmail, signedIn } from "
 import { STAGE_WORDS, datesText, planCards, planEyebrow, priceText, renewalTerms, trialDays, splitHome, stageOf, trialStatus } from "/assets/club-words.js?v=e4108d1a92";
 import { organizersBox } from "/assets/club-organizers.js?v=f44f847383";
 import { billsToday } from "/assets/who-words.js?v=f3fe2a71de";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=55f6349230";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=cdab76c206";
 import { forgetWho } from "/assets/who.js?v=4b12d2f422";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 

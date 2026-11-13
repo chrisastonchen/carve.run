@@ -1,66 +1,186 @@
-/* For Clubs, signed out (board F1; Product 11/11): /club/'s page before
-   sign-in, and for a signed-in account with no club. club-intro.js. */
-main.cp:has(> .f1:not([hidden])) { max-width: 1120px; }
-.f1 { display: flex; flex-direction: column; gap: 56px; }
-.f1 h1 { margin: 0; font-size: clamp(36px, 5vw, 58px); line-height: 1.04; letter-spacing: -.01em; }
-.f1 h2 { margin: 0; font-size: clamp(24px, 3vw, 32px); font-weight: 800; line-height: 1.15; }
-.f1-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: center; }
-.f1-copy { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
-.f1-eyebrow { margin: 0; font-size: 14px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--green-ink); }
-.f1-sub { margin: 0; font-size: 20px; line-height: 1.45; color: var(--ink-2); max-width: 34em; }
-.f1-price { margin: 6px 0 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.f1-price b { font-size: 26px; font-weight: 800; }
-.f1-chip { padding: 4px 12px; border-radius: 999px; background: var(--green); color: #fff; font-size: 14px; font-weight: 800; }
-.f1-every { margin: 0; font-size: 17px; font-weight: 800; color: var(--green-ink); }
-.cp .f1-go { height: 54px; padding: 0 30px; font-size: 17px; }
-.f1-terms { margin: 0; max-width: 30em; font-size: 14px; line-height: 1.45; color: var(--ink-3); }
-.f1-login { padding: 0; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 700; color: var(--green-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.f1-phone { justify-self: center; width: min(300px, 100%); aspect-ratio: 390 / 844; padding: 10px; border-radius: 46px; background: #0B0D0C; box-shadow: 0 30px 70px rgba(0,0,0,.35), inset 0 0 0 2px #2A2F2C; }
-.f1-screen { width: 100%; height: 100%; overflow: hidden; border-radius: 37px; background: #1D2420; }
-.f1-screen img, .f1-screen video { display: block; width: 100%; height: 100%; object-fit: cover; }
-.f1-apex { display: flex; flex-direction: column; gap: 16px; padding: 32px; border-radius: 24px; background: #14301F; border: 1.5px solid #2E6B48; }
-.f1-apex > p { margin: 0; font-size: 17px; line-height: 1.5; color: #C3D9CB; max-width: 46em; }
-.f1-feats { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.f1-feats li { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
-.f1-feats svg { flex: none; width: 34px; height: 34px; padding: 7px; box-sizing: border-box; border-radius: 10px; background: var(--green); color: #fff; }
-.f1-maths { margin: 8px 0 0; display: flex; flex-direction: column; gap: 0; max-width: 560px; font-variant-numeric: tabular-nums; }
-.f1-maths div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,.14); }
-.f1-maths dt { font-size: 16px; }
-.f1-maths dd { margin: 0; font-size: 16px; font-weight: 700; white-space: nowrap; }
-.f1-maths .club dt, .f1-maths .club dd { font-weight: 800; color: #6FD39A; }
-.f1-small { margin: 0; font-size: 14px; color: var(--ink-3); }
-.f1-apex .f1-small { color: #A8C2B2; }
-.f1-band { display: flex; flex-direction: column; gap: 18px; }
-.f1-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }
-.f1-list li { display: flex; gap: 12px; font-size: 17px; line-height: 1.45; }
-.f1-list svg { flex: none; width: 22px; height: 22px; margin-top: 2px; color: var(--green-ink); }
-.f1-steps { list-style: none; counter-reset: step; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-.f1-steps li { counter-increment: step; display: flex; flex-direction: column; gap: 6px; padding: 22px; border-radius: 18px; background: var(--paper-2); border: 1px solid var(--rule); font-size: 16px; line-height: 1.45; }
-.f1-steps li::before { content: counter(step); display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: 6px; border-radius: 50%; background: var(--green); color: #fff; font-weight: 800; }
-.f1-steps b { font-size: 18px; }
-.f1-steps span { color: var(--ink-2); }
-.f1-close { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 40px 24px; border-radius: 24px; background: var(--paper-2); border: 1px solid var(--rule); text-align: center; }
-.f1-close p { margin: 0; font-size: 16px; }
-.f1-close a { color: var(--green-ink); font-weight: 700; }
-.cp .f1-close .go { align-self: center; }
-@media not all and (prefers-color-scheme: dark) {
-  .f1-apex { background: #EAF4EE; border-color: #9CC9AE; }
-  .f1-apex > p { color: #3D5A49; }
-  .f1-maths div { border-top-color: #C9DED0; }
-  .f1-maths .club dt, .f1-maths .club dd { color: #1D5B3A; }
-  .f1-apex .f1-small { color: #4A6656; }
+/* For Clubs, signed out or with no club (Sales and Marketing's layout, Chris's
+   yes 11/12): full width and dark in both themes, as the layout has it.
+   club-intro.js. */
+main.cp:has(> .fc:not([hidden])) { max-width: none; padding: 0; gap: 0; }
+main.cp:has(> .fc:not([hidden])) > #cp-status { display: none; }
+.cp .fc { --fc-bg: #0E1210; --fc-card: #161B18; --fc-rule: #2A332E; --fc-ink: #EEF1EE; --fc-ink-2: #D3D9D5; --fc-mute: #A3ACA6; --fc-green: #6FD39A;
+  display: flex; flex-direction: column; gap: 0; background: var(--fc-bg); color: var(--fc-ink); color-scheme: dark; overflow-x: clip; }
+.cp .fc h1, .cp .fc h2, .cp .fc h3 { margin: 0; color: var(--fc-ink); font-weight: 800; letter-spacing: 0; }
+.cp .fc h1 { font-size: clamp(44px, 6.4vw, 88px); line-height: .98; font-weight: 900; letter-spacing: -.02em; }
+.cp .fc h2 { font-size: clamp(32px, 4vw, 52px); line-height: 1.05; }
+.cp .fc h3 { font-size: 26px; line-height: 1.15; }
+.cp .fc p { margin: 0; }
+.fc-in { position: relative; max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px); box-sizing: content-box; }
+.fc-band { padding: 88px 0; }
+.fc-band + .fc-tight { padding-top: 0; }
+.fc-alt { background: var(--fc-card); }
+.fc-eyebrow { font-size: 14px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--fc-green); }
+.fc .pic { display: contents; }
+.fc-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+
+/* 1. Hero */
+.fc-hero { position: relative; padding: 96px 0 80px; overflow: hidden; }
+.fc-hero .fc-backdrop { object-position: center 40%; }
+.fc-hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(14,18,16,.92) 0%, rgba(14,18,16,.72) 38%, rgba(14,18,16,.1) 70%); }
+.fc-hero .fc-in { z-index: 2; }
+.fc-hero-row { display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
+.fc-hero-copy { flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.fc-lede { max-width: 520px; font-size: 21px; line-height: 1.45; color: var(--fc-ink-2); }
+.fc-act { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 8px; }
+.fc-cta { border: 0; border-radius: 999px; background: var(--fc-green); color: #0E1210; font: inherit; font-size: 18px; font-weight: 800; padding: 18px 28px; cursor: pointer; }
+.fc-cta:hover { background: #8BDDAE; }
+.fc-cta:focus-visible, .fc-login:focus-visible { outline: 3px solid var(--fc-ink); outline-offset: 3px; }
+.fc-then { font-size: 15px; color: var(--fc-mute); }
+.fc-login { padding: 0; border: 0; background: none; font: inherit; font-size: 16px; font-weight: 700; color: var(--fc-green); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.fc-tall { flex: 1 1 300px; max-width: 340px; margin: 0 auto; aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden; border: 1px solid rgba(238,241,238,.18); box-shadow: 0 40px 80px rgba(0,0,0,.55); background: var(--fc-card); }
+.fc-clip { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* 2. Plan it. Send it. Drive it.: three tall cards over the footage, a
+   simplified graphic at the top and the words at the bottom; a swipe row,
+   edge to edge, at 760 px and below, with a trial button under each. */
+.fc-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+.fc-head h2 { max-width: 680px; }
+.fc-head p { font-size: 18px; color: var(--fc-mute); max-width: 420px; }
+.fc-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.fc-card-step { position: relative; aspect-ratio: 9 / 14; border-radius: 22px; overflow: hidden; background: var(--fc-card); }
+.fc-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.fc-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,18,16,0) 40%, rgba(14,18,16,.9) 100%); }
+.fc-g { position: absolute; left: 16px; right: 16px; top: 16px; }
+.fc-g-plan { background: rgba(251,248,239,.94); border-radius: 16px; padding: 12px; color: #0E1210; display: flex; flex-direction: column; gap: 8px; }
+.fc-g-plan svg { display: block; width: 100%; height: 96px; }
+.fc-g-plan div { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+.fc-g-plan div span + span { color: #4A524D; }
+.fc-g-send { background: #FFFFFF; color: #0E1210; border-radius: 16px; padding: 12px; display: flex; gap: 12px; align-items: center; box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+.fc-qr { flex: none; width: 64px; height: 64px; }
+.fc-g-send div { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.fc-g-send b { font-size: 14px; font-weight: 800; }
+.fc-g-send span { font-size: 12px; color: #4A524D; }
+.fc-g-send .fc-tag { align-self: flex-start; font-size: 11px; font-weight: 800; background: #14301F; color: var(--fc-green); border-radius: 999px; padding: 3px 9px; }
+.fc-g-drive { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.fc-turn { align-self: stretch; background: #1D5B3A; color: #FFFFFF; border-radius: 16px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+.fc-turn svg { flex: none; width: 30px; height: 30px; fill: none; stroke: #FFFFFF; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.fc-turn div { display: flex; flex-direction: column; }
+.fc-turn b { font-size: 19px; font-weight: 800; }
+.fc-turn span { font-size: 13px; }
+.fc-drivers { display: flex; align-items: center; gap: 8px; background: rgba(14,18,16,.86); color: var(--fc-ink); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; }
+.fc-drivers i { width: 8px; height: 8px; border-radius: 50%; background: #2E92FF; }
+.fc-step-copy { position: absolute; left: 20px; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 6px; }
+.fc-n { font-size: 13px; font-weight: 800; color: var(--fc-green); letter-spacing: .1em; text-transform: uppercase; }
+.cp .fc-step-copy h3 { font-size: 24px; }
+.fc-step-copy p { font-size: 15px; line-height: 1.45; color: var(--fc-ink-2); }
+.fc a.fc-cta, .fc a.fc-cta:hover { color: #0E1210; text-decoration: none; }
+.fc-step-cta { display: none; align-self: flex-start; margin-top: 6px; }
+.cp .fc .fc-step-cta { font-size: 15px; padding: 12px 18px; }
+@media (max-width: 760px) {
+  .fc-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 calc(-1 * clamp(16px, 4vw, 56px)); padding: 0 clamp(16px, 4vw, 56px); scrollbar-width: none; }
+  .fc-cards::-webkit-scrollbar { display: none; }
+  .fc-card-step { flex: 0 0 82%; scroll-snap-align: center; }
+  .fc-step-cta { display: inline-flex; }
 }
-@media (max-width: 899px) {
-  .f1-feats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .f1-steps { grid-template-columns: minmax(0, 1fr); }
+
+/* 4. Apex */
+.fc-apex { display: flex; flex-wrap: wrap; align-items: stretch; gap: 24px; max-width: 1240px; background: #14301F; border: 1px solid #1D5B3A; border-radius: 28px; padding: clamp(24px, 4vw, 48px); box-sizing: border-box; margin: 0 clamp(16px, 4vw, 56px); }
+@media (min-width: 1352px) { .fc-apex { margin: 0 auto; } }
+.fc-apex-copy { flex: 999 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.fc-apex-copy > p { font-size: 19px; line-height: 1.5; color: var(--fc-ink-2); max-width: 560px; }
+.fc-apex-copy > p b { color: var(--fc-ink); }
+.fc-feats { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 24px; font-size: 17px; font-weight: 600; }
+.fc-feats li { display: flex; gap: 10px; align-items: center; }
+.fc-feats li::before { content: ""; flex: none; width: 18px; height: 18px; background: var(--fc-green); -webkit-mask: var(--fc-tick) center / contain no-repeat; mask: var(--fc-tick) center / contain no-repeat; }
+.fc { --fc-tick: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E"); }
+.fc-maths { flex: 1 1 300px; margin: 0; display: flex; flex-direction: column; justify-content: center; gap: 12px; font-variant-numeric: tabular-nums; }
+.fc-maths div { background: rgba(14,18,16,.55); border-radius: 18px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.fc-maths dt { font-size: 16px; color: var(--fc-mute); }
+.fc-maths dd { margin: 0; font-size: 22px; font-weight: 800; color: var(--fc-mute); text-decoration: line-through; white-space: nowrap; }
+.fc-maths .club { background: var(--fc-bg); border: 1px solid var(--fc-green); }
+.fc-maths .club dt { font-weight: 700; color: var(--fc-ink); }
+.fc-maths .club dd { font-size: 26px; font-weight: 900; color: var(--fc-green); text-decoration: none; }
+
+/* 5. Pre-drives */
+.fc-pre { display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
+.fc-pre .fc-tall { max-width: 360px; box-shadow: none; border: 0; }
+.fc-pre-copy { flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.fc-pre-copy > p:not(.fc-eyebrow) { font-size: 19px; line-height: 1.5; color: var(--fc-ink-2); max-width: 560px; }
+.fc-report { margin-top: 8px; max-width: 560px; background: var(--fc-bg); border: 1px solid var(--fc-rule); border-radius: 20px; overflow: hidden; }
+.fc-report-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--fc-rule); font-size: 16px; }
+.fc-chip { font-size: 12px; font-weight: 700; color: #F2A65A; border: 1px solid #F2A65A; border-radius: 999px; padding: 3px 10px; }
+.fc-report-body { padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+.fc-label { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8E978F; }
+.fc-label + .fc-road, .fc-road + .fc-road { margin-top: -2px; }
+.fc-road { display: flex; flex-direction: column; gap: 2px; }
+.fc-road b { font-size: 15px; }
+.fc-road span { font-size: 14px; line-height: 1.4; color: var(--fc-mute); }
+.fc-times { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.fc-times div { display: flex; flex-direction: column-reverse; }
+.fc-times dt { font-size: 14px; color: var(--fc-mute); }
+.fc-times dd { margin: 0; font-size: 18px; font-weight: 800; }
+
+/* 6. Organizers: the line and No driver cap side by side, then smart
+   planning across, its drawn map 16:9 (4:5 on a phone). Each pin's dot sits
+   on the route at --x/--y (--mx/--my tall); club-intro.js adds .fc-anim
+   and then .on once the map is 40% in view, and the pins grow from their
+   dots in turn, then the break badge. Without the script, or with reduced
+   motion, all show at once. */
+.fc-org { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.fc-org > div { display: flex; flex-direction: column; gap: 16px; padding: 8px 0; }
+.cp .fc-org h2 { font-size: clamp(32px, 4vw, 48px); }
+.fc-org > div p { font-size: 18px; line-height: 1.5; color: var(--fc-mute); }
+.fc-box { background: var(--fc-card); border: 1px solid var(--fc-rule); border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+.cp .fc-box h3 { font-size: 22px; }
+.fc-box p { font-size: 16px; line-height: 1.5; color: var(--fc-mute); }
+.fc-smart { grid-column: 1 / -1; }
+.fc-map { position: relative; margin-top: 8px; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #E6EFE4; }
+.fc-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fc-map-tall { display: none; }
+.fc-pin { position: absolute; left: var(--x); top: var(--y); display: flex; flex-direction: column; align-items: center; transform: translate(-50%, calc(-100% + 6px)); transform-origin: 50% 100%; }
+.fc-pin > span { display: flex; align-items: center; gap: 6px; background: #FFFFFF; color: #0E1210; border-radius: 999px; padding: 6px 11px; font-size: 13px; font-weight: 700; white-space: nowrap; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.fc-pin svg, .fc-break svg { width: 16px; height: 16px; flex: none; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.fc-pin svg { stroke: #1D5B3A; }
+.fc-pin i { width: 2px; height: 10px; background: #FFFFFF; }
+.fc-pin b { width: 12px; height: 12px; border-radius: 50%; background: #E4731C; border: 2px solid #FFFFFF; box-sizing: border-box; }
+.fc-break { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; background: #1D5B3A; color: #FFFFFF; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; white-space: nowrap; transform-origin: 0 100%; }
+.fc-break svg { stroke: #FFFFFF; }
+.fc-sugg { position: absolute; left: 58%; top: 40%; display: flex; align-items: center; gap: 6px; background: rgba(14,18,16,.82); color: var(--fc-ink); border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.fc-sugg svg { width: 16px; height: 16px; fill: none; stroke: var(--fc-green); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.fc-map.fc-anim .fc-pin, .fc-map.fc-anim .fc-break, .fc-map.fc-anim .fc-sugg { opacity: 0; }
+.fc-map.fc-anim.on .fc-pin { animation: fc-pin .55s cubic-bezier(.2, .9, .3, 1.35) var(--d) both; }
+.fc-map.fc-anim.on .fc-break, .fc-map.fc-anim.on .fc-sugg { animation: fc-badge .45s cubic-bezier(.2, .9, .3, 1.35) var(--d) both; }
+@keyframes fc-pin { 0% { opacity: 0; transform: translate(-50%, calc(-100% + 6px)) scale(0); } 60% { opacity: 1; } 100% { opacity: 1; transform: translate(-50%, calc(-100% + 6px)) scale(1); } }
+@keyframes fc-badge { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .fc-map.fc-anim .fc-pin, .fc-map.fc-anim .fc-break, .fc-map.fc-anim .fc-sugg { opacity: 1; animation: none !important; } }
+@media (max-width: 760px) { .fc-org { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) {
+  .fc-map { aspect-ratio: 4 / 5; }
+  .fc-map-wide { display: none; }
+  .fc-map-tall { display: block; }
+  .fc-pin { left: var(--mx); top: var(--my); }
+  .fc-pin > span { font-size: 11px; padding: 4px 8px; gap: 4px; }
+  .fc-pin svg { width: 13px; height: 13px; }
+  .fc-break { font-size: 11px; }
+  .fc-sugg { left: 52%; top: 30%; }
 }
-@media (max-width: 699px) {
-  .f1 { gap: 40px; }
-  .f1-hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  .f1-phone { width: min(240px, 70%); }
-  .f1-apex { padding: 22px 18px; }
-  .f1-list { grid-template-columns: minmax(0, 1fr); }
-  .f1-maths div { flex-direction: column; gap: 2px; }
+
+/* 7. Price */
+.fc-price { position: relative; padding: 220px 0 96px; overflow: hidden; }
+.fc-price .fc-backdrop { object-position: center 30%; }
+.fc-price::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(14,18,16,.35) 0%, rgba(14,18,16,.88) 62%, #0E1210 100%); }
+.fc-price-in { z-index: 2; max-width: 720px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.cp .fc-price h2 { font-size: clamp(40px, 5.5vw, 72px); line-height: 1; font-weight: 900; }
+.fc-price-in > p { font-size: 19px; color: var(--fc-ink-2); }
+.cp .fc-price .fc-cta { font-size: 19px; padding: 20px 32px; }
+.fc-price-in .fc-small { font-size: 14px; color: var(--fc-mute); }
+.fc-price-in .fc-small + .fc-small { margin-top: -12px; }
+.fc a { color: var(--fc-green); }
+.fc a:hover { color: #9BE6BA; }
+.fc-note { padding: 32px 16px; border-top: 1px solid var(--fc-rule); font-size: 13px; color: #8E978F; text-align: center; }
+
+@media (max-width: 599px) {
+  .fc-band { padding: 64px 0; }
+  .fc-hero { padding: 56px 0 56px; }
+  .fc-hero::before { background: linear-gradient(180deg, rgba(14,18,16,.85) 0%, rgba(14,18,16,.7) 60%, rgba(14,18,16,.9) 100%); }
+  .fc-tall { max-width: 280px; }
+  .fc-price { padding-top: 140px; }
+  .fc-maths div { flex-direction: column; gap: 2px; }
 }
 
 /* An organizer's invite, signed out (Chris 11/12): the club, one line, and
