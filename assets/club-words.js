@@ -468,7 +468,10 @@ export function firstSteps({ drives = 0, organizers = 1, cap = 5, gotApp = false
   const more = Math.max(0, (Number(cap) || 5) - (Number(organizers) || 1));
   return [
     { key: "plan", title: "Plan your first drive", line: "Set the days and meet times, then a route for each day.", done: drives > 0, action: "Plan a drive" },
-    { key: "invite", title: "Add organizers", line: `Invite up to ${more} more. Each gets Carve Apex while your plan is active.`, done: organizers > 1, action: "Invite" },
+    // A full club (QA, 11/13: "Invite up to 0 more."): its seats said, the step done.
+    more > 0
+      ? { key: "invite", title: "Add organizers", line: `Invite up to ${more} more. Each gets Carve Apex while your plan is active.`, done: organizers > 1, action: "Invite" }
+      : { key: "invite", title: "Add organizers", line: `All ${Number(cap) || 5} organizer seats are filled.`, done: true, action: "Invite" },
     { key: "app", title: "Get the app", line: "Drive the route turn by turn and see your group on the map.", done: !!gotApp, action: "Get" },
   ];
 }

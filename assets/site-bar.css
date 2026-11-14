@@ -80,3 +80,9 @@
   .sheet a { color: #fff; }
 }
 /* end light theme */
+
+/* A long name ends in … in the account pill, so the bar never runs off a
+   tablet's edge (QA, 11/13: 768 px, Upgrade and a 14-letter name). */
+.bar .who, .bar .who-btn { min-width: 0; }
+.bar #who-name { min-width: 0; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (min-width: 700px) and (max-width: 1199px) { .bar #who-name { max-width: 72px; } }

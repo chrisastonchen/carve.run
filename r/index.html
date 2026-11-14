@@ -460,6 +460,10 @@ const RouteProfile = (() => {
   }
 
   const FEET_PER_METER = 3.28084;
+  /// A fact as markup: each figure a <b>, its words plain.
+  function figures(text) {
+    return String(text).split(/(\d[\d,.]*)/).filter((t) => t !== "").map((t) => (/^\d/.test(t) ? `<b>${escapeHTML(t)}</b>` : escapeHTML(t))).join("");
+  }
   function feet(meters, step = 100) {
     return (Math.round(meters * FEET_PER_METER / step) * step).toLocaleString("en-US");
   }
@@ -569,11 +573,13 @@ const RouteProfile = (() => {
     const high = (p.elevation || []).length ? Math.max(...p.elevation) : null;
     const facts = [];
     const distance = stat("distance"), time = stat("time"), climb = stat("climb"), stops = stat("stops");
-    if (distance) facts.push(markup(`<span><b>${escapeHTML(distance.text.replace(/ mi$/, ""))}</b> mi</span>`)[0]);
-    if (time) facts.push(markup(`<span><b>${escapeHTML(time.text)}</b></span>`)[0]);
-    if (climb) facts.push(markup(`<span><b>${escapeHTML(climb.text)}</b> climb</span>`)[0]);
-    if (high !== null) facts.push(markup(`<span>High point <b>≈ ${feet(high)} ft</b></span>`)[0]);
-    if (stops) facts.push(el("span", {}, stops.text));
+    // The figures in Oxanium, their units and words in Figtree (QA, 11/13;
+    // the planner's figures.js splits the same way).
+    if (distance) facts.push(markup(`<span>${figures(distance.text)}</span>`)[0]);
+    if (time) facts.push(markup(`<span>${figures(time.text)}</span>`)[0]);
+    if (climb) facts.push(markup(`<span>${figures(climb.text)} climb</span>`)[0]);
+    if (high !== null) facts.push(markup(`<span>High point ${figures(`≈ ${feet(high)} ft`)}</span>`)[0]);
+    if (stops) facts.push(markup(`<span>${figures(stops.text)}</span>`)[0]);
     facts.push(el("span", {}, info.roundTrip ? "Round trip" : "One way"));
     const row = el("div", { class: "facts" });
     const level = info.intensity ? chip(info.intensity.level) : null;
@@ -982,7 +988,8 @@ const RouteProfile = (() => {
       const stats = [];
       if (row.distance_meters) stats.push({ kind: "distance", text: miles(row.distance_meters) + " mi" });
       if (row.duration_seconds) stats.push({ kind: "time", text: duration(row.duration_seconds) });
-      if (climbFeet) stats.push({ kind: "climb", text: climbFeet.toLocaleString("en-US") + " ft" });
+      // To the nearest 100 ft, as the elevation line says it (QA, 11/13: 4,097 here, 4,100 there).
+      if (climbFeet) stats.push({ kind: "climb", text: (Math.round(climbFeet / 100) * 100).toLocaleString("en-US") + " ft" });
       if (row.stop_count) stats.push({ kind: "stops", text: row.stop_count + (row.stop_count === 1 ? " stop" : " stops") });
       return {
         name: row.name, stats, climbFeet, blurb: p.blurb || null,
@@ -1069,10 +1076,10 @@ const RouteProfile = (() => {
       // A club drive's day: its weather and road conditions (day-extras.js),
       // only with CLUB_V2 on: the live site, without club-flags.js or with it
       // off, asks route_drive nothing.
-      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=df47afe911"); }).catch(() => {});
-      if (CLUB) import("/assets/club-share.js?v=2a051f4b3a");
+      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=9e7ad86a3b"); }).catch(() => {});
+      if (CLUB) import("/assets/club-share.js?v=f7d7d3eb9b");
       // A club drive's day, to a driver: the drive pass (P1).
-      else import("/assets/route-pass.js?v=352e6d6019");
+      else import("/assets/route-pass.js?v=fa24e52511");
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";

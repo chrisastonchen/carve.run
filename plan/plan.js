@@ -26,6 +26,7 @@ import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
 import { initDriveDay } from "./drive-day.js?v=7";
 import { breakLine, clock, legLine, scheduleOf } from "./schedule.js?v=2";
+import { figureNodes } from "./figures.js?v=1";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
 import { initSuggest } from "./suggest.js?v=10";
@@ -3444,10 +3445,11 @@ function renderSavedFacts() {
     facts.append(chip);
   }
   const distance = formatDistance(plan.path.distanceMeters, miles);
-  const add = (bold, rest) => {
+  // The figures in Oxanium, their units and words in Figtree (QA, 11/13).
+  const add = (fact, rest) => {
     if (facts.childElementCount) facts.append(el("span", "sep"));
     const span = el("span");
-    span.append(el("b", "", bold), rest ? ` ${rest}` : "");
+    span.append(...figureNodes(fact), rest ? ` ${rest}` : "");
     facts.append(span);
   };
   add(distance.value, distance.unit === "miles" ? "mi" : "km");

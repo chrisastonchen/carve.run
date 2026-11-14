@@ -16,7 +16,7 @@
 import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
 import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
-import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, formProblem, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=768f355b17";
+import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, formProblem, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=5a33e1fdc7";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
@@ -115,19 +115,32 @@ function renderDays() {
   $("f-days").replaceChildren(...days.map((d, i) => {
     const row = el("div", "cv-day-row cd-day-row");
     const date = input("date", d.date, several ? `Day ${i + 1} date` : "Date", (v) => {
-      // Later days follow a moved day, a day apart at least (group.js's followDates).
       const before = days[i].date;
       days[i].date = v;
-      // Days with no date yet (a duplicate's) take the next ones.
-      if (v) for (let j = i + 1; j < days.length; j++) if (!days[j].date || (before && days[j].date <= days[j - 1].date)) days[j].date = addDays(days[j - 1].date, 1);
-      renderDays();
+      // A note from the last Create goes once the date changes (the rows
+      // aren't rebuilt now, so nothing else clears it).
+      sayOn(date, "");
+      // Only a whole date moves the later days: Chrome says "changed" as
+      // each part is typed, 0002 for the first digit of 2026 (QA, 11/13).
+      // The rows stay as they are, so the typing keeps its place.
+      if (!wholeDate(v)) return;
+      // Later days follow a moved day, a day apart at least (group.js's
+      // followDates); days with no date yet (a duplicate's) take the next ones.
+      const rows = $("f-days").children;
+      for (let j = i + 1; j < days.length; j++) {
+        if (days[j].date && !(before && days[j].date <= days[j - 1].date) && wholeDate(days[j].date)) continue;
+        days[j].date = addDays(days[j - 1].date, 1);
+        const next = rows[j]?.querySelector("input[type=date]");
+        if (next) next.value = days[j].date;
+      }
     });
     // No date before today in the picker (Chris, 11/10); a saved past day still shows its date.
     date.min = zoneNow(Date.now(), driveZone()).date;
     const meet = input("time", d.meet, `${several ? `Day ${i + 1} meet` : "Meet"} time`, (v) => {
       days[i].meet = v;
-      // Leave follows Meet by half an hour until it's set by hand.
-      if (v && !days[i].leaveSet) {
+      // Leave follows Meet by half an hour until it's set by hand, and a
+      // Leave set by hand moves on when Meet passes it (QA, 11/13).
+      if (v && (!days[i].leaveSet || (days[i].leave && days[i].leave < v))) {
         days[i].leave = leave.value = leaveAfter(v);
         missing(leave, "leave");
       }
@@ -136,7 +149,7 @@ function renderDays() {
     const leave = input("time", d.leave, `${several ? `Day ${i + 1} leave` : "Leave"} time`, (v) => {
       days[i].leave = v;
       days[i].leaveSet = true;
-      missing(leave, "leave");
+      if (!missing(leave, "leave")) sayOn(leave, leaveEarly(days[i]) ? LEAVE_EARLY : "");
     });
     // One row a day (mock v11): DAY N, then Date, Meet and Leave as pickers.
     row.append(el("span", "cd-dn", `Day ${i + 1}`), field("Date", date, "cv-date"), field("Meet", meet), field("Leave", leave));
@@ -157,6 +170,14 @@ function renderDays() {
   }));
   $("f-add-day").hidden = false;
 }
+
+/// A date typed or picked whole: four year digits, this year or later.
+const wholeDate = (v) => {
+  const m = /^(\d{4})-\d{2}-\d{2}$/.exec(v || "");
+  return !!m && Number(m[1]) >= new Date().getFullYear() && Number(m[1]) <= new Date().getFullYear() + 10;
+};
+const LEAVE_EARLY = "Leave is before meet.";
+const leaveEarly = (d) => !!(d.meet && d.leave && d.leave < d.meet);
 
 function input(type, value, label, set) {
   const i = el("input");
@@ -196,7 +217,11 @@ function sayOn(control, text) {
     box.append(note);
     control.setAttribute("aria-describedby", note.id);
   }
-  if (note) note.textContent = text;
+  if (note && !text) {
+    // Fixed: the note goes, so nothing empty is left to read.
+    note.remove();
+    control.removeAttribute("aria-describedby");
+  } else if (note) note.textContent = text;
   control.toggleAttribute("aria-invalid", !!text);
 }
 
@@ -218,6 +243,8 @@ function renderPrerun() {
 async function submit(e) {
   e.preventDefault();
   const say = (t) => { $("f-said").textContent = t; };
+  // Said again from scratch each time (QA, 11/13: a stale pre-drive line).
+  say("");
   const name = $("f-name").value.trim();
   const problem = formProblem({ name, days, prerun, prerunWas: drive?.prerun?.date || null });
   if (problem) return say(problem);
@@ -228,6 +255,14 @@ async function submit(e) {
     return [missing(meet, "meet") && meet, missing(leave, "leave") && leave].filter(Boolean);
   });
   if (times.length) return times[0].focus();
+  // Leave before Meet (QA, 11/13): said on the Leave.
+  const early = [...$("f-days").querySelectorAll(".cv-day-row")].map((row, i) => {
+    if (!leaveEarly(days[i])) return null;
+    const control = row.querySelectorAll("input[type=time]")[1];
+    sayOn(control, LEAVE_EARLY);
+    return control;
+  }).filter(Boolean);
+  if (early.length) return early[0].focus();
   // No day in the past, and today's meet 30 minutes out, in the drive's zone
   // (Chris, 11/10; the server's 0061 says the same). A saved day left as it
   // was may stay where it is.
@@ -441,11 +476,12 @@ function wire() {
   });
   $("f-pr-yes").addEventListener("click", () => {
     prerun.on = true;
+    $("f-said").textContent = "";
     // A week before the first day, never before today, to start with.
     if (!prerun.date && days[0]?.date) prerun.date = prerunDefault(days[0].date);
     renderPrerun();
   });
-  $("f-pr-no").addEventListener("click", () => { prerun.on = false; renderPrerun(); });
+  $("f-pr-no").addEventListener("click", () => { prerun.on = false; renderPrerun(); $("f-said").textContent = ""; });
   $("f-pr-date").addEventListener("change", (e) => { prerun.date = e.target.value; });
   pickOnTap($("f-pr-pick"), $("f-pr-date"));
   const menu = (open) => { $("d-menu").hidden = !open; $("d-more").setAttribute("aria-expanded", String(open)); };
