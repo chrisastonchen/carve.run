@@ -47,31 +47,35 @@ function fit(q, list) {
 
 /// The best `most` names for what's typed (two letters or more): every
 /// word typed has to start a word of the club (its name, short name or
-/// aliases) or of the region. Regions the words name come first; a club
-/// before its regions when only the club is named; then the better known.
+/// aliases) or of the region. Regions the words name in full come first
+/// ("Golden Gate", "PCA Golden"); a club before its regions when only the
+/// club is named, and before regions a few letters only start ("por" is
+/// Porsche Club of America, not Mercedes-Benz Club of America · Portland);
+/// then the better known.
 export function suggest(list, typed, most = 8) {
   const q = words(typed);
   if (q.join("").length < 2) return [];
   const whole = fold(typed);
   const scored = [];
   for (const e of list) {
-    let score = 0, inRegion = 0;
+    let score = 0, inRegion = 0, wholeInRegion = 0;
     let ok = true;
     for (const w of q) {
       const r = fit(w, e.region), c = fit(w, e.club);
       if (!r && !c) { ok = false; break; }
       if (r >= c) inRegion++;
+      if (r === 3 && r >= c) wholeInRegion++;
       score += Math.max(r, c);
     }
     if (!ok) continue;
     // Typed as the club's own name or short name ("PCA"): the club itself first.
     if (!e.isRegion && e.whole.includes(whole)) score += 4;
-    if (e.isRegion && inRegion) score += 2 + inRegion;
+    if (e.isRegion && wholeInRegion) score += 2 + wholeInRegion;
     // A region nobody named sits after the clubs.
     if (e.isRegion && !inRegion) score -= 3;
     scored.push({ e, score });
   }
-  scored.sort((a, b) => b.score - a.score || b.e.pop - a.e.pop || a.e.name.length - b.e.name.length || a.e.name.localeCompare(b.e.name));
+  scored.sort((a, b) => b.score - a.score || !!a.e.isRegion - !!b.e.isRegion || b.e.pop - a.e.pop || a.e.name.length - b.e.name.length || a.e.name.localeCompare(b.e.name));
   const seen = new Set();
   const out = [];
   for (const { e } of scored) {

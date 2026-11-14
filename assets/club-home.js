@@ -13,7 +13,7 @@ import { billsToday } from "/assets/who-words.js?v=f70bdee137";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=373465b7b6";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
-import { loadDirectory, wireNames } from "/assets/club-names.js?v=d560c7b1ae";
+import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
 const isOwner = (o) => (typeof o?.owner === "boolean" ? o.owner : o?.role === "admin");
