@@ -209,6 +209,7 @@
 .r-reviews { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .r-review { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 14px; background: var(--paper-2); border: 1px solid var(--rule); }
 .r-review p { margin: 0; }
+.r-by { font-size: 13px; font-weight: 700; color: var(--ink-2); }
 .r-rating { font-size: 16px; }
 .r-review.great .r-rating { color: var(--green-ink); }
 .r-review.bad .r-rating { color: #B4500F; }

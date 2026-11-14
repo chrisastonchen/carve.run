@@ -25,13 +25,13 @@ import { closures, closureTitle, closureWords } from "./closures.js?v=3";
 import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
 import { initDriveDay } from "./drive-day.js?v=7";
-import { breakLine, clock, legLine, scheduleOf } from "./schedule.js?v=2";
+import { breakLine, clock, legLine, scheduleOf, stayChoices } from "./schedule.js?v=3";
 import { figureNodes } from "./figures.js?v=1";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
-import { initSuggest } from "./suggest.js?v=10";
+import { initSuggest } from "./suggest.js?v=11";
 import { fitTo } from "./fit.js?v=1";
-import { initPills } from "./place-pills.js?v=4";
+import { initPills } from "./place-pills.js?v=5";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
 
@@ -73,7 +73,6 @@ const ROUTE_DELAY_MS = 350;
 const HISTORY_LIMIT = 60;
 /// Road chips keep this far from pins and from each other, in pixels.
 const CHIP_CLEARANCE = 44;
-const STAY_CHOICES = [15, 30, 45, 60, 90, 120];
 
 const $ = (id) => document.getElementById(id);
 const miles = usesMiles(navigator.language);
@@ -2496,7 +2495,7 @@ function stayControl(point) {
   const select = el("select");
   select.setAttribute("aria-label", point.stayMinutes ? `Time to stay: ${stayText(point.stayMinutes)}` : "Add stay time");
   select.append(new Option("No stay time", "0"));
-  for (const minutes of STAY_CHOICES) select.append(new Option(stayText(minutes), String(minutes)));
+  for (const minutes of stayChoices(point.stayMinutes)) select.append(new Option(stayText(minutes), String(minutes)));
   select.value = String(point.stayMinutes || 0);
   select.addEventListener("change", () => edit(() => {
     const minutes = Number(select.value);

@@ -138,13 +138,21 @@ function renderDays() {
     date.min = zoneNow(Date.now(), driveZone()).date;
     const meet = input("time", d.meet, `${several ? `Day ${i + 1} meet` : "Meet"} time`, (v) => {
       days[i].meet = v;
-      // Leave follows Meet by half an hour until it's set by hand, and a
-      // Leave set by hand moves on when Meet passes it (QA, 11/13).
-      if (v && (!days[i].leaveSet || (days[i].leave && days[i].leave < v))) {
+      // Leave follows Meet by half an hour until it's set by hand.
+      if (v && !days[i].leaveSet) {
         days[i].leave = leave.value = leaveAfter(v);
         missing(leave, "leave");
       }
       missing(meet, "meet");
+    });
+    // A Leave set by hand moves on when Meet passes it, once Meet is a whole
+    // time: typing 0930 goes through 9:03 on the way (QA, 11/13).
+    meet.addEventListener("blur", () => {
+      const v = meet.value;
+      if (!/^\d{2}:\d{2}/.test(v) || !days[i].leaveSet || !days[i].leave || days[i].leave >= v) return;
+      days[i].leave = leave.value = leaveAfter(v);
+      missing(leave, "leave");
+      sayOn(leave, "");
     });
     const leave = input("time", d.leave, `${several ? `Day ${i + 1} leave` : "Leave"} time`, (v) => {
       days[i].leave = v;

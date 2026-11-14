@@ -1,7 +1,8 @@
 // The pre-drive report's words (O6b; 0101, App Dev's shapes 11/12): the
 // crew's reviews by day, and planned against actual times for each leg
-// and stop. Durations only, never clock times. No reviewer's name: Chris
-// hasn't decided whether organizers see who wrote what. Pure, for the
+// and stop. Durations only, never clock times. Each review leads with its
+// reviewer's name and the day it was driven (0105, DevOps 11/13): the
+// server's display name or first name, never an email. Pure, for the
 // tests (scripts/plan-tests/club-report-words.test.mjs).
 
 /// The review vocabulary, worded as the apps word it (RouteReview.swift).
@@ -42,7 +43,17 @@ export function dayReviews(reviews = [], day) {
       note: String(r.note || "").trim(),
       // 0103: a review of a route since swapped out of the day.
       earlier: r.earlier_route ? earlierTag(r.route_name) : "",
+      by: byLine(r.reviewer_name, r.driven_on),
     }));
+}
+
+/// "Pia · Sat, Nov 14": who reviewed it and the day they drove it.
+export function byLine(name, drivenOn) {
+  const who = String(name || "").trim() || "A crew member";
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(drivenOn || "");
+  if (!m) return who;
+  const day = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  return `${who} · ${day.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" })}`;
 }
 
 /// "On the earlier route: Skyline Loop", or without a name.

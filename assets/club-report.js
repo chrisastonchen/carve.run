@@ -8,7 +8,7 @@
 
 import { $, el, rpc, signedIn } from "/assets/club-api.js?v=dd477d6d29";
 import { dayText } from "/assets/club-words.js?v=5a33e1fdc7";
-import { dayReviews, dayTabs, dayTimes, earlierTimes, timerChanges, timersSaid, minutesText } from "/assets/club-report-words.js?v=cfca2c651e";
+import { dayReviews, dayTabs, dayTimes, earlierTimes, timerChanges, timersSaid, minutesText } from "/assets/club-report-words.js?v=76da13d5fc";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
@@ -127,6 +127,7 @@ function draw() {
   $("r-reviews-none").hidden = reviewsFailed || list.length > 0;
   $("r-reviews").replaceChildren(...list.map((r) => {
     const li = el("li", `r-review ${r.tone}`);
+    li.append(el("p", "r-by", r.by));
     if (r.earlier) li.append(el("span", "r-earlier", r.earlier));
     li.append(el("b", "r-rating", r.rating));
     for (const road of r.roads) {

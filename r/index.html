@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/plan/plan.css?v=67">
+<link rel="stylesheet" href="/plan/plan.css?v=68">
 <link rel="stylesheet" href="/assets/route-view.css?v=450a0d4415">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/share-plan.css?v=161a310cc6">
@@ -460,6 +460,11 @@ const RouteProfile = (() => {
   }
 
   const FEET_PER_METER = 3.28084;
+  /// A climb stat to the nearest 100 ft, as the elevation line rounds it:
+  /// the share Worker's route-data says "4,097 ft" (QA, 11/13).
+  function climbText(text) {
+    return String(text).replace(/^([\d,]+)(?= ft)/, (n) => (Math.round(Number(n.replace(/,/g, "")) / 100) * 100).toLocaleString("en-US"));
+  }
   /// A fact as markup: each figure a <b>, its words plain.
   function figures(text) {
     return String(text).split(/(\d[\d,.]*)/).filter((t) => t !== "").map((t) => (/^\d/.test(t) ? `<b>${escapeHTML(t)}</b>` : escapeHTML(t))).join("");
@@ -577,7 +582,7 @@ const RouteProfile = (() => {
     // the planner's figures.js splits the same way).
     if (distance) facts.push(markup(`<span>${figures(distance.text)}</span>`)[0]);
     if (time) facts.push(markup(`<span>${figures(time.text)}</span>`)[0]);
-    if (climb) facts.push(markup(`<span>${figures(climb.text)} climb</span>`)[0]);
+    if (climb) facts.push(markup(`<span>${figures(climbText(climb.text))} climb</span>`)[0]);
     if (high !== null) facts.push(markup(`<span>High point ${figures(`≈ ${feet(high)} ft`)}</span>`)[0]);
     if (stops) facts.push(markup(`<span>${figures(stops.text)}</span>`)[0]);
     facts.push(el("span", {}, info.roundTrip ? "Round trip" : "One way"));

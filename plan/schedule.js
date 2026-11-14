@@ -91,3 +91,12 @@ export function legLine(leg, miles = true) {
 
 /// The break line under a long leg: "1 h 34 min without a break."
 export const breakLine = (leg) => `${legTime(leg.seconds)} without a break.`;
+
+/// A stop's stay picker: the usual times, and a saved one that isn't
+/// among them in its place, so the picker never shows blank (QA, 11/13:
+/// a 10-min timer from the apps).
+export const STAY_CHOICES = [10, 15, 30, 45, 60, 90, 120];
+export function stayChoices(saved) {
+  const m = Math.round(Number(saved));
+  return m > 0 && !STAY_CHOICES.includes(m) ? [...STAY_CHOICES, m].sort((a, b) => a - b) : STAY_CHOICES;
+}

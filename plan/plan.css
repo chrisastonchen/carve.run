@@ -1500,3 +1500,67 @@ body.drive-day .app { top: calc(var(--bar) + var(--drive-bar)); }
 /* The dark club planner's picks (Chris, 11/13): mint for every action, #0E1210 on it; the light /plan/ keeps its green. */
 html.night .pill.green.suggest-pick { background: #6FD39A; color: #0E1210; }
 html.night .pill.green.suggest-pick:hover:not(:disabled) { background: #8BDDAE; }
+
+/* Photos for suggested places (Chris approved Product's mock v4, 11/13;
+   then all three lists alike): rows 104 px and up with an 80 px tile, the
+   icon until a photo comes; a photo fades in; no badge or date in the list. */
+.suggest-item.tall { min-height: 104px; padding: 12px; gap: 14px; }
+.suggest-item.tall .suggest-item-go { align-items: center; gap: 14px; }
+.suggest-item-icon { position: relative; overflow: visible; }
+.suggest-item-icon.suggest-tile { width: 80px; height: 80px; border-radius: 10px; overflow: hidden; }
+.suggest-item-icon.suggest-tile svg { width: 26px; height: 26px; }
+.suggest-item-icon .suggest-photo { position: absolute; display: block; object-fit: cover; opacity: 0; transition: opacity .35s ease; }
+.suggest-item-icon .suggest-photo.in { opacity: 1; }
+.suggest-item-icon.suggest-tile .suggest-photo { inset: 0; width: 100%; height: 100%; }
+.suggest-item-icon.opens { cursor: pointer; }
+.suggest-item.tall .suggest-item-words b { font-size: 16px; }
+.suggest-item.tall .suggest-item-words span { font-size: 14px; }
+.suggest-credit { margin: 4px 2px 0; font-size: 12px; line-height: 1.45; color: var(--ink-3); }
+.suggest-credit:empty { display: none; }
+.suggest-credit a { color: inherit; text-decoration: underline; text-decoration-color: rgba(163,172,166,.5); }
+@media (prefers-reduced-motion: reduce) { .suggest-item-icon .suggest-photo, .suggest-ph-img { transition: none; } }
+
+/* The pin card's photo: 136 px on top, ✕, the credit, expand; "Over 3 yrs old" on an old street view. */
+.suggest-popup.with-photo .maplibregl-popup-content { padding: 0; overflow: hidden; border-radius: 13px; }
+.suggest-popup.with-photo .suggest-card > :not(.suggest-ph) { margin-left: 16px; margin-right: 16px; }
+.suggest-popup.with-photo .suggest-card { padding-bottom: 14px; }
+.suggest-ph { position: relative; height: 136px; margin-bottom: 13px; background: #222; cursor: pointer; }
+.suggest-ph::after { content: ""; position: absolute; inset: auto 0 0 0; height: 56px; background: linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,0)); pointer-events: none; }
+.suggest-ph-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s ease; }
+.suggest-ph-img.in { opacity: 1; }
+.suggest-ph-x { position: absolute; right: 8px; top: 8px; z-index: 2; width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(14,18,16,.72); color: #fff; font-size: 15px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.suggest-ph-old { position: absolute; left: 6px; top: 6px; z-index: 2; background: rgba(0,0,0,.4); color: rgba(255,255,255,.88); border-radius: 4px; padding: 0 4px; font-size: 9px; line-height: 13px; font-weight: 500; }
+.suggest-ph-credit { position: absolute; left: 10px; right: 40px; bottom: 7px; z-index: 2; color: rgba(255,255,255,.88); font-size: 10.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.suggest-ph-exp { position: absolute; right: 9px; bottom: 7px; z-index: 2; width: 22px; height: 22px; border-radius: 6px; border: 0; padding: 0; background: rgba(14,18,16,.72); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.suggest-ph-exp svg { width: 12px; height: 12px; }
+.suggest-ph-x:focus-visible, .suggest-ph-exp:focus-visible { outline: 2px solid #6FD39A; outline-offset: 2px; }
+
+/* The street view, full screen (street-view.js). */
+body.sv-open { overflow: hidden; }
+.sv { position: fixed; inset: 0; z-index: 1000; background: #000; color: #fff; font-family: "Figtree", system-ui, sans-serif; }
+.sv-stage { position: absolute; inset: 0; }
+.sv-top { position: absolute; inset: 0 0 auto 0; height: 150px; background: linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,0)); pointer-events: none; }
+.sv-bottom { position: absolute; inset: auto 0 0 0; height: 170px; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.78)); pointer-events: none; }
+.sv-head { position: absolute; left: 32px; top: 26px; right: 110px; pointer-events: none; }
+.sv-head b { display: block; font-size: 20px; font-weight: 800; }
+.sv-date { color: rgba(255,255,255,.6); font-size: 11px; font-weight: 500; }
+.sv-old { color: #E8C08A; }
+.sv-close { position: absolute; right: 28px; top: 24px; width: 52px; height: 52px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 24px; cursor: pointer; }
+.sv-steps { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; }
+.sv-steps[hidden] { display: none; }
+.sv-steps button { height: 52px; padding: 0 22px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; font: inherit; font-weight: 800; font-size: 16px; cursor: pointer; }
+.sv-steps button:disabled { opacity: .35; cursor: default; }
+.sv-pos { color: rgba(255,255,255,.75); font-weight: 700; font-size: 14px; min-width: 92px; text-align: center; font-variant-numeric: tabular-nums; }
+.sv-credit { position: absolute; left: 32px; bottom: 40px; color: rgba(255,255,255,.8); font-size: 13px; font-weight: 600; }
+.sv-credit a { color: #fff; }
+.sv-360 { position: absolute; right: 32px; bottom: 44px; background: rgba(0,0,0,.4); color: rgba(255,255,255,.7); border-radius: 4px; padding: 1px 6px; font-weight: 500; font-size: 11px; }
+.sv-360[hidden] { display: none; }
+.sv-said { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; font-size: 17px; font-weight: 700; color: rgba(255,255,255,.85); }
+.sv-said:empty { display: none; }
+.sv button:focus-visible, .sv a:focus-visible { outline: 2px solid #6FD39A; outline-offset: 3px; }
+@media (max-width: 699px) { .sv-head { left: 16px; top: 18px; right: 84px; } .sv-close { right: 16px; top: 14px; } .sv-steps { bottom: 72px; } .sv-credit { left: 16px; bottom: 24px; font-size: 12px; } .sv-360 { right: 16px; bottom: 26px; } }
+/* The light /plan/: the tile on its light grey, the credit grey. */
+@media not all and (prefers-color-scheme: dark) {
+  :where(html:not(.night)) .suggest-item-icon.suggest-tile { background: #F1F1EF; }
+  :where(html:not(.night)) .suggest-credit { color: #6B746E; }
+}

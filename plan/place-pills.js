@@ -7,7 +7,7 @@
 // one view search each 10 s. Words: pill-words.js.
 
 import { PILLS, WORDS, labelOf, noneText, pathKey, pillItems, viewBox, waitFor } from "./pill-words.js?v=1";
-import { icon } from "./suggest.js?v=10";
+import { icon } from "./suggest.js?v=11";
 import { mapsUrl } from "./suggest-words.js?v=8";
 
 /// `h` from plan.js: { el, planner, plan, map, mapReady, addStop, miles,

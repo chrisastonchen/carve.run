@@ -9,6 +9,7 @@
 
 import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=8";
 import { fitTo } from "./fit.js?v=1";
+import { openStreetView } from "./street-view.js?v=1";
 
 /// Each kind's icon (24 px, stroked in the pin's colour; no emoji).
 const ICONS = {
@@ -61,11 +62,14 @@ export function initSuggest(h) {
     $("suggest-list-h").textContent = SUGGEST[which].list;
     $("suggest-list-said").textContent = said[which] || "";
     $("suggest-items").replaceChildren(...open.items.map((item, i) => {
-      const li = h.el("li", `suggest-item${open.active === i ? " on" : ""}`);
+      const li = h.el("li", `suggest-item tall${open.active === i ? " on" : ""}`);
       const see = h.el("button", "suggest-item-go");
       see.type = "button";
-      const mark = h.el("span", "suggest-item-icon");
+      // One tile in all three lists (Chris, 11/13: Meeting places' photos
+      // too small): an 80 px square the row's height, the icon until a photo comes.
+      const mark = h.el("span", "suggest-item-icon suggest-tile");
       mark.dataset.kind = item.icon;
+      mark.dataset.i = String(i);
       mark.innerHTML = icon(item.icon);
       const words = h.el("span", "suggest-item-words");
       words.append(h.el("b", "", item.title), h.el("span", "", [item.kind, item.where].filter(Boolean).join(" · ")));
@@ -80,7 +84,83 @@ export function initSuggest(h) {
       return li;
     }));
     listing(true);
+    paintPhotos();
     $("suggest-list-h").focus({ preventScroll: true });
+  }
+
+  // ── Photos (Chris approved Product's mock v4, 11/13): asked once the
+  // places show, filled in as they come; a place with none keeps its icon.
+  // The planner's photos action (OSM, Commons by name, Mapillary nearby).
+  async function askPhotos(mine) {
+    try {
+      const answer = await h.planner("photos", { places: mine.items.slice(0, 12).map((it, i) => ({ id: String(i), name: it.title, lat: it.place.lat, lon: it.place.lon })) });
+      if (open !== mine) return;
+      mine.photos = [];
+      for (const p of answer?.photos || []) if (p?.photo) mine.photos[Number(p.id)] = p.photo;
+      mine.token = answer?.viewer?.token || null;
+      paintPhotos();
+      if (mine.active >= 0 && mine.photos[mine.active]) card(mine.active, { focus: false });
+    } catch {
+      // No photos this time: the icons stay.
+    }
+  }
+
+  /// A photo into its box, faded in once loaded; a broken one leaves the icon.
+  function photoInto(box, photo, cls) {
+    box.querySelector(`img.${cls}`)?.remove();
+    if (!photo?.thumb) return;
+    const img = h.el("img", cls);
+    img.alt = "";
+    img.decoding = "async";
+    img.referrerPolicy = "no-referrer";
+    img.addEventListener("load", () => { img.classList.add("in"); box.classList.add("has-photo"); });
+    img.addEventListener("error", () => { img.remove(); box.classList.remove("has-photo"); });
+    img.src = photo.thumb;
+    box.append(img);
+  }
+
+  /// A photo opens: a street view full screen, a Commons photo its page.
+  function openPhoto(i) {
+    const photo = open?.photos?.[i];
+    if (!photo) return;
+    if (photo.src === "mapillary" && open.token) openStreetView({ place: open.items[i].title, imageId: photo.mapillary_id, token: open.token });
+    else if (photo.link) window.open(photo.link, "_blank", "noopener");
+  }
+
+  function paintPhotos() {
+    if (!open?.photos || !$("suggest-items")) return;
+    document.querySelectorAll("#suggest-items .suggest-item-icon").forEach((mark) => {
+      const i = Number(mark.dataset.i);
+      const photo = open.photos[i];
+      photoInto(mark, photo, "suggest-photo");
+      mark.classList.toggle("opens", !!photo);
+      if (photo && !mark.dataset.wired) {
+        mark.dataset.wired = "1";
+        mark.addEventListener("click", (e) => { if (!open?.photos?.[i]) return; e.stopPropagation(); openPhoto(i); });
+      }
+    });
+    $("suggest-credit").replaceChildren(...creditLine(open.items, open.photos));
+  }
+
+  /// One line under the list for every photo in it (mock v4).
+  function creditLine(items, photos) {
+    const parts = [];
+    const files = photos.map((p, i) => [p, items[i]]).filter(([p]) => p && p.src !== "mapillary");
+    if (files.length) {
+      parts.push("Photos: ");
+      files.forEach(([p, item], n) => {
+        if (n) parts.push("; ");
+        parts.push(`${item.title}${p.author ? ` by ${p.author}` : ""} · `);
+        const a = h.el("a", "", p.licence);
+        a.href = p.link;
+        a.target = "_blank";
+        a.rel = "noopener";
+        parts.push(a);
+      });
+      parts.push(". ");
+    }
+    if (photos.some((p) => p?.src === "mapillary")) parts.push("Street views © Mapillary contributors · CC BY-SA.");
+    return parts;
   }
   const markList = () => [...document.querySelectorAll("#suggest-items .suggest-item")].forEach((li, n) => li.classList.toggle("on", n === open?.active));
   function backToSchedule() {
@@ -231,6 +311,7 @@ export function initSuggest(h) {
     card(0, { focus: false });
     rerender();
     list(which);
+    askPhotos(open);
   }
 
   /// One suggestion's card, over its pin.
@@ -240,6 +321,8 @@ export function initSuggest(h) {
     open.active = i;
     open.pins.forEach((m, n) => m.getElement().classList.toggle("on", n === i));
     const box = h.el("div", "suggest-card");
+    const photo = open.photos?.[i] || null;
+    if (photo) box.append(cardPhoto(i, photo));
     const kind = h.el("p", "suggest-kind");
     kind.innerHTML = icon(item.icon);
     kind.append(item.kind);
@@ -258,10 +341,34 @@ export function initSuggest(h) {
     acts.append(pick, maps);
     box.append(acts);
     open.popup?.remove();
-    open.popup = new window.maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 18, maxWidth: "280px", className: "suggest-popup" })
+    open.popup = new window.maplibregl.Popup({ closeButton: !photo, closeOnClick: false, focusAfterOpen: focus, offset: 18, maxWidth: "280px", className: photo ? "suggest-popup with-photo" : "suggest-popup" })
       .setLngLat([item.place.lon, item.place.lat]).setDOMContent(box).addTo(h.map());
     if (focus) pick.focus({ preventScroll: true });
     markList();
+  }
+
+  /// The card's photo (mock v4): 136 px on top, ✕, its credit, and expand
+  /// (the street view, or a Commons photo's page); "Over 3 yrs old" on a
+  /// street view taken more than 3 years ago.
+  function cardPhoto(i, photo) {
+    const ph = h.el("div", "suggest-ph");
+    photoInto(ph, photo, "suggest-ph-img");
+    ph.querySelector("img")?.addEventListener("error", () => ph.remove());
+    const taken = Date.parse(photo.captured_at || "");
+    if (photo.src === "mapillary" && Number.isFinite(taken) && Date.now() - taken > 3 * 365.25 * 86400_000) ph.append(h.el("span", "suggest-ph-old", "Over 3 yrs old"));
+    const x = h.el("button", "suggest-ph-x", "×");
+    x.type = "button";
+    x.setAttribute("aria-label", "Close");
+    x.addEventListener("click", () => { open?.popup?.remove(); });
+    const credit = h.el("span", "suggest-ph-credit", photo.src === "mapillary" ? photo.credit : `Photo: ${photo.credit}`);
+    const exp = h.el("button", "suggest-ph-exp");
+    exp.type = "button";
+    exp.setAttribute("aria-label", photo.src === "mapillary" ? "Open the street view" : "Open the photo's page");
+    exp.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>';
+    exp.addEventListener("click", () => openPhoto(i));
+    ph.addEventListener("click", (e) => { if (e.target === ph || e.target.tagName === "IMG") openPhoto(i); });
+    ph.append(x, credit, exp);
+    return ph;
   }
 
   /// A pick: the field takes it, and the suggestions go.
