@@ -29,9 +29,9 @@ import { breakLine, clock, legLine, scheduleOf, stayChoices } from "./schedule.j
 import { figureNodes } from "./figures.js?v=1";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
-import { initSuggest } from "./suggest.js?v=11";
+import { initSuggest } from "./suggest.js?v=12";
 import { fitTo } from "./fit.js?v=1";
-import { initPills } from "./place-pills.js?v=5";
+import { initPills } from "./place-pills.js?v=6";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
 

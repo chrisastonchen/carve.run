@@ -91,15 +91,26 @@ export function initSuggest(h) {
   // ── Photos (Chris approved Product's mock v4, 11/13): asked once the
   // places show, filled in as they come; a place with none keeps its icon.
   // The planner's photos action (OSM, Commons by name, Mapillary nearby).
-  async function askPhotos(mine) {
+  // A place the planner ran out of time on (left out, not "none") is
+  // asked once more a few seconds later (DevOps, 11/14).
+  const PHOTO_AGAIN_MS = 3000;
+  async function askPhotos(mine, only = null) {
+    const ids = only ?? mine.items.slice(0, 12).map((_, i) => i);
     try {
-      const answer = await h.planner("photos", { places: mine.items.slice(0, 12).map((it, i) => ({ id: String(i), name: it.title, lat: it.place.lat, lon: it.place.lon })) });
+      const answer = await h.planner("photos", { places: ids.map((i) => ({ id: String(i), name: mine.items[i].title, lat: mine.items[i].place.lat, lon: mine.items[i].place.lon })) });
       if (open !== mine) return;
-      mine.photos = [];
-      for (const p of answer?.photos || []) if (p?.photo) mine.photos[Number(p.id)] = p.photo;
-      mine.token = answer?.viewer?.token || null;
+      mine.photos ??= [];
+      const said = new Set();
+      for (const p of answer?.photos || []) {
+        if (!p || !("photo" in p)) continue;
+        said.add(Number(p.id));
+        if (p.photo) mine.photos[Number(p.id)] = p.photo;
+      }
+      mine.token = answer?.viewer?.token || mine.token || null;
       paintPhotos();
       if (mine.active >= 0 && mine.photos[mine.active]) card(mine.active, { focus: false });
+      const left = ids.filter((i) => !said.has(i));
+      if (!only && left.length) setTimeout(() => { if (open === mine) askPhotos(mine, left); }, PHOTO_AGAIN_MS);
     } catch {
       // No photos this time: the icons stay.
     }
