@@ -8,7 +8,7 @@
 
 import { $, el, rpc, signedIn } from "/assets/club-api.js?v=dd477d6d29";
 import { dayText } from "/assets/club-words.js?v=5a33e1fdc7";
-import { dayReviews, dayTabs, dayTimes, earlierTimes, timerChanges, timersSaid, minutesText } from "/assets/club-report-words.js?v=76da13d5fc";
+import { dayReviews, dayTabs, dayTimes, earlierTimes, timerChanges, timersSaid, minutesText } from "/assets/club-report-words.js?v=805c8325f0";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };

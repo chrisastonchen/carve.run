@@ -115,7 +115,7 @@ function withTotal(rows, day) {
   const timed = rows.some((r) => r.drivers > 0 && r.actual !== "–" && r.actual !== "Passed");
   const total = day && timed ? {
     planned: minutesText(day.planned_minutes),
-    actual: minutesText(day.actual_minutes) + (day.total_partial ? "+" : ""),
+    actual: minutesText(day.actual_minutes) + (day.total_partial && Number.isFinite(day.actual_minutes) ? "+" : ""),
     diff: day.total_partial ? null : diffOf(day.planned_minutes, day.actual_minutes),
     partial: !!day.total_partial,
   } : null;
