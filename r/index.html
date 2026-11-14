@@ -1081,10 +1081,10 @@ const RouteProfile = (() => {
       // A club drive's day: its weather and road conditions (day-extras.js),
       // only with CLUB_V2 on: the live site, without club-flags.js or with it
       // off, asks route_drive nothing.
-      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=9e7ad86a3b"); }).catch(() => {});
-      if (CLUB) import("/assets/club-share.js?v=f7d7d3eb9b");
+      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=618a253f68"); }).catch(() => {});
+      if (CLUB) import("/assets/club-share.js?v=b03f9c8ee6");
       // A club drive's day, to a driver: the drive pass (P1).
-      else import("/assets/route-pass.js?v=fa24e52511");
+      else import("/assets/route-pass.js?v=b8223a5e36");
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";

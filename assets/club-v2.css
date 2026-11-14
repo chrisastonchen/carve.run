@@ -584,3 +584,57 @@ body:has(main.cv-dash) { --green: #6FD39A; }
 .cv-dash input[type="text"], .cv-dash input[type="email"], .cv-dash input[type="search"], .cv-dash select, .cv-dash textarea { background: #232A26; border-color: rgba(255, 255, 255, .06); }
 .cv-dash input[type="text"]::placeholder, .cv-dash input[type="email"]::placeholder, .cv-dash input[type="search"]::placeholder, .cv-dash textarea::placeholder { color: #8E9792; }
 .cv-dash input[type="text"]:focus, .cv-dash input[type="email"]:focus, .cv-dash input[type="search"]:focus, .cv-dash select:focus, .cv-dash textarea:focus { outline: none; border-color: #6FD39A; box-shadow: 0 0 0 2px rgba(111, 211, 154, .45); }
+/* Club creation, 11/14 (Chris): the names keep only their underline in
+   focus, no box; buttons and links keep theirs. */
+.cp.cv-dash .cd-ask .cd-big:focus, .cp.cv-dash .cv-o1 .o1-name:focus { outline: none; box-shadow: none; }
+/* What's wrong, in red that reads on the dark (7:1): the top line, the
+   field's note and its ring. */
+.cv-dash { --err: #FF8A80; }
+.cv-dash .cd-err { margin: 0 0 -8px 32px; color: var(--err); font-weight: 700; font-size: 15px; }
+.cv-dash .cd-err[hidden] { display: none; }
+.cv-dash .cd-day-row .cv-miss, .cv-dash .cd-opt .cv-miss, .cv-dash .cv-miss-line { color: var(--err); }
+.cv-dash .cv-miss-line { position: static; display: block; margin: 6px 0 0 32px; white-space: normal; font-size: 14px; }
+.cv-dash .cd-opt .cv-miss { position: static; white-space: normal; font-size: 12px; margin-top: 2px; }
+.cd-pick:has([aria-invalid]) { box-shadow: 0 0 0 2px var(--err, #FF8A80); }
+.cp.cv-dash .cd-ask .cd-big[aria-invalid] { border-bottom-color: var(--err); }
+.cv-dash .o1-said.err { color: var(--err); font-weight: 700; }
+/* An empty date: "mm / dd / yy" over the browser's field, not Safari's
+   faded real date; gone in focus, where the field takes typing. */
+.cd-pick.blank:not(:focus-within) input { color: transparent; }
+.cd-pick.blank:not(:focus-within)::after { content: attr(data-blank); position: absolute; left: 12px; bottom: 7px; font-family: var(--num); font-size: 16px; font-weight: 500; color: var(--ink-3); pointer-events: none; }
+/* Meet and Leave: hour, minute and AM/PM as native selects, "8 : 30 AM". */
+.cd-tsel { display: inline-flex; align-items: center; gap: 2px; height: 24px; }
+.cv-dash .cd-tsel select, .cp.cv-dash .cd-tsel select { appearance: none; -webkit-appearance: none; height: 24px; margin: 0; padding: 0 2px; border: 0; border-radius: 6px; background: transparent; box-shadow: none; color: var(--ink); color-scheme: dark; font-family: var(--num); font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; text-align: center; text-align-last: center; cursor: pointer; }
+.cv-dash .cd-tsel select:focus { outline: none; box-shadow: none; background: rgba(111, 211, 154, .18); }
+.cv-dash .cd-tsel select:focus-visible { box-shadow: 0 0 0 2px #6FD39A; }
+.cd-tsel.blank select { color: var(--ink-3); }
+.cd-tsep { font-family: var(--num); color: var(--ink-3); }
+@media (max-width: 640px) {
+  .cv-dash .cd-err, .cv-dash .cv-miss-line { margin-left: 0; }
+  .cv-dash .cd-day-row .cd-tsel select { font-size: 14px; }
+}
+/* Start a club's name suggestions: under the name, the field's width. */
+.cv-o1 .o1-name-box { position: relative; }
+.cv-o1 .o1-names { position: absolute; z-index: 5; top: calc(100% + 6px); left: 42px; right: 0; margin: 0; padding: 6px; list-style: none; background: #1C2320; border: 1px solid rgba(255, 255, 255, .08); border-radius: 14px; box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+.cv-o1 .o1-names[hidden] { display: none; }
+.cv-o1 .o1-names li { padding: 10px 12px; border-radius: 10px; font-size: 16px; color: var(--ink); cursor: pointer; line-height: 1.3; }
+.cv-o1 .o1-names li b { font-weight: 700; }
+.cv-o1 .o1-names li span { color: var(--ink-2); }
+.cv-o1 .o1-names li:hover, .cv-o1 .o1-names li[aria-selected="true"] { background: rgba(111, 211, 154, .16); }
+@media (max-width: 640px) { .cv-o1 .o1-names { left: 0; } }
+@media (max-width: 640px) {
+  .cd-day-row .cd-pick.blank:not(:focus-within)::after { left: 8px; font-size: 14px; }
+}
+/* Get the Carve app, once the first steps are done: a quiet line under the organizers. */
+.cd-getapp { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 2px 4px; font-size: 14px; color: var(--ink-2); }
+.cd-getapp[hidden] { display: none; }
+.cd-getapp-go { flex: none; height: 32px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(111, 211, 154, .5); background: transparent; color: #6FD39A; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
+.cd-getapp-go:hover { background: rgba(111, 211, 154, .12); }
+.cd-getapp-go:focus-visible { outline: 3px solid #6FD39A; outline-offset: 2px; }
+/* A drive's picture (cover.js): the photo or the satellite view filling the
+   shape box, the inset in its corner, the small print over the bottom. */
+.cd-shape.cv-cover { background: #0B0F0D; }
+.cd-shape.cv-cover > .cv-photo, .cd-shape.cv-cover > .cv-sat { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.cd-shape > .cv-inset { position: absolute; right: 12px; bottom: 28px; width: 96px; height: 64px; border-radius: 8px; border: 2px solid rgba(255, 255, 255, .85); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); object-fit: cover; }
+.cd-shape > .cv-credit { position: absolute; left: 0; right: 0; bottom: 0; padding: 5px 10px; font-size: 10.5px; line-height: 1.3; color: rgba(255, 255, 255, .78); background: linear-gradient(transparent, rgba(0, 0, 0, .55)); text-align: right; }
+.cd-shape > .cv-credit a { color: inherit; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, .4); }

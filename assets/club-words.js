@@ -167,21 +167,39 @@ export const trialStatus = (org) => (org?.trial_ends_at ? { trial_ends_at: org.t
 /// The new-drive form's days, checked: each needs a date, each later day
 /// after the one before, the pre-run (if on) before the first day.
 /// → null, or what to fix.
-export function formProblem({ name, days, prerun, prerunWas = null, today = isoDay(new Date()) }) {
-  if (!String(name || "").trim()) return "Add the drive's name.";
+export function formProblem(form) {
+  return formProblemAt(form)?.text ?? null;
+}
+
+/// formProblem, with where to say it: { text, at } where at is "name",
+/// "prerun", or { day, field: "date" | "leave" } (Chris, 11/14: the
+/// message on the field and in the top line, in red).
+export function formProblemAt({ name, days, prerun, prerunWas = null, today = isoDay(new Date()) }) {
+  if (!String(name || "").trim()) return { text: "Add the drive's name.", at: "name" };
   for (let i = 0; i < days.length; i++) {
     const label = days.length > 1 ? `Day ${i + 1}` : "The drive";
-    if (!days[i].date) return `${label} needs a date.`;
-    if (i && days[i].date <= days[i - 1].date) return `Day ${i + 1} has to be after Day ${i}.`;
-    if (days[i].meet && days[i].leave && days[i].leave < days[i].meet) return `${label} leaves before it meets. Check the times.`;
+    if (!days[i].date) return { text: `${label} needs a date.`, at: { day: i, field: "date" } };
+    if (i && days[i].date <= days[i - 1].date) return { text: `Day ${i + 1} has to be after Day ${i}.`, at: { day: i, field: "date" } };
+    if (days[i].meet && days[i].leave && days[i].leave < days[i].meet) return { text: `${label} leaves before it meets. Check the times.`, at: { day: i, field: "leave" } };
   }
   if (prerun?.on) {
-    if (!prerun.date) return "Pick the pre-drive's date, or choose No.";
+    if (!prerun.date) return { text: "Pick the pre-drive's date, or choose No.", at: "prerun" };
     // Never a new date already gone (a saved one that has passed may stay).
-    if (prerun.date < today && prerun.date !== prerunWas) return "Pick a pre-drive date from today on.";
-    if (prerun.date >= days[0].date) return "The pre-drive has to be before the drive.";
+    if (prerun.date < today && prerun.date !== prerunWas) return { text: "Pick a pre-drive date from today on.", at: "prerun" };
+    if (prerun.date >= days[0].date) return { text: "The pre-drive has to be before the drive.", at: "prerun" };
   }
   return null;
+}
+
+/// An empty date's stand-in, in the locale's order: "mm / dd / yy" in the
+/// US, "dd / mm / yy" in Britain, "yy / mm / dd" in Sweden.
+export function blankPattern(locale = undefined) {
+  try {
+    const parts = new Intl.DateTimeFormat(locale, { year: "2-digit", month: "2-digit", day: "2-digit" }).formatToParts(new Date(2033, 10, 22));
+    const order = parts.filter((p) => ["year", "month", "day"].includes(p.type)).map((p) => ({ year: "yy", month: "mm", day: "dd" })[p.type]);
+    if (order.length === 3) return order.join(" / ");
+  } catch {}
+  return "mm / dd / yy";
 }
 
 /// A day card's thumbnail (board O4): the route's line fitted into a

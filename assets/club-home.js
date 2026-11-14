@@ -5,13 +5,15 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, myOrgs, publicRpc, rpc, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
-import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=5a33e1fdc7";
+import { $, billing, el, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
+import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=b13a264ac5";
+import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { organizersBox } from "/assets/club-organizers.js?v=3eb3ba3078";
 import { billsToday } from "/assets/who-words.js?v=f70bdee137";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=f351588e23";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=373465b7b6";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
+import { loadDirectory, wireNames } from "/assets/club-names.js?v=d560c7b1ae";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
 const isOwner = (o) => (typeof o?.owner === "boolean" ? o.owner : o?.role === "admin");
@@ -224,6 +226,8 @@ function homeSteps() {
   const data = { drives: driveCount, organizers, cap: orgCap };
   const all = firstSteps({ ...data, gotApp: gotApp() }).every((s) => s.done);
   $("v-steps-box").hidden = all;
+  // Once the steps go, Get the app stays as a quiet line (Chris, 11/13).
+  $("v-getapp").hidden = !all;
   if (!all) drawSteps($("v-steps"), data);
 }
 
@@ -340,7 +344,7 @@ export const TERMS_CHANGED = {
 };
 
 async function startTrial() {
-  const say = (t) => { $("v-start-said").textContent = t; };
+  const say = (t, err = false) => { $("v-start-said").textContent = t; $("v-start-said").classList.toggle("err", err); };
   // Checkout would differ from what the page said: above the question.
   const changed = (t) => { $("v-start-changed").textContent = t; $("v-start-changed").hidden = !t; };
   changed("");
@@ -370,7 +374,7 @@ async function startTrial() {
     forgetWho(); // a new club for the bar's menus, once it's paid
     location.href = url;
   } catch (failure) {
-    say(failure.message);
+    say(failure.message, true);
     $("v-start-go").disabled = false;
   }
 }
@@ -485,9 +489,12 @@ function nextUp(d, routes) {
   const shape = el("a", "cd-shape");
   shape.href = `/club/drive/?id=${encodeURIComponent(d.id)}`;
   shape.setAttribute("aria-label", `Open ${d.name || "the drive"}`);
-  const svg = c.shapeDay >= 0 ? shapeSvg(routes.filter((r) => r.day_id === d.days[c.shapeDay].id).sort((a, b) => a.position - b.position)[0]?.payload) : "";
+  const shown = c.shapeDay >= 0 ? routes.filter((r) => r.day_id === d.days[c.shapeDay].id).sort((a, b) => a.position - b.position)[0]?.payload : null;
+  const svg = shown ? shapeSvg(shown) : "";
   if (svg) shape.innerHTML = svg; // numbers and our colours only (shapeSvg)
   else shape.classList.add("none");
+  // The route's photo, or its satellite view, once on screen (cover.js).
+  if (svg) coverInto(shape, shown);
   const body = el("div", "cd-next-body");
   const name = el("h3", "");
   const link = el("a", "", d.name || "Untitled drive");
@@ -569,7 +576,10 @@ function closeMenus() {
 
 function wire() {
   $("v-start-form").addEventListener("submit", (e) => { e.preventDefault(); if (!$("v-start-go").disabled) startTrial(); });
+  $("v-getapp-go").addEventListener("click", openGet);
   $("v-name").addEventListener("input", nameTyped);
+  // Names from the club directory as it's typed (Chris via Product, 11/13).
+  wireNames($("v-name"), $("v-names"), () => loadDirectory(select));
   document.addEventListener("click", (e) => { if (!e.target.closest("#v-home .cv-more")) closeMenus(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenus(); });
   $("v-pick").addEventListener("change", (e) => {

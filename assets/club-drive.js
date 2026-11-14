@@ -16,7 +16,9 @@
 import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
 import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
-import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, formProblem, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=5a33e1fdc7";
+import { coverInto } from "/assets/cover.js?v=644e607c2f";
+import { timeSelects } from "/assets/club-time.js?v=02f4200f94";
+import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=b13a264ac5";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
@@ -131,30 +133,25 @@ function renderDays() {
         if (days[j].date && !(before && days[j].date <= days[j - 1].date) && wholeDate(days[j].date)) continue;
         days[j].date = addDays(days[j - 1].date, 1);
         const next = rows[j]?.querySelector("input[type=date]");
-        if (next) next.value = days[j].date;
+        if (next) { next.value = days[j].date; next.markBlank?.(); }
       }
     });
     // No date before today in the picker (Chris, 11/10); a saved past day still shows its date.
     date.min = zoneNow(Date.now(), driveZone()).date;
-    const meet = input("time", d.meet, `${several ? `Day ${i + 1} meet` : "Meet"} time`, (v) => {
+    // Meet and Leave as three selects each (Chris, 11/14: no time popup in
+    // Safari); each change is a whole time or none.
+    const meet = time(d.meet, `${several ? `Day ${i + 1} meet` : "Meet"} time`, (v) => {
       days[i].meet = v;
-      // Leave follows Meet by half an hour until it's set by hand.
-      if (v && !days[i].leaveSet) {
+      // Leave follows Meet by half an hour until it's set by hand; a Leave
+      // set by hand moves on when Meet passes it.
+      if (v && (!days[i].leaveSet || (days[i].leave && days[i].leave < v))) {
         days[i].leave = leave.value = leaveAfter(v);
         missing(leave, "leave");
+        sayOn(leave, "");
       }
       missing(meet, "meet");
     });
-    // A Leave set by hand moves on when Meet passes it, once Meet is a whole
-    // time: typing 0930 goes through 9:03 on the way (QA, 11/13).
-    meet.addEventListener("blur", () => {
-      const v = meet.value;
-      if (!/^\d{2}:\d{2}/.test(v) || !days[i].leaveSet || !days[i].leave || days[i].leave >= v) return;
-      days[i].leave = leave.value = leaveAfter(v);
-      missing(leave, "leave");
-      sayOn(leave, "");
-    });
-    const leave = input("time", d.leave, `${several ? `Day ${i + 1} leave` : "Leave"} time`, (v) => {
+    const leave = time(d.leave, `${several ? `Day ${i + 1} leave` : "Leave"} time`, (v) => {
       days[i].leave = v;
       days[i].leaveSet = true;
       if (!missing(leave, "leave")) sayOn(leave, leaveEarly(days[i]) ? LEAVE_EARLY : "");
@@ -187,6 +184,12 @@ const wholeDate = (v) => {
 const LEAVE_EARLY = "Leave is before meet.";
 const leaveEarly = (d) => !!(d.meet && d.leave && d.leave < d.meet);
 
+function time(value, label, set) {
+  const box = timeSelects(value, label);
+  box.addEventListener("change", () => set(box.value));
+  return box;
+}
+
 function input(type, value, label, set) {
   const i = el("input");
   i.type = type;
@@ -202,12 +205,13 @@ function input(type, value, label, set) {
 function field(name, control, more = "") {
   const l = el("label", `cd-pick cv-time${more ? ` ${more}` : ""}`);
   l.append(el("small", "cv-time-name", name), control);
-  pickOnTap(l, control);
+  if (control.tagName === "INPUT") pickOnTap(l, control);
   return l;
 }
 /// A click anywhere on the picker opens the browser's calendar or clock
 /// where it has one (showPicker); where it hasn't, the field has the focus.
 function pickOnTap(box, control) {
+  blankWhileEmpty(box, control);
   box.addEventListener("click", (e) => {
     if (e.target !== control) control.focus();
     if (!matchMedia("(pointer: fine)").matches || typeof control.showPicker !== "function") return;
@@ -215,14 +219,29 @@ function pickOnTap(box, control) {
   });
 }
 
+/// An empty date reads "mm / dd / yy" (the locale's order), not the faded
+/// real date Safari puts there (Chris, 11/14), until it's focused or set.
+function blankWhileEmpty(box, control) {
+  box.dataset.blank = blankPattern();
+  const mark = () => box.classList.toggle("blank", !control.value);
+  control.addEventListener("input", mark);
+  control.addEventListener("change", mark);
+  control.markBlank = mark;
+  mark();
+}
+
+/// The note said on a field, for the top line.
+const fieldNote = (control) => document.getElementById(control.getAttribute("aria-describedby") || "")?.textContent || "";
+
 /// What's wrong with a field, said under it; "" clears it.
 function sayOn(control, text) {
-  const box = control.closest(".cv-time") || control.parentElement;
-  let note = box?.querySelector(".cv-miss");
-  if (text && box && !note) {
-    note = el("small", "cv-miss");
+  const box = control.closest(".cv-time");
+  let note = box ? box.querySelector(".cv-miss") : control.nextElementSibling?.classList.contains("cv-miss") ? control.nextElementSibling : null;
+  if (text && !note) {
+    note = el("small", box ? "cv-miss" : "cv-miss cv-miss-line");
     note.id = `miss-${crypto.randomUUID().slice(0, 8)}`;
-    box.append(note);
+    note.setAttribute("role", "alert");
+    if (box) box.append(note); else control.after(note);
     control.setAttribute("aria-describedby", note.id);
   }
   if (note && !text) {
@@ -246,31 +265,44 @@ function renderPrerun() {
   // The date inside Yes (mock v11).
   $("f-pr-pick").hidden = !prerun.on;
   $("f-pr-date").value = prerun.date || "";
+  $("f-pr-date").markBlank?.();
 }
 
 async function submit(e) {
   e.preventDefault();
   const say = (t) => { $("f-said").textContent = t; };
+  // What's wrong, in red at the top and on its field (Chris, 11/14).
+  const wrong = (t) => { $("f-err").textContent = t; $("f-err").hidden = !t; };
   // Said again from scratch each time (QA, 11/13: a stale pre-drive line).
   say("");
+  wrong("");
+  sayOn($("f-name"), "");
+  sayOn($("f-pr-date"), "");
   const name = $("f-name").value.trim();
-  const problem = formProblem({ name, days, prerun, prerunWas: drive?.prerun?.date || null });
-  if (problem) return say(problem);
+  const problem = formProblemAt({ name, days, prerun, prerunWas: drive?.prerun?.date || null });
+  if (problem) {
+    const rows = $("f-days").querySelectorAll(".cv-day-row");
+    const control = problem.at === "name" ? $("f-name") : problem.at === "prerun" ? $("f-pr-date")
+      : problem.at.field === "date" ? rows[problem.at.day]?.querySelector("input[type=date]") : rows[problem.at.day]?.querySelectorAll(".cd-tsel")[1];
+    wrong(problem.text);
+    if (control) { sayOn(control, problem.text); control.focus(); }
+    return;
+  }
   // Both times on every day (the server refuses a day without them), said
   // on the field.
   const times = [...$("f-days").querySelectorAll(".cv-day-row")].flatMap((row) => {
-    const [meet, leave] = row.querySelectorAll("input[type=time]");
+    const [meet, leave] = row.querySelectorAll(".cd-tsel");
     return [missing(meet, "meet") && meet, missing(leave, "leave") && leave].filter(Boolean);
   });
-  if (times.length) return times[0].focus();
+  if (times.length) { wrong(fieldNote(times[0])); return times[0].focus(); }
   // Leave before Meet (QA, 11/13): said on the Leave.
   const early = [...$("f-days").querySelectorAll(".cv-day-row")].map((row, i) => {
     if (!leaveEarly(days[i])) return null;
-    const control = row.querySelectorAll("input[type=time]")[1];
+    const control = row.querySelectorAll(".cd-tsel")[1];
     sayOn(control, LEAVE_EARLY);
     return control;
   }).filter(Boolean);
-  if (early.length) return early[0].focus();
+  if (early.length) { wrong(LEAVE_EARLY); return early[0].focus(); }
   // No day in the past, and today's meet 30 minutes out, in the drive's zone
   // (Chris, 11/10; the server's 0061 says the same). A saved day left as it
   // was may stay where it is.
@@ -278,11 +310,11 @@ async function submit(e) {
   const late = [...$("f-days").querySelectorAll(".cv-day-row")].map((row, i) => {
     const p = dayWhenProblem(days[i], { was: saved?.days?.find((x) => x.id === days[i].id) || null, zone: driveZone() });
     if (!p) return null;
-    const control = p.field === "date" ? row.querySelector("input[type=date]") : row.querySelector("input[type=time]");
+    const control = p.field === "date" ? row.querySelector("input[type=date]") : row.querySelector(".cd-tsel");
     sayOn(control, p.text);
     return control;
   }).filter(Boolean);
-  if (late.length) return late[0].focus();
+  if (late.length) { wrong(fieldNote(late[0])); return late[0].focus(); }
   $("f-go").disabled = true;
   say(drive ? "Saving…" : "Making the drive…");
   const id = drive?.id || made?.id || crypto.randomUUID();
@@ -312,14 +344,16 @@ async function submit(e) {
     else if (!prerun.on && had) await rpc("drive_prerun_set", { p_drive_id: id, p_off: true });
   } catch (failure) {
     $("f-go").disabled = false;
-    return say(failure.message);
+    say("");
+    return wrong(failure.message);
   }
   // A duplicate: a day's route that didn't copy is said, and Create tries again.
   const missed = days.map((d, i) => (d.copy === false ? i + 1 : 0)).filter(Boolean);
   if (missed.length) {
     $("f-go").disabled = false;
     $("f-go").textContent = "Try again";
-    return say(`The drive is made, but ${missed.map((n) => `Day ${n}`).join(" and ")}'s route didn't copy. Try again, or plan it from the drive page.`);
+    say("");
+    return wrong(`The drive is made, but ${missed.map((n) => `Day ${n}`).join(" and ")}'s route didn't copy. Try again, or plan it from the drive page.`);
   }
   // One day: straight to its route. Several, or a duplicate: the drive page (the wires).
   location.href = !drive && !source && days.length === 1 ? plannerUrl(id, 1) : `/club/drive/?id=${encodeURIComponent(id)}`;
@@ -433,6 +467,8 @@ async function renderDrive() {
       shape.append(el("span", "", "No route yet"));
     }
     if (d.routed) shape.append(el("span", "cd-chip ok", "Ready to share"));
+    // The route's photo, or its satellite view, once on screen (cover.js).
+    if (svg) coverInto(shape, d.route.payload);
     const body = el("div", "cd-day-body");
     body.append(el("h3", "", dayText(d.date) || "No date yet"));
     const facts = routeFacts(d.routed ? d.route.payload : null, miles());
@@ -472,8 +508,10 @@ async function renderDrive() {
 function wire() {
   $("f-page").addEventListener("submit", submit);
   // What to fix goes once they start fixing it.
-  $("f-page").addEventListener("input", () => { if (!$("f-go").disabled) $("f-said").textContent = ""; });
-  $("f-page").addEventListener("change", () => { if (!$("f-go").disabled) $("f-said").textContent = ""; });
+  // The top line goes once something changes; a field's note once it's fixed.
+  const changed = () => { if (!$("f-go").disabled) { $("f-said").textContent = ""; $("f-err").hidden = true; } };
+  $("f-page").addEventListener("input", (e) => { changed(); if (e.target === $("f-name") && $("f-name").value.trim()) sayOn($("f-name"), ""); });
+  $("f-page").addEventListener("change", changed);
   $("f-add-day").addEventListener("click", () => {
     const last = days[days.length - 1];
     // The day before's times, or the defaults.
@@ -485,12 +523,13 @@ function wire() {
   $("f-pr-yes").addEventListener("click", () => {
     prerun.on = true;
     $("f-said").textContent = "";
+    $("f-err").hidden = true;
     // A week before the first day, never before today, to start with.
     if (!prerun.date && days[0]?.date) prerun.date = prerunDefault(days[0].date);
     renderPrerun();
   });
-  $("f-pr-no").addEventListener("click", () => { prerun.on = false; renderPrerun(); $("f-said").textContent = ""; });
-  $("f-pr-date").addEventListener("change", (e) => { prerun.date = e.target.value; });
+  $("f-pr-no").addEventListener("click", () => { prerun.on = false; renderPrerun(); $("f-said").textContent = ""; $("f-err").hidden = true; sayOn($("f-pr-date"), ""); });
+  $("f-pr-date").addEventListener("change", (e) => { prerun.date = e.target.value; if (prerun.date) sayOn($("f-pr-date"), ""); });
   pickOnTap($("f-pr-pick"), $("f-pr-date"));
   const menu = (open) => { $("d-menu").hidden = !open; $("d-more").setAttribute("aria-expanded", String(open)); };
   $("d-more").addEventListener("click", () => menu($("d-menu").hidden));

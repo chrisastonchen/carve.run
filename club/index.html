@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/styles.css?v=c93f09caa8">
 <link rel="stylesheet" href="/assets/site-bar.css?v=3963f7d70b">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
-<link rel="stylesheet" href="/assets/club-v2.css?v=3cc3877e3e">
+<link rel="stylesheet" href="/assets/club-v2.css?v=18e4f8dc5c">
 <link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
 <link rel="stylesheet" href="/assets/club-intro.css?v=ecfbfd4efb">
 <meta name="apple-itunes-app" content="app-id=6808087716">
@@ -297,7 +297,10 @@
         <span class="o1-n" aria-hidden="true">1</span>
         <h1><label for="v-name">What's your club called?</label></h1>
       </div>
-      <input type="text" class="o1-name" id="v-name" maxlength="80" autocomplete="organization" placeholder="Ridge Road Club">
+      <div class="o1-name-box">
+        <input type="text" class="o1-name" id="v-name" maxlength="80" autocomplete="off" placeholder="Ridge Road Club">
+        <ul class="o1-names" id="v-names" role="listbox" aria-label="Clubs with this name" hidden></ul>
+      </div>
       <button type="submit" class="go o1-go" id="v-start-go" disabled>Start free trial</button>
       <p class="cp-note o1-terms" id="v-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
       <p class="cp-note o1-said" id="v-start-said" role="status" aria-live="polite"></p>
@@ -381,6 +384,8 @@
           </form>
           <p class="cp-note" id="v-orgz-said" role="status" aria-live="polite"></p>
         </section>
+        <!-- Get the Carve app, kept once the first steps are done (Chris, 11/13): a quiet line under the organizers. -->
+        <p class="cd-getapp" id="v-getapp" hidden><span>Get the Carve app on your phone for the drive.</span> <button type="button" class="cd-getapp-go" id="v-getapp-go">Get</button></p>
         <section class="cv-box cd-panel cd-trial" aria-labelledby="v-eyebrow">
           <h2 class="cd-lbl" id="v-eyebrow"></h2>
           <div class="cd-meter" id="v-meter" hidden><i id="v-meter-bar"></i></div>
@@ -497,6 +502,6 @@
 <script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
 <script type="module" src="/assets/site-bar.js?v=26e2ebbc13"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
-<script type="module" src="/assets/club-load.js?v=3d1e09dde6"></script>
+<script type="module" src="/assets/club-load.js?v=0d4a883933"></script>
 </body>
 </html>
