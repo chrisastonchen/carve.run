@@ -40,6 +40,10 @@
    "coverage": 0.67,
    "since": "2026-10-28"
   },
+  "highway-74-whitewater-minnesota": {
+   "coverage": 0.72,
+   "since": "2026-11-13"
+  },
   "horseshoe-meadow-road": {
    "coverage": 0.35,
    "since": "2026-11-01"
@@ -53,7 +57,7 @@
    "since": "2026-11-10"
   },
   "la-rumorosa-grade-baja": {
-   "coverage": 0.22,
+   "coverage": 0.59,
    "since": "2026-11-07"
   },
   "lake-hughes-road": {
@@ -65,7 +69,7 @@
    "since": "2026-10-29"
   },
   "lobethal-road-norton-summit": {
-   "coverage": 0.29,
+   "coverage": 0.31,
    "since": "2026-11-09"
   },
   "looking-glass-road": {
@@ -84,13 +88,21 @@
    "coverage": 0.56,
    "since": "2026-11-06"
   },
+  "newfound-gap-road": {
+   "coverage": 0.44,
+   "since": "2026-11-13"
+  },
   "north-cape-coastal-drive": {
-   "coverage": 0.71,
+   "coverage": 0.29,
    "since": "2026-11-06"
   },
   "oak-creek-canyon": {
    "coverage": 0.01,
    "since": "2026-11-02"
+  },
+  "old-kings-highway-6a": {
+   "coverage": 0.11,
+   "since": "2026-11-13"
   },
   "onion-valley-road": {
    "coverage": 0.57,
@@ -104,9 +116,9 @@
    "coverage": 0.47,
    "since": "2026-11-01"
   },
-  "stevens-canyon-road": {
-   "coverage": 0.21,
-   "since": "2026-11-09"
+  "sonora-pass": {
+   "coverage": 0.69,
+   "since": "2026-11-13"
   },
   "storm-king-highway": {
    "coverage": 0.57,
@@ -116,9 +128,9 @@
    "coverage": 0.01,
    "since": "2026-10-24"
   },
-  "us-377-junction-rocksprings": {
-   "coverage": 0.43,
-   "since": "2026-11-09"
+  "tunnel-of-trees-m-119": {
+   "coverage": 0.54,
+   "since": "2026-11-13"
   },
   "wolf-creek-pass": {
    "coverage": 0.21,
@@ -126,5 +138,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-13T15:44:32Z"
+ "updated": "2026-11-14T14:08:40Z"
 }
