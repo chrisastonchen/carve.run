@@ -6,7 +6,7 @@
 // moved map offers "Search this area" (never a search by itself), at most
 // one view search each 10 s. Words: pill-words.js.
 
-import { PILLS, WORDS, labelOf, noneText, pathKey, pillItems, viewBox, waitFor } from "./pill-words.js?v=1";
+import { PILLS, WORDS, labelOf, noneText, pathKey, pillItems, viewBox, waitFor } from "./pill-words.js?v=2";
 import { icon } from "./suggest.js?v=12";
 import { mapsUrl } from "./suggest-words.js?v=8";
 
@@ -20,7 +20,7 @@ export function initPills(h) {
   let pins = [];
   let popup = null;
   let asked = 0;
-  let viewAt = null; // when the last view search went
+  let lastView = null; // the last view search: { at, kind, box }
   let waiting = null; // a view search held for the 10 s
   let shownFor = null; // the route key, or "view", the pins are for
   const routeAnswers = new Map(); // `${pathKey}|${kind}` → answer
@@ -108,19 +108,20 @@ export function initPills(h) {
       say(WORDS.looking);
       return map.once("moveend", () => n === asked && look(kind));
     }
-    const wait = waitFor(viewAt);
-    if (wait) {
-      say(WORDS.looking);
-      waiting = setTimeout(() => n === asked && look(kind), wait);
-      return;
-    }
     const b = map.getBounds();
     const box = viewBox({ west: b.getWest(), south: b.getSouth(), east: b.getEast(), north: b.getNorth() });
     if (!box) {
       clear();
       return say(WORDS.zoomIn);
     }
-    viewAt = Date.now();
+    // Only the same pill in the same view waits; anything else goes now.
+    const wait = waitFor(lastView, kind, box);
+    if (wait) {
+      say(WORDS.looking);
+      waiting = setTimeout(() => n === asked && look(kind), wait);
+      return;
+    }
+    lastView = { at: Date.now(), kind, box };
     say(WORDS.looking);
     let answer;
     try {

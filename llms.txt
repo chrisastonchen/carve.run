@@ -92,7 +92,6 @@ Upcoming car events in the US — cars and coffee, cruises, car shows, track day
 - [Car events in South Florida](https://carve.run/events/south-florida/)
 - [Car events in the Orlando area](https://carve.run/events/orlando/)
 - [Car events in the Tampa Bay area](https://carve.run/events/tampa-bay/)
-- [Car events in the Boston area](https://carve.run/events/boston/)
 - [Car events in Alabama](https://carve.run/events/alabama/)
 - [Car events in Arizona](https://carve.run/events/arizona/)
 - [Car events in California](https://carve.run/events/california/)

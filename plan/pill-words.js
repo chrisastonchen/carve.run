@@ -19,7 +19,9 @@ export const labelOf = (kind) => PILLS.find((p) => p.kind === kind)?.label || "P
 const KIND = { gas: "Gas", coffee: "Coffee", food: "Food", rest_area: "Rest area", viewpoint: "Viewpoint", attraction: "Landmark" };
 export const kindText = (kind) => KIND[kind] || "Place";
 
-/// At most one map-view search this often (a pan never searches by itself).
+/// The same pill in the same view searched at most this often (a pan never
+/// searches by itself). Another pill, or another view, searches at once
+/// (DevOps 11/15: Food after Gas waited out the 10 s, "Looking…" ~10 s).
 export const VIEW_EVERY_MS = 10_000;
 /// The widest view searched, in degrees each way (the planner's own limit).
 export const MOST_VIEW_DEGREES = 3;
@@ -48,8 +50,10 @@ export function viewBox(bounds) {
   return { west: r(west), south: r(south), east: r(east), north: r(north) };
 }
 
-/// How long until a map-view search may go (0: now).
-export const waitFor = (lastAt, now = Date.now()) => (lastAt == null ? 0 : Math.max(0, lastAt + VIEW_EVERY_MS - now));
+/// How long until a map-view search of `kind` in `box` may go (0: now).
+/// last: the last view search, { at, kind, box }, or null.
+export const waitFor = (last, kind, box, now = Date.now()) =>
+  !last || last.kind !== kind || JSON.stringify(last.box) !== JSON.stringify(box) ? 0 : Math.max(0, last.at + VIEW_EVERY_MS - now);
 
 /// What a route answer is for: its line and time. Another key, another ask.
 export const pathKey = (path) => (path?.geometry?.length ? JSON.stringify([path.geometry.length, path.distanceMeters, path.durationSeconds, path.geometry[0], path.geometry[path.geometry.length - 1]]) : null);
