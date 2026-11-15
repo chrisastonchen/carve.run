@@ -1550,7 +1550,7 @@ body.sv-open { overflow: hidden; }
 .sv-close { position: absolute; right: 28px; top: 24px; width: 52px; height: 52px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 24px; cursor: pointer; }
 .sv-steps { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; }
 .sv-steps[hidden] { display: none; }
-.sv-steps button { height: 52px; padding: 0 22px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; font: inherit; font-weight: 800; font-size: 16px; cursor: pointer; }
+.sv-steps button { height: 52px; padding: 0 22px; border-radius: 999px; border: 0; background: rgba(255,255,255,.14); color: #fff; font: inherit; font-weight: 800; font-size: 16px; white-space: nowrap; cursor: pointer; }
 .sv-steps button:disabled { opacity: .35; cursor: default; }
 .sv-pos { color: rgba(255,255,255,.75); font-weight: 700; font-size: 14px; min-width: 92px; text-align: center; font-variant-numeric: tabular-nums; }
 .sv-credit { position: absolute; left: 32px; bottom: 40px; color: rgba(255,255,255,.8); font-size: 13px; font-weight: 600; }
@@ -1560,7 +1560,9 @@ body.sv-open { overflow: hidden; }
 .sv-said { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; font-size: 17px; font-weight: 700; color: rgba(255,255,255,.85); }
 .sv-said:empty { display: none; }
 .sv button:focus-visible, .sv a:focus-visible { outline: 2px solid #6FD39A; outline-offset: 3px; }
-@media (max-width: 699px) { .sv-head { left: 16px; top: 18px; right: 84px; } .sv-close { right: 16px; top: 14px; } .sv-steps { bottom: 72px; } .sv-credit { left: 16px; bottom: 24px; font-size: 12px; } .sv-360 { right: 16px; bottom: 26px; } }
+/* Under 1,120 px the credit would run under ‹ Back: the steps go above it. */
+@media (max-width: 1119px) { .sv-steps { bottom: 72px; } .sv-credit { bottom: 24px; } .sv-360 { bottom: 26px; } }
+@media (max-width: 699px) { .sv-head { left: 16px; top: 18px; right: 84px; } .sv-close { right: 16px; top: 14px; } .sv-steps { bottom: 72px; } .sv-credit { left: 16px; bottom: 24px; font-size: 12px; } .sv-360 { right: 16px; bottom: 136px; } }
 /* The light /plan/: the tile on its light grey, the credit grey. */
 @media not all and (prefers-color-scheme: dark) {
   :where(html:not(.night)) .suggest-item-icon.suggest-tile { background: #F1F1EF; }
