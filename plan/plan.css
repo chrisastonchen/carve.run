@@ -1559,10 +1559,15 @@ body.sv-open { overflow: hidden; }
 .sv-360[hidden] { display: none; }
 .sv-said { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; font-size: 17px; font-weight: 700; color: rgba(255,255,255,.85); }
 .sv-said:empty { display: none; }
+/* A Commons photo in the same shell (Chris, 11/15): the picture whole, centred. */
+.sv-photo .sv-stage { display: flex; align-items: center; justify-content: center; padding: 96px 32px 84px; box-sizing: border-box; }
+.sv-img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; opacity: 0; transition: opacity .2s; }
+.sv-photo.in .sv-img { opacity: 1; }
+.sv-credit a { overflow-wrap: anywhere; }
 .sv button:focus-visible, .sv a:focus-visible { outline: 2px solid #6FD39A; outline-offset: 3px; }
 /* Under 1,120 px the credit would run under ‹ Back: the steps go above it. */
 @media (max-width: 1119px) { .sv-steps { bottom: 72px; } .sv-credit { bottom: 24px; } .sv-360 { bottom: 26px; } }
-@media (max-width: 699px) { .sv-head { left: 16px; top: 18px; right: 84px; } .sv-close { right: 16px; top: 14px; } .sv-steps { bottom: 72px; } .sv-credit { left: 16px; bottom: 24px; font-size: 12px; } .sv-360 { right: 16px; bottom: 136px; } }
+@media (max-width: 699px) { .sv-photo .sv-stage { padding: 76px 16px 64px; } .sv-head { left: 16px; top: 18px; right: 84px; } .sv-close { right: 16px; top: 14px; } .sv-steps { bottom: 72px; } .sv-credit { left: 16px; bottom: 24px; font-size: 12px; } .sv-360 { right: 16px; bottom: 136px; } }
 /* The light /plan/: the tile on its light grey, the credit grey. */
 @media not all and (prefers-color-scheme: dark) {
   :where(html:not(.night)) .suggest-item-icon.suggest-tile { background: #F1F1EF; }

@@ -44,20 +44,92 @@ async function runOf(sequenceId, token) {
   }
 }
 
-/// Opens the viewer on `imageId`. `back`: what has the focus after.
-export async function openStreetView({ place, imageId, token, back = document.activeElement }) {
+/// A Commons thumbnail at Commons's standard widths (it serves 960, 1280
+/// and 1920, not 1600): a srcset for the screen; null for another URL.
+export function commonsSizes(thumb) {
+  const m = /^(https:\/\/(?:upload|thumb)\.wikimedia\.org\/wikipedia\/commons\/thumb\/[0-9a-f]\/[0-9a-f]{2}\/[^/?#]+\/)\d+px-([^/?#]+)/.exec(String(thumb || ""));
+  if (!m) return null;
+  return [960, 1280, 1920].map((w) => `${m[1]}${w}px-${m[2]} ${w}w`).join(", ");
+}
+
+/// The shell both viewers share: the stage, the name, ✕, Esc and Tab kept
+/// inside, focus given back. → { box, stage, head, said, shut }.
+function shell(label, place, closeLabel, back, onShut = () => {}) {
   const box = el("div", "sv");
   box.setAttribute("role", "dialog");
   box.setAttribute("aria-modal", "true");
-  box.setAttribute("aria-label", `Street view: ${place}`);
+  box.setAttribute("aria-label", label);
   const stage = el("div", "sv-stage");
   const head = el("div", "sv-head");
-  const name = el("b", "", place);
-  const when = el("span", "sv-date");
-  head.append(name, when);
+  head.append(el("b", "", place));
   const close = el("button", "sv-close", "×");
   close.type = "button";
-  close.setAttribute("aria-label", "Close the street view");
+  close.setAttribute("aria-label", closeLabel);
+  const said = el("p", "sv-said");
+  said.setAttribute("role", "status");
+  box.append(stage, el("div", "sv-top"), el("div", "sv-bottom"), head, close);
+  const shut = () => {
+    document.removeEventListener("keydown", keys, true);
+    onShut();
+    box.remove();
+    document.body.classList.remove("sv-open");
+    if (back && document.contains(back)) back.focus();
+  };
+  // Esc closes; Tab stays inside.
+  function keys(e) {
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); shut(); return; }
+    if (e.key !== "Tab") return;
+    const stops = [...box.querySelectorAll("button:not([disabled]), a[href]")];
+    if (!stops.length) return;
+    const first = stops[0], last = stops[stops.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  document.addEventListener("keydown", keys, true);
+  close.addEventListener("click", shut);
+  return { box, stage, head, close, said, shut, show: () => { document.body.append(box); document.body.classList.add("sv-open"); close.focus(); } };
+}
+
+/// A Commons photo full screen (Chris, 11/15: not Commons's file page), in
+/// the street view's shell: the larger picture, the place's name, "Photo:
+/// <author> · <licence>" with the licence linking to the file's page on
+/// Commons (a new tab), ✕ and Esc. `back`: what has the focus after.
+export function openPhotoView({ place, photo, back = document.activeElement }) {
+  const v = shell(`Photo: ${place}`, place, "Close the photo", back);
+  v.box.classList.add("sv-photo");
+  const img = el("img", "sv-img");
+  img.alt = place;
+  img.decoding = "async";
+  img.referrerPolicy = "no-referrer";
+  const sizes = commonsSizes(photo.thumb);
+  img.addEventListener("load", () => v.box.classList.add("in"));
+  // A size Commons won't make: the thumbnail the card had; none: said.
+  img.addEventListener("error", () => {
+    if (img.srcset) { img.removeAttribute("srcset"); img.src = photo.thumb; return; }
+    img.remove();
+    v.said.textContent = "Couldn't open the photo.";
+  });
+  if (sizes) { img.sizes = "100vw"; img.srcset = sizes; }
+  img.src = photo.thumb;
+  v.stage.append(img);
+  const credit = el("div", "sv-credit", `Photo: ${photo.author ? `${photo.author} · ` : ""}`);
+  const licence = el("a", "", photo.licence || "Wikimedia Commons");
+  licence.href = photo.link;
+  licence.target = "_blank";
+  licence.rel = "noopener";
+  credit.append(licence);
+  v.box.append(credit, v.said);
+  v.show();
+  return { close: v.shut };
+}
+
+/// Opens the viewer on `imageId`. `back`: what has the focus after.
+export async function openStreetView({ place, imageId, token, back = document.activeElement }) {
+  let viewer = null;
+  const v = shell(`Street view: ${place}`, place, "Close the street view", back, () => { try { viewer?.remove(); } catch {} });
+  const { box, stage, said, shut } = v;
+  const when = el("span", "sv-date");
+  v.head.append(when);
   const steps = el("div", "sv-steps");
   const prev = el("button", "", "‹ Back");
   prev.type = "button";
@@ -75,36 +147,11 @@ export async function openStreetView({ place, imageId, token, back = document.ac
   credit.append(on);
   const pano = el("div", "sv-360", "360° · drag to look around");
   pano.hidden = true;
-  const said = el("p", "sv-said");
-  said.setAttribute("role", "status");
-  box.append(stage, el("div", "sv-top"), el("div", "sv-bottom"), head, close, steps, credit, pano, said);
-  document.body.append(box);
-  document.body.classList.add("sv-open");
-  close.focus();
+  box.append(steps, credit, pano, said);
+  v.show();
 
-  let viewer = null;
   let run = null;
   let at = imageId;
-  const shut = () => {
-    document.removeEventListener("keydown", keys, true);
-    try { viewer?.remove(); } catch {}
-    box.remove();
-    document.body.classList.remove("sv-open");
-    if (back && document.contains(back)) back.focus();
-  };
-  // Esc closes; Tab stays inside.
-  function keys(e) {
-    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); shut(); return; }
-    if (e.key !== "Tab") return;
-    const stops = [...box.querySelectorAll("button:not([disabled]), a[href]")];
-    if (!stops.length) return;
-    const first = stops[0], last = stops[stops.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  }
-  document.addEventListener("keydown", keys, true);
-  close.addEventListener("click", shut);
-
   const place_ = () => {
     const i = run ? run.indexOf(at) : -1;
     pos.textContent = run && i >= 0 ? `${i + 1} of ${run.length}` : "";

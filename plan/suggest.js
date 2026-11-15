@@ -9,7 +9,7 @@
 
 import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=8";
 import { fitTo } from "./fit.js?v=1";
-import { openStreetView } from "./street-view.js?v=1";
+import { openPhotoView, openStreetView } from "./street-view.js?v=2";
 
 /// Each kind's icon (24 px, stroked in the pin's colour; no emoji).
 const ICONS = {
@@ -130,12 +130,13 @@ export function initSuggest(h) {
     box.append(img);
   }
 
-  /// A photo opens: a street view full screen, a Commons photo its page.
+  /// A photo opens full screen: a street view, or a Commons photo in the
+  /// same shell (Chris, 11/15: not Commons's file page).
   function openPhoto(i) {
     const photo = open?.photos?.[i];
     if (!photo) return;
-    if (photo.src === "mapillary" && open.token) openStreetView({ place: open.items[i].title, imageId: photo.mapillary_id, token: open.token });
-    else if (photo.link) window.open(photo.link, "_blank", "noopener");
+    if (photo.src === "mapillary") { if (open.token) openStreetView({ place: open.items[i].title, imageId: photo.mapillary_id, token: open.token }); }
+    else if (photo.thumb) openPhotoView({ place: open.items[i].title, photo });
   }
 
   function paintPhotos() {
@@ -374,7 +375,7 @@ export function initSuggest(h) {
     const credit = h.el("span", "suggest-ph-credit", photo.src === "mapillary" ? photo.credit : `Photo: ${photo.credit}`);
     const exp = h.el("button", "suggest-ph-exp");
     exp.type = "button";
-    exp.setAttribute("aria-label", photo.src === "mapillary" ? "Open the street view" : "Open the photo's page");
+    exp.setAttribute("aria-label", photo.src === "mapillary" ? "Open the street view" : "Open the photo");
     exp.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>';
     exp.addEventListener("click", () => openPhoto(i));
     ph.addEventListener("click", (e) => { if (e.target === ph || e.target.tagName === "IMG") openPhoto(i); });
