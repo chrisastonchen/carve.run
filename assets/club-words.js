@@ -455,13 +455,13 @@ export function meetLeave(day) {
   return [meet ? `Meet ${meet}${place ? ` at ${place}` : ""}` : "", leave ? `Leave ${leave}` : ""].filter(Boolean);
 }
 
-/// When drivers get Apex free on the drive's routes (0093): 14 days before
-/// the first day to the day after the last. "Nov 28 to Dec 14"; "" with no dates.
+/// When drivers get Apex free on the drive's routes (0093, 0113): 30 days before
+/// the first day to the day after the last. "Nov 12 to Dec 14"; "" with no dates.
 export function apexWindow(days = []) {
   const dates = days.map((d) => d.date).filter(Boolean).sort();
   if (!dates.length) return "";
   const short = (iso) => dayText(iso).replace(/^\w+, /, "");
-  return `${short(addDays(dates[0], -14))} to ${short(addDays(dates[dates.length - 1], 1))}`;
+  return `${short(addDays(dates[0], -30))} to ${short(addDays(dates[dates.length - 1], 1))}`;
 }
 
 /// "Route updated 2 min ago." from the route's last save; "" without one.

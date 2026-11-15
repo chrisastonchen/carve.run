@@ -6,11 +6,11 @@
 // settings. No price here, and no member or driver lists.
 
 import { $, billing, el, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
-import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=b13a264ac5";
+import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=dd889b958a";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { organizersBox } from "/assets/club-organizers.js?v=3eb3ba3078";
 import { billsToday } from "/assets/who-words.js?v=f70bdee137";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=373465b7b6";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=d23394d63f";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
