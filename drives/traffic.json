@@ -1,5 +1,21 @@
 {
  "flagged": {
+  "a1a-boynton-boca": {
+   "coverage": 0.58,
+   "since": "2026-11-14"
+  },
+  "allegany-state-park-route-1": {
+   "coverage": 0.63,
+   "since": "2026-11-14"
+  },
+  "arthur-highway-sorell-port-arthur": {
+   "coverage": 0.72,
+   "since": "2026-11-14"
+  },
+  "badlands-loop-road": {
+   "coverage": 0.49,
+   "since": "2026-11-14"
+  },
   "beartooth-highway": {
    "coverage": 0.55,
    "since": "2026-10-24"
@@ -7,6 +23,10 @@
   "beaver-canyon-highway-153": {
    "coverage": 0.05,
    "since": "2026-11-12"
+  },
+  "blue-ridge-parkway-roanoke-mabry-mill": {
+   "coverage": 0.65,
+   "since": "2026-11-14"
   },
   "cayuga-lake-highway-90": {
    "coverage": 0.48,
@@ -36,6 +56,14 @@
    "coverage": 0.27,
    "since": "2026-11-01"
   },
+  "highway-1-marin": {
+   "coverage": 0.55,
+   "since": "2026-11-14"
+  },
+  "highway-120-east": {
+   "coverage": 0.17,
+   "since": "2026-11-14"
+  },
   "highway-131-kickapoo-valley": {
    "coverage": 0.67,
    "since": "2026-10-28"
@@ -51,6 +79,10 @@
   "independence-pass": {
    "coverage": 0.32,
    "since": "2026-11-01"
+  },
+  "kings-canyon-scenic-byway": {
+   "coverage": 0.19,
+   "since": "2026-11-14"
   },
   "klondike-highway-white-pass": {
    "coverage": 0.48,
@@ -69,7 +101,7 @@
    "since": "2026-10-29"
   },
   "lobethal-road-norton-summit": {
-   "coverage": 0.31,
+   "coverage": 0.29,
    "since": "2026-11-09"
   },
   "looking-glass-road": {
@@ -84,9 +116,17 @@
    "coverage": 0.01,
    "since": "2026-11-01"
   },
+  "monitor-pass": {
+   "coverage": 0.52,
+   "since": "2026-11-14"
+  },
   "monument-valley-us-163": {
    "coverage": 0.56,
    "since": "2026-11-06"
+  },
+  "natchez-trace-tennessee": {
+   "coverage": 0.7,
+   "since": "2026-11-14"
   },
   "newfound-gap-road": {
    "coverage": 0.44,
@@ -107,6 +147,14 @@
   "onion-valley-road": {
    "coverage": 0.57,
    "since": "2026-11-01"
+  },
+  "page-mill-to-pescadero": {
+   "coverage": 0.59,
+   "since": "2026-11-14"
+  },
+  "qu-appelle-highway-56": {
+   "coverage": 0.61,
+   "since": "2026-11-14"
   },
   "rockefeller-parkway-west-thumb": {
    "coverage": 0.05,
@@ -138,5 +186,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-14T14:08:40Z"
+ "updated": "2026-11-15T14:12:40Z"
 }
