@@ -1538,7 +1538,9 @@ html.night .pill.green.suggest-pick:hover:not(:disabled) { background: #8BDDAE; 
 /* The street view, full screen (street-view.js). */
 body.sv-open { overflow: hidden; }
 .sv { position: fixed; inset: 0; z-index: 1000; background: #000; color: #fff; font-family: "Figtree", system-ui, sans-serif; }
-.sv-stage { position: absolute; inset: 0; }
+/* .sv first: MapillaryJS makes the stage .mapillary-viewer, whose own
+   stylesheet (loaded later) sets position: relative, a 0 px tall stage. */
+.sv .sv-stage { position: absolute; inset: 0; }
 .sv-top { position: absolute; inset: 0 0 auto 0; height: 150px; background: linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,0)); pointer-events: none; }
 .sv-bottom { position: absolute; inset: auto 0 0 0; height: 170px; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.78)); pointer-events: none; }
 .sv-head { position: absolute; left: 32px; top: 26px; right: 110px; pointer-events: none; }
