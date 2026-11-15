@@ -100,6 +100,7 @@ Upcoming car events in the US — cars and coffee, cruises, car shows, track day
 - [Car events in Connecticut](https://carve.run/events/connecticut/)
 - [Car events in Florida](https://carve.run/events/florida/)
 - [Car events in Georgia](https://carve.run/events/georgia/)
+- [Car events in Maryland](https://carve.run/events/maryland/)
 - [Car events in Nevada](https://carve.run/events/nevada/)
 - [Car events in New Jersey](https://carve.run/events/new-jersey/)
 - [Car events in New York](https://carve.run/events/new-york/)
