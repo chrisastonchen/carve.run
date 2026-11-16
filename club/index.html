@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
 <link rel="stylesheet" href="/assets/club-v2.css?v=bfa7f5f4eb">
 <link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
-<link rel="stylesheet" href="/assets/club-intro.css?v=ecfbfd4efb">
+<link rel="stylesheet" href="/assets/club-intro.css?v=7644d409bf">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 
 </head>
@@ -96,18 +96,27 @@
   <!-- For Clubs, signed out or with no club (Sales and Marketing's layout, Chris's yes
        11/12): club-intro.js fills the price, the trial and the maths from plans.js and
        plays the clips in view (not for reduced motion or Save-Data). -->
-  <!-- An organizer's invite, signed out (Chris 11/12): the club's name from
-       0100's org_invite_preview, then a free account or Log in, back here for
-       the claim. No price, no trial. -->
+  <!-- An organizer's invite (0121, Chris 11/16: accepted, never joined by
+       itself). Signed out: sign in or sign up to accept, back here. Signed
+       in: who invited you, Accept or Decline; another address than the
+       invite's says so, with Switch account. No price, no trial. -->
   <section class="cv-invite" id="o-invite" hidden>
     <h1 id="o-invite-h">You're invited to a club on Carve</h1>
-    <p class="cv-invite-line" id="o-invite-line">As an organizer, you plan the club's drives on the web.</p>
+    <p class="cv-invite-line" id="o-invite-line">Sign in or sign up to accept the invitation to be an organizer.</p>
+    <p class="cv-invite-for" id="o-invite-for" hidden></p>
     <p class="cv-invite-said" id="o-invite-said" hidden></p>
     <div class="cv-invite-go" id="o-invite-go">
-      <button type="button" class="go" id="o-invite-join">Create free account</button>
-      <button type="button" class="go" id="o-invite-login">Log in</button>
+      <button type="button" class="go" id="o-invite-login">Sign in</button>
+      <button type="button" class="go" id="o-invite-join">Sign up</button>
     </div>
+    <div class="cv-invite-go" id="o-invite-answer" hidden>
+      <button type="button" class="go" id="o-invite-accept">Accept</button>
+      <button type="button" class="go ghost" id="o-invite-decline">Decline</button>
+    </div>
+    <button type="button" class="textlink cv-invite-switch" id="o-invite-switch" hidden>Switch account</button>
   </section>
+  <!-- Pending invites for this address, in case the email got lost (0121). -->
+  <section class="cv-invites-mine" id="v-invites" hidden aria-label="Invitations"></section>
 
   <section class="f1 fc" id="o-signin" hidden>
     <!-- 1. Hero: the coast still across, the coast clip beside the words. -->
@@ -502,6 +511,6 @@
 <script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 <script type="module" src="/assets/site-bar.js?v=986ff8abd4"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
-<script type="module" src="/assets/club-load.js?v=96879075f9"></script>
+<script type="module" src="/assets/club-load.js?v=735dc25827"></script>
 </body>
 </html>

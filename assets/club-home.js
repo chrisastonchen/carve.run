@@ -5,10 +5,10 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=6e024a0fa0";
+import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=6e024a0fa0";
 import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=dd889b958a";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { organizersBox } from "/assets/club-organizers.js?v=0db7b10595";
+import { organizersBox } from "/assets/club-organizers.js?v=564a0fcab6";
 import { billsToday } from "/assets/who-words.js?v=f70bdee137";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=a21606404e";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
@@ -42,9 +42,11 @@ const dash = (on, glow = false) => {
 // code), claimed after it. Never logged; analytics sends the path only. ──
 const INVITE_KEY = "carve.club.invite";
 export const INVITE_WORDS = {
-  not_found: "This invite link doesn't work. Ask your club's organizer to send a new one.",
-  invite_used: "This invite has expired or was already used. Ask your club's organizer to send it again.",
-  invite_expired: "This invite has expired or was already used. Ask your club's organizer to send it again.",
+  not_found: "This invite link doesn't work. Ask the organizer who invited you to send a new one.",
+  invite_used: "This invite was already accepted. Sign in to open the club.",
+  invite_expired: "This invite has expired. Ask the organizer who invited you to send a new one.",
+  invite_declined: "You declined this invite. If you change your mind, ask the organizer who invited you to send a new one.",
+  answer_needed: "This invite link doesn't work. Ask the organizer who invited you to send a new one.",
   too_many: "Too many tries. Try again in an hour.",
 };
 
@@ -61,20 +63,28 @@ function takeInvite() {
 }
 const forgetInvite = () => { try { sessionStorage.removeItem(INVITE_KEY); } catch {} };
 
-/// → { org } joined (or already), { signIn } a real sign-in first (kept),
-/// or { said } why not (gone).
-async function claimInvite(token) {
+/// Accept or decline (0121), by the invite's link or the club (the
+/// portal's list): org-invite-send answers as this account and tells the
+/// inviter. → { org, accepted } or { said }.
+async function answerInvite(accept, { token = null, orgId = null } = {}) {
   let answer;
   try {
-    answer = await rpc("org_invite_claim_token", { p_token: token });
+    answer = await inviteSend({ action: "answer", accept, ...(token ? { token } : { org_id: orgId }) });
   } catch (failure) {
-    if (failure.code === "sign_in") return { signIn: true };
-    forgetInvite();
     return { said: failure.message };
   }
-  forgetInvite();
-  if (answer?.org_id) return { org: answer.org_id };
+  if (answer?.org_id) return { org: answer.org_id, accepted: !!answer.accepted || !!answer.already, name: answer.name };
   return { said: INVITE_WORDS[answer?.error] || INVITE_WORDS.not_found };
+}
+
+/// Ends this sign-in, so the invite's own address can sign in (the token kept in the tab).
+function switchAccount() {
+  let session = null;
+  try { session = JSON.parse(localStorage.getItem("carve.plan.session") || "null"); localStorage.removeItem("carve.plan.session"); } catch {}
+  const done = () => location.reload();
+  setTimeout(done, 3000);
+  if (session?.access_token) fetch("https://uvaabajzkzupecemzsug.supabase.co/auth/v1/logout", { method: "POST", headers: { apikey: "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U", Authorization: `Bearer ${session.access_token}` } }).then(done, done);
+  else done();
 }
 
 /// Signed out: For Clubs (F1). Start your free trial signs in, then O1;
@@ -102,7 +112,9 @@ async function showInvite(token) {
   const answer = await publicRpc("org_invite_preview", { p_token: token });
   const dead = answer?.error && answer.error !== "too_many";
   if (dead) forgetInvite();
-  $("o-invite-h").textContent = answer?.name ? `You're invited to ${answer.name} on Carve` : "You're invited to a club on Carve";
+  const club = answer?.name || "a club";
+  $("o-invite-h").textContent = `You're invited to organize ${club}`;
+  $("o-invite-line").textContent = `Sign in or sign up to accept the invitation to be an organizer for ${club}.`;
   $("o-invite-h").hidden = dead;
   $("o-invite-line").hidden = dead;
   $("o-invite-join").hidden = dead;
@@ -111,6 +123,89 @@ async function showInvite(token) {
   $("o-invite-join").onclick = () => window.carveSignIn?.({ join: true, returnTo: "/club/" });
   $("o-invite-login").onclick = () => window.carveSignIn?.({ returnTo: "/club/" });
   $("o-invite").hidden = false;
+}
+
+/// Signed in with an invite (0121): who invited you, Accept or Decline;
+/// another address than the invite's says so, with Switch account, and
+/// may still accept (Chris, 11/16: Apple sign-ins have no address).
+/// → true when the page is this; false to go on to the club (accepted already).
+async function showAccept(token) {
+  status("");
+  $("o-signin").hidden = true;
+  let answer = null;
+  try { answer = await rpc("org_invite_preview", { p_token: token }); } catch {}
+  // Accepted already, by this account: straight to the club.
+  if (answer?.error === "invite_used" && answer.org_id) {
+    forgetInvite();
+    try { history.replaceState(null, "", `/club/?org=${encodeURIComponent(answer.org_id)}`); } catch {}
+    return false;
+  }
+  const club = answer?.name || "a club";
+  const dead = !!answer?.error && answer.error !== "too_many";
+  if (dead) forgetInvite();
+  const said = (text) => { $("o-invite-said").textContent = text; $("o-invite-said").hidden = !text; };
+  $("o-invite-h").textContent = answer?.inviter ? `${answer.inviter} invited you to organize ${club}` : `You're invited to organize ${club}`;
+  $("o-invite-line").textContent = "Organizers plan the club's drives on the web and share one link for each day.";
+  $("o-invite-h").hidden = dead;
+  $("o-invite-line").hidden = dead;
+  $("o-invite-go").hidden = true;
+  $("o-invite-answer").hidden = dead || !answer;
+  const other = answer?.yours === false;
+  $("o-invite-for").hidden = !other || dead;
+  $("o-invite-for").textContent = other ? `This invite is for ${answer.email}. You're signed in as ${sessionEmail() || "another account"}.` : "";
+  $("o-invite-switch").hidden = !other || dead;
+  $("o-invite-accept").textContent = other ? "Accept with this account" : "Accept";
+  said(dead ? INVITE_WORDS[answer.error] || INVITE_WORDS.not_found : answer ? "" : "Couldn't reach Carve. Check the connection and try again.");
+  $("o-invite-switch").onclick = switchAccount;
+  const go = async (accept) => {
+    $("o-invite-accept").disabled = $("o-invite-decline").disabled = true;
+    const r = await answerInvite(accept, { token });
+    $("o-invite-accept").disabled = $("o-invite-decline").disabled = false;
+    if (r.said) return said(r.said);
+    forgetInvite();
+    if (accept) {
+      forgetWho(); // a new club for the bar's menus
+      location.replace(`/club/?org=${encodeURIComponent(r.org)}`);
+      return;
+    }
+    $("o-invite-answer").hidden = $("o-invite-for").hidden = $("o-invite-switch").hidden = true;
+    $("o-invite-line").hidden = true;
+    $("o-invite-h").textContent = `You declined the invitation to organize ${club}`;
+    said("We've let the organizer know.");
+  };
+  $("o-invite-accept").onclick = () => go(true);
+  $("o-invite-decline").onclick = () => go(false);
+  $("o-invite").hidden = false;
+  return true;
+}
+
+/// The portal's pending invites for this address (0121): Accept / Decline each.
+async function showMyInvites() {
+  let list = [];
+  try { const got = await rpc("org_invites_mine"); if (Array.isArray(got)) list = got; } catch {}
+  const box = $("v-invites");
+  box.replaceChildren(...list.map((inv) => {
+    const row = el("div", "cv-invite-row");
+    const words = el("p", "", inv.inviter ? `${inv.inviter} invited you to organize ${inv.name}` : `You're invited to organize ${inv.name}`);
+    const accept = el("button", "go", "Accept");
+    const decline = el("button", "go ghost", "Decline");
+    accept.type = decline.type = "button";
+    const said = el("p", "cv-invite-said");
+    const go = async (yes) => {
+      accept.disabled = decline.disabled = true;
+      const r = await answerInvite(yes, { orgId: inv.org_id });
+      if (r.said) { accept.disabled = decline.disabled = false; said.textContent = r.said; return; }
+      if (yes) { forgetWho(); location.replace(`/club/?org=${encodeURIComponent(r.org)}`); return; }
+      row.replaceChildren(el("p", "", `You declined the invitation to organize ${inv.name}.`));
+    };
+    accept.addEventListener("click", () => go(true));
+    decline.addEventListener("click", () => go(false));
+    const buttons = el("div", "cv-invite-go");
+    buttons.append(accept, decline);
+    row.append(words, buttons, said);
+    return row;
+  }));
+  box.hidden = !list.length;
 }
 
 /// For Clubs once per visit for an account with no club (an Individual
@@ -135,22 +230,11 @@ async function start() {
   if (takeStart()) introSeen = true;
   if (!(await signedIn())) return invite ? showInvite(invite) : showSignIn();
   await rpc("account_claim").catch(() => {});
-  let joined = null;
-  let said = "";
-  if (invite) {
-    const claimed = await claimInvite(invite);
-    // A guest session can't join: a real sign-in, the invite kept.
-    if (claimed.signIn) return showInvite(invite);
-    if (claimed.org) {
-      joined = claimed.org;
-      forgetWho(); // a new club for the bar's menus
-      try { history.replaceState(null, "", `/club/?org=${encodeURIComponent(joined)}`); } catch {}
-    }
-    said = claimed.said || "";
-  }
+  // An invite to answer (0121): its page first, unless it's this account's already.
+  if (invite && (await showAccept(invite))) return;
   wire();
-  await load(joined || undefined);
-  if (said) status(said);
+  await load();
+  showMyInvites();
   // Back from Checkout before Stripe's word: Start a club says so, and looks again.
   if (new URLSearchParams(location.search).get("paid") && !$("v-start").hidden) {
     $("v-start-said").textContent = "Thanks. Your plan starts as soon as Stripe confirms it, usually within a minute.";

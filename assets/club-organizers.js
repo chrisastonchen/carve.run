@@ -1,6 +1,7 @@
 // A club's organizers (club v2): Club home's box and Club settings' list.
-// "Organizers · 2 of 5", + Add an organizer (one email; joined at once
-// with a Carve account, else when they sign in), and on settings Remove
+// "Organizers · 2 of 5", + Add an organizer (one email, an invite they
+// accept or decline: 0121, Chris 11/16), each shown joined, "Invited ·
+// waiting" or "Declined" with Re-invite, and on settings Remove
 // (twice, never the owner). The limit is the server's (organizer_cap),
 // else the plan's. A new address gets the invite email (org-invite-send).
 
@@ -19,8 +20,11 @@ export function inviteWords(email, failure = null) {
   if (failure.code === "sent_recently") return "Invite sent recently.";
   if (failure.code === "too_many") return "Daily invite limit reached.";
   if (failure.code === "not_invited") return `${email} wasn't added. Try again.`;
-  return "Added. They join when they sign in to Carve with that email.";
+  return "Added. They join when they accept the invite.";
 }
+
+/// What an organizer's row says under their address (0121).
+const stateOf = (m) => (m.owner ? "Owner" : m.joined ? "Organizer" : m.status === "declined" ? "Declined" : "Invited · waiting");
 
 /// avatars: a function giving an organizer's initials (Club home, mock
 /// v11), for a circle beside each; onData: told the members on each load.
@@ -53,12 +57,19 @@ export function organizersBox(p, org, { removable = false, avatars = null, onDat
         const circle = el("span", `cd-av${m.owner ? " owner" : m.joined ? "" : " invited"}`, avatars(m.email));
         circle.setAttribute("aria-hidden", "true");
         const words = el("span", "cd-person");
-        words.append(who, el("small", "", m.owner ? "Owner" : m.joined ? "Organizer" : "Invited"));
+        words.append(who, el("small", m.status === "declined" ? "declined" : "", stateOf(m)));
         li.append(circle, words);
       } else {
         li.append(who);
-        if (m.owner) li.append(el("small", "", "Owner"));
-        else if (!m.joined) li.append(el("small", "", "Invited"));
+        if (!m.joined || m.owner) li.append(el("small", m.status === "declined" ? "declined" : "", stateOf(m)));
+      }
+      // Declined: ask again (a fresh invite and email).
+      if (m.status === "declined") {
+        const again = el("button", "textlink cv-reinvite", "Re-invite");
+        again.type = "button";
+        again.setAttribute("aria-label", `Re-invite ${m.email}`);
+        again.addEventListener("click", () => invite(m.email));
+        li.append(again);
       }
       if (removable && !m.owner) {
         const b = el("button", "textlink cv-remove", removing === m.email ? "Remove for good" : "Remove");
@@ -95,10 +106,8 @@ export function organizersBox(p, org, { removable = false, avatars = null, onDat
   }
 
   $(`${p}-add`).addEventListener("click", () => { $(`${p}-form`).hidden = false; $(`${p}-email`).focus(); });
-  $(`${p}-form`).addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = $(`${p}-email`).value.trim().toLowerCase();
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return say("Add their email address.");
+  /// An invite, new or again (a declined one): saved, then its email.
+  async function invite(email) {
     $(`${p}-go`).disabled = true;
     let added = false;
     await change(async () => {
@@ -107,7 +116,7 @@ export function organizersBox(p, org, { removable = false, avatars = null, onDat
       $(`${p}-email`).value = "";
       $(`${p}-form`).hidden = true;
       return next;
-    }, () => (data?.members?.some((m) => m.email === email && m.joined) ? `${email} is an organizer now.` : `${email} invited. They join when they sign in to Carve with that email.`));
+    }, () => `${email} invited. They join when they accept.`);
     // Once per new address: the email, then what happened to it.
     if (added) {
       let failure = null;
@@ -119,6 +128,12 @@ export function organizersBox(p, org, { removable = false, avatars = null, onDat
       say(inviteWords(email, failure));
     }
     $(`${p}-go`).disabled = false;
+  }
+  $(`${p}-form`).addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = $(`${p}-email`).value.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return say("Add their email address.");
+    invite(email);
   });
 
   return { load };
