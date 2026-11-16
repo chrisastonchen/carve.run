@@ -1,13 +1,5 @@
 {
  "flagged": {
-  "a1a-boynton-boca": {
-   "coverage": 0.58,
-   "since": "2026-11-14"
-  },
-  "allegany-state-park-route-1": {
-   "coverage": 0.63,
-   "since": "2026-11-14"
-  },
   "arthur-highway-sorell-port-arthur": {
    "coverage": 0.72,
    "since": "2026-11-14"
@@ -25,8 +17,12 @@
    "since": "2026-11-12"
   },
   "blue-ridge-parkway-roanoke-mabry-mill": {
-   "coverage": 0.65,
+   "coverage": 0.58,
    "since": "2026-11-14"
+  },
+  "cane-river-la-494": {
+   "coverage": 0.22,
+   "since": "2026-11-15"
   },
   "cayuga-lake-highway-90": {
    "coverage": 0.48,
@@ -56,10 +52,6 @@
    "coverage": 0.27,
    "since": "2026-11-01"
   },
-  "highway-1-marin": {
-   "coverage": 0.55,
-   "since": "2026-11-14"
-  },
   "highway-120-east": {
    "coverage": 0.17,
    "since": "2026-11-14"
@@ -84,12 +76,8 @@
    "coverage": 0.19,
    "since": "2026-11-14"
   },
-  "klondike-highway-white-pass": {
-   "coverage": 0.48,
-   "since": "2026-11-10"
-  },
   "la-rumorosa-grade-baja": {
-   "coverage": 0.59,
+   "coverage": 0.62,
    "since": "2026-11-07"
   },
   "lake-hughes-road": {
@@ -100,16 +88,8 @@
    "coverage": 0.63,
    "since": "2026-10-29"
   },
-  "lobethal-road-norton-summit": {
-   "coverage": 0.29,
-   "since": "2026-11-09"
-  },
   "looking-glass-road": {
    "coverage": 0.6,
-   "since": "2026-11-06"
-  },
-  "mcclure-pass": {
-   "coverage": 0.45,
    "since": "2026-11-06"
   },
   "mckenzie-pass": {
@@ -121,43 +101,23 @@
    "since": "2026-11-14"
   },
   "monument-valley-us-163": {
-   "coverage": 0.56,
+   "coverage": 0.58,
    "since": "2026-11-06"
   },
-  "natchez-trace-tennessee": {
-   "coverage": 0.7,
-   "since": "2026-11-14"
-  },
-  "newfound-gap-road": {
-   "coverage": 0.44,
-   "since": "2026-11-13"
-  },
   "north-cape-coastal-drive": {
-   "coverage": 0.29,
+   "coverage": 0.71,
    "since": "2026-11-06"
   },
   "oak-creek-canyon": {
    "coverage": 0.01,
    "since": "2026-11-02"
   },
-  "old-kings-highway-6a": {
-   "coverage": 0.11,
-   "since": "2026-11-13"
-  },
   "onion-valley-road": {
    "coverage": 0.57,
    "since": "2026-11-01"
   },
-  "page-mill-to-pescadero": {
-   "coverage": 0.59,
-   "since": "2026-11-14"
-  },
-  "qu-appelle-highway-56": {
-   "coverage": 0.61,
-   "since": "2026-11-14"
-  },
   "rockefeller-parkway-west-thumb": {
-   "coverage": 0.05,
+   "coverage": 0.06,
    "since": "2026-11-02"
   },
   "smugglers-notch": {
@@ -176,15 +136,11 @@
    "coverage": 0.01,
    "since": "2026-10-24"
   },
-  "tunnel-of-trees-m-119": {
-   "coverage": 0.54,
-   "since": "2026-11-13"
-  },
   "wolf-creek-pass": {
    "coverage": 0.21,
    "since": "2026-11-10"
   }
  },
  "format": 1,
- "updated": "2026-11-15T14:12:40Z"
+ "updated": "2026-11-16T14:11:58Z"
 }
