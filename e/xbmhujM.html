@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "bd216d87-07d5-44be-981b-9ecd0f496331", "token": "xbmhujM", "kind": "coffee", "name": "Hill Country PCA Informal Get Together – Rudy's 620", "venue": "Rudy's BBQ (RR 620)", "address": "7709 Ranch Road 620 N, Austin, TX 78726", "locality": "Austin, TX", "lat": 30.410532, "lon": -97.849383, "timeZone": "America/Chicago", "next": [{"start": "2026-12-06T15:00:00Z", "end": "2026-12-06T17:30:00Z"}, {"start": "2027-01-03T15:00:00Z", "end": "2027-01-03T17:30:00Z"}, {"start": "2027-02-07T15:00:00Z", "end": "2027-02-07T17:30:00Z"}], "repeats": "1st Sunday monthly", "cars": "Porsche club meet; Porsche owners and fans", "cost": null, "organizer": "Porsche Club of America – Hill Country Region", "sourceUrl": "https://www.hcrpca.org/event/informal-get-together-rudys-bbq-rr-620-2/2026-12-06/", "registerUrl": null, "lastConfirmed": "2026-11-05", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/971d75d2de395885a5ff.png", "page": "https://www.hcrpca.org/", "background": "#1C1C1E", "crop": [0.0, 0.0, 0.968, 1.0]}, "circuit": null, "about": {"text": "\u003cp>Let’s Get Together – a very informal “come as you are” gathering on the 1st Sunday of each month.", "source": "organizer", "page": "https://www.hcrpca.org/event/informal-get-together-rudys-bbq-rr-620-2/2026-12-06/"}, "notes": "No-host, come-and-go morning; next on Dec 6.", "membersOnly": false, "series": "b5c5c63344", "summary": "Porsche Club of America – Hill Country Region runs a Cars & Coffee meet at Rudy's BBQ (RR 620) in Austin, TX on Sunday, December 6, 2026, 9 AM to 11:30 AM. It runs the 1st Sunday of every month. No-host, come-and-go morning; next on Dec 6.", "near": "About 40 miles northeast of Austin, as the crow flies.", "roads": [{"n": "Lime Creek Road", "s": "lime-creek-road-texas", "m": 6.6, "d": 4}, {"n": "RR 1431: Jonestown to Marble Falls", "s": "ranch-road-1431-texas", "m": 29.9, "d": 7}, {"n": "Hamilton Pool Road", "s": "hamilton-pool-road", "m": 16.7, "d": 11}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

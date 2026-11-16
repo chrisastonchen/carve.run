@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "eb9b02c4-8b65-475b-bf04-f3bc4949401d", "token": "6xnoDnt", "kind": "cruise", "name": "Sippin' in Drippin' & Air-Cooled Porsche Meet-Up", "venue": "Oak Hill Social Coffee & Cocktails", "address": "8600 W US Hwy 290, Austin, TX 78736", "locality": "Austin, TX", "lat": 30.234848, "lon": -97.911581, "timeZone": "America/Chicago", "next": [{"start": "2026-12-02T23:00:00Z", "end": "2026-12-03T02:00:00Z"}, {"start": "2027-01-06T23:00:00Z", "end": "2027-01-07T02:00:00Z"}, {"start": "2027-02-03T23:00:00Z", "end": "2027-02-04T02:00:00Z"}], "repeats": "1st Wednesday monthly", "cars": "Porsche club meet; any Porsche, air-cooled cars especially", "cost": null, "organizer": "Porsche Club of America – Hill Country Region", "sourceUrl": "https://www.hcrpca.org/event/sippin-in-drippin-meetup-5/", "registerUrl": null, "lastConfirmed": "2026-11-04", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/971d75d2de395885a5ff.png", "page": "https://www.hcrpca.org/", "background": "#1C1C1E", "crop": [0.0, 0.0, 0.968, 1.0]}, "circuit": null, "about": {"text": "\u003cp>Local Porsche enthusiasts are invited to gather for a standing NO HOST SIPPIN’ IN DRIPPIN\\' MEETUP in the Hill Country on the 1st WEDNESDAY evening of each month.", "source": "organizer", "page": "https://www.hcrpca.org/event/sippin-in-drippin-meetup-5/"}, "notes": "Evening cruise-in, no sign-up; next on Dec 2.", "membersOnly": false, "series": "0d57474601", "summary": "Porsche Club of America – Hill Country Region runs a cruise at Oak Hill Social Coffee & Cocktails in Austin, TX on Wednesday, December 2, 2026, 5 PM to 8 PM. It runs the 1st Wednesday of every month. Evening cruise-in, no sign-up; next on Dec 2.", "near": "About 25 miles northeast of Austin, as the crow flies.", "roads": [{"n": "Hamilton Pool Road", "s": "hamilton-pool-road", "m": 16.7, "d": 7}, {"n": "RR 12: Wimberley to Dripping Springs", "s": "ranch-road-12-wimberley-dripping-springs", "m": 13.7, "d": 11}, {"n": "Lime Creek Road", "s": "lime-creek-road-texas", "m": 6.6, "d": 14}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

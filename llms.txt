@@ -9,7 +9,7 @@ Carve at carve.run is separate from other apps called Carve: it is for cars and 
 - Plan a route on a computer (free): https://carve.run/plan/
 - Pricing: https://carve.run/pricing/
 - App Store (iPhone, iOS 26+): https://apps.apple.com/app/carve-route-planner/id6808087716
-- Android (Android 10+): early access on Google Play: https://carve.run/android/
+- Android (Android 10+) and Android Auto: Google Play: https://play.google.com/store/apps/details?id=run.carve.app
 - Made by: Chris Aston Chen
 - About: https://carve.run/about/
 - Contact: support@carve.run

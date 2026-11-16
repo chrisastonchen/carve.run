@@ -139,12 +139,12 @@
 </div>
 <button type="button" class="ex-toggle" id="ex-toggle" aria-controls="ex-map" aria-expanded="false">Map</button>
 </div>
-<script type="module" src="/assets/explore.js?v=61a08e9747"></script>
+<script type="module" src="/assets/explore.js?v=589341feef"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -159,7 +159,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -179,6 +179,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

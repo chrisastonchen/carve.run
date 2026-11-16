@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "81bf58ff-d62f-4df8-ada7-0ed04aa3e761", "token": "QmKhAut", "kind": "track", "name": "The FIRM Track Attack Final Round & Open Track", "venue": "Florida International Rally & Motorsport Park (The FIRM)", "address": "7266 Airport Rd, Starke, FL 32091", "locality": "Starke, FL", "lat": 29.94413, "lon": -82.10983, "timeZone": "America/New_York", "next": [{"start": "2026-11-22T13:00:00Z", "end": "2026-11-22T22:00:00Z"}], "repeats": null, "cars": "Open Track/Novice plus Intermediate and Advanced time-attack groups", "cost": null, "organizer": "The FIRM", "sourceUrl": "https://www.motorsportreg.com/events/firm-track-attack-final-round-open-florida-intl-rally-msport-park-367884", "registerUrl": "https://gorally.com", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/ead25d566426c96b0ff3.jpg", "credit": "The FIRM via MotorsportReg", "page": "https://www.motorsportreg.com/events/firm-track-attack-final-round-open-florida-intl-rally-msport-park-367884"}, "logo": null, "circuit": null, "about": {"text": "The FIRM Track Attack Series combines competitive time attack with the structure and seat time of a FIRM Open Track Day.\n\nCompete for Fastest Time of the Day (FTD) while enjoying a full Open Track schedule. The four-event championship features four unique course layouts, giving drivers a new challenge at every round.\n\nRun Groups\n\n• Advanced Track Attack\n\n• Intermediate Track Attack\n\n• Open Track / Novice\n\nThe event follows the standard FIRM Open Track Day format:\n\n• 20-minute driving sessions\n\n• Maximum of 12 cars per session\n\n• Plenty of track time throughout the day\n\nAll FIRM Open Track policies, vehicle tech inspection requirements, and track rules apply. Please review them before registering at gorally.com/track-days.\n\n***IMPORTANT TRACK ATTACK NOTE: All Track Attack competitors must have already completed an official vehicle and driver weigh-in during either Event 1 or Event 2 at The FIRM. This is required for championship eligibility.***\n\nCOST\n\n• FREE for Driver's Club Members\n\n• $250 - Register 3+ days before the event\n\n• $275 - Register within 3 days of the event\n\n• $300 - At the gate\n\n• $35 - FIRM transponder rental\n\n• $20 - Use your own transponder\n\nDriver's Club Memberships: https://gorally.com/drivers-club/\n\nSCHEDULE\n\n7:30 a.m. Gates Open\n\n7:30 a.m. – 8:30 a.m. Vehicle Tech Inspection (Download the form HERE)\n\n8:45 a.m.  Mandatory Drivers Meeting\n\n9:00 a.m. – 9:20 a.m. Track Attack Session I\n\n9:30 a.m. – 9:50 a.m. Open Track Sessions I (Novice Instructor Sessions)\n\n10:00 a.m. – 10:20 a.m. Track Attack Session II\n\n10:30 a.m. – 10:50 a.m. Open Track Session II\n\n11:00 a.m. – 11:20 a.m. Track Attack Session III\n\n11:30 a.m. – 11:50 a.m. Open Track Session III\n\n12:00 p.m. – 1:00 p.m. Track Closed for Lunch\n\n1:00 p.m. – 4:00 p.m. Open Track*\n\n5:00 p.m. Gates Close\n\n*We run RAIN or SHINE. The scheduled times are subject to change during the afternoon session which will be dependent upon Track Attack competitor attendance.*\n\n2026 TRACK ATTACK EVENT SCHEDULE…", "source": "organizer", "page": "https://www.motorsportreg.com/events/firm-track-attack-final-round-open-florida-intl-rally-msport-park-367884"}, "notes": "Season-final time attack run alongside a regular open-track day; 20-minute sessions, max 12 cars each.", "membersOnly": false, "series": "56ecdf6c5b", "summary": "The FIRM runs a track day at Florida International Rally & Motorsport Park (The FIRM) in Starke, FL on Sunday, November 22, 2026. Season-final time attack run alongside a regular open-track day; 20-minute sessions, max 12 cars each.", "near": "About 110 miles northwest of Orlando, as the crow flies.", "roads": [{"n": "William Bartram Scenic Highway", "s": "bartram-scenic-highway", "m": 22.2, "d": 27}, {"n": "Cross Creek: CR 346 and CR 325", "s": "cross-creek", "m": 12.8, "d": 29}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

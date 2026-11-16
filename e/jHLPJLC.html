@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "c11d2e42-1f92-52ef-bdb1-eb36bdb8bae5", "token": "jHLPJLC", "kind": "autocross", "name": "STBR Autocross #12", "venue": "Coastal Bend Aviators Stadium", "address": null, "locality": "Robstown, TX", "lat": 27.78954, "lon": -97.65108, "timeZone": "America/Chicago", "next": [{"start": "2026-12-05T14:00:00Z", "end": "2026-12-05T23:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "SCCA - South Texas Border Region", "sourceUrl": "https://www.motorsportreg.com/events/stbr-autocross-12-coastal-bend-aviators-stadium-scca-south-texas-border-376224", "registerUrl": "https://www.motorsportreg.com/events/stbr-autocross-12-coastal-bend-aviators-stadium-scca-south-texas-border-376224", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/9bb60e5fa0aef48a0bac.jpg", "credit": "SCCA - South Texas Border Region via MotorsportReg", "page": "https://www.motorsportreg.com/events/stbr-autocross-12-coastal-bend-aviators-stadium-scca-south-texas-border-376224"}, "logo": null, "circuit": null, "about": {"text": "Come out to Robstown for our 12th 2026 STBR Autocross event at Coastal Bend Aviators Stadium. It's located about 18 miles from downtown Corpus Christi.\n\n• SCCA solo rules apply: Solo Rules.\n\n• Event is open to everyone\n\n• $50 online / $55 onsite for SCCA-STBR Members, $65 for non-members.\n\n• Classing questions? Look at the Quick Classing Cheat Sheet or use the SCCA Classifier.\n\n• Look at our Site Map for information on the event layout.", "source": "organizer", "page": "https://www.motorsportreg.com/events/stbr-autocross-12-coastal-bend-aviators-stadium-scca-south-texas-border-376224"}, "notes": null, "membersOnly": false, "series": "9ee9a14c57", "summary": "SCCA - South Texas Border Region runs an autocross at Coastal Bend Aviators Stadium in Robstown, TX on Saturday, December 5, 2026.", "near": null, "roads": [{"n": "Shoreline Boulevard and Ocean Drive", "s": "corpus-christi-shoreline-ocean-drive", "m": 7.9, "d": 16}, {"n": "Mustang and Padre Islands", "s": "mustang-padre-island-drive", "m": 28.5, "d": 29}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

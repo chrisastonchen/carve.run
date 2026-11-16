@@ -4,7 +4,7 @@
 // never plans anything itself: what's typed, dropped or pasted goes to
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
 // address bar).
-import "/assets/site-bar.js?v=26e2ebbc13";
+import "/assets/site-bar.js?v=986ff8abd4";
 
 // The hero's car screen: CarPlay on an iPhone, Android Auto on Android (the
 // user, 2026-11-02). Here, not in site-bar.js: that file's import isn't
@@ -16,10 +16,10 @@ if (/android/i.test(navigator.userAgent || "")) {
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
-import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=428a174f1e";
+import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=8db8f4b092";
 import { heartButton, wireHearts } from "/assets/hearts.js?v=5c3fca78da";
 import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=a3869ea508";
-import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=bb6f2616de";
+import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=b133592880";
 import { who, whoNow } from "/assets/who.js?v=b3c98f8ff6";
 import { homeMenu } from "/assets/who-words.js?v=f70bdee137";
 
@@ -499,7 +499,7 @@ function openApp(link) {
   if (/android/i.test(ua)) {
     // Opened as its home-screen icon does (no link for it to read), else its early-access page.
     location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=run.carve.app;S.browser_fallback_url="
-      + encodeURIComponent("https://carve.run/android/") + ";end";
+      + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
     return;
   }
   // Not carve://open: without the app, Safari stops on "the address is

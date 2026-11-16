@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "dde9bfc1-e0c8-4920-bb2a-7133daa05915", "token": "XXgngYt", "kind": "coffee", "name": "Audrain Cars & Coffee at Second Beach", "venue": "Sachuest Beach (Second Beach)", "address": "315 Sachuest Point Rd, Middletown, RI 02842", "locality": "Middletown, RI", "lat": 41.4865, "lon": -71.25385, "timeZone": "America/New_York", "next": [{"start": "2026-11-15T13:00:00Z", "end": "2026-11-15T15:00:00Z"}], "repeats": null, "cars": "All makes; show cars must pre-register through Audrain's email list", "cost": "Free", "organizer": "Audrain Automobile Museum", "sourceUrl": "https://www.audrainautomuseum.org/cars-and-coffee-2026", "registerUrl": null, "lastConfirmed": "2026-11-08", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/92ace2a84aee1c393df6.png", "page": "https://www.audrainautomuseum.org", "background": "#F2F2F4", "crop": [0.011, 0.021, 0.977, 0.96]}, "circuit": null, "about": {"text": "Join Cars & Coffee 2026 at Audrain Auto Museum for a premier automotive gathering featuring classic and exotic cars. Enjoy exclusive events, seminars, and community engagement.", "source": "organizer", "page": "https://www.audrainautomuseum.org/cars-and-coffee-2026"}, "notes": "Last two dates of Audrain's 2026 season; spectators need no registration. Rain or shine.", "membersOnly": false, "series": "a264800d1a", "summary": "Audrain Automobile Museum runs a Cars & Coffee meet at Sachuest Beach (Second Beach) in Middletown, RI. Last two dates of Audrain's 2026 season; spectators need no registration. Rain or shine.", "near": "About 60 miles south of Boston, as the crow flies.", "roads": [{"n": "Ocean Drive and Bellevue Avenue", "s": "ocean-drive-newport", "m": 5.8, "d": 3}, {"n": "Route 77: Tiverton to Sakonnet Point", "s": "ri-77-sakonnet", "m": 8.4, "d": 4}, {"n": "South Road and Moshup Trail", "s": "vineyard-south-road", "m": 11.1, "d": 24}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

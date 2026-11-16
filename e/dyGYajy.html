@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "a262286b-a742-5926-b39b-6357fcd985cf", "token": "dyGYajy", "kind": "track", "name": "2026 MassTuning TrackFest Schedule", "venue": "Monticello Motor Club", "address": null, "locality": "Monticello, NY", "lat": 41.61668, "lon": -74.69536, "timeZone": "America/New_York", "next": [{"start": "2026-11-15T13:00:00Z", "end": "2026-11-15T22:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "MassTuning", "sourceUrl": "https://www.motorsportreg.com/events/2026-masstuning-trackfest-schedule-northeast-usa-368148", "registerUrl": "https://www.motorsportreg.com/events/2026-masstuning-trackfest-schedule-northeast-usa-368148", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/1d3aa27be52e0e8ac870.png", "credit": "MassTuning via MotorsportReg", "page": "https://www.motorsportreg.com/events/2026-masstuning-trackfest-schedule-northeast-usa-368148"}, "logo": null, "circuit": null, "about": {"text": "The largest track day schedule in the Northeast. Every road course in the area. Quality events offering the most seat time and best value.\n\nPlease select an event below for more details and registration!\n\nHigh-Performance Driving Events at Northeast Tracks:\n\n• November 8: Monticello Motor Club – FULL COURSE | $499\n\n• November 13: Thompson Speedway | $299\n\n• November 14: Thompson Speedway | $349\n\n• November 15: Thompson Speedway | $349 [LADIES DAY]\n\n• November 20: Lime Rock Park – FULL COURSE | $349\n\n• November 21: Lime Rock Park – FULL COURSE | $399\n\nTo socialize online about these track days, join us on Facebook!", "source": "organizer", "page": "https://www.motorsportreg.com/events/2026-masstuning-trackfest-schedule-northeast-usa-368148"}, "notes": null, "membersOnly": false, "series": "abe32bf2db", "summary": "MassTuning runs a track day at Monticello Motor Club in Monticello, NY.", "near": "About 70 miles northwest of New York, as the crow flies.", "roads": [{"n": "Hawk's Nest: Highway 97", "s": "hawks-nest-highway-97", "m": 31.9, "d": 13}, {"n": "Highway 23 over High Point", "s": "high-point-nj-23", "m": 11.6, "d": 18}, {"n": "Delaware Water Gap: River Road and 209", "s": "delaware-water-gap-us-209", "m": 30.6, "d": 22}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

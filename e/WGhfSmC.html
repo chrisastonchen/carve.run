@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "16ed8c9f-504e-49be-8ec4-53c2faa26517", "token": "WGhfSmC", "kind": "track", "name": "High Plains Raceway Open Lapping (Cars, Winter)", "venue": "High Plains Raceway", "address": "93301 E Highway 36, Deer Trail, CO 80105", "locality": "Deer Trail, CO", "lat": 39.7356, "lon": -103.8972, "timeZone": "America/Denver", "next": [{"start": "2026-11-15T18:00:00Z", "end": "2026-11-15T22:00:00Z"}], "repeats": null, "cars": "Almost any street car; no track experience needed", "cost": "$159 if paid by midnight the night before; $179 after", "organizer": "High Plains Raceway", "sourceUrl": "https://www.highplainsraceway.com/event/tentative-cars-open-lapping-winter-rates-30/", "registerUrl": "https://www.motorsportreg.com/events/tentative-cars-lapping-sunday-nov-15-high-plains-raceway-583278", "lastConfirmed": "2026-11-06", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/f68b70622d0682fb0860.png", "page": "https://www.highplainsraceway.com", "background": "#1C1C1E", "crop": [0.0, 0.0, 1.0, 1.0]}, "circuit": null, "about": {"text": "Open Lapping Day – cars only. Session structure and length dependent on participation.", "source": "organizer", "page": "https://www.highplainsraceway.com/event/tentative-cars-open-lapping-winter-rates-30/"}, "notes": "Tentative: cancelled if fewer than 15 sign up by noon Friday or the weather is bad; call the 303-769-4771 hotline that morning. Gates by 9:30, meeting 10:30.", "membersOnly": false, "series": "1bc9e61e76", "summary": "High Plains Raceway runs a track day at High Plains Raceway in Deer Trail, CO. Tentative: cancelled if fewer than 15 sign up by noon Friday or the weather is bad; call the 303-769-4771 hotline that morning. Gates by 9:30, meeting 10:30.", "near": "About 60 miles east of Denver, as the crow flies.", "roads": [], "otherDates": [{"token": "NciZVip", "start": "2026-11-21T18:00:00Z"}, {"token": "NNtdYSF", "start": "2026-11-29T18:00:00Z"}]}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

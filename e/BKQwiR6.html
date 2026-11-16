@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "76cfbebd-5b3b-519b-b494-d012225d5436", "token": "BKQwiR6", "kind": "track", "name": "MSF II Certification / Instructor Training", "venue": "Motorsport Ranch - Cresson", "address": null, "locality": "Cresson, TX", "lat": 32.52504, "lon": -97.61253, "timeZone": "America/Chicago", "next": [{"start": "2026-11-21T14:00:00Z", "end": "2026-11-21T23:00:00Z"}, {"start": "2026-11-22T14:00:00Z", "end": "2026-11-22T23:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "The Driver's Edge", "sourceUrl": "https://www.motorsportreg.com/events/drivers-edge-msr-houston-hpde-562857", "registerUrl": "https://www.motorsportreg.com/events/drivers-edge-msr-houston-hpde-562857", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/cb81773056b064c3d12d.jpg", "credit": "The Driver's Edge via MotorsportReg", "page": "https://www.motorsportreg.com/events/drivers-edge-msr-houston-hpde-562857"}, "logo": null, "circuit": null, "about": {"text": "TDE/ITS-MSF 2 Certification. Held over Two Days of in-depth classroom sessions lead by certified advanced instructors with on track role playing in an event environment. The CERTIFIED program is a nationally recognized. It establishes a path of continuing education and provides a formal record of achievement for your efforts as an HPDE Instructor. The program is defined by each level building upon the next to allow progression through the ranks of the HPDE instructor community.", "source": "organizer", "page": "https://www.motorsportreg.com/events/drivers-edge-msr-houston-hpde-562857"}, "notes": null, "membersOnly": false, "series": "8b347d48fe", "summary": "The Driver's Edge runs a track day at Motorsport Ranch - Cresson in Cresson, TX on Saturday, November 21, 2026.", "near": "About 40 miles southwest of Dallas, as the crow flies.", "roads": [{"n": "Paluxy Highway: Granbury to Glen Rose", "s": "glen-rose-paluxy-river", "m": 23.3, "d": 15}, {"n": "FM 4: Santo to Palo Pinto", "s": "fm-4-palo-pinto", "m": 13.2, "d": 36}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

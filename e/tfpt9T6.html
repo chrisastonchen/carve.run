@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "acb6cb74-26e0-4418-b0c0-a8fd8817708c", "token": "tfpt9T6", "kind": "coffee", "name": "Tejas BMW CCA Cars & Coffee – San Antonio", "venue": "First Watch (Sonterra)", "address": "700 E Sonterra Blvd, Suite 314, San Antonio, TX 78258", "locality": "San Antonio, TX", "lat": 29.614432, "lon": -98.484124, "timeZone": "America/Chicago", "next": [{"start": "2026-11-21T15:00:00Z", "end": null}, {"start": "2026-12-19T15:00:00Z", "end": null}, {"start": "2027-01-16T15:00:00Z", "end": null}], "repeats": "3rd Saturday monthly", "cars": "BMW-focused; no RSVP", "cost": null, "organizer": "BMW CCA Tejas Chapter (with 2002 Forever Chapter)", "sourceUrl": "https://www.tejaschapter.org/events/december-2026-cars-coffee", "registerUrl": null, "lastConfirmed": "2026-11-15", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/a0fc9c18be0fc4e70b5f.png", "page": "https://www.tejaschapter.org/", "background": "#F2F2F4", "crop": [0.083, 0.068, 0.834, 0.869]}, "circuit": null, "about": {"text": "Same 3rd-Saturday series as Austin; Nov 21 and Dec 19 posted here.", "source": "carve", "page": null}, "notes": "Same 3rd-Saturday series as Austin; Nov 21 and Dec 19 posted here.", "membersOnly": false, "series": "1cd0ecec18", "summary": "BMW CCA Tejas Chapter (with 2002 Forever Chapter) runs a Cars & Coffee meet at First Watch (Sonterra) in San Antonio, TX on Saturday, November 21, 2026, 9 AM. It runs the 3rd Saturday of every month. Same 3rd-Saturday series as Austin; Nov 21 and Dec 19 posted here.", "near": "About 30 miles southwest of Austin, as the crow flies.", "roads": [{"n": "Scenic Loop Road", "s": "scenic-loop-road-helotes-boerne", "m": 13.0, "d": 12}, {"n": "Bandera Road: Helotes to Bandera", "s": "bandera-road-helotes-bandera", "m": 29.5, "d": 13}, {"n": "RM 1376: Boerne to Luckenbach", "s": "ranch-road-1376-boerne-luckenbach", "m": 27.7, "d": 20}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

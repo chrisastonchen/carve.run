@@ -63,7 +63,7 @@ function eventRow(save, tokens) {
 async function savedEvents() {
   const now = new Date().toISOString();
   let events = { EVENTS_URL: null };
-  try { events = await import("/assets/events.js?v=bb6f2616de"); } catch {}
+  try { events = await import("/assets/events.js?v=b133592880"); } catch {}
   const [saved, data] = await Promise.all([
     select("event_saves", `select=event_id,name,kind,place,starts_at&hidden=is.false&starts_at=gt.${encodeURIComponent(now)}&order=starts_at.asc`).catch(() => []),
     events.EVENTS_URL ? fetch(events.EVENTS_URL).then((r) => (r.ok ? r.json() : { events: [] })).catch(() => ({ events: [] })) : { events: [] },

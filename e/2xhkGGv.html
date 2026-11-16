@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "c4b57d93-c876-4b49-b12c-24c514d5293d", "token": "2xhkGGv", "kind": "show", "name": "Seattle International Auto Show", "venue": "Lumen Field Event Center", "address": "800 Occidental Ave S, Seattle, WA 98134", "locality": "Seattle, WA", "lat": 47.5953, "lon": -122.3316, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-15T18:00:00Z", "end": "2026-11-16T05:00:00Z"}], "repeats": null, "cars": "New-car manufacturer displays", "cost": null, "organizer": "Seattle International Auto Show (Steve Freeman Events)", "sourceUrl": "https://www.seattleautoshow.com/", "registerUrl": null, "lastConfirmed": "2026-11-09", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/6aec1b94ea33a5a673cc.png", "page": "https://www.seattleautoshow.com/", "background": "#1C1C1E", "crop": [0.0, 0.0, 1.0, 0.792]}, "circuit": null, "about": {"text": "Fri and Sat 10am to 9pm, Sun 10am to 6pm. Ticketed; price not shown on the official site.", "source": "carve", "page": null}, "notes": "Fri and Sat 10am to 9pm, Sun 10am to 6pm. Ticketed; price not shown on the official site.", "membersOnly": false, "series": "404fbd7792", "summary": "Seattle International Auto Show (Steve Freeman Events) runs a car show at Lumen Field Event Center in Seattle, WA on Sunday, November 15, 2026, 10 AM to 9 PM. Fri and Sat 10am to 9pm, Sun 10am to 6pm. Ticketed.", "near": "In Seattle.", "roads": [{"n": "Snoqualmie Valley: Highway 203", "s": "snoqualmie-valley-highway-203", "m": 28.0, "d": 18}, {"n": "Highway 101: Hood Canal", "s": "highway-101-hood-canal", "m": 36.8, "d": 27}, {"n": "Highway 106: Hood Canal South Shore", "s": "hood-canal-south-shore", "m": 18.8, "d": 27}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

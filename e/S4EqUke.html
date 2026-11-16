@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "382669bd-c80a-53ef-8f41-ced06fe307db", "token": "S4EqUke", "kind": "cruise", "name": "2026 NCC Annual Pie Run", "venue": "Catoctin Mountain Orchard", "address": null, "locality": "Thurmont, MD", "lat": 39.62371, "lon": -77.41082, "timeZone": "America/New_York", "next": [{"start": "2026-11-21T13:00:00Z", "end": "2026-11-21T22:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "BMW CCA - National Capital Chapter - Tours", "sourceUrl": "https://www.motorsportreg.com/events/2026-ncc-annual-pie-run-catoctin-mountain-orchard-bmw-cca-national-capital-tours-811991", "registerUrl": "https://www.motorsportreg.com/events/2026-ncc-annual-pie-run-catoctin-mountain-orchard-bmw-cca-national-capital-tours-811991", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/f2e82f5cb955ae49d590.jpg", "credit": "BMW CCA - National Capital Chapter - Tours via MotorsportReg", "page": "https://www.motorsportreg.com/events/2026-ncc-annual-pie-run-catoctin-mountain-orchard-bmw-cca-national-capital-tours-811991"}, "logo": null, "circuit": null, "about": {"text": "Saturday November 21st, 2026\n\nNCC 31st Pie Run\n\n8:30am meetup at Catoctin Mountain Orchard, 9:30am departure,\n\nJoin us for the 31st NCC Pie Run! For this edition of the Pie Run. This is our last tour of the year. We'll begin at the traditional rally point - Catoctin Mountain Orchard in Thurmont, MD. Save a day of baking and come spend a day with your fellow club members driving some scenic Maryland roads during the last of the fall colors. The Orchard opens at 9am. They are not taking pre-orders so all pies and bakery goods are first come first serve! Bring a cooler or insulated bag for your frozen pies!\n\nhttps://www.catoctinmountainorchard.com/\n\nOur final destination will be Vanish Brewery in Lucketts, VA. Vanish is a 63-acre, family-owned farm-brewery in beautiful Lucketts, VA. It’s known for good beer and a laid-back vibe. With the use of local ingredients, they focus on bringing you beer that is plant-to-pint and seed-to-sip. They offer up to 20 beers on tap at a time in their massive Taproom, along with typical bar food, BBQ, Tacos and more. We're shooting for a 12:30-1pm arrival.\n\nhttps://vanishbeer.com/\n\nAll Drivers must have an active BMW CCA membership and register on MotorsportReg.Com.\n\nTour Registration Closes Promptly at 8pm on Tuesday, November 17th or earlier if max registrations are reached.\n\nCost is $20 per vehicle.\n\nIf you cancel before the tour closes, you will be refunded to the original payment method. No refunds will be made after that time.", "source": "organizer", "page": "https://www.motorsportreg.com/events/2026-ncc-annual-pie-run-catoctin-mountain-orchard-bmw-cca-national-capital-tours-811991"}, "notes": null, "membersOnly": false, "series": "2cc81d2920", "summary": "BMW CCA - National Capital Chapter - Tours runs a cruise at Catoctin Mountain Orchard in Thurmont, MD on Saturday, November 21, 2026.", "near": "About 50 miles north of Washington, DC, as the crow flies.", "roads": [{"n": "Catoctin Mountain: Highway 77", "s": "catoctin-mountain-highway-77", "m": 8.9, "d": 1}, {"n": "Gettysburg Battlefield", "s": "gettysburg-battlefield", "m": 5.1, "d": 14}, {"n": "Lincoln Highway: Fort Loudon to Breezewood", "s": "lincoln-highway-fort-loudon-breezewood", "m": 23.3, "d": 34}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "e20e131c-f48c-4cfa-a5c3-476f9c65942f", "token": "FZfPFtX", "kind": "show", "name": "Streetside Classics Customer Appreciation Day – Atlanta", "venue": "Streetside Classics Atlanta showroom", "address": "213 Thornton Rd, Suite 400, Lithia Springs, GA 30122", "locality": "Lithia Springs, GA", "lat": 33.793515, "lon": -84.636885, "timeZone": "America/New_York", "next": [{"start": "2026-12-05T15:00:00Z", "end": "2026-12-05T20:00:00Z"}], "repeats": null, "cars": "All makes and models", "cost": null, "organizer": "Streetside Classics", "sourceUrl": "https://www.streetsideclassics.com/events/589", "registerUrl": null, "lastConfirmed": "2026-11-15", "timeUnknown": null, "image": null, "logo": null, "circuit": null, "about": {"text": "Holiday open house and Toys for Tots drive at the showroom.", "source": "carve", "page": null}, "notes": "Holiday open house and Toys for Tots drive at the showroom.", "membersOnly": false, "series": "830cf5c60f", "summary": "Streetside Classics runs a car show at Streetside Classics Atlanta showroom in Lithia Springs, GA on Saturday, December 5, 2026, 10 AM to 3 PM. Holiday open house and Toys for Tots drive at the showroom.", "near": "About 15 miles west of Atlanta, as the crow flies.", "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "87ef4230-dee3-4e53-aefd-e5665ed5082a", "token": "41abFRd", "kind": "coffee", "name": "Toys for Tots Cars & Coffee at Euro Clinic", "venue": "Euro Clinic", "address": "3465 Victor St, Santa Clara, CA 95054", "locality": "Santa Clara, CA", "lat": 37.3878, "lon": -121.9391, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-12-05T18:00:00Z", "end": "2026-12-05T20:00:00Z"}], "repeats": null, "cars": "All makes (Porsche club host)", "cost": null, "organizer": "Porsche Club of America - Golden Gate Region with Euro Clinic", "sourceUrl": "https://www.pca-ggr.org/calendar", "registerUrl": null, "lastConfirmed": "2026-11-15", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/13efe4a5d6ac0866f3f9.png", "page": "https://www.pca-ggr.org/", "background": "#1C1C1E", "crop": [0.001, 0.0, 0.999, 1.0]}, "circuit": null, "about": {"text": "Holiday toy-drive edition of GGR's Euro Clinic meets; bring a new unwrapped toy. Calendar entry has no description yet.", "source": "carve", "page": null}, "notes": "Holiday toy-drive edition of GGR's Euro Clinic meets; bring a new unwrapped toy. Calendar entry has no description yet.", "membersOnly": false, "series": "a4832d585c", "summary": "Porsche Club of America - Golden Gate Region with Euro Clinic runs a Cars & Coffee meet at Euro Clinic in Santa Clara, CA on Saturday, December 5, 2026, 10 AM to 12 PM. Holiday toy-drive edition of GGR's Euro Clinic meets; bring a new unwrapped toy.", "near": "About 15 miles southeast of San Jose, as the crow flies.", "roads": [{"n": "Calaveras Road", "s": "calaveras-road", "m": 15.0, "d": 6}, {"n": "Mount Hamilton Road", "s": "mount-hamilton-road", "m": 17.4, "d": 7}, {"n": "Highway 9: Saratoga to Santa Cruz", "s": "highway-9-saratoga-santa-cruz", "m": 33.4, "d": 11}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

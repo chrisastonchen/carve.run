@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "7f5ec923-4721-4e42-b849-3a2b78b4e99f", "token": "uhrvyCj", "kind": "track", "name": "Jzilla Friendsgiving 2026 at Barber", "venue": "Barber Motorsports Park", "address": "6040 Barber Motorsports Parkway, Birmingham, AL 35094", "locality": "Birmingham, AL", "lat": 33.53324, "lon": -86.61878, "timeZone": "America/Chicago", "next": [{"start": "2026-11-21T14:00:00Z", "end": "2026-11-21T23:00:00Z"}, {"start": "2026-11-22T14:00:00Z", "end": "2026-11-22T23:00:00Z"}], "repeats": null, "cars": "All makes; drivers 18+; novices get instruction; SA2020+ helmet", "cost": "$375–$695", "organizer": "Jzilla Track Days", "sourceUrl": "https://www.motorsportreg.com/events/friendsgiving-2026-barber-motorsports-park-jzilla-track-days-238175", "registerUrl": "https://www.motorsportreg.com/events/friendsgiving-2026-barber-motorsports-park-jzilla-track-days-238175", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/e17156e69e62be754166.png", "credit": "Jzilla Track Days via MotorsportReg", "page": "https://www.motorsportreg.com/events/friendsgiving-2026-barber-motorsports-park-jzilla-track-days-238175"}, "logo": null, "circuit": null, "about": {"text": "JZILLA TRACK DAYS - Friendsgiving 2026\n\nThis event will be hosted at the beautiful Barber Motorsports Park!\n\nExpect about 2 hours of track time per day, rain or shine 5 sessions + 1 Bonus. Entry fee varies from $375 to $695. All makes and models welcome, all drivers welcome (18 and older)! Novice drivers will receive instruction from Jzilla Track Days instructors.\n\nRoster spots are limited so register early!", "source": "organizer", "page": "https://www.motorsportreg.com/events/friendsgiving-2026-barber-motorsports-park-jzilla-track-days-238175"}, "notes": "About 2 hours of track time per day, rain or shine.", "membersOnly": false, "series": "e3077c295e", "summary": "Jzilla Track Days runs a track day at Barber Motorsports Park in Birmingham, AL on Saturday, November 21, 2026. About 2 hours of track time per day, rain or shine.", "near": null, "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

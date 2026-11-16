@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "73acc461-b5f8-4d2b-ba50-c8e065b89bf7", "token": "AD8kFga", "kind": "coffee", "name": "South OC Cars and Coffee", "venue": "Outlets at San Clemente", "address": "101 W Avenida Vista Hermosa, San Clemente, CA 92672", "locality": "San Clemente, CA", "lat": 33.4384, "lon": -117.6284, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-21T17:00:00Z", "end": "2026-11-21T19:00:00Z"}, {"start": "2026-11-28T17:00:00Z", "end": "2026-11-28T19:00:00Z"}, {"start": "2026-12-05T17:00:00Z", "end": "2026-12-05T19:00:00Z"}, {"start": "2026-12-12T17:00:00Z", "end": "2026-12-12T19:00:00Z"}, {"start": "2026-12-19T17:00:00Z", "end": "2026-12-19T19:00:00Z"}, {"start": "2026-12-26T17:00:00Z", "end": "2026-12-26T19:00:00Z"}], "repeats": "Every Saturday", "cars": "All makes welcome", "cost": null, "organizer": "South OC Cars and Coffee", "sourceUrl": "https://www.southoccarsandcoffee.com/", "registerUrl": null, "lastConfirmed": "2026-11-08", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/e6f8042c5ce6a751709f.png", "page": "https://www.southoccarsandcoffee.com/", "background": "#F2F2F4", "crop": [0.022, 0.022, 0.954, 0.954]}, "circuit": null, "about": {"text": "South OC Cars and Coffee is California's largest weekly car meet that attracts a mix of 500-600 hypercars, supercars, exotics, vintage, classic, muscle and sports cars, hot rods, rat rods, pickups, 4x4's and motor cycles.", "source": "organizer", "page": "https://www.southoccarsandcoffee.com/"}, "notes": "Rain or shine; no registration. Don't arrive before 8:30 AM; no revving or burnouts.", "membersOnly": false, "series": "b0ac1c5e9d", "summary": "South OC Cars and Coffee runs a Cars & Coffee meet at Outlets at San Clemente in San Clemente, CA on Saturday, November 21, 2026, 9 AM to 11 AM. It runs every Saturday. Rain or shine; no registration. Don't arrive before 8:30 AM; no revving or burnouts.", "near": "About 50 miles southeast of Los Angeles, as the crow flies.", "roads": [{"n": "Ortega Highway", "s": "ortega-highway", "m": 26.5, "d": 5}, {"n": "Santiago Canyon Road", "s": "santiago-canyon-road", "m": 10.6, "d": 18}, {"n": "Highway 76: Pala to Lake Henshaw", "s": "highway-76-pala-henshaw", "m": 23.6, "d": 33}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

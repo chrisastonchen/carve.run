@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "f26a5f45-c349-5c9c-9688-0a8f60eee2ce", "token": "Lzp3San", "kind": "track", "name": "Sebring Driving Club - Members Only, Closed to the Public", "venue": "Sebring Int'l Raceway", "address": null, "locality": "Sebring, FL", "lat": 27.45958, "lon": -81.35026, "timeZone": "America/New_York", "next": [{"start": "2027-01-04T13:00:00Z", "end": "2027-01-04T22:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "Sebring Driving Club", "sourceUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-051691", "registerUrl": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-051691", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/559efff3a2f0fd2e2605.jpg", "credit": "Mark Seymour from UK · CC BY 2.0 · Wikimedia Commons", "page": "https://commons.wikimedia.org/wiki/File:Sebring_12_hrs_-_-50_Prototype_-_Highway_to_Help_Riley_Dinan_DP_-_Pace_DeFoor_Hinton_(13295425925).jpg"}, "logo": null, "circuit": null, "about": {"text": "Sebring Driving Club™ is a limited members-only Club offering tri-monthly, year-round OPEN TRACK programs to automotive enthusiasts exclusively at the birth place of American Endurance Racing, Sebring International Raceway. The Club allows each driver to tailor the program to fit their lifestyle. Go to www.sebringdrivingclub.com to get on the wait list.", "source": "organizer", "page": "https://www.motorsportreg.com/events/sebring-driving-club-intl-raceway-membership-051691"}, "notes": null, "membersOnly": true, "series": "3bf19d3877", "summary": "Sebring Driving Club runs a track day at Sebring Int'l Raceway in Sebring, FL on Monday, January 4, 2027.", "near": "About 70 miles south of Orlando, as the crow flies.", "roads": [{"n": "Ridge Scenic Highway: SR 17", "s": "ridge-scenic-highway", "m": 31.7, "d": 21}], "otherDates": [{"token": "BC6idLa", "start": "2026-12-09T13:00:00Z"}]}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

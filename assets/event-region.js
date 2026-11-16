@@ -3,7 +3,7 @@
 //
 // The hub (/events/): the events near where we think the visitor is, as
 // cards, soonest first (the user, 2026-11-04: a real list, not only links).
-import { KINDS, cardHTML, finishPictures, loadEvents, nearby, nextOn } from "/assets/events.js?v=bb6f2616de";
+import { KINDS, cardHTML, finishPictures, loadEvents, nearby, nextOn } from "/assets/events.js?v=b133592880";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
 
 const NEAR_DAYS = 30;

@@ -20,7 +20,7 @@ import {
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js?v=7";
 import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=8";
-import { addPins } from "/assets/events.js?v=bb6f2616de";
+import { addPins } from "/assets/events.js?v=b133592880";
 import { closures, closureTitle, closureWords } from "./closures.js?v=3";
 import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
@@ -3843,12 +3843,12 @@ function planAnother() {
 /// Store on an iPhone, /android/ on an Android phone. So this only goes; counting here too
 /// counted each tap twice (2026-11-05).
 function wireGateOpen() {
-  if (isAndroid) $("gate-open").href = "/android/";
+  if (isAndroid) $("gate-open").href = "https://play.google.com/store/apps/details?id=run.carve.app";
   $("gate-open").addEventListener("click", (event) => {
     event.preventDefault();
     if (isAndroid) {
       location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=run.carve.app;S.browser_fallback_url="
-        + encodeURIComponent("https://carve.run/android/") + ";end";
+        + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
       return;
     }
     // Not carve://open: without the app Safari stops on "the address is invalid";
@@ -3859,7 +3859,7 @@ function wireGateOpen() {
 
 function osAwareGetApp() {
   if (!isAndroid) return;
-  document.querySelectorAll("[data-get-app]").forEach((a) => (a.href = "/android/"));
+  document.querySelectorAll("[data-get-app]").forEach((a) => (a.href = "https://play.google.com/store/apps/details?id=run.carve.app"));
   document.querySelectorAll("[data-get-icon]").forEach((u) => u.setAttribute("href", "#i-android"));
   document.querySelectorAll("[data-get-label]").forEach((s) => (s.textContent = "Get Carve for Android"));
 }

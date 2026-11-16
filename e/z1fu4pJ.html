@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "a5898d26-705f-55f9-a088-49f9a8c5f092", "token": "z1fu4pJ", "kind": "track", "name": "ProFormance Racing School Track Day @ Pacific Raceways", "venue": "Pacific Raceways", "address": null, "locality": "Kent, WA", "lat": 47.3205, "lon": -122.13784, "timeZone": "America/Los_Angeles", "next": [{"start": "2027-02-13T16:00:00Z", "end": "2027-02-14T01:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "ProFormance Racing School", "sourceUrl": "https://www.motorsportreg.com/events/proformance-racing-school-pacific-raceways-open-track-854747", "registerUrl": "https://www.motorsportreg.com/events/proformance-racing-school-pacific-raceways-open-track-854747", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/27f632064645fb98f928.jpg", "credit": "elenchos from Seattle, USA · CC BY 2.0 · Wikimedia Commons", "page": "https://commons.wikimedia.org/wiki/File:Motorcycle_track_day,_Pacific_Raceways,_Kent,_WA.jpg"}, "logo": null, "circuit": null, "about": {"text": "Join ProFormance Racing School's High-Performance Driving Experience for Novice, Intermediate, and Advanced drivers. Novice drivers receive classroom instruction and a personal instructor for on-track experience in your car or a rental GR86 race coupe. Intermediate drivers get 45 minutes of coaching, while Advanced drivers go solo (ProFormance Sport Driving License required or solo sign-off by BMW, Porsche, or Audi Club) at Pacific Raceways. Visit ProFormanceRacingSchool.com to learn more.", "source": "organizer", "page": "https://www.motorsportreg.com/events/proformance-racing-school-pacific-raceways-open-track-854747"}, "notes": null, "membersOnly": false, "series": "59c32c70b5", "summary": "ProFormance Racing School runs a track day at Pacific Raceways in Kent, WA on Saturday, February 13, 2027.", "near": "About 20 miles southeast of Seattle, as the crow flies.", "roads": [{"n": "Snoqualmie Valley: Highway 203", "s": "snoqualmie-valley-highway-203", "m": 28.0, "d": 21}, {"n": "Chinook Pass: Highway 410", "s": "chinook-pass", "m": 72.8, "d": 26}, {"n": "Highway 106: Hood Canal South Shore", "s": "hood-canal-south-shore", "m": 18.8, "d": 34}], "otherDates": [{"token": "GXJsRLq", "start": "2027-02-07T16:00:00Z"}]}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

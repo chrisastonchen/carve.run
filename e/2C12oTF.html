@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "5fcf9473-fa79-5198-90bf-cdc491c8d2cf", "token": "2C12oTF", "kind": "track", "name": "Homestead Driving Club Track Day", "venue": "Homestead Miami Speedway", "address": null, "locality": "Homestead, FL", "lat": 25.45491, "lon": -80.41119, "timeZone": "America/New_York", "next": [{"start": "2027-01-22T13:00:00Z", "end": "2027-01-22T22:00:00Z"}], "repeats": null, "cars": null, "cost": null, "organizer": "Homestead Driving Club", "sourceUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-366325", "registerUrl": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-366325", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/f5f414bd61020b634be9.jpg", "credit": "Homestead Driving Club via MotorsportReg", "page": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-366325"}, "logo": null, "circuit": null, "about": {"text": "Track Day at Homestead Miami Speedway\n\nHomestead Drivers Club was founded to open up a new world of experiences to car, and speed enthusiasts, with various activities and special events throughout the year.\n\nHomestead Driving Club welcomes all car brands, drivers, and even race teams.", "source": "organizer", "page": "https://www.motorsportreg.com/events/homestead-driving-club-track-day-miami-speedway-366325"}, "notes": null, "membersOnly": false, "series": "6df0a0ed03", "summary": "Homestead Driving Club runs a track day at Homestead Miami Speedway in Homestead, FL on Friday, January 22, 2027.", "near": "About 45 miles south of Miami, as the crow flies.", "roads": [{"n": "Card Sound Road", "s": "card-sound-road", "m": 23.2, "d": 4}, {"n": "Everglades Main Park Road", "s": "everglades-main-park-road", "m": 38.1, "d": 10}, {"n": "Old Cutler Road", "s": "old-cutler-road", "m": 8.8, "d": 11}], "otherDates": [{"token": "Lax3pi4", "start": "2026-12-03T13:00:00Z"}, {"token": "jKFgJPB", "start": "2026-12-23T13:00:00Z"}, {"token": "baWwTTu", "start": "2027-01-07T13:00:00Z"}, {"token": "GZikMXJ", "start": "2027-01-21T13:00:00Z"}, {"token": "jKrykLi", "start": "2027-02-03T13:00:00Z"}]}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

@@ -21,15 +21,15 @@
      rides along to the App Store through carve-site.js. -->
 <div>
   <p>Opening the store…</p>
-  <p><a href="https://apps.apple.com/app/carve-route-planner/id6808087716">Carve for iPhone</a> · <a href="/android/">Carve for Android</a></p>
+  <p><a href="https://apps.apple.com/app/carve-route-planner/id6808087716">Carve for iPhone</a> · <a href="https://play.google.com/store/apps/details?id=run.carve.app">Carve for Android</a></p>
 </div>
-<script src="/assets/carve-site.js?v=1d132da2ac"></script>
+<script src="/assets/carve-site.js?v=5ff585f034"></script>
 <script>
   (function () {
     var ua = navigator.userAgent || "";
     var android = /android/i.test(ua);
     var apple = /iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
-    if (android) location.replace("/android/" + location.search);
+    if (android) location.replace("https://play.google.com/store/apps/details?id=run.carve.app");
     else if (apple) location.replace(window.carveStoreUrl ? carveStoreUrl() : "https://apps.apple.com/app/carve-route-planner/id6808087716");
     else location.replace("/");
   })();

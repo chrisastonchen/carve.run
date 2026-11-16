@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "226969b7-4d5c-4edd-8f42-a1adcf1c7d01", "token": "4aR14Wq", "kind": "autocross", "name": "Texas Region SCCA Solo Event #9", "venue": "Lone Star Park (parking lot)", "address": "1000 Lone Star Pkwy, Grand Prairie, TX 75050", "locality": "Grand Prairie, TX", "lat": 32.77437, "lon": -96.98803, "timeZone": "America/Chicago", "next": [{"start": "2026-11-22T13:30:00Z", "end": null}], "repeats": null, "cars": "All makes; non-members get a weekend membership", "cost": null, "organizer": "SCCA Texas Region (Solo)", "sourceUrl": "https://www.motorsportreg.com/events/txr-scca-solo-e8-overnight-cones-from-japan-lone-star-park-texas-709300", "registerUrl": "https://www.motorsportreg.com/events/txr-scca-solo-e8-overnight-cones-from-japan-lone-star-park-texas-709300", "lastConfirmed": "2026-11-15", "timeUnknown": null, "image": {"url": "https://carve.run/events/media/765f2329646764ead22d.jpg", "credit": "SCCA Texas Region (Solo) via MotorsportReg", "page": "https://www.motorsportreg.com/events/txr-scca-solo-e8-overnight-cones-from-japan-lone-star-park-texas-709300"}, "logo": null, "circuit": null, "about": {"text": "This event will be on November 22nd at Lonestar Park\n\nWe strongly encourage pre-registering, however walk up registration is allowed. Pre-registering saves you money, and lets you skip the lines in the morning so you can use that time for course walking, getting your car tech'd, or grabbing some breakfast. It also helps us plan a better event for you!", "source": "organizer", "page": "https://www.motorsportreg.com/events/txr-scca-solo-e8-overnight-cones-from-japan-lone-star-park-texas-709300"}, "notes": "Walk-up registration allowed, pre-registration cheaper; first car around 9:30.", "membersOnly": false, "series": "97b8386151", "summary": "SCCA Texas Region (Solo) runs an autocross at Lone Star Park (parking lot) in Grand Prairie, TX on Sunday, November 22, 2026, 7:30 AM. Walk-up registration allowed, pre-registration cheaper; first car around 9:30.", "near": "About 5 miles south of Dallas, as the crow flies.", "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

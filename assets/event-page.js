@@ -1,12 +1,12 @@
 // An event's page (/e/<token>, scripts/events/build_event_pages.py): the
 // page holds the event's data; this draws the picture, the map with its pin,
 // how far it is, the dates still to come, and the buttons.
-import "/assets/site-bar.js?v=26e2ebbc13";
+import "/assets/site-bar.js?v=986ff8abd4";
 import { guessPlace } from "/assets/where.js?v=5c9e34f7e8";
 import {
   distanceText, escapeHTML, finishPictures, icon, kindOf, membersOnly, nextOn, onAndroid, onPhone, openInApp, pictureHTML, pinElement, planThere, safeURL,
   spanText, whenText,
-} from "/assets/events.js?v=bb6f2616de";
+} from "/assets/events.js?v=b133592880";
 
 const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
 const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=a36458fffd";

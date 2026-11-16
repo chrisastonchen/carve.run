@@ -36,8 +36,9 @@
   // below: this file sends every event itself, with the page it names.
   var PLAUSIBLE_SRC = "https://plausible.io/js/pa-icVqdnmcMI9NQpYz8Uneq.js";
   var APP_STORE_PREFIX = "https://apps.apple.com/app/";
-  // Android buttons go to carve.run/android/: the three steps into the Play test.
-  var ANDROID_PAGE = "/android/";
+  // Android is public on Google Play (1.7.4, 2026-11-15): its buttons go to
+  // the listing (carve.run/android/ only forwards old links there).
+  var GOOGLE_PLAY = "https://play.google.com/store/apps/details?id=run.carve.app";
   var STORE_KEY = "carve.campaign";
   var UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 
@@ -149,7 +150,7 @@
   }
 
   function isAppStore(a) { return a && a.href && a.href.indexOf(APP_STORE_PREFIX) === 0; }
-  function isAndroidBeta(a) { return a && a.hostname === location.hostname && a.pathname === ANDROID_PAGE; }
+  function isGooglePlay(a) { return a && a.hostname === "play.google.com" && /[?&]id=run\.carve\.app\b/.test(a.search || ""); }
 
   function tagLinks() {
     document.querySelectorAll('a[href^="' + APP_STORE_PREFIX + '"]').forEach(function (a) { a.href = storeUrl(a.href); });
@@ -178,7 +179,7 @@
   document.addEventListener("click", function (event) {
     var a = event.target && event.target.closest ? event.target.closest("a") : null;
     if (isAppStore(a)) { a.href = storeUrl(a.href); window.carveTrack("Store Tap", { store: "app_store" }); }
-    else if (isAndroidBeta(a)) window.carveTrack("Store Tap", { store: "play_beta" });
+    else if (isGooglePlay(a)) window.carveTrack("Store Tap", { store: "play" });
     // The Android page's steps: the group, the test's opt-in, the Play listing.
     else if (a && a.getAttribute("data-beta-step")) window.carveTrack("Beta Step", { step: a.getAttribute("data-beta-step") });
   }, true);
@@ -619,7 +620,7 @@
     a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.5 18.2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Continue in app</span>';
     a.href = /android/i.test(navigator.userAgent || "")
       ? "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=run.carve.app;S.browser_fallback_url="
-        + encodeURIComponent("https://carve.run" + ANDROID_PAGE) + ";end"
+        + encodeURIComponent(GOOGLE_PLAY) + ";end"
       : storeUrl(APP_STORE_PREFIX + "carve-route-planner/id6808087716");
     sheet.prepend(a);
   }

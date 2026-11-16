@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "794bff69-5573-434a-8d43-b1e0254063b0", "token": "hszeLLV", "kind": "track", "name": "The Driver's Edge – Motorsport Ranch 3.1 (two full days)", "venue": "Motorsport Ranch Cresson", "address": "9012 Performance Ct, Cresson, TX", "locality": "Cresson, TX", "lat": 32.52504, "lon": -97.61253, "timeZone": "America/Chicago", "next": [{"start": "2026-11-21T14:00:00Z", "end": "2026-11-21T23:00:00Z"}, {"start": "2026-11-22T14:00:00Z", "end": "2026-11-22T23:00:00Z"}], "repeats": null, "cars": "Your own car; all levels with in-car instructors and classroom", "cost": null, "organizer": "The Driver's Edge", "sourceUrl": "https://www.motorsportreg.com/events/drivers-edge-motorsport-ranch-cresson-hpde-610955", "registerUrl": "https://www.thedriversedge.net", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/9925add6ffcbb1aa4ae2.jpg", "credit": "The Driver's Edge via MotorsportReg", "page": "https://www.motorsportreg.com/events/drivers-edge-motorsport-ranch-cresson-hpde-610955"}, "logo": null, "circuit": null, "about": {"text": "Over 31 years of credibility & seamless organization makes The Drivers Edge Texas's benchmark high performance driving school, form Advanced driver's that want great track time to refine with qualified drivers & high level certified instruction to the Novice drivers who wants to learn from the best. TWO FULL DAYS on MSRC 3.1 BIG TRACK, In-Car Certified Instructors & Class Room Sessions for all Run Group Levels. Do NOT settle for anything less.", "source": "organizer", "page": "https://www.motorsportreg.com/events/drivers-edge-motorsport-ranch-cresson-hpde-610955"}, "notes": "Two days on the full 3.1-mile course.", "membersOnly": false, "series": "f80ae947fe", "summary": "The Driver's Edge runs a track day at Motorsport Ranch Cresson in Cresson, TX on Saturday, November 21, 2026. Two days on the full 3.1-mile course.", "near": "About 40 miles southwest of Dallas, as the crow flies.", "roads": [{"n": "Paluxy Highway: Granbury to Glen Rose", "s": "glen-rose-paluxy-river", "m": 23.3, "d": 15}, {"n": "FM 4: Santo to Palo Pinto", "s": "fm-4-palo-pinto", "m": 13.2, "d": 36}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

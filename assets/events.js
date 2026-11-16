@@ -257,13 +257,13 @@ export const onAndroid = () => /android/i.test(navigator.userAgent || "");
  * Into the app at this event. iPhone: open.carve.run, another host than the
  * page's, so the app opens where it's installed (Safari won't for a link to
  * its own page); without it, the Worker offers the App Store and comes back
- * here. Android has no events yet (2026-11-03): its app page, never an
- * intent the app can't open.
+ * here. Android has no events yet (2026-11-03): its Google Play listing,
+ * never an intent the app can't open.
  */
 export function openInApp(ev) {
   const ua = navigator.userAgent || "";
   if (onAndroid()) {
-    location.href = "/android/";
+    location.href = "https://play.google.com/store/apps/details?id=run.carve.app";
   } else if (/iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1)) {
     location.href = `https://open.carve.run/e/${encodeURIComponent(ev.token)}`;
   } else {

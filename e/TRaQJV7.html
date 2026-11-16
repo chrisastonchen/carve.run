@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "f5353f59-13f6-4a73-a2d9-22d5d5e5ca01", "token": "TRaQJV7", "kind": "show", "name": "Marconi Magic Toy Drive", "venue": "Marconi Automotive Museum", "address": "1302 Industrial Dr, Tustin, CA 92780", "locality": "Tustin, CA", "lat": 33.721, "lon": -117.8314, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-15T17:00:00Z", "end": "2026-11-15T22:00:00Z"}], "repeats": null, "cars": "All makes welcome", "cost": "A new, unopened toy (counts as admission)", "organizer": "Marconi Automotive Museum & Foundation for Kids", "sourceUrl": "https://marconimuseum.org/toy-drive/", "registerUrl": null, "lastConfirmed": "2026-11-15", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/aeda2171af0bc9888eea.png", "page": "https://marconimuseum.org/", "background": "#F2F2F4", "crop": [0.0, 0.014, 0.998, 0.972]}, "circuit": null, "about": {"text": "The Marconi Automotive Museum and Event Venue in Orange County exhibits luxury, rare and historic cars, and donates admission fees to charity.", "source": "organizer", "page": "https://marconimuseum.org/toy-drive/"}, "notes": "Car-meet-style toy drive; museum entry included with a toy.", "membersOnly": false, "series": "e0fae0076d", "summary": "Marconi Automotive Museum & Foundation for Kids runs a car show at Marconi Automotive Museum in Tustin, CA. Car-meet-style toy drive; museum entry included with a toy.", "near": "About 35 miles southeast of Los Angeles, as the crow flies.", "roads": [{"n": "Santiago Canyon Road", "s": "santiago-canyon-road", "m": 10.6, "d": 6}, {"n": "Carbon Canyon Road", "s": "carbon-canyon-road", "m": 7.1, "d": 14}, {"n": "Ortega Highway", "s": "ortega-highway", "m": 26.5, "d": 18}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

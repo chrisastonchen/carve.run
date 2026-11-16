@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "2e17ac9c-92cc-49c2-b18c-77f070749795", "token": "VUsqo0d", "kind": "coffee", "name": "PCA Golden Gate Cars & Coffee at Ariana Auto Body", "venue": "Ariana Auto Body", "address": "8145 Enterprise Dr, Newark, CA 94560", "locality": "Newark, CA", "lat": 37.5221, "lon": -122.0449, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-22T18:00:00Z", "end": "2026-11-22T20:00:00Z"}], "repeats": null, "cars": "All makes (Porsche club host)", "cost": null, "organizer": "Porsche Club of America - Golden Gate Region", "sourceUrl": "https://www.pca-ggr.org/calendar", "registerUrl": null, "lastConfirmed": "2026-11-15", "timeUnknown": null, "image": null, "logo": {"url": "https://carve.run/events/media/13efe4a5d6ac0866f3f9.png", "page": "https://www.pca-ggr.org/", "background": "#1C1C1E", "crop": [0.001, 0.0, 0.999, 1.0]}, "circuit": null, "about": {"text": "Calendar entry says details to come; this meet was postponed once from September.", "source": "carve", "page": null}, "notes": "Calendar entry says details to come; this meet was postponed once from September.", "membersOnly": false, "series": "6b53ac06f2", "summary": "Porsche Club of America - Golden Gate Region runs a Cars & Coffee meet at Ariana Auto Body in Newark, CA on Sunday, November 22, 2026, 10 AM to 12 PM. This meet was postponed once from September.", "near": "In San Jose.", "roads": [{"n": "Calaveras Road", "s": "calaveras-road", "m": 15.0, "d": 10}, {"n": "Page Mill Road to Pescadero", "s": "page-mill-to-pescadero", "m": 27.7, "d": 11}, {"n": "Redwood Road and Pinehurst Road", "s": "redwood-pinehurst", "m": 14.3, "d": 13}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

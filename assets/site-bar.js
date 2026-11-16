@@ -50,7 +50,7 @@ function wireBar() {
     });
   }
   if (/android/i.test(navigator.userAgent || "")) {
-    document.querySelectorAll("[data-get-app]").forEach((a) => (a.href = "/android/"));
+    document.querySelectorAll("[data-get-app]").forEach((a) => (a.href = "https://play.google.com/store/apps/details?id=run.carve.app"));
     document.querySelectorAll("[data-get-icon]").forEach((u) => u.setAttribute("href", "#i-android"));
   }
   const signIn = $("sign-in");

@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "dd8680d5-ecaf-4267-a692-b73f1894fdc5", "token": "90wZZ9r", "kind": "track", "name": "Track Night in America: Thunderhill", "venue": "Thunderhill Raceway Park", "address": "5250 State Highway 162, Willows, CA 95988", "locality": "Willows, CA", "lat": 39.5388, "lon": -122.3342, "timeZone": "America/Los_Angeles", "next": [{"start": "2026-11-19T18:00:00Z", "end": "2026-11-20T00:10:00Z"}], "repeats": null, "cars": "All makes welcome", "cost": "$175 SCCA members (+$25 weekend membership for non-members)", "organizer": "SCCA Track Night in America", "sourceUrl": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-thunderhill-raceway-park-hpde-491775", "registerUrl": "https://www.tracknightinamerica.com/events/2010470-track-night-2026-thunderhill-raceway-park-november-19", "lastConfirmed": "2026-11-15", "timeUnknown": null, "image": {"url": "https://carve.run/events/media/5d7fdec29b2b91356eb0.jpg", "credit": "SCCA Track Night in America via MotorsportReg", "page": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-thunderhill-raceway-park-hpde-491775"}, "logo": null, "circuit": null, "about": {"text": "With more than 120 events a year at 30 tracks around the country, Track Night in America is the leading non-competitive, no-stress, entertaining, easy & inexpensive way for nearly anyone who loves cars or motorsports to get on a real racecourse in their own vehicle. All that is required is that participants be at least 18 years old with a valid driver's license & have access to an approved helmet & street car in good working condition.", "source": "organizer", "page": "https://www.motorsportreg.com/events/scca-national-track-night-in-america-thunderhill-raceway-park-hpde-491775"}, "notes": "Low-cost street-car track day on the 3-mile East course; free touring laps and spectating.", "membersOnly": false, "series": "1179bcb541", "summary": "SCCA Track Night in America runs a track day at Thunderhill Raceway Park in Willows, CA on Thursday, November 19, 2026, 10 AM to 4:10 PM. Low-cost street-car track day on the 3-mile East course; free touring laps and spectating.", "near": "About 80 miles northwest of Sacramento, as the crow flies.", "roads": [{"n": "Highway 32: Chico to Deer Creek", "s": "highway-32-deer-creek", "m": 50.3, "d": 33}], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

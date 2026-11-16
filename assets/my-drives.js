@@ -29,7 +29,7 @@ function signedOutView() {
   $("mine-sub").textContent = "Your routes, from the app and the planner.";
   if (narrow) {
     empty(`<p>Your routes are in the Carve app, under Saved. Sign in to the planner on a computer to see them here too.</p>
-      <a class="new" style="display:inline-flex" href="${isAndroid ? "/android/" : APP_STORE}">Get the App</a>`);
+      <a class="new" style="display:inline-flex" href="${isAndroid ? "https://play.google.com/store/apps/details?id=run.carve.app" : APP_STORE}">Get the App</a>`);
   } else {
     empty(`<p>Sign in to see the routes you've made in the app and the planner.</p>
       <a class="new" href="/plan/#sign-in">Sign in</a>`);
@@ -233,7 +233,7 @@ async function loadPlans() {
 async function loadSavedEvents() {
   let events;
   try {
-    events = await import("/assets/events.js?v=bb6f2616de");
+    events = await import("/assets/events.js?v=b133592880");
   } catch {
     return;
   }

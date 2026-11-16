@@ -117,12 +117,12 @@
 <div class="rv-map" id="rv-map" role="region" aria-label="Map of where it is"></div>
 </div>
 <script id="event-data" type="application/json">{"id": "ab2e73bd-0553-4a8c-8400-e28d30dd2682", "token": "LRytzVG", "kind": "track", "name": "Turn One Track Day at CMP", "venue": "Carolina Motorsports Park", "address": "3662 Kershaw Highway, Kershaw, SC 29067", "locality": "Kershaw, SC", "lat": 34.48881, "lon": -80.59508, "timeZone": "America/New_York", "next": [{"start": "2026-11-20T13:00:00Z", "end": "2026-11-20T22:00:00Z"}], "repeats": null, "cars": "Own car; HPDE students and signed-off solo drivers; SA2015+ helmet (rentals $25)", "cost": null, "organizer": "Turn One Performance Driving", "sourceUrl": "https://www.motorsportreg.com/events/turn-one-track-day-carolina-motorsports-park-performance-driving-091600", "registerUrl": "https://www.motorsportreg.com/events/turn-one-track-day-carolina-motorsports-park-performance-driving-091600", "lastConfirmed": "2026-11-15", "timeUnknown": true, "image": {"url": "https://carve.run/events/media/0b65a051efe13d27fc5a.jpg", "credit": "Turn One Performance Driving via MotorsportReg", "page": "https://www.motorsportreg.com/events/turn-one-track-day-carolina-motorsports-park-performance-driving-091600"}, "logo": null, "circuit": null, "about": {"text": "TURN ONE TRACK DAYS are a comprehensive program with a principal goal to increase driving knowledge, improve skills and techniques and offer car enthusiasts the opportunity to learn the capabilities of their cars in a safe controlled environment. TURN ONE TRACK DAYS provide specifically designed classroom education as well as extensive on-track time on the recently paved Wilson designed 2.27 mile road course; all with the goal to making you smile and have fun while advancing your driving abilities.", "source": "organizer", "page": "https://www.motorsportreg.com/events/turn-one-track-day-carolina-motorsports-park-performance-driving-091600"}, "notes": "Friday HPDE day; on CMP's calendar too.", "membersOnly": false, "series": "5c1640b0cf", "summary": "Turn One Performance Driving runs a track day at Carolina Motorsports Park in Kershaw, SC on Friday, November 20, 2026. Friday HPDE day; on CMP's calendar too.", "near": "About 50 miles south of Charlotte, as the crow flies.", "roads": [], "otherDates": []}</script>
-<script type="module" src="/assets/event-page.js?v=8c04bacc2c"></script>
+<script type="module" src="/assets/event-page.js?v=a543c254eb"></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
   (function () {
     if (!/android/i.test(navigator.userAgent || "")) return;
-    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://carve.run/android/"; });
+    document.querySelectorAll("[data-get-app]").forEach(function (a) { a.href = "https://play.google.com/store/apps/details?id=run.carve.app"; });
     document.querySelectorAll("[data-get-icon]").forEach(function (u) { u.setAttribute("href", "#android"); });
   })();
   // The drive's button opens it in the app, or the store: the share link it
@@ -137,7 +137,7 @@
         event.preventDefault();
         if (android) {
           location.href = "intent://route?t=" + t + "#Intent;scheme=carve;package=run.carve.app;"
-            + "S.browser_fallback_url=" + encodeURIComponent("https://carve.run/android/") + ";end";
+            + "S.browser_fallback_url=" + encodeURIComponent("https://play.google.com/store/apps/details?id=run.carve.app") + ";end";
           return;
         }
         // Through open.carve.run, another host than this page's, so iOS
@@ -157,6 +157,6 @@
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1d132da2ac" defer></script>
+<script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>
