@@ -177,9 +177,14 @@ const LENGTH_HEADWAY = 0.25;
 const SHORTEST_STRETCH = 3000;
 const SHORTEST_SHARE = 0.25;
 const ENOUGH_STRETCH = 10000;
-/// It adds no more than 15 minutes, or 40% of the leg it goes in.
-const MOST_ADDED_SECONDS = 15 * 60;
-const MOST_ADDED_SHARE = 0.4;
+/// It adds no more than 30 minutes, or 80% of the leg it goes in (Chris,
+/// 11/16, as the apps' 9c79dfbd30; was 15 and 40%).
+const MOST_ADDED_SECONDS = 30 * 60;
+const MOST_ADDED_SHARE = 0.8;
+/// Each stretch end that isn't one of the road's own ends costs 12 minutes:
+/// joining or leaving a road mid-way, at a junction, isn't free (the apps'
+/// measured cases: Skyline's Hwy 92 to Kings Mountain stretch took 36 min).
+const MID_ROAD_END_SECONDS = 12 * 60;
 /// A minute added weighs 0.6 of a minute on the road.
 const ADDED_WEIGHT = 0.6;
 /// The road is tried in about this many pieces, each at least PIECE long.
@@ -339,6 +344,37 @@ export function addPoint(line, path) {
 /// points), chain: start, waypoints, end, metersPerSecond, pathIsRoad }.
 /// The result goes to roadPoints and goes in before the chain's point
 /// index + 1, like placement's.
+/// What a stretch adds to the trip (the apps' PlanRoads.estimate,
+/// 9c79dfbd30): the hops to and from it at DETOUR, its time on the road,
+/// MID_ROAD_END_SECONDS for each end that isn't one of the road's own, less
+/// the headway it makes along the leg.
+export function addedSeconds({ hops, headway, stretchSeconds, midEnds, pace, pathFactor }) {
+  return hops * DETOUR / pace - headway * pathFactor / pace + stretchSeconds + midEnds * MID_ROAD_END_SECONDS;
+}
+
+/// A given stretch of `road`, entry to exit (each [lon, lat] on or by its
+/// line), against `plan` (fitRoad's), on the leg nearest the entry: the
+/// seconds it adds, as fitRoad counts them. For checking against measured
+/// drives (the apps' Skyline Hwy 92 → Kings Mountain).
+export function estimate(road, plan, entry, exit) {
+  const frame = frameOf(plan);
+  const line = lineOf(road);
+  if (!frame || line.length < 2) return null;
+  const track = new Track(line.map(frame.xy));
+  const total = track.length;
+  const roadSeconds = Number.isFinite(road.min) && road.min > 0 ? road.min * 60 : total / 15.6;
+  const [ea, xa] = [track.nearest(frame.xy(entry)).along, track.nearest(frame.xy(exit)).along];
+  const endOfRoad = (s) => s <= PIECE || s >= total - PIECE;
+  const leg = frame.legs.reduce((best, l) => (l.track.nearest(frame.xy(entry)).meters < best.track.nearest(frame.xy(entry)).meters ? l : best));
+  const [fa, fb] = [leg.track.nearest(frame.xy(entry)), leg.track.nearest(frame.xy(exit))];
+  return addedSeconds({
+    hops: fa.meters + fb.meters, headway: fb.along - fa.along,
+    stretchSeconds: roadSeconds * Math.abs(xa - ea) / total,
+    midEnds: (endOfRoad(ea) ? 0 : 1) + (endOfRoad(xa) ? 0 : 1),
+    pace: frame.pace, pathFactor: frame.pathFactor,
+  });
+}
+
 export function fitRoad(road, plan) {
   const frame = frameOf(plan);
   const line = lineOf(road);
@@ -462,7 +498,8 @@ export function fitRoad(road, plan) {
           const lo = Math.min(a, b), hi = Math.max(a, b);
           if (near[hi + 1] - near[lo] >= ON_ROUTE_SHARE * (hi - lo + 1) || !clearOfMeetings(a, b)) continue;
           const stretchSeconds = roadSeconds * stretch / total;
-          const added = (foot[a].meters + foot[b].meters) * DETOUR / frame.pace - headway * frame.pathFactor / frame.pace + stretchSeconds;
+          const midEnds = (a !== 0 && a !== count ? 1 : 0) + (b !== 0 && b !== count ? 1 : 0);
+          const added = addedSeconds({ hops: foot[a].meters + foot[b].meters, headway, stretchSeconds, midEnds, pace: frame.pace, pathFactor: frame.pathFactor });
           const score = stretchSeconds - ADDED_WEIGHT * added;
           if (lo === 0 && hi === count && foot[a].meters <= ENDS_NEAR && foot[b].meters <= ENDS_NEAR && score > 0 && score > (whole?.score ?? 0)) {
             whole = { leg: leg.index, a, b, added, score, stretchSeconds };

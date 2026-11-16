@@ -19,9 +19,9 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js?v=7";
-import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=9";
+import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=10";
 import { addPins } from "/assets/events.js?v=b133592880";
-import { closures, closureTitle, closureWords } from "./closures.js?v=4";
+import { closures, closureTitle, closureWords } from "./closures.js?v=5";
 import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
 import { initDriveDay } from "./drive-day.js?v=8";
@@ -34,6 +34,7 @@ import { fitTo } from "./fit.js?v=1";
 import { initPills } from "./place-pills.js?v=10";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
+import { bestSlot as bestSlotIn, meters } from "./slots.js?v=1";
 import { PHONE, actionSheet, initPhoneChoice, initPhoneSheet, initRowDrag } from "./phone.js?v=5";
 
 // The route, impossible to miss (Chris, 11/15: thin white and blue melted
@@ -1737,9 +1738,14 @@ async function showGoodRoads() {
   });
 }
 
+/// The great road at a point on the map; on a phone, within a finger's
+/// slop of it (QA/Chris, 11/16: a finger missed the 18 px line).
+const TOUCH_SLOP = 14;
 const roadAt = (point) => {
   if (!map.getLayer("good-roads-hit")) return null;
-  const token = map.queryRenderedFeatures(point, { layers: ["good-roads-hit"] })[0]?.properties?.t;
+  const s = document.documentElement.classList.contains("phone") ? TOUCH_SLOP : 0;
+  const where = s ? [[point.x - s, point.y - s], [point.x + s, point.y + s]] : point;
+  const token = map.queryRenderedFeatures(where, { layers: ["good-roads-hit"] })[0]?.properties?.t;
   return token ? roadsByToken.get(token) : null;
 };
 
@@ -2071,8 +2077,10 @@ function onMapClick(event, { press = false } = {}) {
   if (!press && Date.now() - pressedAt < 800) return;
   // A click away from an open menu only closes it.
   if (!$("click-menu").hidden) return closeClickMenu();
-  // A phone's tap pans and picks out; its long press is the menu.
-  if (document.documentElement.classList.contains("phone") && !press) return;
+  // A phone's tap pans and picks out, and its long press is the menu; but a
+  // tap on a great road opens it too, the road first (Chris, 11/16: he
+  // tapped Skyline to add it and nothing came).
+  if (document.documentElement.classList.contains("phone") && !press && !roadAt(event.point)) return;
   const { lng, lat } = event.lngLat;
   menuAt = { lat: round(lat), lon: round(lng) };
   // The marks the rows use: flags for the ends, the next letter or number.
@@ -2166,28 +2174,7 @@ function placeAt(kind, at) {
 
 /// Where a new point adds the least distance to the chain.
 function bestSlot(p) {
-  const chain = [plan.start, ...plan.waypoints, loops() ? plan.start : plan.end];
-  // Before there's a start, places go on in the order they're picked.
-  if (!plan.start) return plan.waypoints.length;
-  if (!chain[chain.length - 1]) return plan.waypoints.length;
-  let best = plan.waypoints.length;
-  let cost = Infinity;
-  for (let i = 0; i < chain.length - 1; i++) {
-    const added = meters(chain[i], p) + meters(p, chain[i + 1]) - meters(chain[i], chain[i + 1]);
-    if (added < cost) {
-      cost = added;
-      best = i;
-    }
-  }
-  return best;
-}
-
-function meters(a, b) {
-  const rad = Math.PI / 180;
-  const dLat = (b.lat - a.lat) * rad;
-  const dLon = (b.lon - a.lon) * rad;
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLon / 2) ** 2;
-  return 2 * 6371000 * Math.asin(Math.sqrt(h));
+  return bestSlotIn({ start: plan.start, waypoints: plan.waypoints, end: loops() ? plan.start : plan.end }, p);
 }
 
 /// A place clicked on the map gets a name to show in the list.
@@ -4485,7 +4472,7 @@ async function start() {
   } else if (cameBack && !profile && signInReturn({ keep: true })) {
     openAccount(nameStep(), { saving: false, title: "Sign in" });
   }
-  if (LOCAL) window.__planner = { get plan() { return plan; }, mapView: () => (mapReady ? { lon: map.getCenter().lng, lat: map.getCenter().lat, zoom: map.getZoom() } : null), jumpTo: (center, zoom) => map?.jumpTo({ center, zoom }), layerIds: () => (mapReady ? map.getStyle().layers.map((l) => l.id) : []), attribution: () => document.querySelector(".maplibregl-ctrl-attrib")?.textContent || "", suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
+  if (LOCAL) window.__planner = { get plan() { return plan; }, mapView: () => (mapReady ? { lon: map.getCenter().lng, lat: map.getCenter().lat, zoom: map.getZoom() } : null), jumpTo: (center, zoom) => map?.jumpTo({ center, zoom }), roadNear: (x, y) => { const b = map.getContainer().getBoundingClientRect(); return !!roadAt({ x: x - b.left, y: y - b.top }); }, roadOnScreen: () => { if (!mapReady || !map.getLayer("good-roads-hit")) return null; const box = map.getContainer().getBoundingClientRect(); const top = $("panel").getBoundingClientRect().top - box.top; for (const f of map.queryRenderedFeatures({ layers: ["good-roads-hit"] })) for (const c of f.geometry.type === "LineString" ? f.geometry.coordinates : f.geometry.coordinates.flat()) { const p = map.project(c); if (p.x > 40 && p.x < box.width - 40 && p.y > 80 && p.y < top - 40) return { x: p.x + box.left, y: p.y + box.top, t: f.properties.t }; } return null; }, layerIds: () => (mapReady ? map.getStyle().layers.map((l) => l.id) : []), attribution: () => document.querySelector(".maplibregl-ctrl-attrib")?.textContent || "", suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
     showSaved();
     renderBlurb(false);
