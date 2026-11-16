@@ -482,7 +482,9 @@ export function updatedAgo(iso, now = Date.now()) {
 /// drive), Organizers (anyone invited), Get the app (they opened Get on
 /// this account; DevOps, 11/13: no server data for it).
 /// → [{ key, title, line, done, action }]
-export function firstSteps({ drives = 0, organizers = 1, cap = 5, gotApp = false } = {}) {
+/// hasApp: the account has used the app (0122's my_app_use): the step done,
+/// said so, with nothing to press (DevOps, 11/16).
+export function firstSteps({ drives = 0, organizers = 1, cap = 5, gotApp = false, hasApp = false } = {}) {
   const more = Math.max(0, (Number(cap) || 5) - (Number(organizers) || 1));
   return [
     { key: "plan", title: "Plan your first drive", line: "Set the days and meet times, then a route for each day.", done: drives > 0, action: "Plan a drive" },
@@ -490,7 +492,9 @@ export function firstSteps({ drives = 0, organizers = 1, cap = 5, gotApp = false
     more > 0
       ? { key: "invite", title: "Add organizers", line: `Invite up to ${more} more. Each gets Carve Apex while your plan is active.`, done: organizers > 1, action: "Invite" }
       : { key: "invite", title: "Add organizers", line: `All ${Number(cap) || 5} organizer seats are filled.`, done: true, action: "Invite" },
-    { key: "app", title: "Get the app", line: "Drive the route turn by turn and see your group on the map.", done: !!gotApp, action: "Get" },
+    hasApp
+      ? { key: "app", title: "You have the app", line: "You've used Carve on your phone, so you're set to drive.", done: true, action: null }
+      : { key: "app", title: "Get the app", line: "Drive the route turn by turn and see your group on the map.", done: !!gotApp, action: "Get" },
   ];
 }
 

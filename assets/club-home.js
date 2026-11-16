@@ -6,11 +6,11 @@
 // settings. No price here, and no member or driver lists.
 
 import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=6e024a0fa0";
-import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=dd889b958a";
+import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=f69b203c9f";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { organizersBox } from "/assets/club-organizers.js?v=564a0fcab6";
 import { billsToday } from "/assets/who-words.js?v=f70bdee137";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=a21606404e";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=1926b2071e";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
@@ -281,19 +281,30 @@ async function load(prefer) {
 /// Get the app has no server data (DevOps, 11/13): opening Get ticks it, per account.
 const APP_KEY = () => `carve.club.app.${sessionUserId() || "me"}`;
 const gotApp = () => { try { return localStorage.getItem(APP_KEY()) === "1"; } catch { return false; } };
+/// Whether this account has used the app (0122, DevOps 11/16: a website
+/// can't see installed apps, the account's own events can): asked once a
+/// visit; unknown (an older server, no answer) is no.
+let hasApp = false;
+let appAsked = null;
+function askAppUse() {
+  appAsked ??= rpc("my_app_use").then((a) => { hasApp = !!(a?.ios || a?.android); homeSteps(); }).catch(() => {});
+  return appAsked;
+}
 const planHref = () => `/club/drive/?org=${encodeURIComponent(org.id)}`;
 
 /// The steps into `list`: a number (a tick once done), the words, the action.
 function drawSteps(list, data) {
-  list.replaceChildren(...firstSteps({ ...data, gotApp: gotApp() }).map((step, i) => {
+  list.replaceChildren(...firstSteps({ ...data, gotApp: gotApp(), hasApp }).map((step, i) => {
     const li = el("li", `cd-step step-${step.key}${step.done ? " done" : ""}`);
     const num = el("span", "cd-num", step.done ? "✓" : String(i + 1));
     num.setAttribute("aria-hidden", "true");
     const words = el("span", "cd-step-words");
     words.append(el("b", "", step.title), el("span", "", step.line));
     if (step.done) words.append(el("span", "visually-hidden", "Done."));
-    let act;
-    if (step.key === "plan") {
+    let act = null;
+    if (!step.action) {
+      // Nothing to press (the app's used already).
+    } else if (step.key === "plan") {
       act = el("a", "go", step.action);
       act.href = planHref();
     } else {
@@ -301,7 +312,7 @@ function drawSteps(list, data) {
       act.type = "button";
       act.addEventListener("click", step.key === "app" ? openGet : inviteNow);
     }
-    li.append(num, words, act);
+    li.append(num, words, ...(act ? [act] : []));
     return li;
   }));
 }
@@ -310,10 +321,12 @@ function drawSteps(list, data) {
 function homeSteps() {
   if (!org || $("v-home").hidden || driveCount === null || organizers === null) return;
   const data = { drives: driveCount, organizers, cap: orgCap };
-  const all = firstSteps({ ...data, gotApp: gotApp() }).every((s) => s.done);
+  askAppUse();
+  const all = firstSteps({ ...data, gotApp: gotApp(), hasApp }).every((s) => s.done);
   $("v-steps-box").hidden = all;
-  // Once the steps go, Get the app stays as a quiet line (Chris, 11/13).
-  $("v-getapp").hidden = !all;
+  // Once the steps go, Get the app stays as a quiet line (Chris, 11/13),
+  // unless they have it (DevOps, 11/16).
+  $("v-getapp").hidden = !all || hasApp;
   if (!all) drawSteps($("v-steps"), data);
 }
 

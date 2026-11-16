@@ -11,7 +11,7 @@ import {
   alertRows, catalogRoads, catalogRows, clock, daysAhead, degrees, forecastChanges, fractionOf, hazardRows, hourlyRows,
   label, nearest, ordered, shows, stretches, units, zonedInstant,
 } from "/assets/day-words.js?v=fa3c08a5f0";
-import { dayHeadline } from "/assets/club-words.js?v=dd889b958a";
+import { dayHeadline } from "/assets/club-words.js?v=f69b203c9f";
 import { ROUTE_APEX_UI } from "/plan/club-flags.js?v=4";
 
 // The token as /r/ reads it (carve.run/<token>, /r/<token>, /r/?t=), or ?k=.
@@ -136,7 +136,7 @@ async function start() {
   if (!drive?.day_date) return;
   drawHeadline(drive);
   // Apex on this route, free from the club (board A1), when it's switched on.
-  if (ROUTE_APEX_UI) import("/assets/apex-card.js?v=8bad910e82").then((m) => m.drawApexCard(token, drive.time_zone)).catch(() => {});
+  if (ROUTE_APEX_UI) import("/assets/apex-card.js?v=fe05070cc9").then((m) => m.drawApexCard(token, drive.time_zone)).catch(() => {});
   const zone = drive.time_zone || "UTC";
   const ahead = daysAhead(drive.day_date, zone);
   const what = shows(ahead);
