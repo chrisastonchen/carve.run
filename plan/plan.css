@@ -217,7 +217,9 @@ a { color: var(--green-ink); }
 .undo .round svg { width: 16px; height: 16px; }
 .pill.small { height: 44px; padding: 0 16px; font-size: 15px; }
 .pill.small:disabled { opacity: .4; }
-.bot-check { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 40; padding: 16px 18px; border-radius: 20px; background: #161B18; box-shadow: 0 16px 40px rgba(0,0,0,.22); text-align: center; }
+/* Its own width, up to the screen's less 16 px a side (11/16: from left 50% it
+   shrank to half a phone's width and squeezed Cloudflare's widget). */
+.bot-check { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 40; box-sizing: border-box; width: max-content; max-width: calc(100vw - 32px); padding: 16px 14px; border-radius: 20px; background: #161B18; box-shadow: 0 16px 40px rgba(0,0,0,.22); text-align: center; }
 .bot-check p { margin-bottom: 10px; font-weight: 700; }
 .dialog-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; }
 
