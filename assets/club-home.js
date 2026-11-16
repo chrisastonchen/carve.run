@@ -5,15 +5,16 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=dd477d6d29";
+import { $, billing, el, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=6e024a0fa0";
 import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=dd889b958a";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { organizersBox } from "/assets/club-organizers.js?v=3eb3ba3078";
+import { organizersBox } from "/assets/club-organizers.js?v=0db7b10595";
 import { billsToday } from "/assets/who-words.js?v=f70bdee137";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=d23394d63f";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
+import { openCheckout, tidyReturn } from "/assets/club-checkout.js?v=d60c8d8ef3";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
 const isOwner = (o) => (typeof o?.owner === "boolean" ? o.owner : o?.role === "admin");
@@ -129,6 +130,7 @@ function takeStart() {
 
 async function start() {
   document.querySelector("main.cp")?.classList.add("cv");
+  tidyReturn();
   const invite = takeInvite();
   if (takeStart()) introSeen = true;
   if (!(await signedIn())) return invite ? showInvite(invite) : showSignIn();
@@ -351,7 +353,7 @@ async function startTrial() {
   const name = $("v-name").value.trim();
   if (!name) return say("Add your club's name.");
   $("v-start-go").disabled = true;
-  say("Opening Stripe…");
+  say("Opening checkout…");
   try {
     // One club per name typed; Checkout cancelled and tried again keeps it.
     if (!org) {
@@ -370,9 +372,11 @@ async function startTrial() {
       $("v-start-go").disabled = false;
       return;
     }
-    const { url } = await billing({ action: "checkout", org_id: org.id, plan: "club", interval: "year" });
+    // Checkout on this page (Chris, 11/15); Back leaves the club made.
+    const ask = (ui) => billing({ action: "checkout", org_id: org.id, plan: "club", interval: "year", ...(ui ? { ui } : {}) });
     forgetWho(); // a new club for the bar's menus, once it's paid
-    location.href = url;
+    await openCheckout({ ask, title: `Carve Club for ${org.name}`, terms: $("v-terms").textContent, from: $("v-start-go"), onBack: () => nameTyped() });
+    say("");
   } catch (failure) {
     say(failure.message, true);
     $("v-start-go").disabled = false;

@@ -1,5 +1,5 @@
 // carve.run/club/: club v2's pages, or v1's behind the flag (club-flags.js).
 import { CLUB_V2 } from "/plan/club-flags.js?v=4";
 
-if (CLUB_V2) import("/assets/club-home.js?v=1bd26ff9b3");
-else import("/assets/club-org.js?v=64c357e692");
+if (CLUB_V2) import("/assets/club-home.js?v=dcd171df99");
+else import("/assets/club-org.js?v=83c2a59ffa");

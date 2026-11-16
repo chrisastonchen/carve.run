@@ -1082,7 +1082,7 @@ const RouteProfile = (() => {
       // only with CLUB_V2 on: the live site, without club-flags.js or with it
       // off, asks route_drive nothing.
       import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=7fcb6688f2"); }).catch(() => {});
-      if (CLUB) import("/assets/club-share.js?v=d42b75827a");
+      if (CLUB) import("/assets/club-share.js?v=74d9b68458");
       // A club drive's day, to a driver: the drive pass (P1).
       else import("/assets/route-pass.js?v=7bcd02cd2b");
     } else {

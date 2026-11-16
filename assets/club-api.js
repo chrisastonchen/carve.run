@@ -6,6 +6,9 @@ import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/ca
 
 export class Failure extends Error {}
 
+/// Clubs one account can create (org_create, 0058; 5 on production, 11/15).
+export const CLUBS_PER_ACCOUNT = 5;
+
 export const WORDS = {
   sign_in: "Please sign in again.",
   not_admin: "Only the club's admins can change this.",
@@ -37,6 +40,10 @@ async function call(url, body, method = "POST") {
   if (!response.ok) {
     const code = data?.error || data?.message;
     if (code === "bad_input" && /the owner/.test(String(data?.details || data?.detail || ""))) throw Object.assign(new Failure("The club's owner can't be removed."), { code: "owner" });
+    // At the club limit (QA 11/15): org_create counts the clubs an account
+    // made (0058's "too many organizations", 5 on production) and says no
+    // number, so the limit is named here.
+    if (code === "bad_input" && /too many organizations/.test(String(data?.details || data?.detail || ""))) throw Object.assign(new Failure(`You can create up to ${CLUBS_PER_ACCOUNT} clubs.`), { code: "club_cap" });
     // The baseline's past pre-run date (drive_prerun_set, detail prerun_past).
     if (code === "bad_input" && /prerun_past/.test(String(data?.details || data?.detail || data?.hint || ""))) throw Object.assign(new Failure("Pick a pre-drive date from today on."), { code: "prerun_past" });
     // No drive in the past (0061, drive_day_put and drive_create): said as the form says it.

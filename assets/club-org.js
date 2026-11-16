@@ -12,6 +12,7 @@ import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/ca
 // The plans' names, limits and prices come from one place, plans.json
 // (scripts/pricing/build_plans.py writes plans.js from it).
 import { CONTACT, PLANS } from "/assets/plans.js?v=a1e99a533b";
+import { openCheckout, tidyReturn } from "/assets/club-checkout.js?v=d60c8d8ef3";
 
 const $ = (id) => document.getElementById(id);
 
@@ -96,6 +97,8 @@ async function call(url, body, method = "POST") {
     const code = data?.error || data?.message;
     // 0082: removing the club's owner is refused with bad_input, detail "the owner".
     if (code === "bad_input" && /the owner/.test(String(data?.details || data?.detail || ""))) throw Object.assign(new Failure("The club's owner can't be removed."), { code: "owner" });
+    // At the club limit (QA 11/15; org_create's "too many organizations", 5 on production).
+    if (code === "bad_input" && /too many organizations/.test(String(data?.details || data?.detail || ""))) throw Object.assign(new Failure("You can create up to 5 clubs."), { code: "club_cap" });
     throw Object.assign(new Failure(code === "organizer_cap" ? capWords(data) : WORDS[code] || "Something went wrong. Try again."), { code });
   }
   return data;
@@ -121,6 +124,7 @@ let members = null;
 let plan = null; // org-billing status
 
 async function start() {
+  tidyReturn();
   const signedIn = !!localStorage.getItem(SESSION_KEY) && !!(await accessToken().catch(() => null));
   if (!signedIn) {
     status("");
@@ -228,10 +232,15 @@ function renderPlan() {
 
 async function checkout(planName, interval, button) {
   button.disabled = true;
-  $("o-plan-said").textContent = "Opening Stripe…";
+  $("o-plan-said").textContent = "Opening checkout…";
   try {
-    const { url } = await billing({ action: "checkout", org_id: org.id, plan: planName, interval });
-    location.href = url;
+    // Checkout on this page (Chris, 11/15).
+    const ask = (ui) => billing({ action: "checkout", org_id: org.id, plan: planName, interval, ...(ui ? { ui } : {}) });
+    // The renewal terms beside the button, as Stripe's page has them (Legal, 11/11).
+    const { terms = "" } = await billing({ action: "preview", org_id: org.id, plan: planName, interval }).catch(() => ({}));
+    const p = BY_PLAN[planName];
+    await openCheckout({ ask, title: `Carve ${p?.name || planName} for ${org.name}`, terms, from: button, onBack: () => { button.disabled = false; } });
+    $("o-plan-said").textContent = "";
   } catch (failure) {
     $("o-plan-said").textContent = failure.message;
     button.disabled = false;
