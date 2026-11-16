@@ -405,9 +405,11 @@ function sharePanel(n, several, route, apex, saved) {
   }
   const words = el("div", "cd-share-words");
   words.append(el("b", "", several ? `Share Day ${n}` : "Share the drive"));
-  words.append(el("p", "", `Drivers open the link on their phone or scan the code.${apex ? ` They get Carve Apex free on this route from ${apex}.` : ""}`));
+  words.append(el("p", "", "Drivers open the link on their phone or scan the code."));
+  // The longer lines: under the link on a phone (the mock's screen 8).
+  if (apex) words.append(el("p", "cd-more", `They get Carve Apex free on this route from ${apex}.`));
   // The time when the route is this organizer's (drive_routes has none; DevOps, 11/13).
-  words.append(el("p", "", [updatedAgo(saved), "Drivers get the latest when they open the link."].filter(Boolean).join(" ")));
+  words.append(el("p", "cd-more", [updatedAgo(saved), "Drivers get the latest when they open the link."].filter(Boolean).join(" ")));
   const open = el("a", "cd-link", link);
   open.href = shareUrl(route.share_token, drive.id, n);
   words.append(open);
@@ -422,7 +424,25 @@ function sharePanel(n, several, route, apex, saved) {
     }
     setTimeout(() => { copy.textContent = "Copy link"; }, 2000);
   });
-  box.append(qr, words, copy);
+  const doing = el("div", "cd-share-do");
+  doing.append(copy);
+  // A phone's own share sheet (Messages, WhatsApp, Mail) beside Copy link (Chris, 11/15).
+  if (navigator.share && matchMedia("(pointer: coarse)").matches) {
+    const share = el("button", "go ghost", "Share");
+    share.type = "button";
+    share.addEventListener("click", () => navigator.share({ title: several ? `${drive.name || "Drive"}, Day ${n}` : drive.name || "Drive", url: `https://${link}` }).catch(() => {}));
+    doing.prepend(share);
+  }
+  // A phone (Chris, 11/16): the link, Share and Copy link, one short line;
+  // the QR code behind "Show QR code" (no use on the phone in your hand).
+  box.append(el("p", "cd-share-short", `Drivers always get the latest route${apex ? `, with Carve Apex free ${apex.replace(" to ", " – ")}` : ""}.`));
+  const showQr = el("button", "linkish cd-qr-show", "Show QR code");
+  showQr.type = "button";
+  showQr.addEventListener("click", () => {
+    const on = box.classList.toggle("qr-on");
+    showQr.textContent = on ? "Hide QR code" : "Show QR code";
+  });
+  box.append(qr, words, doing, showQr);
   return box;
 }
 
@@ -477,6 +497,16 @@ async function renderDrive() {
       row.append(...facts.map((f) => { const span = el("span"); span.append(el("b", "", f.b), f.rest ? ` ${f.rest}` : ""); return span; }));
       body.append(row);
     }
+    // A phone (Chris, 11/16): one line of figures, "25 mi · 50 min · 1 stop",
+    // and the times on their own, "Meet 8:00 · Leave 8:30", as the planner's bar.
+    if (facts.length) body.append(el("p", "cd-facts-short", facts.map((f) => `${f.b}${f.rest && f.rest !== "driving" ? ` ${f.rest}` : ""}`).join(" · ")));
+    const clockShort = (hhmm) => { const x = /^(\d{1,2}):(\d{2})/.exec(hhmm || ""); return x ? `${Number(x[1]) % 12 || 12}:${x[2]}` : ""; };
+    const times = [["Meet", clockShort(d.meet)], ["Leave", clockShort(d.leave)]].filter(([, t]) => t);
+    if (times.length) {
+      const row = el("p", "cd-times-short");
+      times.forEach(([word, t], i) => { if (i) row.append(" · "); row.append(`${word} `, el("b", "", t)); });
+      body.append(row);
+    }
     const when = meetLeave(d);
     if (when.length) {
       const row = el("p", "cd-facts");
@@ -488,12 +518,24 @@ async function renderDrive() {
     const plan = el("a", d.routed ? "go ghost" : "go", d.routed ? "Edit route" : "Plan route");
     plan.href = plannerUrl(drive.id, n);
     acts.append(plan);
+    // The route's note, the one anyone with the link sees, here too (Chris, 11/15).
+    const note = d.routed ? String(d.route.payload?.note || "").trim() : "";
+    if (note) body.append(el("p", "cd-note", note));
+    if (d.routed) {
+      const write = el("a", "go ghost", note ? "Edit note" : "Add a note");
+      write.href = `${plannerUrl(drive.id, n)}&note`;
+      acts.append(write);
+    }
     body.append(acts);
     card.append(shape, body);
     if (d.routed) card.append(sharePanel(n, several, d.route, apex, saved[d.route.route_id]));
     seq.append(label, card);
     return seq;
   }));
+  // Back from saving a day in the planner (#d-day-N): that day's card.
+  const at = /^#d-day-\d+$/.test(location.hash) && document.querySelector(location.hash);
+  // Its top under the site bar, once the cards have their pictures (QA, 11/16: it landed low).
+  if (at) for (const ms of [0, 300, 900]) setTimeout(() => at.scrollIntoView({ block: "start" }), ms);
   const pr = drive.prerun;
   $("d-pr").hidden = !pr;
   if (pr) {

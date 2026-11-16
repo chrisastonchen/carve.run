@@ -54,6 +54,24 @@ export function dayWhen(day) {
   return [date, times].filter(Boolean).map((x) => `· ${x}`).join(" ");
 }
 
+/// The phone's drive bar (Chris, 11/16, the mock's screen 7): "Sat, Dec 12
+/// · meet 8:00 · leave 8:30", the times without AM or PM, in nodes so the
+/// times are figures and the date can go when it won't fit.
+export function dayWhenShort(day, el) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day?.date || "");
+  const date = m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) : "";
+  const t = (hhmm) => { const x = /^(\d{1,2}):(\d{2})/.exec(hhmm || ""); return x ? `${Number(x[1]) % 12 || 12}:${x[2]}` : ""; };
+  const parts = [];
+  if (date) parts.push(el("span", "dw-date", date));
+  for (const [word, at] of [["meet", t(day?.meet)], ["leave", t(day?.leave)]]) {
+    if (!at) continue;
+    const s = el("span", "dw-time", `${word} `);
+    s.append(el("b", "num", at));
+    parts.push(s);
+  }
+  return parts;
+}
+
 export function dayChip(day, i) {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day?.date || "");
   const date = m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }) : "";
@@ -108,6 +126,11 @@ export function initDriveDay({ ids, $, el, rpc, userId, planFromPayload, loadPla
     $("db-name").textContent = drive.name || "Your drive";
     const days = drive.days || [];
     $("db-when").textContent = dayWhen(days[n - 1]);
+    const short = $("db-when-short");
+    short.classList.remove("no-date");
+    short.replaceChildren(...dayWhenShort(days[n - 1], el));
+    // Too long for the phone's bar (360 px): the date goes first (Chris, 11/16).
+    requestAnimationFrame(() => short.classList.toggle("no-date", short.scrollWidth > short.clientWidth + 1));
     $("route-eyebrow").textContent = `Day ${n} schedule`;
     $("db-days").hidden = days.length < 2;
     $("db-days").replaceChildren(...days.map((d, i) => {

@@ -24,16 +24,17 @@ import { addPins } from "/assets/events.js?v=b133592880";
 import { closures, closureTitle, closureWords } from "./closures.js?v=4";
 import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
-import { initDriveDay } from "./drive-day.js?v=7";
-import { breakLine, clock, legLine, scheduleOf, stayChoices } from "./schedule.js?v=3";
+import { initDriveDay } from "./drive-day.js?v=8";
+import { breakLine, clock, legLine, scheduleOf, stayChoices } from "./schedule.js?v=4";
 import { figureNodes } from "./figures.js?v=1";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
-import { initSuggest } from "./suggest.js?v=14";
+import { initSuggest } from "./suggest.js?v=15";
 import { fitTo } from "./fit.js?v=1";
-import { initPills } from "./place-pills.js?v=9";
+import { initPills } from "./place-pills.js?v=10";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
+import { PHONE, actionSheet, initPhoneChoice, initPhoneSheet, initRowDrag } from "./phone.js?v=5";
 
 // The route, impossible to miss (Chris, 11/15: thin white and blue melted
 // into the tan roads near Saratoga): a vivid blue core in a dark casing,
@@ -627,11 +628,69 @@ function webglWorks() {
   }
 }
 
+/// The planner on a phone (Product's mocks, Chris 11/15; phone.js): the
+/// panel a sheet over a full-screen map, the name and note in the sheet
+/// above the totals, and on /plan/ the app-or-browser choice once.
+const PHONE_SIGN_IN = "carve.signin.phone";
+let sheet = null;
+function startPhone(narrow) {
+  const root = document.documentElement;
+  // The sign-in's cover (index.html) is only for the sign-in alone.
+  root.classList.remove("phone-account");
+  wireGateOpen();
+  sheet = initPhoneSheet({ panel: $("panel"), onMove: () => {} });
+  // A long press on a stop or waypoint picks it up; it drops before the row it's over.
+  initRowDrag($("rows"), {
+    canDrag: (li) => (li.dataset.role === "waypoint" ? Number(li.dataset.index) : null),
+    slots: () => [...$("rows").querySelectorAll('li[data-role="waypoint"], li[data-role="end"]')].map((li) => [li, li.dataset.role === "end" ? plan.waypoints.length : Number(li.dataset.index)]),
+    drop: (from, to) => move(from, to),
+  });
+  const nameBox = document.createElement("div");
+  nameBox.className = "phone-name";
+  $("plan-view").querySelector(".scroll").append(nameBox);
+  const named = [document.querySelector('label[for="route-name"]'), $("route-name"), $("note-add"), document.querySelector('label[for="note"]'), $("note")];
+  // Saved: "+ Plan a new route" at the end of the page, not over Drive it in Carve (QA, 11/16).
+  const another = $("plan-another").closest(".foot");
+  const savedScroll = $("saved-view").querySelector(".scroll");
+  const desktopWords = "Plan a route by searching or clicking on the map.";
+  const phoneWords = "Plan a route by searching, or press and hold on the map.";
+  const apply = (phone) => {
+    root.classList.toggle("phone", phone);
+    if (phone) nameBox.append(...named);
+    else $("save").before(...named);
+    if (phone) savedScroll.append(another);
+    else $("saved-view").append(another);
+    if ($("mode-note").textContent === (phone ? desktopWords : phoneWords)) $("mode-note").textContent = phone ? phoneWords : desktopWords;
+    if (phone) sheet.set(sheet.height(), { animate: false });
+    else { $("panel").style.top = ""; $("panel").style.transition = ""; delete root.dataset.sheet; }
+  };
+  apply(narrow.matches);
+  narrow.addEventListener("change", (event) => apply(event.matches));
+  // A place's card on the map kept clear of the sheet and the bar (QA, 11/16: half under the sheet).
+  new MutationObserver(() => {
+    const card = root.classList.contains("phone") && $("map").querySelector(".maplibregl-popup");
+    if (!card || !map) return;
+    requestAnimationFrame(() => {
+      const r = card.getBoundingClientRect();
+      const sheetTop = $("panel").getBoundingClientRect().top;
+      const top = $("map").getBoundingClientRect().top + 12;
+      if (r.bottom > sheetTop - 12 && r.height < sheetTop - top) map.panBy([0, r.bottom - sheetTop + 24]);
+      else if (r.top < top) map.panBy([0, r.top - top - 12]);
+    });
+  }).observe($("map"), { childList: true, subtree: true });
+  if (narrow.matches && !DRIVE && !GROUP) initPhoneChoice({ gate: document.querySelector(".phone-gate"), store, onBrowser: () => sheet.set("half") });
+}
+
 function panelRight() {
   const box = $("panel").getBoundingClientRect();
   return box.right + 16;
 }
 function fitPadding() {
+  // A phone: clear of the key and Locate above, and the sheet below.
+  if (document.documentElement.classList.contains("phone")) {
+    const sheetTop = $("panel").getBoundingClientRect().top - $("map").getBoundingClientRect().top;
+    return { top: 64, left: 24, right: 24, bottom: Math.max(40, Math.round($("map").clientHeight - sheetTop) + 24) };
+  }
   return { top: 70, bottom: 70, right: 80, left: Math.round(panelRight()) + 30 };
 }
 
@@ -704,6 +763,21 @@ function setUpMap() {
     if (routable() && fitRoute() && plan.path) fitOnRoute = false;
   });
   map.on("click", onMapClick);
+  // A phone: a long press opens the menu (a tap only pans and picks out).
+  let pressing = null;
+  const unpress = () => { clearTimeout(pressing?.timer); pressing = null; };
+  map.on("touchstart", (event) => {
+    unpress();
+    if (!document.documentElement.classList.contains("phone") || event.points?.length !== 1) return;
+    const at = { point: event.point, lngLat: event.lngLat };
+    pressing = { x: event.point.x, y: event.point.y, timer: setTimeout(() => { pressing = null; pressedAt = Date.now(); navigator.vibrate?.(8); onMapClick(at, { press: true }); }, 500) };
+  });
+  // The long press is the menu, not the browser's own.
+  map.getCanvas().addEventListener("contextmenu", (event) => { if (document.documentElement.classList.contains("phone")) event.preventDefault(); });
+  map.on("touchmove", (event) => { if (pressing && Math.hypot(event.point.x - pressing.x, event.point.y - pressing.y) > 10) unpress(); });
+  map.on("touchend", unpress);
+  map.on("touchcancel", unpress);
+  map.on("movestart", unpress);
   map.on("moveend", placeChips);
   map.on("zoomend", syncRoadsKey);
   map.on("moveend", () => {
@@ -960,11 +1034,20 @@ async function startDriveDay() {
     // Nothing to show yet: the club's area, else this browser's, else US West.
     if (!plan.start && !plan.end && !plan.path) openNear(got.near || (await browserSpot()));
     driveBaseline = got.kept ? null : driveKey();
-    if (got.kept) toast("Your changes to this day are back. Done saves them.");
+    if (got.kept) toast("Your changes to this day are back. Save and get the link saves them.");
   } catch (failure) {
     toast(failure.message || "Couldn't open this drive.", true);
   }
   render();
+  // The drive page's Add a note (Chris, 11/15; &note): the day's note, open to type in.
+  if (new URLSearchParams(location.search).has("note") && driveDay) {
+    noteOpen = true;
+    syncNote(true);
+    sheet?.set("full");
+    $("note").scrollIntoView({ block: "center" });
+    // A phone shows the keyboard only for a tap's focus (QA's iOS pass): there, it waits for one.
+    if (!document.documentElement.classList.contains("phone")) $("note").focus({ preventScroll: true });
+  }
 }
 
 /// Where the browser is, when it has already said it may tell (never a
@@ -1461,6 +1544,53 @@ function addSuggestedStop(place) {
   const spot = { id: newUUID(() => crypto.randomUUID()), lat: place.lat, lon: place.lon, label: clip(place.name, MOST_LABEL_CHARACTERS), type };
   edit(() => plan.waypoints.splice(bestSlot(spot), 0, spot));
   toast(`${spot.label} is a stop now.`);
+  // Picked in Add a stop on a phone: back to the route.
+  if (document.documentElement.classList.contains("adding-stop")) phoneAddStop(false);
+}
+
+/// Add a stop on a phone (the mock's screen 5): a search field and the
+/// place chips (off the map); no ✦ Suggest on phones (Chris, 11/16: "its
+/// cluttered"; desktop keeps it). A pick goes back to the route.
+let addSheet = null;
+let pillsHome = null;
+function phoneAddStop(open) {
+  const root = document.documentElement;
+  if (open && !root.classList.contains("phone")) return;
+  if (!addSheet) {
+    addSheet = el("section", "phone-add");
+    addSheet.setAttribute("aria-labelledby", "phone-add-h");
+    const head = el("div", "phone-add-head");
+    const h = el("h2", "", "Add a stop");
+    h.id = "phone-add-h";
+    h.tabIndex = -1;
+    const x = el("button", "act-x", "✕");
+    x.type = "button";
+    x.setAttribute("aria-label", "Close Add a stop");
+    x.addEventListener("click", () => phoneAddStop(false));
+    head.append(h, x);
+    const search = el("ol", "rows");
+    search.append(addRow({ after: () => phoneAddStop(false) }));
+    search.querySelector("input").placeholder = "Search for a place";
+    // The title and search pinned at the top while the rest scrolls under them (QA, 11/16).
+    const pin = el("div", "phone-add-pin");
+    pin.append(head, search);
+    addSheet.append(pin, el("div", "pill-slot"));
+    $("plan-view").querySelector(".scroll").prepend(addSheet);
+    pillsHome = [$("place-bar").parentNode, $("place-bar").nextSibling];
+  }
+  if (root.classList.contains("adding-stop") === open) return;
+  root.classList.toggle("adding-stop", open);
+  if (open) {
+    addSheet.querySelector(".pill-slot").append($("place-bar"));
+    // Half: the places' pins on the map above (typing in the search takes it full).
+    sheet.set(plan.path ? "half" : "full");
+    $("phone-add-h").focus({ preventScroll: true });
+  } else {
+    pillsHome[0].insertBefore($("place-bar"), pillsHome[1]);
+    suggest?.close();
+    pills?.hide();
+    sheet.set("half");
+  }
 }
 
 // ── the group planner's "Along the way" (the approved mock, 11/9) ──────
@@ -1934,10 +2064,15 @@ function placeChips() {
 // ── clicking the map: a small menu, the likeliest choice first ───────
 
 let menuAt = null;
-function onMapClick(event) {
+let pressedAt = 0;
+function onMapClick(event, { press = false } = {}) {
   if (saved) return;
+  // The finger lifting after a long press isn't a tap that closes its menu.
+  if (!press && Date.now() - pressedAt < 800) return;
   // A click away from an open menu only closes it.
   if (!$("click-menu").hidden) return closeClickMenu();
+  // A phone's tap pans and picks out; its long press is the menu.
+  if (document.documentElement.classList.contains("phone") && !press) return;
   const { lng, lat } = event.lngLat;
   menuAt = { lat: round(lat), lon: round(lng) };
   // The marks the rows use: flags for the ends, the next letter or number.
@@ -2165,7 +2300,7 @@ function setStartMode(mode) {
   $("tab-import").setAttribute("aria-selected", String(mode === "import"));
   $("mode-note").textContent = mode === "import"
     ? "Already have a route? Paste a link from Google Maps, Ride with GPS or Carve, or open a GPX file."
-    : "Plan a route by searching or clicking on the map.";
+    : document.documentElement.classList.contains("phone") ? "Plan a route by searching, or press and hold on the map." : "Plan a route by searching or clicking on the map.";
   render();
   if (mode === "import") $("link-in").focus();
 }
@@ -2223,7 +2358,8 @@ function render({ keepTyping = false } = {}) {
   // A drive's day: Done, back to the drive page, with or without a route.
   $("save").disabled = DRIVE ? !driveDay : !plan.path;
   if (DRIVE) $("db-done").disabled = $("save").disabled;
-  $("save").textContent = DRIVE ? "Done" : plan.id ? "Save changes" : "Save and get the link";
+  // One label for a club day and your own route (Chris, 11/15: was Done on a day).
+  $("save").textContent = DRIVE || !plan.id ? "Save and get the link" : "Save changes";
   for (const hook of planHooks) hook();
 }
 
@@ -2241,13 +2377,16 @@ function syncImportButton() {
   $("link-go").disabled = !$("link-in").value.trim();
 }
 
+/// The totals' time: "1 h 5 min", never a bare "1 h 5" (QA's iOS pass, 11/16).
+const figureTime = (seconds) => formatDuration(seconds).replace(/ h (\d+)$/, " h $1 min");
+
 function renderFigures() {
   if (DRIVE) return driveFigures();
   const distance = plan.path ? formatDistance(plan.path.distanceMeters, miles) : null;
   roll($("fig-dist"), distance ? distance.value : "–");
   $("fig-dist-unit").textContent = distance ? distance.unit : miles ? "miles" : "km";
   const stays = plan.waypoints.reduce((sum, w) => sum + (w.type === "stop" ? w.stayMinutes || 0 : 0), 0);
-  roll($("fig-time"), plan.path ? formatDuration(plan.path.durationSeconds + stays * 60) : "–");
+  roll($("fig-time"), plan.path ? figureTime(plan.path.durationSeconds + stays * 60) : "–");
   const stops = stopCount();
   roll($("fig-stops"), String(stops));
   $("fig-stops-unit").textContent = stops === 1 ? "stop" : "stops";
@@ -2259,7 +2398,7 @@ function driveFigures() {
   const distance = plan.path ? formatDistance(plan.path.distanceMeters, miles) : null;
   roll($("fig-dist"), distance ? `${distance.value} ${distance.unit === "miles" ? "mi" : "km"}` : "–");
   $("fig-dist-unit").textContent = "distance";
-  roll($("fig-time"), plan.path ? formatDuration(plan.path.durationSeconds) : "–");
+  roll($("fig-time"), plan.path ? figureTime(plan.path.durationSeconds) : "–");
   $("fig-time-unit").textContent = "driving";
   const day = scheduleOf(plan, leaveMinutes());
   roll($("fig-stops"), day ? clock(day.arrive) : "–");
@@ -2333,7 +2472,7 @@ function renderRows() {
   if (DRIVE) scheduleRows(list);
   // The empty panel already says to search or click the map.
   $("rows-hint").hidden = plan.waypoints.length < 2 || startMode === "import";
-  $("rows-hint").textContent = "Drag a row to reorder.";
+  $("rows-hint").textContent = document.documentElement.classList.contains("phone") ? "Press and hold a row to move it." : "Drag a row to reorder.";
   if (focusAfterRender) {
     const target = list.querySelector(focusAfterRender);
     focusAfterRender = null;
@@ -2440,6 +2579,22 @@ function placeRow({ role, point, index, label, placeholder }) {
   input.setAttribute("aria-label", role === "start" ? "Start" : role === "end" ? "Destination" : `${point.type === "stop" ? "Stop" : "Waypoint"} ${label}`);
   input.dataset.focus = role === "waypoint" ? `w${index}` : role;
   wrap.append(input);
+  // A phone (QA's iOS pass, 11/16): the name is text, not a live field, so
+  // a long press picks the row up instead of selecting the words; a tap
+  // swaps the field in, typing as before.
+  if (point) {
+    const name = el("button", "row-name", input.value);
+    name.type = "button";
+    name.tabIndex = -1;
+    name.setAttribute("aria-hidden", "true");
+    name.addEventListener("click", () => {
+      li.classList.add("editing");
+      input.focus();
+      input.select();
+    });
+    input.addEventListener("blur", () => li.classList.remove("editing"));
+    wrap.append(name);
+  }
   if (role === "waypoint" && point.type === "stop") {
     input.classList.add("timed");
     wrap.append(stayControl(point));
@@ -2474,7 +2629,62 @@ function placeRow({ role, point, index, label, placeholder }) {
   } else {
     li.append(el("span", "clear off"));
   }
+  // A phone (Chris, 11/16): the name as text, and one button on the right
+  // for the rest: Stop or waypoint, the stay, moving and removing.
+  if (point) {
+    const more = el("button", `row-more${role === "waypoint" && point.type === "stop" ? " timer" : ""}${point.stayMinutes ? " set" : ""}`);
+    more.type = "button";
+    more.innerHTML = role === "waypoint" && point.type === "stop" ? '<svg aria-hidden="true"><use href="#i-clock"/></svg>' : "⋯";
+    more.setAttribute("aria-label", `More for ${rowName(point, role)}`);
+    more.addEventListener("click", () => rowSheet(role, index));
+    li.append(more);
+  }
   return li;
+}
+
+/// A row's sheet on a phone: what's beside the field on a computer.
+function rowSheet(role, index) {
+  const point = role === "start" ? plan.start : role === "end" ? plan.end : plan.waypoints[index];
+  if (!point) return;
+  const items = [];
+  if (role === "waypoint") {
+    const seg = el("div", "act-seg");
+    seg.setAttribute("role", "group");
+    seg.setAttribute("aria-label", "Stop or waypoint");
+    for (const [type, word] of [["stop", "Stop"], ["marker", "Waypoint"]]) {
+      const b = el("button", "", word);
+      b.type = "button";
+      b.setAttribute("aria-pressed", String((point.type === "stop" ? "stop" : "marker") === type));
+      b.addEventListener("click", () => {
+        if ((point.type === "stop" ? "stop" : "marker") === type) return;
+        if (type === "stop" && stopCount() >= MAX_STOPS) return toast(`A route has up to ${MAX_STOPS} stops.`, true);
+        sheetNode.close();
+        edit(() => {
+          point.type = type;
+          if (type !== "stop") delete point.stayMinutes;
+        }, { geometry: false });
+        if (type === "stop" && !point.label) nameSpot(point);
+      });
+      seg.append(b);
+    }
+    items.push(seg);
+    if (point.type === "stop") {
+      const stay = el("label", "act-stay");
+      stay.append(el("span", "", "Time to stay"));
+      const wrap = el("span", "select small");
+      const select = stayControl(point).querySelector("select");
+      select.removeAttribute("aria-label");
+      wrap.append(select);
+      wrap.insertAdjacentHTML("beforeend", '<svg aria-hidden="true"><use href="#i-chev"/></svg>');
+      stay.append(wrap);
+      select.addEventListener("change", () => sheetNode.close());
+      items.push(stay);
+    }
+    if (index > 0) items.push({ label: "Move up", run: () => move(index, index - 1) });
+    if (index < plan.waypoints.length - 1) items.push({ label: "Move down", run: () => move(index, index + 1) });
+  }
+  items.push({ label: role === "waypoint" ? `Remove this ${point.type === "stop" ? "stop" : "waypoint"}` : role === "start" ? "Remove the start" : "Remove the destination", danger: true, run: () => removePoint(role, index) });
+  const sheetNode = actionSheet({ title: rowName(point, role), items });
 }
 
 /// Stop or waypoint: a quiet dropdown beside the field.
@@ -2529,7 +2739,7 @@ function stayControl(point) {
 /// What the next added place becomes; waypoint unless chosen otherwise.
 let addType = "marker";
 
-function addRow() {
+function addRow({ after = null } = {}) {
   const li = el("li", "row");
   li.dataset.role = "add";
   li.append(el("span", "badge new", "+"));
@@ -2548,9 +2758,16 @@ function addRow() {
   wrap.append(input);
   line.append(wrap);
   li.append(el("span", "grip off"), el("span", "clear off"));
+  // A phone: the field opens Add a stop (its own field there).
+  if (!after) input.addEventListener("focus", () => {
+    if (!document.documentElement.classList.contains("phone")) return;
+    input.blur();
+    phoneAddStop(true);
+  });
   attachSearch(li, input, (place) => {
     adding = false;
     choosePlace("add", undefined, place);
+    after?.();
   }, () => {
     adding = false;
     renderRows();
@@ -3385,8 +3602,16 @@ function showSaved() {
   const ends = [town(plan.start), loops() ? "back" : town(plan.end)].filter(Boolean).join(" → ");
   const tripWord = { oneWay: "One way", roundTrip: "Round trip", outAndBack: "Out and back" }[plan.trip];
   const stops = stopCount();
-  $("s-sub").textContent = [ends, tripWord, stops ? `${stops} stop${stops === 1 ? "" : "s"}` : null].filter(Boolean).join(" · ");
+  // One way goes without saying on a phone (Chris, 11/16: it wrapped to an orphan "stop").
+  const phoneSaved = document.documentElement.classList.contains("phone");
+  $("s-sub").textContent = [ends, phoneSaved && plan.trip === "oneWay" ? null : tripWord, stops ? `${stops} stop${stops === 1 ? "" : "s"}` : null].filter(Boolean).join(" · ");
   $("link-out").value = shareLink().replace("https://", "");
+  // A phone (the mock's screen 4): Carve on this phone (open.carve.run: the
+  // app if it's here, else its store), and the phone's own share sheet.
+  const phone = document.documentElement.classList.contains("phone");
+  $("s-drive").hidden = !phone || !plan.token;
+  if (plan.token) $("s-drive").href = `https://open.carve.run/${encodeURIComponent(plan.token)}?ct=planner`;
+  $("share-out").hidden = !phone || !navigator.share;
   drawQR();
   renderSavedFacts();
   renderWhen();
@@ -3474,6 +3699,11 @@ function renderSavedFacts() {
   add(distance.value, distance.unit === "miles" ? "mi" : "km");
   add(formatDuration(plan.path.durationSeconds));
   if (p?.climbMeters) add(heightText(p.climbMeters), "climb");
+  // A phone: the same as the planner's totals (Chris, 11/16).
+  const cell = (figure, word) => { const d = el("div"); const b = el("b"); b.append(...figureNodes(figure)); d.append(b, el("span", "", word)); return d; };
+  const stops = stopCount();
+  $("s-figs").replaceChildren(cell(distance.value, distance.unit), cell(figureTime(plan.path.durationSeconds), "drive time"), p?.climbMeters ? cell(heightText(p.climbMeters).replace(/ (ft|m)$/, ""), miles ? "ft climb" : "m climb") : cell(String(stops), stops === 1 ? "stop" : "stops"));
+  $("s-figs").hidden = !document.documentElement.classList.contains("phone");
   if (p?.elevationProfile?.metersAboveSea?.length > 1) {
     $("elev-unit").hidden = false;
     $("elev-text").textContent = `↑ ${heightText(p.climbMeters || 0)} · ↓ ${heightText(p.descentMeters || 0)}`;
@@ -3513,6 +3743,8 @@ function renderBlurb(waiting = false) {
   $("shimmer").hidden = has || !waiting;
   $("about-state").textContent = has ? "" : waiting ? "Writing…" : "Couldn't write one this time";
   $("about").hidden = !has && !waiting && !plan.path;
+  // Nothing written: no section on a phone (Chris, 11/16), not an error line.
+  $("about").classList.toggle("none", !has && !waiting);
 }
 
 let qrModel = null;
@@ -3987,9 +4219,11 @@ function wire() {
   window.addEventListener("dragend", dropOff);
   $("drop").addEventListener("click", dropOff);
   document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("drop").hidden) dropOff(); });
-  $("save").addEventListener("click", () => (DRIVE ? driveDone() : save()));
+  // A day saved: its card on the drive page, with the link and QR code (screen 8).
+  $("save").addEventListener("click", () => (DRIVE ? driveDone(driveDay && `${driveDay.back()}#d-day-${DRIVE.day}`) : save()));
   $("edit").addEventListener("click", showPlan);
   $("plan-another").addEventListener("click", planAnother);
+  $("share-out").addEventListener("click", () => navigator.share?.({ title: plan.name || "A drive on Carve", url: shareLink() }).catch(() => {}));
   $("copy").addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(shareLink());
@@ -4150,15 +4384,23 @@ async function start() {
     return;
   }
   osAwareGetApp();
-  const narrow = window.matchMedia("(max-width: 699px)");
-  if (narrow.matches) {
+  const narrow = window.matchMedia(PHONE);
+  // Phones plan here too since 11/15 (Chris). A phone signing in still gets
+  // the sign-in alone: the bar's Sign in on every page comes to
+  // /plan/#sign-in, and the phone goes back to Apple or Google from there.
+  const oauthBack = /access_token=|error/.test(location.hash + location.search);
+  let phoneSignIn = false;
+  try {
+    phoneSignIn = narrow.matches && (location.hash === "#sign-in" || (oauthBack && sessionStorage.getItem(PHONE_SIGN_IN) === "1"));
+    sessionStorage.removeItem(PHONE_SIGN_IN);
+  } catch {}
+  if (phoneSignIn) {
     wire();
     wireGateOpen();
     // A window opened narrow and then widened gets the planner.
     narrow.addEventListener("change", (event) => { if (!event.matches) location.reload(); }, { once: true });
-    // A phone plans in the app, but signs in here: the bar's Sign in on every
-    // page comes to /plan/#sign-in, and a signed-in phone goes on to the home
-    // page, which is theirs once signed in (the user, 2026-11-04; was My Drives).
+    // A signed-in phone goes on to the home page, which is theirs once
+    // signed in (the user, 2026-11-04; was My Drives).
     onPhone = true;
     // Closing the sign-in leaves for the home page, not this page for computers.
     $("account").addEventListener("close", () => location.replace(signInReturn() || "/"));
@@ -4174,6 +4416,8 @@ async function start() {
     const signInHere = () => {
       if (location.hash !== "#sign-in") return;
       history_replace();
+      // Apple or Google come back to /plan/: back to this sign-in, not the planner.
+      try { sessionStorage.setItem(PHONE_SIGN_IN, "1"); } catch {}
       if (session) return location.replace("/");
       openAccount("choose", { saving: false, title: "Sign in" });
     };
@@ -4224,6 +4468,7 @@ async function start() {
   startSuggest();
   startPills();
   wire();
+  startPhone(narrow);
   renderWho();
   setUpMap();
   if (GROUP) startGroup();

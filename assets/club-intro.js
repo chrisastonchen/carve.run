@@ -22,7 +22,8 @@ export function introNumbers(plans = BY_TIER) {
   return {
     price: price ? `${price} a year.` : "",
     trial: days ? `First ${days} days free.` : "",
-    go: days ? `Try Club free for ${days} days` : price ? `Start Club for ${price}` : "",
+    // With no trial, the price is the line under it (Chris, 11/16).
+    go: days ? `Try Club free for ${days} days` : price ? "Start Club" : "",
     then: price ? `${days ? "Then " : ""}${price} a year. Cancel any time.` : "",
     terms: renewalTerms(club, days > 0),
     many: cents == null ? "" : `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })}`,

@@ -9,8 +9,8 @@
 // pill-words.js.
 
 import { PILLS, WORDS, labelOf, noneText, pathKey, pillItems, viewBox, waitFor } from "./pill-words.js?v=2";
-import { icon } from "./suggest.js?v=14";
-import { mapsUrl } from "./suggest-words.js?v=8";
+import { icon } from "./suggest.js?v=15";
+import { mapsUrl } from "./suggest-words.js?v=9";
 import { askPhotos, cardPhoto, openPhoto } from "./pin-photo.js?v=1";
 
 /// `h` from plan.js: { el, planner, plan, map, mapReady, addStop, miles,

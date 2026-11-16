@@ -7,7 +7,7 @@
 // club's organizers (who hold Apex): for others, tapping an action opens
 // the upsell (no label beside it); the planner's 403 says the same.
 
-import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=8";
+import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=9";
 import { fitTo } from "./fit.js?v=1";
 import { askPhotos as askPinPhotos, cardPhoto as pinCardPhoto, openPhoto as openPinPhoto, photoInto } from "./pin-photo.js?v=1";
 

@@ -10,7 +10,7 @@ import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, rene
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { organizersBox } from "/assets/club-organizers.js?v=0db7b10595";
 import { billsToday } from "/assets/who-words.js?v=f70bdee137";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=d23394d63f";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=a21606404e";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";

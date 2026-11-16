@@ -30,14 +30,17 @@ export function legsOf(plan) {
   if (!(length > 0)) return null;
   const cuts = [0];
   let from = 0;
-  for (const s of (plan.waypoints || []).filter((w) => w.type === "stop")) {
+  // Every point in order, waypoints too: a stop is looked for after the
+  // places before it, not where the route first passes by on the way to
+  // them (QA, 11/16: a stop moved behind a waypoint kept its old time).
+  for (const w of plan.waypoints || []) {
     let best = -1, bestD = Infinity;
     for (let i = from; i < line.length; i++) {
-      const d = metres(line[i], [s.lon, s.lat]);
+      const d = metres(line[i], [w.lon, w.lat]);
       if (d < bestD) { best = i; bestD = d; }
       if (bestD <= 150 && d > 400) break;
     }
-    cuts.push(best < 0 ? cuts[cuts.length - 1] : along[best]);
+    if (w.type === "stop") cuts.push(best < 0 ? cuts[cuts.length - 1] : along[best]);
     if (best >= 0) from = best;
   }
   cuts.push(length);

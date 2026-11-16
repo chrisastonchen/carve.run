@@ -1580,3 +1580,226 @@ body.sv-open { overflow: hidden; }
   :where(html:not(.night)) .suggest-item-icon.suggest-tile { background: #F1F1EF; }
   :where(html:not(.night)) .suggest-credit { color: #6B746E; }
 }
+
+/* ── the planner on a phone (Product's mocks, Chris 11/15; phone.js):
+   the map full screen, the panel a sheet over it (low, half, full), the
+   totals and Save and get the link at its foot at every height; on /plan/
+   the app-or-browser choice as a sheet, once ── */
+.sheet-grab, .gate-browser, .row-more, .db-when-short, .row-name { display: none; }
+@media (max-width: 699px) {
+  html.phone .app.wide-only { display: block !important; }
+  html.phone .phone-gate { display: none !important; }
+  html.phone.phone-choice .phone-gate { display: flex !important; position: fixed; z-index: 60; left: 0; right: 0; bottom: 0; min-height: 0; gap: 10px; padding: 8px 20px max(20px, env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.3); }
+  html.phone.phone-choice .phone-gate { box-shadow: 0 0 0 100vmax rgba(10,14,12,.42); }
+  html.phone.phone-choice .phone-gate::after { content: ""; position: absolute; top: 8px; left: 50%; width: 38px; height: 5px; margin-left: -19px; border-radius: 3px; background: var(--line); }
+  html.phone.phone-choice .phone-gate { padding-top: 22px; }
+  html.phone .gate-art { height: 170px; margin-bottom: 0; }
+  html.phone .gate-tile { width: 150px; height: 150px; }
+  html.phone .phone-gate h1 { font-size: 25px; }
+  html.phone .phone-gate .gate-open, html.phone .gate-browser { display: flex; align-self: stretch; width: auto; margin: 0; justify-content: center; }
+  html.phone .phone-gate .gate-open { margin-top: 8px; }
+  html.phone .gate-browser { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
+
+  html.phone .no-map { left: 0; }
+  html.phone .panel { position: fixed; left: 0; right: 0; bottom: 0; top: 50%; width: auto; z-index: 20; border-radius: 22px 22px 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.22); }
+  html.phone .panel > .view { top: 22px; }
+  html.phone .sheet-grab { display: block; position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: 24px; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; }
+  html.phone .sheet-grab i { display: block; width: 38px; height: 5px; margin: 8px auto 0; border-radius: 3px; background: var(--line); }
+  html.phone .sheet-grab:focus-visible { outline: 3px solid var(--green-ink); outline-offset: -3px; }
+  html.phone .scroll { padding: 6px 16px 16px; gap: 10px; }
+  /* Above Safari's floating bar (iOS 26; viewport-fit=cover gives its inset). */
+  html.phone .foot { padding: 10px 16px max(14px, env(safe-area-inset-bottom)); gap: 10px; }
+  html.phone .foot.join { padding-top: 0; }
+  html.phone .foot .figures { touch-action: none; }
+  html.phone .figures b { font-size: 22px; }
+  html.phone .figures > div > span { font-size: 12.5px; }
+  /* One way, Leave Now and Options on one line; sideways if they must. */
+  html.phone .ctls { flex: none; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  html.phone .ctls::-webkit-scrollbar { display: none; }
+  html.phone .ctls > * { flex: none; }
+  html.phone #save { height: 50px; }
+  /* The name and the note sit in the sheet, above the totals. */
+  html.phone .phone-name { display: flex; flex-direction: column; gap: 10px; }
+  html.phone .phone-name .field { height: 48px; padding: 0 14px; font-size: 16px; }
+  html.phone .phone-name textarea.field { height: auto; min-height: 108px; padding: 14px; line-height: 1.45; }
+  html.phone .phone-name .note-add { align-self: flex-start; }
+
+  /* On the map: the great-roads key at the top left and Locate at the top
+     right; pinch for zoom, no whole-route button; the credits ride on the
+     sheet (--sheet-gap, phone.js). The place chips move to Add a stop. */
+  html.phone .maplibregl-ctrl-group:has(.maplibregl-ctrl-zoom-in), html.phone .maplibregl-ctrl-group:has(.whole-route), html.phone .whole-route { display: none !important; }
+  html.phone .maplibregl-ctrl-top-right .maplibregl-ctrl { margin: 12px 12px 0 0; }
+  html.phone .maplibregl-ctrl-group button { width: 42px; height: 42px; }
+  html.phone .maplibregl-ctrl-group { border-radius: 21px; overflow: hidden; }
+  html.phone :is(.maplibregl-ctrl-bottom-right, .maplibregl-ctrl-bottom-left) { bottom: var(--sheet-gap, 0); }
+  html.phone .maplibregl-ctrl-attrib { font-size: 10.5px; }
+  html.phone[data-sheet="full"] .maplibregl-ctrl-attrib { visibility: hidden; }
+  html.phone :is(.place-bar, .layers) { display: none !important; }
+  html.phone .legend { position: fixed; left: 12px !important; top: calc(var(--bar) + 12px); bottom: auto !important; gap: 8px; padding: 5px 11px; font-size: 12.5px; }
+  html.phone .legend .roads-dash, html.phone .legend svg { max-width: 22px; }
+
+  /* A club drive's day: the drive bar across the top under the site bar;
+     its Done is the sheet's Save and get the link. */
+  html.phone .panel.drive-mode { padding-top: 22px; }
+  html.phone .panel.drive-mode .drive-bar { position: fixed; z-index: 25; top: var(--bar); left: 0; right: 0; height: 52px; flex-wrap: nowrap; gap: 10px; padding: 0 12px 0 14px; }
+  html.phone .panel.drive-mode .db-back { flex: none; width: 14px; overflow: hidden; text-overflow: clip; font-size: 20px; color: #6FD39A; }
+  html.phone .panel.drive-mode .db-title { flex: 1 1 auto; min-width: 0; margin: 0; overflow: hidden; }
+  html.phone .panel.drive-mode .db-title #db-name { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15.5px; }
+  html.phone .panel.drive-mode #db-when { display: none; }
+  html.phone .panel.drive-mode .db-when-short { display: block; white-space: nowrap; overflow: hidden; font-size: 12.5px; color: #9AA39D; }
+  html.phone .panel.drive-mode .db-when-short > span { display: inline; }
+  html.phone .db-when-short > span + span::before { content: " · "; }
+  html.phone .panel.drive-mode .db-when-short.no-date > .dw-date { display: none; }
+  html.phone .db-when-short.no-date .dw-date + span::before { content: none; }
+  html.phone .db-when-short .num { display: inline; font-size: inherit; font-family: var(--num); font-weight: 500; color: #C3CAC5; }
+  html.phone .panel.drive-mode .db-days { flex: none; flex-basis: auto; gap: 0; padding: 3px; border-radius: 17px; background: #1D2420; }
+  html.phone .panel.drive-mode .db-day { height: 28px; padding: 0 10px; border: 0; border-radius: 14px; font-size: 13.5px; font-weight: 800; }
+  html.phone .panel.drive-mode .db-day[aria-pressed="true"] { background: #6FD39A; color: #0E1210; }
+  html.phone .panel.drive-mode .db-done { display: none; }
+  html.phone :is(.drive-bar:not([hidden]) ~ .view, .drive-day) #save { display: flex; }
+  /* Mint on the night ground, like Done was (the mock's screen 7). */
+  html.phone.night #save { background: #6FD39A; color: #0E1210; }
+  html.phone .panel.drive-mode > .view { top: auto; }
+  html.phone:has(#panel.drive-mode) .legend { top: calc(var(--bar) + 64px); }
+  html.phone .app:has(.panel.drive-mode) .maplibregl-ctrl-top-right { top: 52px; }
+
+  /* The rows (Chris, 11/16, after the mock's schedule): [time] marker,
+     the name as text (a tap edits it, a 48 px field then) with the leg
+     under it, and one 32 px button for the rest (the row's sheet). No
+     handle (a long press drags), no ✕, no Suggest rows (in the sheets). */
+  html.phone .rows .row { display: grid; grid-template-columns: 24px minmax(0, 1fr) 32px; column-gap: 12px; row-gap: 2px; align-items: center; padding: 10px 10px 10px 12px; }
+  html.phone .rows.timed-rows .row { grid-template-columns: 52px 24px minmax(0, 1fr) 32px; column-gap: 10px; padding: 10px 10px 10px 4px; align-items: center; }
+  html.phone .rows .row > :is(.grip, .clear) { display: none; }
+  html.phone .rows .row > .badge { width: 24px; height: 24px; margin: 0; }
+  html.phone .rows.timed-rows .row > .clock { width: 52px; margin: 0; font-size: 17px; }
+  html.phone .rows .row > .cell { grid-column: auto / span 1; }
+  html.phone .rows .row[data-role="add"] > .cell, html.phone .rows .row:not(:has(.row-more)) > .cell { grid-column: span 2; }
+  html.phone .rows .row :is(.kind, .stay) { display: none; }
+  /* The name as text (a button) until tapped; then the field (QA's iOS pass, 11/16). */
+  html.phone .rows .row:not(.editing) .row-input:not(.empty) { display: none; }
+  html.phone .rows .row:not(.editing) .row-name { display: block; width: 100%; min-height: 30px; padding: 4px 0; border: 0; background: none; color: inherit; font: inherit; font-size: 16.5px; font-weight: 600; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* Nothing in the sheet selects as text under a finger but what's typed in (QA: the handle selected "Day 1 schedule"). */
+  html.phone .panel, html.phone .click-menu, html.phone .act-sheet { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  html.phone .panel :is(input, textarea) { -webkit-user-select: text; user-select: text; }
+  /* Low: the totals and the button only (QA: the scroll's own padding pushed the foot 22 px down). */
+  html.phone[data-sheet="low"] .panel > .view > .scroll { display: none; }
+  /* The keyboard up: what's typed in and the sheet above it; the totals come back after. */
+  html.phone.keyboard.adding-stop .panel > .view > .foot { display: none !important; }
+  /* The page never scrolls on a phone (QA, 11/16: iOS scrolled the document
+     to show a focused field and the sheet went with it): the map and sheet
+     are the page; with the keyboard up, the foot needs no bar inset. */
+  html.phone, html.phone body { position: fixed; inset: 0; width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; }
+  html.phone.keyboard .foot { padding-bottom: 12px; }
+  /* With the keyboard up the sheet is over the site bar (it's the screen),
+     and its ground runs on under the bottom edge: iOS 26's floating address
+     pill sits outside the visual viewport, see-through (QA's probe, 11/16). */
+  html.phone.keyboard .panel { z-index: 60; border-radius: 0; box-shadow: 0 160px 0 0 #161B18; }
+  html.phone.keyboard .sheet-grab { display: none; }
+  html.phone.keyboard .app { z-index: 30; }
+  /* A club day's drive bar too (QA, 11/16: it covered Add a stop's search). */
+  html.phone.keyboard .panel.drive-mode .drive-bar { display: none; }
+  html.phone.keyboard .panel.drive-mode { padding-top: 0; }
+  html.phone.keyboard .panel { border-radius: 16px 16px 0 0; }
+  html.phone .rows .row .row-input:is(:focus, .empty) { height: 48px; padding: 0 14px; font-size: 16px; }
+  html.phone .rows .row > :is(.leg-next, .brk) { grid-column: 2 / -1; margin: 0; padding: 0; }
+  html.phone .rows.timed-rows .row > :is(.leg-next, .brk) { grid-column: 3 / -1; }
+  html.phone .rows .row > .brk { margin-top: 6px; padding: 8px 10px; }
+  html.phone .rows .suggest-row { display: none; }
+  html.phone .rows .row:has(+ .suggest-row) { border-bottom: 1px solid var(--line); }
+  html.phone .row-more { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 16px; background: var(--knob); color: var(--ink-2); font: inherit; font-size: 18px; font-weight: 800; line-height: 1; }
+  html.phone .row-more svg { width: 17px; height: 17px; }
+  html.phone .row-more.timer.set { background: var(--stop); color: #fff; }
+  html.phone .rows .row.lifted { z-index: 7; box-shadow: 0 10px 24px rgba(0,0,0,.28); transition: none; }
+  /* The header: Your route (or the day's schedule), Start over and undo at 32 px. */
+  html.phone .list-head { min-height: 36px; padding: 0; }
+  html.phone #start-over { height: 32px; padding: 0 13px; font-size: 13.5px; }
+  html.phone #history-buttons .round { width: 32px; height: 32px; }
+  html.phone #redo { display: none; }
+
+  /* A sheet of actions (a row's, the map's long press): bottom of the screen, over a dimmed map. */
+  .act-sheet { position: fixed; inset: auto 0 0 0; width: auto; max-width: none; max-height: 85vh; margin: 0; padding: 8px 16px max(16px, env(safe-area-inset-bottom)); border: 0; border-radius: 22px 22px 0 0; background: #161B18; color: var(--ink); overflow-y: auto; }
+  .act-sheet::backdrop { background: rgba(10,14,12,.42); }
+  .act-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 0 12px; }
+  .act-head h2 { margin: 0; font-size: 19px; font-weight: 800; overflow-wrap: anywhere; }
+  .act-head p { margin: 2px 0 0; font-size: 14px; color: var(--ink-3); }
+  .act-x { flex: none; width: 36px; height: 36px; border: 0; border-radius: 18px; background: var(--knob); color: var(--ink-2); font: inherit; font-size: 15px; font-weight: 800; }
+  .act { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; width: 100%; min-height: 52px; padding: 8px 4px; border: 0; border-top: 1px solid var(--line); background: none; color: var(--ink); font: inherit; font-size: 16.5px; font-weight: 600; text-align: left; }
+  .act .sub { font-size: 13.5px; font-weight: 500; color: var(--ink-3); }
+  .act.danger { color: #E5484D; }
+  .act-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 3px; margin-bottom: 12px; border-radius: 999px; background: var(--fill); }
+  .act-seg button { height: 40px; border: 0; border-radius: 999px; background: none; color: var(--ink-3); font: inherit; font-size: 15.5px; font-weight: 700; }
+  .act-seg button[aria-pressed="true"] { background: var(--field); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .act-stay { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; border-top: 1px solid var(--line); font-size: 16.5px; font-weight: 600; }
+}
+@media (max-width: 699px) {
+  /* Saved, on a phone, round two (Chris, 11/16): the saved line small
+     above the name, Edit a quiet link at the top right; the totals big;
+     the link on its own row, Share and Copy link half and half under it;
+     no About when nothing's written, no empty sections; the sections as
+     rows with dividers; 16 px within a group, 24 px between. */
+  html.phone #saved-view .scroll { gap: 24px; padding-top: 10px; }
+  html.phone .saved-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding-right: 0; }
+  html.phone .saved-head .ok { grid-column: 1; grid-row: 1; }
+  html.phone .saved-head .edit { grid-column: 2; grid-row: 1; height: auto; padding: 0; background: none; box-shadow: none; color: var(--green-ink); font-size: 15px; font-weight: 700; }
+  html.phone .saved-head .edit svg { display: none; }
+  html.phone .saved-head h1 { grid-column: 1 / -1; margin-top: 4px; font-size: 26px; }
+  html.phone .saved-head p { grid-column: 1 / -1; margin-top: 4px; }
+  html.phone #s-facts > :not(.chip) { display: none; }
+  html.phone #s-facts:not(:has(.chip)) { display: none; }
+  html.phone #saved-view .s-figs:not([hidden]) { display: grid; margin-top: -8px; padding: 0; }
+  html.phone #saved-view .s-figs:not([hidden]) { grid-template-columns: repeat(3, auto); justify-content: space-between; column-gap: 12px; }
+  html.phone #saved-view .s-figs b { white-space: nowrap; font-size: 22px; }
+  html.phone #saved-view .s-figs b > * { display: inline; }
+  html.phone #saved-view .paste { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  html.phone #saved-view .paste input { grid-column: 1 / -1; width: 100%; height: 48px; }
+  html.phone #saved-view .paste #share-out[hidden] + #copy { grid-column: 1 / -1; }
+  html.phone #saved-view .paste .pill { width: 100%; height: 48px; justify-content: center; }
+  /* Both secondary: Drive it in Carve is the one primary (Chris, 11/16). */
+  html.phone #saved-view #copy { background: var(--fill); color: var(--ink); box-shadow: none; }
+  html.phone #about.none, html.phone #along-unit:has(.along-list:empty), html.phone #near-unit:has(.near-cards:empty) { display: none !important; }
+  html.phone #saved-view .unit { padding: 16px 0 0; border-top: 1px solid var(--line); }
+  html.phone #saved-view .unit-head b { font-size: 16px; }
+
+  /* Saved, on a phone (the mock's screen 4): Drive it in Carve first, then
+     the link with Share and Copy link; the QR code below the rest. */
+  html.phone #saved-view .scroll > .scan { order: 10; }
+  html.phone #saved-view .scroll > .s-drive:not([hidden]) { flex: none; display: flex; justify-content: center; height: 52px; text-decoration: none; }
+  html.phone #saved-view .scroll > * { flex-shrink: 0; }
+
+  /* The map's long press (the mock's screen 6): its menu as a sheet from
+     the bottom, over a dimmed map; on a great road, the road and Add this
+     road first. */
+  html.phone .click-menu:not([hidden]) { position: fixed; z-index: 40; left: 0 !important; right: 0; top: auto !important; bottom: 0; width: auto; max-height: 80vh; overflow-y: auto; padding: 8px 16px max(12px, env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0; box-shadow: 0 0 0 100vmax rgba(10,14,12,.32); }
+  html.phone .click-menu.with-road { width: auto; padding-top: 8px; }
+  html.phone .click-menu .road-head { order: -2; margin: 0 -16px 4px; }
+  html.phone .click-menu button.whole { order: -1; }
+  html.phone .click-menu button { height: 52px; border-radius: 0; border-top: 1px solid var(--line); }
+  html.phone .click-menu button.on { background: none; }
+  html.phone .click-menu .cancel { border-radius: 0; }
+  /* No road photo on a phone (Chris, 11/16): the name, its facts and the actions. */
+  html.phone .click-menu .road-head img { display: none; }
+  html.phone .click-menu .road-head { border-top: 0; }
+
+  /* Add a stop (the mock's screen 5): the sheet's only content while open. */
+  html.phone .phone-add { display: none; }
+  html.phone.adding-stop .phone-add { display: flex; flex-direction: column; gap: 12px; }
+  html.phone.adding-stop #plan-view .scroll > :not(.phone-add) { display: none !important; }
+  /* No ✦ Suggest on a phone (Chris, 11/16): no rows, no list, no upsell. */
+  html.phone #suggest-list, html.phone.adding-stop #rows { display: none !important; }
+  html.phone.adding-stop #plan-view > .foot { display: none !important; }
+  .phone-add-pin { position: sticky; top: -6px; z-index: 3; display: flex; flex-direction: column; gap: 12px; margin: -6px -16px 0; padding: 6px 16px 8px; background: inherit; }
+  html.phone .panel .phone-add-pin { background: #161B18; }
+  .phone-add-head { display: flex; align-items: center; justify-content: space-between; }
+  .phone-add-head h2 { margin: 0; font-size: 19px; font-weight: 800; outline: none; }
+  html.phone .phone-add .rows .row { grid-template-columns: 24px minmax(0, 1fr); padding: 6px 8px; border-radius: 16px; }
+  html.phone .phone-add .rows .row > .cell { grid-column: auto / span 1; }
+  html.phone .phone-add .pill-slot .place-bar { display: flex !important; position: static; left: auto; right: auto; top: auto; margin: 0 -16px; padding: 0 16px; }
+  html.phone .phone-add .place-pills { overflow-x: auto; }
+  html.phone .phone-add .place-under { flex-wrap: wrap; }
+  html.phone .phone-add .place-chip, html.phone .phone-add .place-said { box-shadow: none; }
+}
+@media (max-width: 699px) and (not (prefers-color-scheme: dark)) {
+  :where(html:not(.night)) .act-sheet { background: #fff; }
+  html.phone:not(.night) .panel .phone-add-pin { background: #fff; }
+  html.phone.keyboard:not(.night) .panel { box-shadow: 0 160px 0 0 #fff; }
+}

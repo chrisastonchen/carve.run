@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Plan a Drive on Your Computer | Carve</title>
 <meta name="description" content="Plan a scenic drive on a big screen: search places or click the map, bring in a Ride with GPS, Google Maps or GPX route, then get a link and QR code that opens it in Carve on your phone.">
 <link rel="canonical" href="https://carve.run/plan/">
@@ -25,7 +25,7 @@
   // A club drive's day is dark in either device setting, its map too (club flow mock v11, Chris 11/13).
   try { if (/[?&]drive=/.test(location.search) && !/[?&]group\b/.test(location.search)) document.documentElement.classList.add("night"); } catch (e) {}
 </script>
-<link rel="stylesheet" href="/plan/plan.css?v=72">
+<link rel="stylesheet" href="/plan/plan.css?v=81">
 <link rel="stylesheet" href="/plan/club-steps.css">
 </head>
 <body>
@@ -87,7 +87,8 @@
   <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
 </nav>
 
-<!-- Phones: the planner is for computers and tablets (the user, 2026-10-29). -->
+<!-- Phones: your own drive asks the app or here, once (Chris, 11/15; phone.js), as a sheet over the planner;
+     alone, it's the page under a phone's sign-in. -->
 <main class="phone-gate narrow-only" aria-labelledby="gate-title">
   <!-- A full page, after AllTrails' (the user, 2026-11-04): a drawn tile of a map with a route on it, one button. -->
   <div class="gate-art" aria-hidden="true"><div class="gate-tile"><svg viewBox="0 0 200 200">
@@ -108,7 +109,9 @@
   </svg></div></div>
   <h1 id="gate-title">Plan your own drive</h1>
   <p>Plan routes on a computer, or in the Carve app. Both are free.</p>
-  <a class="pill green big gate-open" id="gate-open" href="https://apps.apple.com/app/carve-route-planner/id6808087716">Continue in app</a>
+  <a class="pill green big gate-open" id="gate-open" href="https://apps.apple.com/app/carve-route-planner/id6808087716">Get the app</a>
+  <!-- Phones plan here too (Chris, 11/15): shown with the planner under it, once (phone.js). -->
+  <button type="button" class="pill big gate-browser" id="gate-browser">Continue in browser</button>
 </main>
 
 <div class="app wide-only">
@@ -140,9 +143,9 @@
          and day, the day switch, Done; across the top, over the map. -->
     <div class="drive-bar" id="drive-bar" hidden>
       <a class="db-back" id="db-back" href="/club/">‹ Drive</a>
-      <p class="db-title"><b id="db-name">Your drive</b> <span id="db-when"></span></p>
+      <p class="db-title"><b id="db-name">Your drive</b> <span id="db-when"></span><span class="db-when-short" id="db-when-short"></span></p>
       <div class="db-days" id="db-days" role="group" aria-label="Days" hidden></div>
-      <button type="button" class="db-done" id="db-done">Done</button>
+      <button type="button" class="db-done" id="db-done">Save and get the link</button>
     </div>
     <!-- Planning -->
     <section class="view" id="plan-view">
@@ -522,6 +525,10 @@
         <p class="s-note" id="s-note" hidden></p>
         <p class="s-forecast" id="s-forecast" hidden></p>
         <div class="facts" id="s-facts"></div>
+        <!-- A phone (Chris, 11/16): the planner's totals, big. -->
+        <div class="figures s-figs" id="s-figs" hidden></div>
+        <!-- A phone (the mock's screen 4): the app on this phone, first; the QR code lower. -->
+        <a class="pill green big s-drive" id="s-drive" hidden>Drive it in Carve</a>
         <div class="scan">
           <div class="scan-top">
             <div class="qr" id="qr" role="img"></div>
@@ -535,6 +542,7 @@
         </div>
         <div class="paste">
           <input id="link-out" readonly aria-label="The route's link">
+          <button type="button" class="pill grey" id="share-out" hidden>Share</button>
           <button type="button" class="pill green" id="copy">Copy link</button>
         </div>
         <div class="unit" id="about" aria-live="polite">
@@ -689,7 +697,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=129"></script>
+<script type="module" src="/plan/plan.js?v=136"></script>
 <script src="/assets/carve-site.js?v=5ff585f034" defer></script>
 </body>
 </html>

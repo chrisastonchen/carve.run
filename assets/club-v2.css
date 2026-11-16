@@ -432,12 +432,47 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cv .cd-link { margin-top: 8px; display: block; background: rgba(238, 241, 238, .08); border-radius: 10px; padding: 8px 12px; font-size: 14px; font-weight: 600; color: #EEF1EE; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-decoration: none; }
 .cv .cd-link:hover { text-decoration: underline; }
 .cd-share .go { height: 44px; padding: 0 20px; font-size: 15px; }
+.cd-share-do { display: flex; gap: 8px; }
+.cd-seqn { scroll-margin-top: 84px; }
+.cd-note { margin: 0; padding: 10px 12px; border-radius: 12px; background: rgba(238, 241, 238, .06); color: var(--ink-2); font-size: 14.5px; line-height: 1.45; white-space: pre-line; overflow-wrap: anywhere; }
 @media (max-width: 900px) {
   .cd-seq { grid-template-columns: 1fr; gap: 6px; }
   .cv .cd-seqn { padding-top: 0; }
   .cd-day { grid-template-columns: 1fr; }
   .cd-share { grid-template-columns: auto minmax(0, 1fr); }
   .cd-share .go { grid-column: 1 / -1; justify-self: start; }
+  .cd-share-do { grid-column: 1 / -1; }
+  .cd-share-do .go { flex: 1; justify-content: center; }
+}
+/* A phone (the mock's screen 8; Chris, 11/16): no sketch, the date and one
+   line of figures and one of times; Edit route and Edit note the share
+   buttons' size; the share panel as the link, Share and Copy link, one
+   short line, and the QR code behind Show QR code. */
+.cd-facts-short, .cd-times-short, .cd-share-short, .cd-qr-show { display: none; }
+@media (max-width: 699px) {
+  .cd-day { grid-template-columns: minmax(0, 1fr); }
+  .cd-day > .cd-shape { display: none; }
+  .cd-day-body { padding: 16px; gap: 6px; }
+  .cd-day-body h3 { font-size: 18px; }
+  .cd-day-body > .cd-facts { display: none; }
+  .cd-facts-short, .cd-times-short { display: block; margin: 0; font-family: var(--num); font-weight: 600; font-size: 16px; color: #EEF1EE; font-variant-numeric: tabular-nums; }
+  .cd-times-short { font-family: "Figtree", system-ui, sans-serif; font-weight: 600; font-size: 14.5px; color: #C3CAC5; }
+  .cd-times-short b { font-family: var(--num); font-weight: 600; color: #EEF1EE; }
+  .cd-day .cd-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .cd-day .cd-acts .go:only-child { grid-column: 1 / -1; }
+  .cd-day .cd-acts .go, .cd-share .go { height: 44px; padding: 0 8px; justify-content: center; font-size: 15px; font-weight: 800; }
+  .cd-share { display: flex; flex-direction: column; align-items: stretch; gap: 10px; padding: 16px; }
+  .cd-share > .cd-qr { display: none; order: 5; align-self: center; width: 140px; height: 140px; }
+  .cd-share.qr-on > .cd-qr { display: block; }
+  .cd-share-words { display: contents; }
+  .cd-share-words > :not(.cd-link) { display: none; }
+  .cv .cd-share-words .cd-link { order: 1; margin: 0; padding: 12px; font-size: 15px; }
+  .cd-share-do { order: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cd-share-do .go:only-child { grid-column: 1 / -1; }
+  .cd-share .cd-share-do .go { grid-column: auto; justify-self: stretch; width: 100%; }
+  .cd-share-short { display: block; order: 3; margin: 0; color: #D3D9D5; font-size: 13.5px; line-height: 1.4; }
+  .cd-qr-show { display: block; order: 4; align-self: flex-start; min-height: 0; padding: 0; border: 0; background: none; color: #6FD39A; font: inherit; font-size: 14px; font-weight: 700; }
+}
 }
 
 /* Saved (Chris, 11/13): the routes made or saved, by group, and events with reminders. */
