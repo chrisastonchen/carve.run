@@ -8,7 +8,7 @@
 // (Chris, 11/15: every map pin, as ✦ Suggest's do; pin-photo.js). Words:
 // pill-words.js.
 
-import { PILLS, WORDS, labelOf, noneText, pathKey, pillItems, viewBox, waitFor } from "./pill-words.js?v=2";
+import { PILLS, WORDS, labelOf, noneText, pathKey, pillItems, viewBox, waitFor } from "./pill-words.js?v=3";
 import { icon } from "./suggest.js?v=15";
 import { mapsUrl } from "./suggest-words.js?v=9";
 import { askPhotos, cardPhoto, openPhoto } from "./pin-photo.js?v=1";

@@ -9,15 +9,16 @@ export const PILLS = [
   { kind: "gas", label: "Gas" },
   { kind: "coffee", label: "Coffee" },
   { kind: "food", label: "Food" },
-  { kind: "rest_area", label: "Rest areas" },
+  { kind: "rest_area", label: "Rest & parks" }, // parks too (Chris, 11/16; planner 593fea700e)
   { kind: "viewpoint", label: "Viewpoints" },
   { kind: "attraction", label: "Landmarks" },
 ];
 export const labelOf = (kind) => PILLS.find((p) => p.kind === kind)?.label || "Places";
 
-/// The card's kind line.
+/// The card's kind line. A park under Rest & parks says Park: the planner's
+/// `sub: "park"` (546bd06f56; Chris, 11/16); without it, its kind's words.
 const KIND = { gas: "Gas", coffee: "Coffee", food: "Food", rest_area: "Rest area", viewpoint: "Viewpoint", attraction: "Landmark" };
-export const kindText = (kind) => KIND[kind] || "Place";
+export const kindText = (kind, sub) => (sub === "park" ? "Park" : KIND[kind] || "Place");
 
 /// The same pill in the same view searched at most this often (a pan never
 /// searches by itself). Another pill, or another view, searches at once
@@ -36,7 +37,7 @@ export const WORDS = {
 
 /// What a pill found, said when it's nothing: "No gas along the route."
 export function noneText(kind, alongRoute) {
-  const what = { gas: "gas", coffee: "coffee", food: "food", rest_area: "rest areas", viewpoint: "viewpoints", attraction: "landmarks" }[kind] || "places";
+  const what = { gas: "gas", coffee: "coffee", food: "food", rest_area: "rest areas or parks", viewpoint: "viewpoints", attraction: "landmarks" }[kind] || "places";
   return `No ${what} ${alongRoute ? "along the route" : "in this area"}.`;
 }
 
@@ -72,7 +73,7 @@ export function pillItems(answer, { miles = true } = {}) {
   return (answer?.places || []).filter((p) => p?.name && Number.isFinite(p.lat) && Number.isFinite(p.lon)).map((p) => ({
     place: { name: p.name, lat: p.lat, lon: p.lon, address: p.address || "" },
     icon: p.kind,
-    kind: kindText(p.kind),
+    kind: kindText(p.kind, p.sub),
     title: p.name,
     where: Number.isFinite(p.km) ? `${offText(p.offMeters, miles)} · ${distanceText(p.km, miles)} in` : p.address || "",
   }));
