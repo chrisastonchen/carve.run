@@ -6,7 +6,7 @@
 
 import { $, billing, myOrgs, rpc, signedIn } from "/assets/club-api.js?v=6e024a0fa0";
 import { organizersBox } from "/assets/club-organizers.js?v=564a0fcab6";
-import { billingLine, trialStatus } from "/assets/club-words.js?v=f69b203c9f";
+import { billingLine, trialStatus } from "/assets/club-words.js?v=9b5a1c9d31";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };

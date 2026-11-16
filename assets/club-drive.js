@@ -18,7 +18,7 @@ import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/as
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { timeSelects } from "/assets/club-time.js?v=02f4200f94";
-import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=f69b203c9f";
+import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=9b5a1c9d31";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };

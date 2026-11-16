@@ -7,7 +7,7 @@
 // the timers change only on a tap and a yes.
 
 import { $, el, rpc, signedIn } from "/assets/club-api.js?v=6e024a0fa0";
-import { dayText } from "/assets/club-words.js?v=f69b203c9f";
+import { dayText } from "/assets/club-words.js?v=9b5a1c9d31";
 import { dayReviews, dayTabs, dayTimes, earlierTimes, timerChanges, timersSaid, minutesText } from "/assets/club-report-words.js?v=805c8325f0";
 
 const q = new URLSearchParams(location.search);

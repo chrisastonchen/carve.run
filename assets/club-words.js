@@ -483,7 +483,7 @@ export function updatedAgo(iso, now = Date.now()) {
 /// this account; DevOps, 11/13: no server data for it).
 /// → [{ key, title, line, done, action }]
 /// hasApp: the account has used the app (0122's my_app_use): the step done,
-/// said so, with nothing to press (DevOps, 11/16).
+/// said so, with nothing to press (DevOps, 11/16; re-stamped the same day).
 export function firstSteps({ drives = 0, organizers = 1, cap = 5, gotApp = false, hasApp = false } = {}) {
   const more = Math.max(0, (Number(cap) || 5) - (Number(organizers) || 1));
   return [
