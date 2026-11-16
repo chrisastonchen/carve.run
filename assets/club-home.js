@@ -329,7 +329,8 @@ function showTerms({ trial, terms, amount }) {
   $("v-trial-note").hidden = !!trial;
   $("v-trial-note").textContent = trial ? ""
     : `No free trial${hadPlan ? ", because you've had a Club plan before" : " for this club"}. You'll be billed ${price} today, and you can cancel any time.`;
-  $("v-start-go").textContent = trial ? "Start free trial" : `Start Club for ${price}`;
+  // The price is on the line under it (Chris, 11/16: was "Start Club for $499").
+  $("v-start-go").textContent = trial ? "Start free trial" : "Start Club";
   $("v-terms").textContent = terms || renewalTerms(BY_TIER.club, trial);
 }
 
