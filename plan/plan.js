@@ -35,6 +35,23 @@ import { initPills } from "./place-pills.js?v=9";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
 
+// The route, impossible to miss (Chris, 11/15: thin white and blue melted
+// into the tan roads near Saratoga): a vivid blue core in a dark casing,
+// both wider as the map zooms in; under the labels, over every road.
+const ROUTE_BLUE = "#2F8CFF";
+const ROUTE_CASING = "#0A2B5C";
+const ROUTE_WIDTH = ["interpolate", ["exponential", 1.4], ["zoom"], 5, 3.5, 10, 5.5, 13, 7.5, 16, 11, 19, 16];
+const ROUTE_CASING_WIDTH = ["interpolate", ["exponential", 1.4], ["zoom"], 5, 6.5, 10, 9, 13, 12, 16, 16.5, 19, 23];
+
+/// Where the route goes in a map style: over every road, bridge, rail and
+/// building, under the first label after them (our dark style starts its
+/// labels before its roads; Liberty draws its bridges after its first label).
+function overRoads(layers) {
+  let last = -1;
+  layers.forEach((l, i) => { if (l.type !== "symbol" && /road|highway|bridge|tunnel|rail|aeroway|building|transportation|pier/.test(l.id)) last = i; });
+  return layers.slice(last + 1).find((l) => l.type === "symbol")?.id;
+}
+
 // A local preview may point at a test backend (a Supabase branch):
 // localStorage "carve.dev.backend" = {"url": "https://<ref>.supabase.co",
 // "key": "<publishable key>"}. Only on localhost, never on carve.run.
@@ -649,14 +666,14 @@ function setUpMap() {
   map.addControl(new WholeRouteControl(), "top-right");
   if (!remembered && !plan.start && !plan.end && !DRIVE) startNearVisitor();
   map.on("load", () => {
-    const firstLabel = map.getStyle().layers.find((layer) => layer.type === "symbol")?.id;
+    const firstLabel = overRoads(map.getStyle().layers);
     // Version 1 of a route after its pre-run (group.js, Club): grey and
     // dashed, under the route, when the organizer asks to see it.
     map.addSource("ghost", { type: "geojson", data: emptyLine() });
     map.addLayer({ id: "ghost-line", type: "line", source: "ghost", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#8B9098", "line-width": 5, "line-dasharray": ["literal", [1.2, 1.2]] } }, firstLabel);
     map.addSource("route", { type: "geojson", data: emptyLine() });
-    map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#ffffff", "line-width": 11 } }, firstLabel);
-    map.addLayer({ id: "route-line", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#2E92FF", "line-width": 6 } }, firstLabel);
+    map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": ROUTE_CASING, "line-width": ROUTE_CASING_WIDTH } }, firstLabel);
+    map.addLayer({ id: "route-line", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": ROUTE_BLUE, "line-width": ROUTE_WIDTH } }, firstLabel);
     // Carve's drives: dashed violet (the app's colour for a drive that
     // isn't yours), under the route's own line; from about a state's width
     // in, where they're roads and not a tangle. Quiet beside the route —
@@ -4223,7 +4240,7 @@ async function start() {
   } else if (cameBack && !profile && signInReturn({ keep: true })) {
     openAccount(nameStep(), { saving: false, title: "Sign in" });
   }
-  if (LOCAL) window.__planner = { get plan() { return plan; }, mapView: () => (mapReady ? { lon: map.getCenter().lng, lat: map.getCenter().lat, zoom: map.getZoom() } : null), layerIds: () => (mapReady ? map.getStyle().layers.map((l) => l.id) : []), attribution: () => document.querySelector(".maplibregl-ctrl-attrib")?.textContent || "", suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
+  if (LOCAL) window.__planner = { get plan() { return plan; }, mapView: () => (mapReady ? { lon: map.getCenter().lng, lat: map.getCenter().lat, zoom: map.getZoom() } : null), jumpTo: (center, zoom) => map?.jumpTo({ center, zoom }), layerIds: () => (mapReady ? map.getStyle().layers.map((l) => l.id) : []), attribution: () => document.querySelector(".maplibregl-ctrl-attrib")?.textContent || "", suggestedName, showSaved, enrich, render, importTrack, placeAt, printDirections };
   if (saved && plan.token) {
     showSaved();
     renderBlurb(false);

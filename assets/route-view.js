@@ -11,6 +11,23 @@
 import { markerLabels, turnKind, formatDistance, formatDuration, usesMiles } from "/plan/route-wire.js";
 import { session, signedIn } from "/assets/site-bar.js?v=986ff8abd4";
 
+// The route, impossible to miss (Chris, 11/15: thin white and blue melted
+// into the tan roads near Saratoga): a vivid blue core in a dark casing,
+// both wider as the map zooms in; under the labels, over every road.
+const ROUTE_BLUE = "#2F8CFF";
+const ROUTE_CASING = "#0A2B5C";
+const ROUTE_WIDTH = ["interpolate", ["exponential", 1.4], ["zoom"], 5, 3.5, 10, 5.5, 13, 7.5, 16, 11, 19, 16];
+const ROUTE_CASING_WIDTH = ["interpolate", ["exponential", 1.4], ["zoom"], 5, 6.5, 10, 9, 13, 12, 16, 16.5, 19, 23];
+
+/// Where the route goes in a map style: over every road, bridge, rail and
+/// building, under the first label after them (our dark style starts its
+/// labels before its roads; Liberty draws its bridges after its first label).
+function overRoads(layers) {
+  let last = -1;
+  layers.forEach((l, i) => { if (l.type !== "symbol" && /road|highway|bridge|tunnel|rail|aeroway|building|transportation|pier/.test(l.id)) last = i; });
+  return layers.slice(last + 1).find((l) => l.type === "symbol")?.id;
+}
+
 const SUPABASE_URL = "https://uvaabajzkzupecemzsug.supabase.co";
 const SUPABASE_KEY = "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U";
 // The map follows the device's theme, light unless it's set to dark (the
@@ -157,10 +174,10 @@ async function drawMap(host, payload) {
   map.touchZoomRotate.disableRotation();
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
   map.on("load", () => {
-    const firstLabel = map.getStyle().layers.find((layer) => layer.type === "symbol")?.id;
+    const firstLabel = overRoads(map.getStyle().layers);
     map.addSource("route", { type: "geojson", data: { type: "Feature", geometry: { type: "LineString", coordinates: line }, properties: {} } });
-    map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#ffffff", "line-width": 11 } }, firstLabel);
-    map.addLayer({ id: "route-line", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#2E92FF", "line-width": 6 } }, firstLabel);
+    map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": ROUTE_CASING, "line-width": ROUTE_CASING_WIDTH } }, firstLabel);
+    map.addLayer({ id: "route-line", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": ROUTE_BLUE, "line-width": ROUTE_WIDTH } }, firstLabel);
     const places = placesOf(payload);
     const labels = markerLabels(places);
     const add = (lon, lat, el) => {
