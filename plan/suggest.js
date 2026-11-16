@@ -9,7 +9,7 @@
 
 import { SOLO, SUGGEST, alongSuggestions, mapsUrl, meetDay, meetSaid, meetSuggestions, needsFirst } from "./suggest-words.js?v=8";
 import { fitTo } from "./fit.js?v=1";
-import { openPhotoView, openStreetView } from "./street-view.js?v=2";
+import { askPhotos as askPinPhotos, cardPhoto as pinCardPhoto, openPhoto as openPinPhoto, photoInto } from "./pin-photo.js?v=1";
 
 /// Each kind's icon (24 px, stroked in the pin's colour; no emoji).
 const ICONS = {
@@ -88,56 +88,23 @@ export function initSuggest(h) {
     $("suggest-list-h").focus({ preventScroll: true });
   }
 
-  // ── Photos (Chris approved Product's mock v4, 11/13): asked once the
-  // places show, filled in as they come; a place with none keeps its icon.
-  // The planner's photos action (OSM, Commons by name, Mapillary nearby).
-  // A place the planner ran out of time on (left out, not "none") is
-  // asked once more a few seconds later (DevOps, 11/14).
-  const PHOTO_AGAIN_MS = 3000;
-  async function askPhotos(mine, only = null) {
-    const ids = only ?? mine.items.slice(0, 12).map((_, i) => i);
-    try {
-      const answer = await h.planner("photos", { places: ids.map((i) => ({ id: String(i), name: mine.items[i].title, lat: mine.items[i].place.lat, lon: mine.items[i].place.lon })) });
-      if (open !== mine) return;
-      mine.photos ??= [];
-      const said = new Set();
-      for (const p of answer?.photos || []) {
-        if (!p || !("photo" in p)) continue;
-        said.add(Number(p.id));
-        if (p.photo) mine.photos[Number(p.id)] = p.photo;
-      }
-      mine.token = answer?.viewer?.token || mine.token || null;
-      paintPhotos();
-      if (mine.active >= 0 && mine.photos[mine.active]) card(mine.active, { focus: false });
-      const left = ids.filter((i) => !said.has(i));
-      if (!only && left.length) setTimeout(() => { if (open === mine) askPhotos(mine, left); }, PHOTO_AGAIN_MS);
-    } catch {
-      // No photos this time: the icons stay.
-    }
+  // ── Photos (Chris approved Product's mock v4, 11/13; pin-photo.js):
+  // asked once the places show, filled in as they come.
+  function askPhotos(mine) {
+    askPinPhotos(h.planner, mine.items, {
+      still: () => open === mine,
+      got: ({ photos, token }) => {
+        mine.photos ??= [];
+        photos.forEach((p, i) => { mine.photos[i] = p; });
+        mine.token = token || mine.token || null;
+        paintPhotos();
+        if (mine.active >= 0 && mine.photos[mine.active]) card(mine.active, { focus: false });
+      },
+    });
   }
 
-  /// A photo into its box, faded in once loaded; a broken one leaves the icon.
-  function photoInto(box, photo, cls) {
-    box.querySelector(`img.${cls}`)?.remove();
-    if (!photo?.thumb) return;
-    const img = h.el("img", cls);
-    img.alt = "";
-    img.decoding = "async";
-    img.referrerPolicy = "no-referrer";
-    img.addEventListener("load", () => { img.classList.add("in"); box.classList.add("has-photo"); });
-    img.addEventListener("error", () => { img.remove(); box.classList.remove("has-photo"); });
-    img.src = photo.thumb;
-    box.append(img);
-  }
-
-  /// A photo opens full screen: a street view, or a Commons photo in the
-  /// same shell (Chris, 11/15: not Commons's file page).
-  function openPhoto(i) {
-    const photo = open?.photos?.[i];
-    if (!photo) return;
-    if (photo.src === "mapillary") { if (open.token) openStreetView({ place: open.items[i].title, imageId: photo.mapillary_id, token: open.token }); }
-    else if (photo.thumb) openPhotoView({ place: open.items[i].title, photo });
-  }
+  /// A photo opens: a street view, or a Commons photo, full screen.
+  const openPhoto = (i) => openPinPhoto(open?.photos?.[i], open?.items[i]?.title, open?.token);
 
   function paintPhotos() {
     if (!open?.photos || !$("suggest-items")) return;
@@ -359,29 +326,8 @@ export function initSuggest(h) {
     markList();
   }
 
-  /// The card's photo (mock v4): 136 px on top, ✕, its credit, and expand
-  /// (the street view, or a Commons photo's page); "Over 3 yrs old" on a
-  /// street view taken more than 3 years ago.
-  function cardPhoto(i, photo) {
-    const ph = h.el("div", "suggest-ph");
-    photoInto(ph, photo, "suggest-ph-img");
-    ph.querySelector("img")?.addEventListener("error", () => ph.remove());
-    const taken = Date.parse(photo.captured_at || "");
-    if (photo.src === "mapillary" && Number.isFinite(taken) && Date.now() - taken > 3 * 365.25 * 86400_000) ph.append(h.el("span", "suggest-ph-old", "Over 3 yrs old"));
-    const x = h.el("button", "suggest-ph-x", "×");
-    x.type = "button";
-    x.setAttribute("aria-label", "Close");
-    x.addEventListener("click", () => { open?.popup?.remove(); });
-    const credit = h.el("span", "suggest-ph-credit", photo.src === "mapillary" ? photo.credit : `Photo: ${photo.credit}`);
-    const exp = h.el("button", "suggest-ph-exp");
-    exp.type = "button";
-    exp.setAttribute("aria-label", photo.src === "mapillary" ? "Open the street view" : "Open the photo");
-    exp.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>';
-    exp.addEventListener("click", () => openPhoto(i));
-    ph.addEventListener("click", (e) => { if (e.target === ph || e.target.tagName === "IMG") openPhoto(i); });
-    ph.append(x, credit, exp);
-    return ph;
-  }
+  /// The card's photo (pin-photo.js): ✕ closes the card, expand opens it.
+  const cardPhoto = (i, photo) => pinCardPhoto(photo, { onOpen: () => openPhoto(i), onClose: () => { open?.popup?.remove(); } });
 
   /// A pick: the field takes it, and the suggestions go.
   function use(which, place) {

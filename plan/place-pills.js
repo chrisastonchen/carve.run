@@ -4,11 +4,14 @@
 // With a route: the planner's `nearby` along it, asked once per route and
 // kind and reused. Without: `nearby` in the map's view, on a tap only; a
 // moved map offers "Search this area" (never a search by itself), at most
-// one view search each 10 s. Words: pill-words.js.
+// one view search each 10 s. Each pin's card shows its place's photo
+// (Chris, 11/15: every map pin, as ✦ Suggest's do; pin-photo.js). Words:
+// pill-words.js.
 
 import { PILLS, WORDS, labelOf, noneText, pathKey, pillItems, viewBox, waitFor } from "./pill-words.js?v=2";
-import { icon } from "./suggest.js?v=13";
+import { icon } from "./suggest.js?v=14";
 import { mapsUrl } from "./suggest-words.js?v=8";
+import { askPhotos, cardPhoto, openPhoto } from "./pin-photo.js?v=1";
 
 /// `h` from plan.js: { el, planner, plan, map, mapReady, addStop, miles,
 /// closeSuggest }. → { changed(), hide(), shown(on) }
@@ -23,6 +26,10 @@ export function initPills(h) {
   let lastView = null; // the last view search: { at, kind, box }
   let waiting = null; // a view search held for the 10 s
   let shownFor = null; // the route key, or "view", the pins are for
+  let shownItems = null; // the places the pins are for: their photos come here
+  let photos = []; // by the place's index
+  let token = null; // the street view's, from the photos answer
+  let active = -1; // the place whose card is open
   const routeAnswers = new Map(); // `${pathKey}|${kind}` → answer
 
   for (const p of PILLS) {
@@ -45,9 +52,13 @@ export function initPills(h) {
     look(on);
   });
 
-  function say(text) {
+  /// The line under the row: busy, a small spinner beside "Looking…"
+  /// while a search runs (Chris, 11/15).
+  function say(text, busy = false) {
     said.textContent = text;
     said.hidden = !text;
+    said.classList.toggle("busy", busy && !!text);
+    said.setAttribute("aria-busy", busy && text ? "true" : "false");
   }
 
   function clear() {
@@ -56,6 +67,9 @@ export function initPills(h) {
     for (const m of pins) m.remove();
     pins = [];
     shownFor = null;
+    shownItems = null;
+    photos = [];
+    active = -1;
   }
 
   function hide() {
@@ -66,14 +80,27 @@ export function initPills(h) {
     clear();
     chip.hidden = true;
     say("");
-    for (const b of row.children) b.setAttribute("aria-pressed", "false");
+    for (const b of row.children) press(b, false);
+  }
+
+  /// A pill on shows ✕ at its end: a second tap clears it, so its name
+  /// says so (Chris, 11/15).
+  function press(b, on) {
+    b.setAttribute("aria-pressed", String(on));
+    b.querySelector(".place-x")?.remove();
+    if (on) {
+      const x = h.el("span", "place-x", "✕");
+      x.setAttribute("aria-hidden", "true");
+      b.append(x);
+      b.setAttribute("aria-label", `Clear ${labelOf(b.dataset.kind)}`);
+    } else b.removeAttribute("aria-label");
   }
 
   function tap(kind) {
     if (on === kind) return hide();
     hide();
     on = kind;
-    row.querySelector(`[data-kind="${kind}"]`).setAttribute("aria-pressed", "true");
+    press(row.querySelector(`[data-kind="${kind}"]`), true);
     h.closeSuggest();
     look(kind);
   }
@@ -88,7 +115,7 @@ export function initPills(h) {
       const k = `${route}|${kind}`;
       let answer = routeAnswers.get(k);
       if (!answer) {
-        say(WORDS.looking);
+        say(WORDS.looking, true);
         try {
           answer = await h.planner("nearby", { category: kind, path: p.path.geometry, durationSeconds: p.path.durationSeconds });
         } catch (failure) {
@@ -105,7 +132,7 @@ export function initPills(h) {
     if (!map || !h.mapReady()) return;
     // Only once the map has stopped moving, and no more than each 10 s.
     if (map.isMoving()) {
-      say(WORDS.looking);
+      say(WORDS.looking, true);
       return map.once("moveend", () => n === asked && look(kind));
     }
     const b = map.getBounds();
@@ -117,12 +144,12 @@ export function initPills(h) {
     // Only the same pill in the same view waits; anything else goes now.
     const wait = waitFor(lastView, kind, box);
     if (wait) {
-      say(WORDS.looking);
+      say(WORDS.looking, true);
       waiting = setTimeout(() => n === asked && look(kind), wait);
       return;
     }
     lastView = { at: Date.now(), kind, box };
-    say(WORDS.looking);
+    say(WORDS.looking, true);
     let answer;
     try {
       answer = await h.planner("nearby", { category: kind, bbox: box });
@@ -149,13 +176,28 @@ export function initPills(h) {
       pin.addEventListener("click", (e) => { e.stopPropagation(); card(items, i); });
       pins.push(new window.maplibregl.Marker({ element: pin, anchor: "center" }).setLngLat([item.place.lon, item.place.lat]).addTo(map));
     });
+    // Their photos, for the cards: one that's open when its photo comes
+    // is drawn again with it.
+    shownItems = items;
+    askPhotos(h.planner, items, {
+      still: () => shownItems === items,
+      got: (answer) => {
+        answer.photos.forEach((p, i) => { photos[i] = p; });
+        token = answer.token || token;
+        if (active >= 0 && photos[active] && popup) card(items, active, { focus: false });
+      },
+    });
   }
 
-  /// A place's card over its pin: what and where, + Stop, Google Maps.
-  function card(items, i) {
+  /// A place's card over its pin: its photo, what and where, + Stop,
+  /// Google Maps.
+  function card(items, i, { focus = true } = {}) {
     const item = items[i];
+    active = i;
     pins.forEach((m, n) => m.getElement().classList.toggle("on", n === i));
     const box = h.el("div", "suggest-card");
+    const photo = photos[i] || null;
+    if (photo) box.append(cardPhoto(photo, { onOpen: () => openPhoto(photo, item.title, token), onClose: () => { popup?.remove(); popup = null; } }));
     const kind = h.el("p", "suggest-kind");
     kind.innerHTML = icon(item.icon);
     kind.append(item.kind);
@@ -175,12 +217,17 @@ export function initPills(h) {
     maps.rel = "noopener";
     acts.append(add, maps);
     box.append(acts);
-    popup?.remove();
+    // The old card goes without saying no card is open.
+    const old = popup;
+    popup = null;
+    old?.remove();
     // Near the top, the card opens below its pin, clear of the pills.
     const y = h.map().project([item.place.lon, item.place.lat]).y;
-    popup = new window.maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 18, maxWidth: "280px", className: "suggest-popup", ...(y < 260 ? { anchor: "top" } : {}) })
+    popup = new window.maplibregl.Popup({ closeButton: !photo, closeOnClick: false, offset: 18, maxWidth: "280px", className: photo ? "suggest-popup with-photo" : "suggest-popup", ...(y < 260 ? { anchor: "top" } : {}) })
       .setLngLat([item.place.lon, item.place.lat]).setDOMContent(box).addTo(h.map());
-    add.focus({ preventScroll: true });
+    const mine = popup;
+    mine.on("close", () => { if (popup === mine) { popup = null; active = -1; } });
+    if (focus) add.focus({ preventScroll: true });
   }
 
   // A moved map with a view's pins: offered, never searched by itself.

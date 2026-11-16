@@ -19,9 +19,9 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js?v=7";
-import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=8";
+import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=9";
 import { addPins } from "/assets/events.js?v=b133592880";
-import { closures, closureTitle, closureWords } from "./closures.js?v=3";
+import { closures, closureTitle, closureWords } from "./closures.js?v=4";
 import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
 import { initDriveDay } from "./drive-day.js?v=7";
@@ -29,9 +29,9 @@ import { breakLine, clock, legLine, scheduleOf, stayChoices } from "./schedule.j
 import { figureNodes } from "./figures.js?v=1";
 import { CLUB_V2 } from "./club-flags.js?v=4";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
-import { initSuggest } from "./suggest.js?v=13";
+import { initSuggest } from "./suggest.js?v=14";
 import { fitTo } from "./fit.js?v=1";
-import { initPills } from "./place-pills.js?v=8";
+import { initPills } from "./place-pills.js?v=9";
 import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=2";
 
@@ -1693,7 +1693,7 @@ function joinRoad(road) {
 /// first end named for the road, points along it to keep the router on it,
 /// its far end by the catalog's name when it reaches it (PlanRoads.points).
 /// With no route yet, it is the route: its ends the start and the end.
-function driveWholeRoad(road, placed = joinRoad(road), check = { trying: true }) {
+function driveWholeRoad(road, placed = joinRoad(road), check = { left: ["cut", "further", "reverse"] }) {
   if (placed.why) return toast(placed.why, true);
   const points = roadPoints(placed);
   const spot = (p) => ({ id: newUUID(() => crypto.randomUUID()), lat: round(p.at[1]), lon: round(p.at[0]), label: p.label ? clip(p.label, MOST_LABEL_CHARACTERS) : null });
@@ -1722,7 +1722,7 @@ function driveWholeRoad(road, placed = joinRoad(road), check = { trying: true })
   const length = Number.isFinite(road.m) ? formatDistance(road.m * share * 1609.344, miles) : null;
   toast(`Added ${road.n}${length ? `: +${length.value} ${length.unit}, about ${formatDuration(fresh ? placed.roadSeconds : placed.seconds)}` : ""}.`);
   // Into a route, it's looked over once it's routed.
-  roadCheck = fresh ? null : { placed, promised, before, trying: check.trying, shape: roadShape() };
+  roadCheck = fresh ? null : { placed, promised, before, left: check.left, original: check.original ?? placed, shape: roadShape() };
 }
 
 /// The road just added, to look over once the plan's routed with it.
@@ -1754,14 +1754,17 @@ function checkAddedRoad() {
   if (!check || check.shape !== roadShape() || !plan.path?.geometry?.length) return;
   const verdict = routedVerdict(check.placed, {
     path: plan.path.geometry, promised: check.promised, before: check.before, now: plan.path.durationSeconds,
-    trying: check.trying, duration: formatDuration,
+    left: check.left, original: check.original, duration: formatDuration,
   });
   if (verdict.action === "keep") return;
   // The add taken back for good: undone, with nothing to redo.
   restore(history.back.pop());
-  if (verdict.action === "retry") return driveWholeRoad(check.placed.road, verdict.road, { trying: false, promised: check.promised, before: check.before });
+  if (verdict.action === "retry") return driveWholeRoad(check.placed.road, verdict.road, { left: verdict.left, original: check.original, promised: check.promised, before: check.before });
   turnedBackOf().add(check.placed.road.t);
   toast(verdict.why, true);
+  // Counted, so the next one can be found (DevOps, 11/15): the road, why,
+  // which end, about where (to 0.01°, about a kilometre); nothing of who.
+  if (verdict.refused) track("Road Refused", { road: check.placed.road.s || check.placed.road.n, reason: verdict.refused.reason, end: verdict.refused.end || "", near: verdict.refused.at ? `${verdict.refused.at[1].toFixed(2)},${verdict.refused.at[0].toFixed(2)}` : "", platform: "web" });
 }
 
 /// Straight lines between the points while the road is on its way.

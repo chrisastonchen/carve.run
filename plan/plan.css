@@ -1356,10 +1356,17 @@ body.gshell .suggest-row { display: none !important; }
 .place-pill:hover, .place-chip:hover { background: #1D2420; }
 .place-pill[aria-pressed="true"] { background: #2E9E52; color: #fff; }
 .place-pill[aria-pressed="true"] svg { color: #fff; }
+/* On: ✕ at the end, a second tap clears it (Chris, 11/15). */
+.place-x { margin-left: 2px; margin-right: -3px; font-size: 12px; font-weight: 800; opacity: .85; }
 .place-pill:focus-visible, .place-chip:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
 .place-under { display: flex; gap: 8px; align-items: center; }
 .place-chip { pointer-events: auto; padding: 0 16px; }
 .place-chip[hidden], .place-said[hidden] { display: none; }
+/* A search running: a small spinner beside "Looking…" (Chris, 11/15). */
+.place-said.busy { display: inline-flex; align-items: center; gap: 8px; }
+.place-said.busy::before { content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: place-spin .8s linear infinite; }
+@keyframes place-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .place-said.busy::before { animation-duration: 2.4s; } }
 .place-said { pointer-events: auto; margin: 0; padding: 9px 15px; border-radius: 999px; background: #161B18; color: var(--ink-2); font-size: 13.5px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.28); }
 @media (min-width: 1400px) { .place-bar { left: 562px; } }
 .maplibregl-popup.suggest-popup { z-index: 4; }

@@ -600,21 +600,63 @@ export function trimmed(found, entry, exit) {
   };
 }
 
+/// A stretch end that still turns the route round after the cut goes this
+/// much further into the road (Chris's Highway 9, 11/15: Saratoga's end in
+/// the village made the router loop to reach it at 0, 250 m, 500 m and 1 km
+/// in; at 1.5 km it didn't).
+const FURTHER_IN = 1500;
+
+/// The stretch with its U-turning end(s) moved `meters` further into the
+/// road (the entry on, the exit back). Null: nothing long enough is left.
+export function inward(found, ends, meters) {
+  const driven = found.reversed ? [...found.line].reverse() : found.line;
+  if (driven.length < 2) return null;
+  const { xy, lonLat } = flatAbout(driven[0]);
+  const track = new Track(driven.map(xy));
+  const entry = ends.entry ? lonLat(track.point(meters)) : null;
+  const exit = ends.exit ? lonLat(track.point(track.length - meters)) : null;
+  return trimmed(found, entry, exit);
+}
+
 /// What to do once the plan with a just-added road is routed (HomePlan's
-/// checkRouted): "keep" it; "retry" with `road`, its U-turning end cut back
-/// (once, while `trying`); or "remove" it, saying `why`. `promised` is the
-/// seconds it was said to add, `before` the routed trip's seconds before it
-/// went in (none: no promise check), `now` the trip's now.
-export function routedVerdict(found, { path, promised, before, now, trying, duration }) {
+/// checkRouted): "keep" it; "retry" with `road` and what's `left` to try;
+/// or "remove" it, saying `why` (and, for a U-turn, `refused` for the
+/// count: which end, and where). A U-turn through an end tries, in order,
+/// what's `left` (DevOps 11/15, Highway 9 to Chris's destination): "cut",
+/// that end cut back to where the route leaves the road; "further", that
+/// end 1.5 km further in (a road's end among side streets); "reverse", the
+/// road the other way round (`original`, as it first went in); and only
+/// then refuses. `trying: false` (the old call) is nothing left to try.
+/// `promised` is the seconds it was said to add, `before` the routed
+/// trip's seconds before it went in (none: no promise check), `now` the
+/// trip's now.
+export function routedVerdict(found, { path, promised, before, now, trying, left = ["cut", "further", "reverse"], original = found, duration }) {
   const points = roadPoints(found);
   const ends = uTurnEnds(path, points[0].at, points[points.length - 1].at);
   const name = found.road.n;
   if (ends) {
-    const cut = trying ? trimmed(found, ends.entry, ends.exit) : null;
-    return cut ? { action: "retry", road: cut } : { action: "remove", why: `${name} needs a U-turn on this route, so it wasn't added.` };
+    const steps = trying === false ? [] : left;
+    for (let k = 0; k < steps.length; k++) {
+      const rest = steps.slice(k + 1);
+      if (steps[k] === "cut") {
+        const cut = trimmed(found, ends.entry, ends.exit);
+        if (cut) return { action: "retry", road: cut, left: rest };
+      }
+      if (steps[k] === "further") {
+        const moved = inward(found, ends, FURTHER_IN);
+        if (moved) return { action: "retry", road: moved, left: rest };
+      }
+      if (steps[k] === "reverse" && original) return { action: "retry", road: { ...original, reversed: !original.reversed }, left: rest };
+    }
+    const at = ends.exit ? points[points.length - 1].at : points[0].at;
+    return {
+      action: "remove",
+      why: `${name} would need a U-turn on this route either way round, so it wasn't added. It fits a route that starts or ends near one of its ends.`,
+      refused: { reason: "u_turn", end: ends.exit ? "exit" : "entry", at },
+    };
   }
   if (Number.isFinite(before) && Number.isFinite(now) && now - before > PROMISE_SHARE * promised + PROMISE_SLACK) {
-    return { action: "remove", why: `${name} would add ${duration(now - before)} here, not ${duration(promised)}, so it wasn't added.` };
+    return { action: "remove", why: `${name} would add ${duration(now - before)} here, not ${duration(promised)}, so it wasn't added.`, refused: { reason: "too_long", end: null, at: null } };
   }
   return { action: "keep" };
 }
