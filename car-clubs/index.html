@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Car Club Route Planner: Plan Club Drives | Carve</title>
+<meta name="description" content="Plan your club&#x27;s drives on the web and share one link. Every driver gets Carve Apex free on your routes. $499 a year after a 30-day free trial.">
+<link rel="canonical" href="https://carve.run/car-clubs/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Carve">
+<meta property="og:title" content="Car Club Route Planner: Plan Club Drives | Carve">
+<meta property="og:description" content="Plan your club&#x27;s drives on the web and share one link. Every driver gets Carve Apex free on your routes. $499 a year after a 30-day free trial.">
+<meta property="og:image" content="https://carve.run/assets/club/hero.jpg?v=1d4b57032a">
+<meta property="og:url" content="https://carve.run/car-clubs/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Carve Club", "brand": {"@type": "Brand", "name": "Carve"}, "description": "Carve's plan for car clubs: plan the club's drives on the web, share one link per day, and every driver gets Carve Apex free on the club's routes.", "url": "https://carve.run/car-clubs/", "offers": [{"@type": "Offer", "name": "Carve Club (yearly)", "price": "499", "priceCurrency": "USD", "url": "https://carve.run/car-clubs/", "description": "Yearly, with a 30-day free trial."}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Carve", "item": "https://carve.run/"}, {"@type": "ListItem", "position": 2, "name": "For Clubs", "item": "https://carve.run/car-clubs/"}]}</script>
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1210"><meta name="theme-color" content="#1D5B3A">
+<link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
+<link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=c93f09caa8">
+<link rel="stylesheet" href="/assets/site-bar.css?v=3963f7d70b">
+<link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
+<link rel="stylesheet" href="/assets/club-v2.css?v=0c25890c29">
+<link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
+<link rel="stylesheet" href="/assets/club-intro.css?v=7644d409bf">
+<meta name="apple-itunes-app" content="app-id=6808087716">
+
+</head>
+<body>
+<!-- Written by scripts/club/car_clubs.py from /club/'s For Clubs intro: change it there. -->
+<body>
+<!-- The site's bar, as on the planner and the route pages (page_parts.py
+     ROUTE_HEAD; the user, 2026-10-29), styled and wired by the site-bar
+     stylesheet and script in assets. -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-wordmark" viewBox="0 0 300 45"><path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+  <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" d="M18.44 5.56c-.68 1.17-1.35 2.33-2.03 3.5l-.11-.04c-1.82-.7-3.48-.8-4.42-.79-1.86.02-3.35.46-4.26.82-.08-.15-1.75-3.02-2.02-3.49a1.15 1.15 0 0 0-.14-.19c-.33-.36-.91-.49-1.38-.2-.48.28-.71.94-.39 1.5 1.95 3.37-.1-.21 1.95 3.36.02.03-.5.26-1.39 1.02C2.9 12.18.45 14.77 0 18.99h24c-.12-1.11-.37-2.1-.75-3.07-.74-1.91-1.84-3.29-2.74-4.18a12.1 12.1 0 0 0-2.13-1.69c.66-1.12 1.31-2.26 1.96-3.38.21-.36.19-.8-.01-1.12a1.1 1.1 0 0 0-.85-.53c-.52-.05-.94.31-1.05.54zM18.4 14.02c.39.59.32 1.33-.16 1.65-.48.32-1.19.1-1.58-.49-.39-.59-.32-1.33.16-1.65.47-.32 1.18-.11 1.58.49zM7.21 13.53c.48.32.55 1.06.16 1.65-.4.59-1.1.81-1.59.49-.48-.32-.55-1.06-.16-1.65.4-.6 1.11-.81 1.59-.49z"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 15l1.6-4.2A2 2 0 0 1 7.5 9.5h9a2 2 0 0 1 1.9 1.3L20 15v3h-2.2M6.2 18H4v-3h16M8.5 18h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.3" cy="18" r="1.6" fill="currentColor"/><circle cx="16.7" cy="18" r="1.6" fill="currentColor"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+</svg>
+<header class="bar">
+  <a class="brand" href="/" aria-label="Carve home"><svg class="wordmark" aria-hidden="true"><use href="#i-wordmark"/></svg></a>
+  <nav class="links" aria-label="Site">
+    <a href="/plan/" class="wide-only">Plan</a>
+    <a href="/car-clubs/" aria-current="page" class="wide-only">For Clubs</a>
+    <a href="/drives/">Explore</a>
+    <a href="/events/" class="wide-only">Events</a>
+    <a href="/pricing/">Pricing</a>
+    <a href="/support/">Support</a>
+  </nav>
+  <span class="grow"></span>
+  <a class="pill white wide-only" id="sign-in" href="/plan/#sign-in" hidden>Sign in</a>
+  <div class="who wide-only" id="who" hidden>
+    <button type="button" class="who-btn" id="who-btn" aria-haspopup="menu" aria-expanded="false">
+      <span class="avatar" id="avatar"><svg aria-hidden="true"><use href="#i-car"/></svg></span>
+      <span id="who-name"></span>
+      <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+    </button>
+    <div class="who-menu" id="who-menu" role="menu" hidden>
+      <button type="button" role="menuitem" id="sign-out">Sign out</button>
+    </div>
+  </div>
+  <button type="button" class="menu-btn narrow-only" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+</header>
+<nav class="sheet" id="sheet" aria-label="Site" hidden>
+  <a href="/plan/">Plan</a>
+  <a href="/car-clubs/" aria-current="page">For Clubs</a>
+  <a href="/drives/">Explore</a>
+  <a href="/events/">Events</a>
+  <a href="/pricing/">Pricing</a>
+  <a href="/support/">Support</a>
+  <a href="/plan/#sign-in" id="sheet-sign-in">Sign in</a>
+</nav>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="apple" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
+  </symbol>
+  <!-- CarPlay's mark: a ring open on the right, round a play triangle. -->
+  <symbol id="carplay" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-width="2.55" stroke-linecap="round" d="M19.09 5.83A9.4 9.4 0 1 0 19.09 18.17"/>
+    <path fill="currentColor" d="M8.6 8.3c0-1.06 1.15-1.72 2.07-1.18l5.6 3.7c.86.55.86 1.81 0 2.36l-5.6 3.7c-.92.54-2.07-.12-2.07-1.18Z"/>
+  </symbol>
+  <!-- Android and Android Auto, from Simple Icons (CC0). -->
+  <symbol id="android" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/>
+  </symbol>
+  <symbol id="androidauto" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 0c-.6 0-1.11.32-1.39.8L.48 18.4a1.6 1.6 0 0 0 1.39 2.4h2l7.7-13.58.43-.77 8.13 14.35h2a1.6 1.6 0 0 0 1.39-2.4L13.39.8A1.6 1.6 0 0 0 12 0zm0 7.47l-9.07 16 .54.53L12 20.8l8.53 3.2.54-.53z"/>
+  </symbol>
+  <symbol id="wordmark" viewBox="0 0 300 45">
+    <path fill="currentColor" d="M263.244 45C255.625 45 249.684 43.1143 245.42 39.3429C241.156 35.5143 239.023 29.9143 239.023 22.5429C239.023 15.1143 241.156 9.51429 245.42 5.74286C249.684 1.91429 255.625 0 263.244 0H284.564C289.567 0 293.377 1.2 295.992 3.6C298.664 5.94286 300 9.31429 300 13.7143C300 22.6857 294.855 27.1714 284.564 27.1714H252.327C253.521 32.4857 257.16 35.1429 263.244 35.1429H297.783V45H263.244ZM263.244 9.85714C257.388 9.85714 253.777 12.3429 252.413 17.3143H283.967C285.104 17.3143 285.986 16.9714 286.611 16.2857C287.293 15.6 287.634 14.6571 287.634 13.4571C287.634 11.0571 286.412 9.85714 283.967 9.85714H263.244Z"/>
+    <path fill="currentColor" d="M195.678 44.5716L177.172 0.428711H190.135L204.462 34.6287H208.726L223.054 0.428711H236.017L217.51 44.5716H195.678Z"/>
+    <path fill="currentColor" d="M126.217 44.5716V0.428711H159.818C164.764 0.428711 168.403 1.68585 170.734 4.20014C173.065 6.65728 174.231 9.91442 174.231 13.9716V23.143H161.694V15.5144C161.694 12.0859 159.989 10.3716 156.577 10.3716H138.753V44.5716H126.217Z"/>
+    <path fill="currentColor" d="M71.6933 44.5716C67.0881 44.5716 63.5631 43.4001 61.1183 41.0573C58.6735 38.7144 57.4512 35.3716 57.4512 31.0287C57.4512 26.743 58.6735 23.4287 61.1183 21.0859C63.5631 18.743 67.0881 17.5716 71.6933 17.5716H104.442V15.5144C104.442 12.0287 102.736 10.2859 99.3247 10.2859H63.1651V0.428711H102.565C107.739 0.428711 111.406 1.62871 113.567 4.02871C115.727 6.37157 116.808 9.68585 116.808 13.9716V44.5716H71.6933ZM73.9106 34.7144H104.442V27.4287H73.9106C72.8304 27.4287 71.9776 27.7716 71.3522 28.4573C70.7836 29.0858 70.4993 29.943 70.4993 31.0287C70.4993 32.1144 70.7836 33.0001 71.3522 33.6858C71.9776 34.3716 72.8304 34.7144 73.9106 34.7144Z"/>
+    <path fill="currentColor" d="M24.2201 45C16.6016 45 10.6603 43.1143 6.39616 39.3429C2.13205 35.5143 0 29.9143 0 22.5429C0 15.1143 2.13205 9.51429 6.39616 5.74286C10.6603 1.91429 16.6016 0 24.2201 0H52.7897V9.85714H24.2201C20.5246 9.85714 17.6818 10.8857 15.6919 12.9429C13.7589 15 12.7923 18.2 12.7923 22.5429C12.7923 26.8286 13.7589 30 15.6919 32.0571C17.6818 34.1143 20.5246 35.1429 24.2201 35.1429H53.6425V45H24.2201Z"/>
+  </symbol>
+</svg>
+
+
+<main class="home cp o-page cv">
+  <section class="f1 fc" id="o-signin">
+    <!-- 1. Hero: the coast still across, the coast clip beside the words. -->
+    <section class="fc-hero" aria-labelledby="fc-h1">
+      <picture class="pic"><source type="image/avif" srcset="/assets/club/hero.w640.avif?v=9734f1aaf0 640w, /assets/club/hero.w1280.avif?v=fd100c8ef2 1280w" sizes="100vw"><img decoding="async" class="fc-wide fc-backdrop" src="/assets/club/hero.jpg?v=1d4b57032a" alt="" width="1600" height="679" fetchpriority="high"></picture>
+      <div class="fc-in fc-hero-row">
+        <div class="fc-hero-copy">
+          <p class="fc-eyebrow">Carve Club</p>
+          <h1 id="fc-h1">Less regrouping.<br>More driving.</h1>
+          <p class="fc-lede">Plan the drive on the web and share one link. Club gives every driver Carve Apex free on your routes: offline maps, 3D preview, road conditions.</p>
+          <div class="fc-act">
+            <a class="fc-cta" id="o-signin-go" href="/club/?start=1">Try Club free for 30 days</a>
+            <span class="fc-then" id="fc-then">Then $499 a year. Cancel any time.</span>
+          </div>
+          <a class="fc-login" id="o-login" href="/club/">Already have a club? Log in</a>
+        </div>
+        <div class="fc-tall">
+          <video class="fc-clip" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/coast.jpg?v=5809779ce1" src="/assets/club/coast.mp4?v=ce390454c7" aria-hidden="true"></video>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Plan it. Send it. Drive it. over the terrain footage (Chris's layout round, 11/12): three tall cards, a swipe row at 760 px and below. The graphics are simplified, as the footer says. -->
+    <section class="fc-band fc-steps" aria-labelledby="fc-steps-h">
+      <div class="fc-in">
+        <div class="fc-head">
+          <h2 id="fc-steps-h">Plan it. Send it. Drive it.</h2>
+          <p>Coast, canyon, pass or forest. You pick the roads. Carve keeps everyone on them.</p>
+        </div>
+        <ol class="fc-cards">
+          <li class="fc-card-step">
+            <picture class="pic"><source type="image/avif" srcset="/assets/club/desert.w640.avif?v=ac63e7231d 640w, /assets/club/desert.w768.avif?v=fac775e6d2 768w" sizes="(max-width: 760px) 82vw, 410px"><img decoding="async" class="fc-bg" src="/assets/club/desert.jpg?v=b6a6e74028" alt="" width="768" height="1376" loading="lazy"></picture>
+            <div class="fc-scrim"></div>
+            <div class="fc-g fc-g-plan" aria-hidden="true">
+              <svg viewBox="0 0 260 110"><rect width="260" height="110" rx="10" fill="#E6EFE4"/><path d="M0 70 C40 60 70 90 110 80 S180 40 260 55" stroke="#CFE0F2" stroke-width="10" fill="none"/><path d="M28 88 C60 70 80 30 120 42 S170 88 206 60 S228 26 236 22" stroke="#FFFFFF" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M28 88 C60 70 80 30 120 42 S170 88 206 60 S228 26 236 22" stroke="#2E92FF" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="28" cy="88" r="9" fill="#2E9E52" stroke="#FFFFFF" stroke-width="3"/><circle cx="120" cy="42" r="8" fill="#E4731C" stroke="#FFFFFF" stroke-width="3"/><circle cx="206" cy="60" r="8" fill="#E4731C" stroke="#FFFFFF" stroke-width="3"/><circle cx="236" cy="22" r="9" fill="#0E1210" stroke="#FFFFFF" stroke-width="3"/></svg>
+              <div><span>Day 1 · Canyon Loop</span><span>84 mi · 3 stops</span></div>
+            </div>
+            <div class="fc-step-copy">
+              <span class="fc-n">1 · Plan</span>
+              <h3>Plan on the web</h3>
+              <p>Plan it all on your computer: routes, stops and meet times. Your crew can drive it first.</p>
+              <a class="fc-cta fc-step-cta" href="#fc-price-h">Try Carve Club free</a>
+            </div>
+          </li>
+          <li class="fc-card-step">
+            <video class="fc-clip fc-bg" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/forest.jpg?v=cd44c138fa" src="/assets/club/forest.mp4?v=880f083b35" aria-hidden="true"></video>
+            <div class="fc-scrim"></div>
+            <div class="fc-g fc-g-send">
+              <svg class="fc-qr" viewBox="0 0 33 33" shape-rendering="crispEdges" role="img" aria-label="QR code for carve.run/club"><rect width="33" height="33" fill="#fff"/><path d="M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM14 2h1v1h-1zM15 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM24 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM27 2h1v1h-1zM28 2h1v1h-1zM29 2h1v1h-1zM30 2h1v1h-1zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM13 3h1v1h-1zM16 3h1v1h-1zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM18 4h1v1h-1zM21 4h1v1h-1zM24 4h1v1h-1zM26 4h1v1h-1zM27 4h1v1h-1zM28 4h1v1h-1zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM12 5h1v1h-1zM14 5h1v1h-1zM18 5h1v1h-1zM19 5h1v1h-1zM22 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM27 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM16 6h1v1h-1zM17 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM21 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM12 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM19 7h1v1h-1zM20 7h1v1h-1zM21 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM25 8h1v1h-1zM26 8h1v1h-1zM27 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM30 8h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM22 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM11 10h1v1h-1zM13 10h1v1h-1zM16 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM28 10h1v1h-1zM29 10h1v1h-1zM4 11h1v1h-1zM6 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM20 11h1v1h-1zM22 11h1v1h-1zM23 11h1v1h-1zM24 11h1v1h-1zM26 11h1v1h-1zM27 11h1v1h-1zM28 11h1v1h-1zM30 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM11 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM20 12h1v1h-1zM21 12h1v1h-1zM22 12h1v1h-1zM24 12h1v1h-1zM25 12h1v1h-1zM26 12h1v1h-1zM27 12h1v1h-1zM29 12h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM22 13h1v1h-1zM30 13h1v1h-1zM3 14h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM16 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM25 14h1v1h-1zM28 14h1v1h-1zM29 14h1v1h-1zM30 14h1v1h-1zM4 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM13 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM17 15h1v1h-1zM19 15h1v1h-1zM21 15h1v1h-1zM24 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM28 15h1v1h-1zM30 15h1v1h-1zM2 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM26 16h1v1h-1zM27 16h1v1h-1zM30 16h1v1h-1zM2 17h1v1h-1zM3 17h1v1h-1zM4 17h1v1h-1zM5 17h1v1h-1zM6 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM16 17h1v1h-1zM18 17h1v1h-1zM21 17h1v1h-1zM24 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM29 17h1v1h-1zM30 17h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM19 18h1v1h-1zM25 18h1v1h-1zM26 18h1v1h-1zM27 18h1v1h-1zM29 18h1v1h-1zM30 18h1v1h-1zM4 19h1v1h-1zM5 19h1v1h-1zM6 19h1v1h-1zM7 19h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM15 19h1v1h-1zM20 19h1v1h-1zM21 19h1v1h-1zM24 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM2 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM15 20h1v1h-1zM16 20h1v1h-1zM22 20h1v1h-1zM24 20h1v1h-1zM25 20h1v1h-1zM26 20h1v1h-1zM27 20h1v1h-1zM28 20h1v1h-1zM4 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM12 21h1v1h-1zM13 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM16 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM22 21h1v1h-1zM23 21h1v1h-1zM24 21h1v1h-1zM27 21h1v1h-1zM28 21h1v1h-1zM29 21h1v1h-1zM30 21h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM7 22h1v1h-1zM8 22h1v1h-1zM9 22h1v1h-1zM11 22h1v1h-1zM14 22h1v1h-1zM15 22h1v1h-1zM17 22h1v1h-1zM19 22h1v1h-1zM21 22h1v1h-1zM22 22h1v1h-1zM23 22h1v1h-1zM24 22h1v1h-1zM25 22h1v1h-1zM26 22h1v1h-1zM27 22h1v1h-1zM28 22h1v1h-1zM29 22h1v1h-1zM30 22h1v1h-1zM10 23h1v1h-1zM11 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM26 23h1v1h-1zM27 23h1v1h-1zM29 23h1v1h-1zM30 23h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM7 24h1v1h-1zM8 24h1v1h-1zM11 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM16 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM28 24h1v1h-1zM29 24h1v1h-1zM2 25h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM14 25h1v1h-1zM17 25h1v1h-1zM18 25h1v1h-1zM19 25h1v1h-1zM22 25h1v1h-1zM26 25h1v1h-1zM29 25h1v1h-1zM30 25h1v1h-1zM2 26h1v1h-1zM4 26h1v1h-1zM5 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM11 26h1v1h-1zM12 26h1v1h-1zM13 26h1v1h-1zM15 26h1v1h-1zM17 26h1v1h-1zM18 26h1v1h-1zM22 26h1v1h-1zM23 26h1v1h-1zM24 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM27 26h1v1h-1zM28 26h1v1h-1zM2 27h1v1h-1zM4 27h1v1h-1zM5 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM10 27h1v1h-1zM12 27h1v1h-1zM15 27h1v1h-1zM21 27h1v1h-1zM26 27h1v1h-1zM27 27h1v1h-1zM29 27h1v1h-1zM2 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM10 28h1v1h-1zM16 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM22 28h1v1h-1zM25 28h1v1h-1zM27 28h1v1h-1zM30 28h1v1h-1zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM13 29h1v1h-1zM15 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM20 29h1v1h-1zM24 29h1v1h-1zM26 29h1v1h-1zM27 29h1v1h-1zM29 29h1v1h-1zM2 30h1v1h-1zM3 30h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM7 30h1v1h-1zM8 30h1v1h-1zM11 30h1v1h-1zM16 30h1v1h-1zM18 30h1v1h-1zM20 30h1v1h-1zM21 30h1v1h-1zM24 30h1v1h-1zM25 30h1v1h-1zM27 30h1v1h-1zM29 30h1v1h-1z" fill="#111113"/><rect x="12.08" y="12.08" width="8.84" height="8.84" rx="2.36" fill="#fff"/><clipPath id="qri"><rect x="12.96" y="12.96" width="7.07" height="7.07" rx="1.77"/></clipPath><image href="/assets/icon-128.png?v=87d1534580" x="12.96" y="12.96" width="7.07" height="7.07" clip-path="url(#qri)"/></svg>
+              <div><b>Canyon Loop · Sat</b><span>carve.run/club</span><span class="fc-tag">Updated just now</span></div>
+            </div>
+            <div class="fc-step-copy">
+              <span class="fc-n">2 · Send</span>
+              <h3>Send it to the group</h3>
+              <p>Send one link. Change the route anytime, and every driver gets the update.</p>
+              <a class="fc-cta fc-step-cta" href="#fc-price-h">Try Carve Club free</a>
+            </div>
+          </li>
+          <li class="fc-card-step">
+            <video class="fc-clip fc-bg" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/redwoods.jpg?v=561e7f4b98" src="/assets/club/redwoods.mp4?v=b64a942d17" aria-hidden="true"></video>
+            <div class="fc-scrim"></div>
+            <div class="fc-g fc-g-drive" aria-hidden="true">
+              <div class="fc-turn"><svg viewBox="0 0 24 24"><path d="M7 20V11a3 3 0 0 1 3-3h8M14 4l4 4-4 4"/></svg><div><b>1.2 mi</b><span>Turn right onto Skyline Blvd</span></div></div>
+              <span class="fc-drivers"><i></i>5 drivers on the route</span>
+            </div>
+            <div class="fc-step-copy">
+              <span class="fc-n">3 · Drive</span>
+              <h3>Drive it together</h3>
+              <p>Your roads, not the fastest ones. Carve never swaps in a shortcut, so the group stays together, even with no signal.</p>
+              <a class="fc-cta fc-step-cta" href="#fc-price-h">Try Carve Club free</a>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 4. Every driver's Apex (the route Apex, 11/11): the window, the four features, multi-day, the maths from plans.js. -->
+    <section class="fc-band fc-tight" aria-labelledby="f1-apex-h">
+      <div class="fc-in fc-apex">
+        <div class="fc-apex-copy">
+          <p class="fc-eyebrow">Included for your drivers</p>
+          <h2 id="f1-apex-h">Your members don't pay a thing.</h2>
+          <p>Club gives every driver Carve Apex free on your routes, from 30 days before the drive through the day after it ends.</p>
+          <ul class="fc-feats">
+            <li>Offline navigation</li>
+            <li>3D preview</li>
+            <li>Road conditions</li>
+            <li>Popular times, where available</li>
+          </ul>
+          <p><b>Multi-day drives:</b> each day gets its own route, meet time, link and QR code, and Apex covers every day of the drive.</p>
+        </div>
+        <dl class="fc-maths">
+          <div><dt>100 drivers, each buying Individual</dt><dd id="f1-many">$4,999</dd></div>
+          <div class="club"><dt>Club, for every driver on your drives</dt><dd id="f1-club">$499</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 5. Pre-drives: the clip, the lines, and the mock's report panel marked Preview (Chris, 11/12). -->
+    <section class="fc-band fc-alt" aria-labelledby="fc-pre-h">
+      <div class="fc-in fc-pre">
+        <div class="fc-tall"><video class="fc-clip" muted loop playsinline preload="metadata" disablepictureinpicture poster="/assets/club/pov.jpg?v=bf08f2d92a" src="/assets/club/pov.mp4?v=024fbd1320" aria-hidden="true"></video></div>
+        <div class="fc-pre-copy">
+          <p class="fc-eyebrow">Pre-drives</p>
+          <h2 id="fc-pre-h">Your crew drives it first.</h2>
+          <p>Find the closed road a week early, not on the morning of the drive. Before the drive, your crew runs the route with the same links.</p>
+          <!-- The mock's Pre-drive report (Chris, 11/12: put back as mocked, with its Preview chip). -->
+          <div class="fc-report" aria-label="Pre-drive report, preview">
+            <div class="fc-report-head"><b>Pre-drive report · Day 1</b><span class="fc-chip">Preview</span></div>
+            <div class="fc-report-body">
+              <span class="fc-label">Reviews by road</span>
+              <div class="fc-road"><b>Highway 1, Ragged Point to Gorda</b><span>"One lane at the slide repair near Gorda. Expect a 5-minute signal."</span></div>
+              <div class="fc-road"><b>Nacimiento-Fergusson Road</b><span>"Fresh gravel on the first switchbacks. Pullout at the top fits about 10 cars."</span></div>
+              <span class="fc-label">Times</span>
+              <dl class="fc-times">
+                <div><dt>Driving</dt><dd>2:40</dd></div>
+                <div><dt>At stops</dt><dd>1:05</dd></div>
+                <div><dt>Lunch stop</dt><dd>12:15</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Organizers, then smart planning as a drawn map (Chris's layout round, 11/12). As Chris approved it. club-intro.js plays them once, 40% in view. -->
+    <section class="fc-band" aria-labelledby="fc-org-h">
+      <div class="fc-in fc-org">
+        <div>
+          <h2 id="fc-org-h">Plan it together.</h2>
+          <p>Up to five organizers work on the same drive<span id="fc-org-apex">, and each gets Carve Apex while the plan is active</span>.</p>
+        </div>
+        <article class="fc-box">
+          <h3>No driver cap</h3>
+          <p>Ten cars or a hundred. Drivers open your link in the free app, with no account needed.</p>
+        </article>
+        <article class="fc-box fc-smart">
+          <h3>Smart planning</h3>
+          <p>No more scouting gas stations on Street View.</p>
+          <div class="fc-map" id="fc-map" role="img" aria-label="A drawn route with suggested stops on it: a meeting place, gas, restrooms, a vista point and a photo spot, a suggested route, and a break check for a stop every 90 minutes">
+            <svg class="fc-map-wide" viewBox="0 0 640 360" aria-hidden="true"><path d="M0 250 C120 230 200 300 320 270 S520 160 640 190" stroke="#CFE0F2" stroke-width="26" fill="none"/><path d="M380 0 C360 80 420 140 400 360" stroke="#F5F1E6" stroke-width="10" fill="none"/><path d="M40 300 C110 250 150 170 230 190 C310 210 330 300 430 230 C530 160 560 90 610 70" stroke="#FFFFFF" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M40 300 C110 250 150 170 230 190 C310 210 330 300 430 230 C530 160 560 90 610 70" stroke="#2E92FF" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M230 190 C260 110 380 90 470 120 S580 100 610 70" stroke="#2E92FF" stroke-width="5" fill="none" stroke-dasharray="2 12" stroke-linecap="round" opacity=".7"/><circle cx="40" cy="300" r="10" fill="#2E9E52" stroke="#FFFFFF" stroke-width="4"/><circle cx="610" cy="70" r="10" fill="#0E1210" stroke="#FFFFFF" stroke-width="4"/></svg>
+            <svg class="fc-map-tall" viewBox="0 0 360 450" aria-hidden="true"><path d="M0 330 C100 300 200 380 360 340" stroke="#CFE0F2" stroke-width="26" fill="none"/><path d="M300 0 C280 120 330 300 310 450" stroke="#F5F1E6" stroke-width="10" fill="none"/><path d="M80 420 C60 350 250 350 250 290 C250 230 100 230 110 170 C120 110 270 130 280 40" stroke="#FFFFFF" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M80 420 C60 350 250 350 250 290 C250 230 100 230 110 170 C120 110 270 130 280 40" stroke="#2E92FF" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M110 170 C200 200 300 150 280 40" stroke="#2E92FF" stroke-width="5" fill="none" stroke-dasharray="2 12" stroke-linecap="round" opacity=".7"/><circle cx="80" cy="420" r="10" fill="#2E9E52" stroke="#FFFFFF" stroke-width="4"/><circle cx="280" cy="40" r="10" fill="#0E1210" stroke="#FFFFFF" stroke-width="4"/></svg>
+            <span class="fc-pin" style="--d: 0.00s; --x: 10.0%; --y: 78.0%; --mx: 22.6%; --my: 88.4%"><span><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Meeting place</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.15s; --x: 27.6%; --y: 53.3%; --mx: 58.2%; --my: 73.6%"><span><svg viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h12M6 8h6M14 10h2a2 2 0 0 1 2 2v4a1.5 1.5 0 0 0 3 0V8l-3-3"/></svg>Gas</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.30s; --x: 51.7%; --y: 69.0%; --mx: 57.8%; --my: 54.2%"><span><svg viewBox="0 0 24 24"><circle cx="7" cy="5" r="2"/><circle cx="17" cy="5" r="2"/><path d="M5 21v-6H4l1.5-6h3L10 15H9v6M15 21v-7h-1v-5h6v5h-1v7M12 3v18"/></svg>Restrooms</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.45s; --x: 78.7%; --y: 46.8%; --mx: 34.2%; --my: 32.8%"><span><svg viewBox="0 0 24 24"><path d="M3 20l6-10 4 6 3-4 5 8z"/><circle cx="17" cy="6" r="2"/></svg>Vista point</span><i></i><b></b></span>
+            <span class="fc-pin" style="--d: 0.60s; --x: 89.8%; --y: 26.0%; --mx: 66.9%; --my: 21.4%"><span><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo spot</span><i></i><b></b></span>
+            <span class="fc-sugg" style="--d: 0.75s"><svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h7"/></svg>Suggested route</span>
+            <span class="fc-break" style="--d: 0.85s"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>Break check: a stop every 90 min</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 7. Price over the alpine convoy. -->
+    <section class="fc-price" id="fc-price" aria-labelledby="fc-price-h">
+      <picture class="pic"><source type="image/avif" srcset="/assets/club/price.w640.avif?v=302905c5bc 640w, /assets/club/price.w1280.avif?v=aaae99e13f 1280w" sizes="100vw"><img decoding="async" class="fc-wide fc-backdrop" src="/assets/club/price.jpg?v=97728c2a75" alt="" width="1600" height="679" loading="lazy"></picture>
+      <div class="fc-in fc-price-in">
+        <h2 id="fc-price-h"><span id="f1-price">$499 a year.</span><br><span id="f1-trial">First 30 days free.</span></h2>
+        <p>Apex for your organizers, and for every driver on your routes. Cancel any time in Club settings.</p>
+        <a class="fc-cta" id="o-signin-go2" href="/club/?start=1">Try Club free for 30 days</a>
+        <p class="fc-small">Card required. Renews every year until you cancel. <a href="/terms/">Terms</a>.</p>
+        <p class="fc-small">More than 5 organizers, invoicing or event help? <a href="mailto:chris@carve.run">chris@carve.run</a></p>
+      </div>
+    </section>
+
+    <p class="fc-note">Driving footage is AI-generated for illustration. Step graphics are simplified.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Carve — for the roads worth driving.</span>
+    <div class="links">
+      <a href="/drives/">Drives</a>
+      <a href="/car-clubs/">For Clubs</a>
+      <a href="/compare/">Compare</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/support/">Support</a>
+    </div>
+    <span>iPhone · CarPlay · Android · Android Auto</span>
+  </div>
+</footer>
+
+<script src="/assets/carve-site.js?v=78c8d96f89" defer></script>
+<script type="module" src="/assets/site-bar.js?v=986ff8abd4"></script>
+<script type="module" src="/assets/car-clubs.js?v=49799b32b9"></script>
+</body>
+</html>

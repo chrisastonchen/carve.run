@@ -9,6 +9,8 @@ Disallow: /profile/
 Disallow: /a/
 Disallow: /d/
 Disallow: /u/
+# /club/ is the club app (signed in, invites, checkout): never for search.
+# For Clubs for search is /car-clubs/ (2026-11-17).
 Disallow: /club/
 
 Sitemap: https://carve.run/sitemap.xml

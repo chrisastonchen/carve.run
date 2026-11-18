@@ -4,8 +4,8 @@
 // Support); this draws it from who-words.js navFor for whoever's looking,
 // signed out too (Plan ▾, Chris 11/12): Plan ▾ and My Clubs ▾ menus,
 // Saved, Upgrade.
-import { who, whoNow } from "/assets/who.js?v=b3c98f8ff6";
-import { currentKey, navFor } from "/assets/who-words.js?v=f70bdee137";
+import { who, whoNow } from "/assets/who.js?v=b9cba54760";
+import { currentKey, navFor } from "/assets/who-words.js?v=65edaf422f";
 
 const CSS = `
 .bar .links .nav-m { position: relative; display: inline-flex; }
@@ -49,7 +49,7 @@ const CSS = `
 
 const CHEV = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg>';
 /// The static items carve.run's pages carry, swapped for these.
-const STATIC = new Set(["/plan/", "/club/", "/drives/", "/events/", "/pricing/", "/support/", "/my-drives/", "/saved/"]);
+const STATIC = new Set(["/plan/", "/club/", "/car-clubs/", "/drives/", "/events/", "/pricing/", "/support/", "/my-drives/", "/saved/"]);
 const WIDE = new Set(["plan", "clubs", "events", "saved", "upgrade"]);
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 

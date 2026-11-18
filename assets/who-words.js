@@ -75,7 +75,7 @@ export function homeMenu(clubs) {
 export function navFor(state, clubs = []) {
   const link = (key, label, href) => ({ key, label, href });
   const plan = { key: "plan", label: "Plan", menu: planMenu(state, clubs) };
-  const clubsItem = state === "club" ? { key: "clubs", label: "My Clubs", menu: myClubsMenu(clubs) } : link("clubs", "For Clubs", "/club/");
+  const clubsItem = state === "club" ? { key: "clubs", label: "My Clubs", menu: myClubsMenu(clubs) } : link("clubs", "For Clubs", "/car-clubs/");
   return [
     plan,
     clubsItem,
@@ -114,7 +114,7 @@ export function myClubsMenu(clubs = []) {
 /// Which item a page is under (its aria-current).
 export function currentKey(path) {
   if (/^\/(plan|drafts)\//.test(path)) return "plan";
-  if (/^\/club\//.test(path)) return "clubs";
+  if (/^\/(club|car-clubs)\//.test(path)) return "clubs";
   if (/^\/(drives|roads)\//.test(path)) return "explore";
   if (/^\/(events|e)\//.test(path)) return "events";
   if (/^\/(saved|my-drives)\//.test(path)) return "saved";

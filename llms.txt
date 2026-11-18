@@ -8,6 +8,7 @@ Carve at carve.run is separate from other apps called Carve: it is for cars and 
 - Explore every drive on a map: https://carve.run/drives/
 - Plan a route on a computer (free): https://carve.run/plan/
 - Pricing: https://carve.run/pricing/
+- For car clubs (Carve Club): https://carve.run/car-clubs/
 - App Store (iPhone, iOS 26+): https://apps.apple.com/app/carve-route-planner/id6808087716
 - Android (Android 10+) and Android Auto: Google Play: https://play.google.com/store/apps/details?id=run.carve.app
 - Made by: Chris Aston Chen
@@ -31,6 +32,7 @@ Carve at carve.run is separate from other apps called Carve: it is for cars and 
 
 - Free: finding drives, planning without limits in the app and on the web (carve.run/plan), importing, sharing, and driving with a signal, with guidance back to your route after a wrong turn; with a free account, also the group on your map, Apple CarPlay and Android Auto, and recording a drive to turn it into a route
 - Individual, Apex for one driver: $49.99 a year with a 14-day free trial for new subscribers, or $5.99 a month. Apex adds offline maps and turns, 3D route previews (one free), unlimited AI route planning, road conditions and popular times. Details: https://carve.run/pricing/
+- Club, for car clubs and chapters: $499 a year after a 30-day free trial, for up to 5 organizers. Organizers plan the club's routes, days and meet times on the web, on a computer; drivers open the day's link in the free iPhone or Android app, and every driver gets Carve Apex free on the club's routes, from 30 days before the drive through the day after it ends. Details: https://carve.run/car-clubs/
 
 ## Famous drives
 Guides to famous drives, each with a route that opens in Carve: https://carve.run/drives/

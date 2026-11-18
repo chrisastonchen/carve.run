@@ -20,8 +20,8 @@ import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=8db8f4b092"
 import { heartButton, wireHearts } from "/assets/hearts.js?v=5c3fca78da";
 import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=a3869ea508";
 import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=b133592880";
-import { who, whoNow } from "/assets/who.js?v=b3c98f8ff6";
-import { homeMenu } from "/assets/who-words.js?v=f70bdee137";
+import { who, whoNow } from "/assets/who.js?v=b9cba54760";
+import { homeMenu } from "/assets/who-words.js?v=65edaf422f";
 
 // The map follows the device's theme, light unless it's set to dark (the
 // user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
