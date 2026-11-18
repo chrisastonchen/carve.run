@@ -281,6 +281,11 @@
    11/18): a full-width button under the title, and a sheet on arrival. */
 html.club-wait .rv .go, html.club-wait .rv .app-banner, html.club-wait #rv-app, html.club-wait .rv .sect.near { display: none !important; }
 .rv .co-go { order: 0; }
+.rv .scroll > .co-sub { order: 0; margin: 0; color: var(--ink-3); font-size: 14px; }
+@media (max-width: 699px), (max-height: 560px) {
+  html.club-open .rv-map { height: 220px; min-height: 0; }
+  html.club-open .rv .scroll > .sp { order: 1; }
+}
 .rv .co-go p { margin: 8px 0 0; text-align: center; color: var(--ink-3); font-size: 13px; }
 .co-open { display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 999px; background: var(--green); color: #fff; font-size: 18px; font-weight: 800; text-decoration: none; }
 .co-sheet { position: fixed; inset: auto 0 0 0; margin: 0; width: 100%; max-width: none; max-height: 90vh; box-sizing: border-box; padding: 22px 20px max(22px, env(safe-area-inset-bottom)); border: 0; border-radius: 22px 22px 0 0; background: var(--fill-2); color: var(--ink); display: flex; flex-direction: column; gap: 14px; box-shadow: 0 -10px 30px rgba(0,0,0,.25); font-family: inherit; }

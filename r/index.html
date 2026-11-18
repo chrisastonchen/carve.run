@@ -27,7 +27,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=82">
-<link rel="stylesheet" href="/assets/route-view.css?v=d3f7c91eed">
+<link rel="stylesheet" href="/assets/route-view.css?v=f0d4676577">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/share-plan.css?v=161a310cc6">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
@@ -1092,7 +1092,7 @@ const RouteProfile = (() => {
       // A club drive's day, to a driver: the drive pass (P1).
       else import("/assets/route-pass.js?v=565658d2fa");
       // Open in Carve on a club drive's day, on a phone (club-open.js).
-      import("/assets/club-open.js?v=67c29c032e").catch(() => document.documentElement.classList.remove("club-wait"));
+      import("/assets/club-open.js?v=f83aeda922").catch(() => document.documentElement.classList.remove("club-wait"));
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";

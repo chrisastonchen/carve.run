@@ -96,6 +96,12 @@ function drawButton() {
   head.after(box);
   // One way into the app in the column: this one.
   document.querySelector(".rv .scroll .go")?.remove();
+  // Event line, title, then the button, in view with Safari's bars showing
+  // (Growth's check 11/18): the road names / "A drive by" line goes under
+  // it, the organizer's note too and the map shorter (route-view.css).
+  const sub = head.querySelector(".sub");
+  if (sub) { sub.classList.add("co-sub"); box.after(sub); }
+  document.documentElement.classList.add("club-open");
 }
 
 function drawSheet(words) {
