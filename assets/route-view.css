@@ -277,6 +277,23 @@
 .rv .apex-feats li::before { content: ""; position: absolute; left: 2px; top: 4px; width: 7px; height: 12px; border: solid var(--green-ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
 .rv .apex-ends { margin: 2px 0 0; font-size: 14.5px; font-weight: 700; color: var(--green-ink); }
 .rv .dx-day { margin: 0 0 4px; color: var(--green-ink); font-size: 15px; font-weight: 700; }
+/* Open in Carve on a club drive's day, on a phone (club-open.js; Chris,
+   11/18): a full-width button under the title, and a sheet on arrival. */
+html.club-wait .rv .go, html.club-wait .rv .app-banner, html.club-wait #rv-app, html.club-wait .rv .sect.near { display: none !important; }
+.rv .co-go { order: 0; }
+.rv .co-go p { margin: 8px 0 0; text-align: center; color: var(--ink-3); font-size: 13px; }
+.co-open { display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 999px; background: var(--green); color: #fff; font-size: 18px; font-weight: 800; text-decoration: none; }
+.co-sheet { position: fixed; inset: auto 0 0 0; margin: 0; width: 100%; max-width: none; max-height: 90vh; box-sizing: border-box; padding: 22px 20px max(22px, env(safe-area-inset-bottom)); border: 0; border-radius: 22px 22px 0 0; background: var(--fill-2); color: var(--ink); display: flex; flex-direction: column; gap: 14px; box-shadow: 0 -10px 30px rgba(0,0,0,.25); font-family: inherit; }
+.co-sheet:not([open]) { display: none; }
+.co-sheet::backdrop { background: rgba(10,16,12,.6); }
+.co-sheet .co-top { display: flex; align-items: center; gap: 14px; }
+.co-sheet .co-top img { flex: none; width: 56px; height: 56px; border-radius: 13px; }
+.co-sheet .co-said { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.co-sheet .co-title { margin: 0; font-size: 22px; font-weight: 800; line-height: 1.15; }
+.co-sheet .co-when { margin: 0; font-size: 14px; color: var(--ink-2); }
+.co-sheet .co-why { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.co-sheet .co-stay { height: 50px; border-radius: 999px; border: 1.5px solid var(--ink-3); background: none; color: var(--ink); font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+.co-sheet .co-fine { margin: 0; text-align: center; font-size: 12.5px; color: var(--ink-3); }
 /* Light: after the rules above, so it wins (the theme block sits earlier). */
 @media not all and (prefers-color-scheme: dark) {
   .rv .dx-day { color: var(--green); }

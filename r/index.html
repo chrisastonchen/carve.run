@@ -27,7 +27,7 @@
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/plan/vendor/maplibre-gl.css?v=471" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/plan/plan.css?v=82">
-<link rel="stylesheet" href="/assets/route-view.css?v=01059aa28e">
+<link rel="stylesheet" href="/assets/route-view.css?v=d3f7c91eed">
 <link rel="stylesheet" href="/assets/explore.css?v=698a1d10e2">
 <link rel="stylesheet" href="/assets/share-plan.css?v=161a310cc6">
 <!-- Written by scripts/drives/build_share_page.py: edit share_page.js,
@@ -358,10 +358,14 @@ const RouteProfile = (() => {
   const token = (segments[0] === "r" ? segments[1] : segments[0]) || params.get("t") || params.get("k");
   const payload = params.get("d");
   // A club drive's day, as its organizer shares it (club v2's O7, O6):
-  // ?club=<drive id>&day=<n>[&prerun]. The same page without the app's
-  // pitch, the QR's own line, and the drive's bar on top (club-share.js).
+  // ?club=<drive id>&day=<n>[&prerun]. The same page with the QR's own
+  // line; for the club's organizers, the drive's bar on top (club-share.js)
+  // and no app pitch (club-open.js).
   // Only what shows changes; the link to copy is the route's own.
   const CLUB = /^[0-9a-f-]{36}$/i.test(params.get("club") || "") ? params.get("club") : null;
+  // An organizer's view keeps no pitch: held hidden while club-open.js
+  // checks a signed-in visitor on the club's own link.
+  try { if (CLUB && localStorage.getItem("carve.plan.session")) document.documentElement.classList.add("club-wait"); } catch (e) {}
 
   if (APP_STORE_ID && isApple) {
     const meta = document.createElement("meta");
@@ -610,8 +614,10 @@ const RouteProfile = (() => {
     add(el("div", { class: "paste link" },
       el("input", { id: "rv-link", readonly: "", "aria-label": "The route's link", value: link.replace("https://", "") }),
       el("button", { type: "button", class: "pill green", id: "rv-copy" }, "Copy link")));
-    // The app's pitch, but not on a club drive's day (Chris, 11/9).
-    if (!CLUB) {
+    // The app's pitch, for everyone; on a club drive's own link the
+    // club's organizers don't get it (club-open.js takes it out for them;
+    // Chris, 11/18: a driver given that link got no way into the app).
+    {
       const store = isAndroid ? ANDROID_URL : APP_STORE_URL;
       const button = el("a", { href: store }, icon(isAndroid ? "android" : "apple"), "Drive it in Carve");
       button.addEventListener("click", openInApp);
@@ -646,11 +652,9 @@ const RouteProfile = (() => {
     add(el("section", { class: "sect" }, el("h2", {}, "Along the way"), along,
       units(info, start, info.roundTrip ? "Start" : end), googleMapsButton(info.googleMaps)));
 
-    const nearby = el("section", { class: "sect", hidden: "" }, el("h2", {}, "More drives near here"));
-    if (!CLUB) {
-      add(nearby);
-      add(markup(APP_SECTION)[0]);
-    }
+    const nearby = el("section", { class: "sect near", hidden: "" }, el("h2", {}, "More drives near here"));
+    add(nearby);
+    add(markup(APP_SECTION)[0]);
     add(el("p", { class: "rv-sources" },
       "Distance, time, elevation, curves and intensity are from Carve's route. Roads close for weather and repairs; check conditions before you go."));
     return nearby;
@@ -694,6 +698,8 @@ const RouteProfile = (() => {
   // whether an app is installed: on iPhone and iPad the store answers it
   // (Get or Open); on Android an intent link names the app and its own
   // fallback.
+  // For club-open.js's Open in Carve (the sheet and the button under the title).
+  window.carveOpenInApp = openInApp;
   function openInApp(event) {
     if (!token && !payload) return;   // nothing to open: let the store link work
     if (!isAndroid && !isApple) return;
@@ -1082,9 +1088,11 @@ const RouteProfile = (() => {
       // only with CLUB_V2 on: the live site, without club-flags.js or with it
       // off, asks route_drive nothing.
       import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=d89d742527"); }).catch(() => {});
-      if (CLUB) import("/assets/club-share.js?v=83e34f5fe9");
+      if (CLUB) import("/assets/club-share.js?v=6dd2c4bc21");
       // A club drive's day, to a driver: the drive pass (P1).
       else import("/assets/route-pass.js?v=565658d2fa");
+      // Open in Carve on a club drive's day, on a phone (club-open.js).
+      import("/assets/club-open.js?v=67c29c032e").catch(() => document.documentElement.classList.remove("club-wait"));
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";

@@ -1,7 +1,7 @@
 // Share and the pre-drive (club v2's O7 and O6; Chris, 11/9 night) on the
 // public route page, carve.run/<token>?club=<drive>&day=<n>[&prerun].
-// share_page.js leaves out the app's pitch and words the QR for drivers;
-// this adds, for the drive's organizers, the drive's bar on top (the club
+// share_page.js words the QR for drivers (club-open.js takes the app's
+// pitch out for the drive's organizers); this adds, for them, the drive's bar on top (the club
 // small, back to the drive by name, the day switch, a day not planned yet
 // greyed), and on the pre-drive the line for the crew. The drive's name
 // once, in the bar; the title is this day's route, start → end (Chris,
