@@ -36,6 +36,10 @@
    "coverage": 0.58,
    "since": "2026-11-01"
   },
+  "evans-notch": {
+   "coverage": 0.36,
+   "since": "2026-11-17"
+  },
   "going-to-the-sun-road": {
    "coverage": 0.02,
    "since": "2026-10-24"
@@ -76,8 +80,12 @@
    "coverage": 0.19,
    "since": "2026-11-14"
   },
+  "klondike-highway-white-pass": {
+   "coverage": 0.48,
+   "since": "2026-11-17"
+  },
   "la-rumorosa-grade-baja": {
-   "coverage": 0.59,
+   "coverage": 0.22,
    "since": "2026-11-07"
   },
   "lake-hughes-road": {
@@ -105,7 +113,7 @@
    "since": "2026-11-14"
   },
   "monument-valley-us-163": {
-   "coverage": 0.58,
+   "coverage": 0.56,
    "since": "2026-11-06"
   },
   "north-cape-coastal-drive": {
@@ -150,5 +158,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-17T14:12:27Z"
+ "updated": "2026-11-18T14:13:12Z"
 }
