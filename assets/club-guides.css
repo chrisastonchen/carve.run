@@ -1,0 +1,18 @@
+/* The club guides (scripts/club/club_guides.py): screenshots in the steps,
+   and the hub's table with seven columns. */
+.club-guide figure { margin: 18px 0 6px; }
+.club-guide figure img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); background: #0E1210; }
+.club-guide figcaption { margin-top: 8px; font-size: 14px; color: var(--ink-2, #5D636C); }
+.club-guide .club-try .cmp-fine { margin: 10px 0 0; }
+.doc .cmp-table.cmp-wide { min-width: 1080px; font-size: 14px; }
+.cmp-table.cmp-wide tbody th { width: 14%; }
+.cmp-table.cmp-wide td { width: auto; }
+
+/* /car-clubs/: the guides under For Clubs (car_clubs.py), on the intro's
+   dark ground in either theme, as wide as its sections. */
+.cc-guides { align-self: stretch; box-sizing: border-box; width: 100%; padding: 8px clamp(16px, 4vw, 56px) 64px; background: #0E1210; color: #F2F4F1; }
+.cc-guides > * { max-width: 1240px; margin-left: auto; margin-right: auto; }
+.cc-guides h2 { margin-top: 0; margin-bottom: 14px; font-size: 22px; font-weight: 800; color: #F2F4F1; }
+.cc-guides ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 10px; padding: 0; list-style: none; }
+.cc-guides a { display: block; height: 100%; box-sizing: border-box; padding: 14px 16px; border: 1px solid rgba(255,255,255,.16); border-radius: 12px; color: #F2F4F1; font-weight: 700; text-decoration: none; }
+.cc-guides a:hover, .cc-guides a:focus-visible { border-color: #6FD39A; }

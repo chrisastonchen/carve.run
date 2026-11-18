@@ -7,6 +7,14 @@
   <url><loc>https://carve.run/privacy/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://carve.run/terms/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://carve.run/about/</loc><lastmod>2026-10-13</lastmod></url>
+  <!-- club-guides:start (scripts/club/club_guides.py) -->
+  <url><loc>https://carve.run/car-clubs/organize-a-drive/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://carve.run/car-clubs/pre-drive/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://carve.run/car-clubs/multi-day-tour/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://carve.run/car-clubs/google-my-maps-alternative/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://carve.run/car-clubs/facebook-whatsapp-route-link/</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>https://carve.run/car-clubs/best-apps/</loc><lastmod>2026-11-17</lastmod></url>
+  <!-- club-guides:end -->
   <!-- compare -->
   <url><loc>https://carve.run/plan-a-scenic-drive/</loc><lastmod>2026-10-29</lastmod></url>
   <url><loc>https://carve.run/group-drives/</loc><lastmod>2026-10-29</lastmod></url>
