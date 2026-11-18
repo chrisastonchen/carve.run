@@ -98,7 +98,7 @@ async function start() {
 
   const here = location.pathname + location.search;
   const has = (until) => {
-    body.replaceChildren(node("p", "rp-pass", `You have the drive pass through ${until}. Open the route in the Carve app to drive it, even with no signal.`));
+    body.replaceChildren(node("p", "rp-pass", `You have the drive pass through ${until}. Open the route in the Carve app to drive it, with offline maps and turns.`));
   };
   const skipped = () => {
     try { return sessionStorage.getItem(SKIP_KEY) === "1"; } catch { return false; }

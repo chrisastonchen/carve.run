@@ -25,7 +25,7 @@ Carve at carve.run is separate from other apps called Carve: it is for cars and 
 - Share one link or QR code; recipients open the route in Carve or any browser, edits keep the same link, and turn-by-turn directions print
 - Spoken turn-by-turn directions with live traffic, on the route you planned, never rerouted; after a wrong turn, directions forward to where you rejoin the route
 - One-tap hazard reports (debris, animals, crashes) that warn the drivers behind you on the route
-- Group: drivers on the same route see each other on the map and car screen, with how far ahead or behind (free with an account; on unless a driver turns off See others on the map for that drive, which hides them too; names only between drivers on the same shared link or drive plan, others show as "Driver"; within 3 miles of the route; no location history)
+- Group: drivers on the same route see each other on the map and car screen, with how far ahead or behind (free with an account; on unless a driver turns off See others on the map for that drive, which hides them too; names only between drivers on the same shared link, others show as "Driver"; within 3 miles of the route; no location history)
 - Made for car clubs, riding groups, road rallies and tours as much as solo weekend drives (not a timing or scoring tool for competitive rallies)
 
 ## Pricing
@@ -54,7 +54,7 @@ Guides to famous drives, each with a route that opens in Carve: https://carve.ru
 ## Guides
 
 - [How to plan a scenic drive](https://carve.run/plan-a-scenic-drive/): Step by step: start from a great road on Carve's map of drives or describe the drive, build the route stop by stop on Scenic roads (in the app, or on a computer at carve.run/plan), or import a Google Maps link, a GPX file or a Ride with GPS route; check weather, conditions and a 3D Flyover, download it for no signal, and drive it without rerouting, with hazard warnings from drivers ahead.
-- [How to plan and lead a group drive](https://carve.run/group-drives/): Step by step for car clubs, group drives and road rallies: plan once (in the app, on a computer at carve.run/plan, or import a GPX file, Ride with GPS or Google Maps route), share one link and QR code (iPhone, Android or browser; printed turns for anyone without the app), download for no signal, see everyone on the map (by name for everyone on your link or drive plan), brief the group, keep it together with lead and sweep cars, and warn the group about hazards.
+- [How to plan and lead a group drive](https://carve.run/group-drives/): Step by step for car clubs, group drives and road rallies: plan once (in the app, on a computer at carve.run/plan, or import a GPX file, Ride with GPS or Google Maps route), share one link and QR code (iPhone, Android or browser; printed turns for anyone without the app), download for no signal, see everyone on the map (by name for everyone on your link), brief the group, keep it together with lead and sweep cars, and warn the group about hazards.
 
 ## Comparisons
 

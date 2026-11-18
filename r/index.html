@@ -8,18 +8,18 @@
 <meta name="referrer" content="strict-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A Carve route</title>
-<meta name="description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
+<meta name="description" content="A driving route on Carve. Drive it turn by turn on the exact roads.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Carve">
 <meta property="og:title" content="A Carve route">
-<meta property="og:description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
+<meta property="og:description" content="A driving route on Carve. Drive it turn by turn on the exact roads.">
 <meta property="og:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cars on a canyon road at sunset">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A Carve route">
-<meta name="twitter:description" content="A driving route on Carve. Drive it turn by turn, even with no signal.">
+<meta name="twitter:description" content="A driving route on Carve. Drive it turn by turn on the exact roads.">
 <meta name="twitter:image" content="https://carve.run/assets/og-route.jpg?v=7d4e67c337">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1210"><meta name="theme-color" content="#1D5B3A">
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
@@ -1084,14 +1084,14 @@ const RouteProfile = (() => {
       import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=d89d742527"); }).catch(() => {});
       if (CLUB) import("/assets/club-share.js?v=83e34f5fe9");
       // A club drive's day, to a driver: the drive pass (P1).
-      else import("/assets/route-pass.js?v=c677c2eb18");
+      else import("/assets/route-pass.js?v=565658d2fa");
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";
     }
   })();
 </script>
-<script type="module" src="/assets/route-view.js?v=20ec66b7b0"></script>
+<script type="module" src="/assets/route-view.js?v=d5e3e8fc04"></script>
 <script type="module" src="/assets/share-plan.js?v=cca4f57428"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>

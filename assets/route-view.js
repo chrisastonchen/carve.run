@@ -394,7 +394,7 @@ function printDirections(token, payload, row) {
       <svg class="wm"><use href="#i-wordmark"/></svg>
       <h1>${escapeHTML(name)}</h1>
       <p class="sub">${sub}</p>
-      <div class="scanrow"><div class="qrbig">${qr}</div><div><b>Scan with your phone's camera to drive it in Carve</b><span>Turn by turn on the exact roads, even with no signal.</span><span class="url">${link}</span></div></div>
+      <div class="scanrow"><div class="qrbig">${qr}</div><div><b>Scan with your phone's camera to drive it in Carve</b><span>Turn by turn on the exact roads.</span><span class="url">${link}</span></div></div>
       ${payload.blurb ? `<p style="margin-top:18pt;font-size:12pt;line-height:1.5">${escapeHTML(payload.blurb)}</p>` : ""}
       <p class="foot-note">No Carve yet? It's free on iPhone and Android. The link takes you to the store first.</p>
     </section>
