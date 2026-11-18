@@ -35,6 +35,8 @@
 .rv .crumbs a:hover { color: var(--ink); }
 .rv-head h1 { overflow-wrap: anywhere; margin-top: 6px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
 .rv-head .sub { margin-top: 5px; font-size: 15px; color: var(--ink-3); }
+/* A guide's first line: how long the drive is, both ways (scripts/drives/guide_meta.py). */
+.rv-head .rv-answer { margin-top: 10px; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
 .rv .facts .chip { font-size: 13px; }
 /* The link field on the white card: filled, so it reads as a field. */
 .rv .paste.link input { background: var(--fill); font-weight: 700; }
