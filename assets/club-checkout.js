@@ -67,6 +67,32 @@ export function tidyReturn() {
   try { history.replaceState(history.state, "", `${location.pathname}?${params}${location.hash}`); } catch {}
 }
 
+/// A history entry this tab paid from, or was paying from when Stripe took
+/// the page back to the club (Chris's purchase, 11/17): Back to it, or a
+/// reload, is the club as it is now, never the form again.
+export const payingEntry = () => !!history.state?.paying;
+
+/// The club page's own address with ?paid: where a paid checkout goes when
+/// Stripe says complete without taking the page there itself.
+function paidAddress() {
+  const params = new URLSearchParams(location.search);
+  params.delete("session_id");
+  params.set("paid", "1");
+  return `${location.pathname}?${params}`;
+}
+
+/// Stripe's session status: "open", "complete" or "expired" (a string or
+/// {type}); "" when it doesn't say.
+export function statusOf(s) {
+  const st = s?.status;
+  return (typeof st === "string" ? st : st?.type) || "";
+}
+
+// Back to this page out of the browser's back-forward cache (Back after
+// paying): a fresh load, so the club page asks how the club is now rather
+// than showing the panel as it was left.
+addEventListener("pageshow", (e) => { if (e.persisted && (open || payingEntry())) location.reload(); });
+
 /// "Dec 15, 2026" from Stripe's trial end (seconds or milliseconds).
 export function dayOf(t) {
   if (!Number.isFinite(t)) return "";
@@ -166,7 +192,11 @@ export async function openCheckout({ ask, title, terms = "", from = null, onBack
       from?.focus?.({ preventScroll: true });
     }
   };
-  const popped = () => close();
+  // Mid-payment the panel stays: Back puts its entry back.
+  const popped = () => {
+    if (!busy) return close();
+    try { history.pushState({ checkout: true, paying: true }, ""); } catch {}
+  };
   open = { panel, close };
   for (const n of others) n.inert = true;
   document.documentElement.style.overflow = "hidden";
@@ -180,7 +210,7 @@ export async function openCheckout({ ask, title, terms = "", from = null, onBack
   try { history.pushState({ checkout: true }, ""); pushed = true; } catch {}
   addEventListener("popstate", popped);
   addEventListener("scroll", hold, { passive: true });
-  const leave = () => (pushed && history.state?.checkout ? history.back() : close());
+  const leave = () => { if (!busy) (pushed && history.state?.checkout ? history.back() : close()); };
   $(".cx-back").addEventListener("click", leave);
   panel.addEventListener("keydown", (e) => { if (e.key === "Escape") { e.preventDefault(); leave(); } });
   $(".cx-back").focus({ preventScroll: true });
@@ -211,11 +241,7 @@ export async function openCheckout({ ask, title, terms = "", from = null, onBack
   if (wallets) {
     wallets.on?.("ready", (e) => { $(".cx-wallets").hidden = !Object.values(e?.availablePaymentMethods || {}).some(Boolean); });
     wallets.on?.("loaderror", () => { $(".cx-wallets").hidden = true; });
-    wallets.on?.("confirm", async (e) => {
-      $(".cx-said").textContent = "";
-      const r = await actions.confirm({ expressCheckoutConfirmEvent: e }).catch((error) => ({ type: "error", error }));
-      if (r?.type === "error") $(".cx-said").textContent = r.error?.message || "That didn't go through. Try again or pay by card.";
-    });
+    wallets.on?.("confirm", (e) => pay({ expressCheckoutConfirmEvent: e }, "That didn't go through. Try again or pay by card."));
     wallets.mount($(".cx-wallet-el"));
   }
   const address = checkout.createBillingAddressElement();
@@ -243,7 +269,7 @@ export async function openCheckout({ ask, title, terms = "", from = null, onBack
     $(".cx-due").textContent = v.due;
     $(".cx-then").textContent = v.then;
     $(".cx-then").hidden = !v.then;
-    $(".cx-go").textContent = v.button;
+    $(".cx-go").textContent = busy ? "Processing…" : v.button;
     $(".cx-go").disabled = busy || !session?.canConfirm;
     // Applied: the code and Remove in place of the field.
     $(".cx-promo-form").hidden = !!v.discount;
@@ -289,18 +315,44 @@ export async function openCheckout({ ask, title, terms = "", from = null, onBack
     }
   });
 
-  // Subscribe: Stripe confirms (3D Secure over the page), then sends the
-  // page back to the club page; an error stays here, said under the button.
-  $(".cx-pay").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (busy) return;
-    busy = true;
+  // Paying: the button busy and the rest of the panel out of reach, from the
+  // press until the club page that follows has drawn the club (Chris's
+  // purchase, 11/17: the step before flashed up between).
+  const locked = [".cx-sum", ".cx-wallets", ".cx-contact", ".cx-card-el", ".cx-addr-el", ".cx-biz", ".cx-biz-more"];
+  const lock = (on) => {
+    busy = on;
+    panel.classList.toggle("cx-busy", on);
+    for (const q of locked) $(q).inert = on;
+    $(".cx-back").disabled = on;
+    $(".cx-go").setAttribute("aria-busy", String(on));
+    // The entry says so, so Back to it or a reload, once Stripe has taken
+    // the page on, draws the club as it is, not the form.
+    try { history.replaceState({ ...history.state, paying: on }, ""); } catch {}
     paint();
+  };
+  // Stripe confirms (3D Secure over the page), then sends the page back to
+  // the club page; done here without leaving, the club page with ?paid. An
+  // error stays here, said under the button, unless the session is past
+  // paying: complete is paid, expired starts over.
+  const pay = async (options, fallback) => {
+    if (busy) return;
+    lock(true);
     $(".cx-said").textContent = "";
-    const r = await actions.confirm().catch((error) => ({ type: "error", error }));
-    busy = false;
-    if (r?.type === "error") $(".cx-said").textContent = r.error?.message || "That didn't go through. Check the card and try again.";
+    const r = await actions.confirm(options).catch((error) => ({ type: "error", error }));
+    const now = statusOf(r?.session || actions.getSession());
+    if (r?.type !== "error" || now === "complete") return location.replace(paidAddress());
+    lock(false);
+    if (now === "expired") {
+      $(".cx-said").textContent = "This checkout expired. Go back and start again.";
+      $(".cx-go").disabled = true;
+      return;
+    }
+    $(".cx-said").textContent = r.error?.message || fallback;
     paint(actions.getSession());
+  };
+  $(".cx-pay").addEventListener("submit", (e) => {
+    e.preventDefault();
+    pay(undefined, "That didn't go through. Check the card and try again.");
   });
 }
 

@@ -14,7 +14,7 @@ import { hideIntro, showIntro } from "/assets/club-intro.js?v=f52075dfb7";
 import { forgetWho } from "/assets/who.js?v=b3c98f8ff6";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
-import { openCheckout, tidyReturn } from "/assets/club-checkout.js?v=d60c8d8ef3";
+import { openCheckout, payingEntry, tidyReturn } from "/assets/club-checkout.js?v=acdc7fe3ae";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
 const isOwner = (o) => (typeof o?.owner === "boolean" ? o.owner : o?.role === "admin");
@@ -233,13 +233,40 @@ async function start() {
   // An invite to answer (0121): its page first, unless it's this account's already.
   if (invite && (await showAccept(invite))) return;
   wire();
+  // Back from paying (Stripe's return with ?paid, or Back to or a reload of
+  // the entry paid from): no step of Start a club until the club's on its
+  // plan (Chris's purchase, 11/17), then Welcome from Stripe, home otherwise.
+  const fromStripe = new URLSearchParams(location.search).has("paid");
+  if (fromStripe || payingEntry()) {
+    await settlePaid();
+    if (!fromStripe) try { history.replaceState(null, "", location.href); } catch {}
+  }
   await load();
   showMyInvites();
-  // Back from Checkout before Stripe's word: Start a club says so, and looks again.
-  if (new URLSearchParams(location.search).get("paid") && !$("v-start").hidden) {
-    $("v-start-said").textContent = "Thanks. Your plan starts as soon as Stripe confirms it, usually within a minute.";
-    setTimeout(load, 4000);
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+/// "Finishing your payment…" and nothing to press while Stripe's word
+/// reaches the club (the webhook, usually seconds); done once it's on its
+/// plan. After a minute org-billing asks Stripe: a plan there, the wait goes
+/// on, said; none (nothing was paid), the page as it is, ?paid off.
+async function settlePaid() {
+  const want = new URLSearchParams(location.search).get("org");
+  for (const v of ["v-start", "v-home", "v-welcome"]) $(v).hidden = true;
+  dash(true);
+  status("Finishing your payment…");
+  const ready = async () => {
+    try { orgs = await myOrgs(); } catch { return false; }
+    return !want || onPlan(orgs.find((o) => o.id === want));
+  };
+  for (const end = Date.now() + 60000; Date.now() < end; await sleep(1500)) if (await ready()) return;
+  const s = await billing({ action: "status", org_id: want }).catch(() => undefined);
+  if (s && !s.plan) {
+    try { history.replaceState(null, "", `/club/?org=${encodeURIComponent(want)}`); } catch {}
+    return;
   }
+  status("Stripe has your payment. Your club will be ready here in a minute or two.");
+  while (!(await ready())) await sleep(5000);
 }
 
 async function load(prefer) {

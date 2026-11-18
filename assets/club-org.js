@@ -12,7 +12,7 @@ import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/ca
 // The plans' names, limits and prices come from one place, plans.json
 // (scripts/pricing/build_plans.py writes plans.js from it).
 import { CONTACT, PLANS } from "/assets/plans.js?v=a1e99a533b";
-import { openCheckout, tidyReturn } from "/assets/club-checkout.js?v=d60c8d8ef3";
+import { openCheckout, tidyReturn } from "/assets/club-checkout.js?v=acdc7fe3ae";
 
 const $ = (id) => document.getElementById(id);
 
