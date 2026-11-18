@@ -179,6 +179,8 @@ const SHORTEST_SHARE = 0.25;
 const ENOUGH_STRETCH = 10000;
 /// It adds no more than 30 minutes, or 80% of the leg it goes in (Chris,
 /// 11/16, as the apps' 9c79dfbd30; was 15 and 40%).
+/// The allowance for ends partway along the road doesn't count toward it
+/// (option A, Chris 11/18, as the 1.7.7 apps); the time said keeps it.
 const MOST_ADDED_SECONDS = 30 * 60;
 const MOST_ADDED_SHARE = 0.8;
 /// Each stretch end that isn't one of the road's own ends costs 12 minutes:
@@ -352,6 +354,15 @@ export function addedSeconds({ hops, headway, stretchSeconds, midEnds, pace, pat
   return hops * DETOUR / pace - headway * pathFactor / pace + stretchSeconds + midEnds * MID_ROAD_END_SECONDS;
 }
 
+/// A stretch's worth: its time on the road less ADDED_WEIGHT of what it
+/// adds, leaving out the allowance for ends partway along the road, which
+/// stays in the time it says (the apps' PlanRoads.score, 3a3ef1af5e; Chris
+/// 11/17: with it, a stretch with two such ends needed over 36 minutes of
+/// road, and the Peninsula plan was offered none).
+export function scoreOf(stretchSeconds, added, midEnds) {
+  return stretchSeconds - ADDED_WEIGHT * (added - midEnds * MID_ROAD_END_SECONDS);
+}
+
 /// A given stretch of `road`, entry to exit (each [lon, lat] on or by its
 /// line), against `plan` (fitRoad's), on the leg nearest the entry: the
 /// seconds it adds, as fitRoad counts them. For checking against measured
@@ -500,11 +511,11 @@ export function fitRoad(road, plan) {
           const stretchSeconds = roadSeconds * stretch / total;
           const midEnds = (a !== 0 && a !== count ? 1 : 0) + (b !== 0 && b !== count ? 1 : 0);
           const added = addedSeconds({ hops: foot[a].meters + foot[b].meters, headway, stretchSeconds, midEnds, pace: frame.pace, pathFactor: frame.pathFactor });
-          const score = stretchSeconds - ADDED_WEIGHT * added;
+          const score = scoreOf(stretchSeconds, added, midEnds);
           if (lo === 0 && hi === count && foot[a].meters <= ENDS_NEAR && foot[b].meters <= ENDS_NEAR && score > 0 && score > (whole?.score ?? 0)) {
             whole = { leg: leg.index, a, b, added, score, stretchSeconds };
           }
-          if (added > most) continue;
+          if (added - midEnds * MID_ROAD_END_SECONDS > most) continue;
           if (!(score > 0) || score <= (best?.score ?? 0)) continue;
           best = { leg: leg.index, a, b, added, score, stretchSeconds };
         }

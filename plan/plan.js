@@ -19,9 +19,9 @@ import {
   appleDate, newShareToken, newUUID, routePayload, routeRow, markerLabels,
   usesMiles, formatDistance, formatDuration, linkKind, readGPX, turnKind, clip,
 } from "./route-wire.js?v=7";
-import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=10";
+import { fitRoad, isOnRoute, level, lineOf, roadPoints, routedVerdict, wholeRoad } from "./good-roads.js?v=11";
 import { addPins } from "/assets/events.js?v=b133592880";
-import { closures, closureTitle, closureWords } from "./closures.js?v=5";
+import { closures, closureTitle, closureWords } from "./closures.js?v=6";
 import { initGroup } from "./group.js?v=14";
 import { initDraftsEntry } from "./drives-list.js?v=2";
 import { initDriveDay } from "./drive-day.js?v=8";
