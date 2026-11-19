@@ -35,7 +35,13 @@ function row(route, catalog) {
   // A computer opens it in the planner; a phone, its page (Carve opens it if installed).
   a.href = narrow && token ? `https://open.carve.run/${encodeURIComponent(token)}?then=page&ct=saved` : slug && narrow ? `/drives/${encodeURIComponent(slug)}/` : `/plan/?route=${encodeURIComponent(route.id)}`;
   const words = el("span", "v-drive-words");
-  words.append(el("b", "", route.name || "Untitled route"), el("span", "", routeLine(route, miles())));
+  // On a phone, the name in full (two lines at most) with its Guide tag
+  // beside it, the facts on one line (Chris, 11/18); on a computer, the
+  // Guide link at the row's end, as before.
+  const name = el("span", "v-name");
+  name.append(el("b", "", route.name || "Untitled route"));
+  if (slug) name.append(el("span", "v-tag", "Guide"));
+  words.append(name, el("span", "v-facts", routeLine(route, miles())));
   a.append(words);
   li.append(a);
   if (slug) {

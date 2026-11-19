@@ -483,6 +483,18 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cd-saved .cd-rows .v-drive-row { display: flex; align-items: center; gap: 12px; }
 .cd-saved .cd-rows .v-drive { flex: 1; min-width: 0; }
 .cd-saved .v-drive-words b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cd-saved .v-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cd-saved .v-drive-words .v-tag { display: none; }
+/* A phone held upright (Chris, 11/18: names cut to "PCA Fu…", the facts
+   over four lines): the row's whole width, no thumbnail column; the name
+   in full up to two lines, the Guide tag beside it; the facts one line. */
+@media (max-width: 480px) {
+  .cd-saved .cd-rows .v-drive { display: flex; }
+  .cd-saved .v-drive-words b { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; line-height: 1.25; }
+  .cd-saved .v-drive-words .v-tag { display: inline-flex; flex: none; align-items: center; padding: 2px 8px; border: 1px solid var(--rule); border-radius: 999px; color: var(--green-ink); font-size: 12px; font-weight: 800; }
+  .cd-saved .v-drive-words .v-facts { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cd-saved .v-drive-row > .textlink { display: none; }
+}
 .cd-saved #s-events { margin-top: 10px; }
 
 /* Plan a drive (mock v11, screen 4): one question at a time. */
