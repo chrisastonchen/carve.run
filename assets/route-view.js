@@ -524,8 +524,75 @@ function wirePlanRoad() {
   });
 }
 
+/// A route's page (Chris, 11/18; on a computer too, 11/19; Growth's spec C): under the
+/// title, three big numbers as the app has them (drive time, distance,
+/// climb), the intensity chip small beside the title, and the rest of the
+/// facts line (high point, stops, one way) with the road names and "A drive
+/// by @…" moved down to the top of Along the way. Built from the facts line
+/// the page already has (route-view.css lays it out).
+export function bigNumbers(texts) {
+  const out = { time: null, distance: null, climb: null, rest: [] };
+  for (const t of texts.map((x) => x.replace(/\s+/g, " ").trim()).filter(Boolean)) {
+    if (/climb$/.test(t) && !out.climb) out.climb = t.replace(/ climb$/, "");
+    else if (/^[\d,.]+ (mi|km)$/.test(t) && !out.distance) out.distance = t;
+    else if (/^(\d+ (hr|h)( \d+ min)?|\d+ min)$/.test(t) && !out.time) out.time = t.replace(/ hr\b/, " h");
+    else out.rest.push(t);
+  }
+  return out;
+}
+
+function routeTop() {
+  const card = document.querySelector(".rv .scroll");
+  const facts = card?.querySelector(":scope > .facts");
+  const head = card?.querySelector(":scope > .rv-head");
+  if (!facts || !head || card.querySelector(".rv-big")) return;
+  const chip = facts.querySelector(".chip");
+  const texts = [...facts.children].filter((n) => n !== chip && !n.classList.contains("sep")).map((n) => n.textContent);
+  const got = bigNumbers(texts);
+  if (!got.time && !got.distance && !got.climb) return;
+  const big = document.createElement("div");
+  big.className = "rv-big";
+  for (const [value, label] of [[got.time, "Drive time"], [got.distance, "Distance"], [got.climb, "Climb"]]) {
+    if (!value) continue;
+    const cell = document.createElement("div");
+    const figure = document.createElement("span");
+    figure.className = "rv-big-n";
+    // The figure in Oxanium, its unit small, as the app.
+    figure.innerHTML = escapeHTML(value).replace(/(\d[\d,.]*)/g, "<b>$1</b>");
+    const name = document.createElement("span");
+    name.className = "rv-big-l";
+    name.textContent = label;
+    cell.append(figure, name);
+    big.append(cell);
+  }
+  head.after(big);
+  const h1 = head.querySelector("h1");
+  if (chip && h1) {
+    const small = chip.cloneNode(true);
+    small.classList.add("rv-title-chip");
+    small.setAttribute("aria-hidden", "true");
+    h1.after(small);
+  }
+  // The rest, at the top of Along the way (or after the numbers, without it).
+  const sub = head.querySelector(".sub")?.textContent.trim();
+  const lines = [sub, got.rest.join(" · ")].filter(Boolean);
+  if (!lines.length) return;
+  const more = document.createElement("div");
+  more.className = "rv-more";
+  more.setAttribute("aria-hidden", "true");
+  for (const line of lines) {
+    const p = document.createElement("p");
+    p.textContent = line;
+    more.append(p);
+  }
+  const along = [...card.querySelectorAll("h2")].find((h) => /^Along the way$/.test(h.textContent.trim()));
+  if (along) along.after(more);
+  else big.after(more);
+}
+
 async function start() {
   wirePlanRoad();
+  routeTop();
   // Someone signed in to Carve has the app's pitch already.
   if (signedIn) $("rv-app")?.setAttribute("hidden", "");
   const host = $("rv-map");

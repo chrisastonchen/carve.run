@@ -317,3 +317,28 @@ html.club-wait .rv .go, html.club-wait .rv .app-banner, html.club-wait #rv-app, 
 .rv .dx-row.warning { border-color: #D9822B; }
 .rv .dx-src { margin-top: 10px; font-size: 12px; color: var(--ink-3); }
 .rv .dx-src a { color: inherit; }
+
+/* A route's page (Chris, 11/18, on a computer too 11/19; Growth's spec C;
+   route-view.js phoneTop): the title with its intensity chip small beside
+   it, three big numbers as the app shows them; the road names, "A drive by
+   @…", high point, stops and one way at the top of Along the way. On a
+   phone the way into the app follows the numbers; on a computer the QR
+   stays where it was. */
+.rv .scroll > .facts, .rv-head .sub, .rv .scroll > .co-sub { display: none; }
+.rv-head h1 { display: inline; vertical-align: middle; }
+.rv .rv-title-chip { display: inline-flex; vertical-align: middle; margin-left: 8px; padding: 3px 8px 3px 6px; font-size: 12px; }
+.rv .rv-title-chip svg { width: 13px; height: 13px; }
+.rv .rv-head .rv-answer { margin-top: 8px; }
+.rv .scroll > .rv-big { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.rv .rv-big > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rv .rv-big > div:nth-child(2) { align-items: center; }
+.rv .rv-big > div:nth-child(3) { align-items: flex-end; }
+.rv .rv-big-n { font-size: 15px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+.rv .rv-big-n b { font-family: var(--num); font-size: 28px; font-weight: 700; color: var(--ink); line-height: 1; }
+.rv .rv-big-l { font-size: 13px; color: var(--ink-3); }
+.rv .rv-more { display: flex; flex-direction: column; gap: 4px; margin: -4px 0 12px; }
+.rv .rv-more p { margin: 0; font-size: 14px; color: var(--ink-3); }
+@media (max-width: 699px), (max-height: 560px) {
+  .rv .scroll > .rv-big { order: 1; }
+  .rv .scroll > .go { order: 1; }
+}
