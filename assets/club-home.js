@@ -11,7 +11,7 @@ import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { organizersBox } from "/assets/club-organizers.js?v=564a0fcab6";
 import { billsToday } from "/assets/who-words.js?v=65edaf422f";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=f52075dfb7";
-import { forgetWho } from "/assets/who.js?v=b9cba54760";
+import { forgetWho } from "/assets/who.js?v=bb565acd4d";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
 import { openCheckout, payingEntry, tidyReturn } from "/assets/club-checkout.js?v=acdc7fe3ae";
@@ -259,7 +259,8 @@ async function settlePaid() {
     try { orgs = await myOrgs(); } catch { return false; }
     return !want || onPlan(orgs.find((o) => o.id === want));
   };
-  for (const end = Date.now() + 60000; Date.now() < end; await sleep(1500)) if (await ready()) return;
+  // On its plan: the bar and the next page ask again (who.js), no sign-out needed.
+  for (const end = Date.now() + 60000; Date.now() < end; await sleep(1500)) if (await ready()) return forgetWho();
   const s = await billing({ action: "status", org_id: want }).catch(() => undefined);
   if (s && !s.plan) {
     try { history.replaceState(null, "", `/club/?org=${encodeURIComponent(want)}`); } catch {}
@@ -267,6 +268,7 @@ async function settlePaid() {
   }
   status("Stripe has your payment. Your club will be ready here in a minute or two.");
   while (!(await ready())) await sleep(5000);
+  forgetWho();
 }
 
 async function load(prefer) {
@@ -499,7 +501,7 @@ async function startTrial() {
     }
     // Checkout on this page (Chris, 11/15); Back leaves the club made.
     const ask = (ui) => billing({ action: "checkout", org_id: org.id, plan: "club", interval: "year", ...(ui ? { ui } : {}) });
-    forgetWho(); // a new club for the bar's menus, once it's paid
+    forgetWho({ paying: true }); // a new club for the bar's menus, once it's paid
     await openCheckout({ ask, title: `Carve Club for ${org.name}`, terms: $("v-terms").textContent, from: $("v-start-go"), onBack: () => nameTyped() });
     say("");
   } catch (failure) {

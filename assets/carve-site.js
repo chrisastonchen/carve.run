@@ -684,7 +684,7 @@
   // The bar and the phone's menu by who's looking, signed out too (boards
   // N3–N5; Plan ▾ for everyone, Chris 11/12): site-nav.js draws them.
   function siteNav() {
-    safe(function () { import("/assets/site-nav.js?v=d6adb15714").catch(function () {}); });
+    safe(function () { import("/assets/site-nav.js?v=c0a5cddc65").catch(function () {}); });
   }
 
   function ready() { tagLinks(); tagBanner(); myDrivesLink(); siteNav(); phoneSignIn(); sheetApp(); whoProfile(); }

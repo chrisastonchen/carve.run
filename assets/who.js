@@ -7,6 +7,15 @@ import { PLANS } from "/assets/plans.js?v=a1e99a533b";
 
 const KEPT = "carve.who";
 const KEEP_MS = 10 * 60_000;
+/// A checkout opened in this tab (club-home.js): until an answer has a
+/// club on its plan, none is kept, as Stripe's word may land after the
+/// page asks (a new organizer, 11/18: the bar said For Clubs and home
+/// offered Club for ten minutes after paying, until he signed out).
+const PAYING = "carve.who.paying";
+const PAYING_MS = 30 * 60_000;
+const paying = () => {
+  try { return Date.now() - Number(sessionStorage.getItem(PAYING) || 0) < PAYING_MS; } catch { return false; }
+};
 const CLUB_TIERS = [...PLANS.filter((p) => p.for === "organizers").map((p) => p.tier), "group"];
 
 const userId = () => store.get(SESSION_KEY)?.user?.id || null;
@@ -44,14 +53,22 @@ export function who() {
     if (!token) return { state: "out", clubs: [] };
     const [orgs, apex] = await Promise.all([rpc("orgs_mine", token).catch(() => null), rpc("apex_mine", token).catch(() => null)]);
     const answer = { state: stateOf({ signedIn: true, orgs: orgs || [], apex, clubTiers: CLUB_TIERS }), clubs: clubsOf(orgs || [], CLUB_TIERS) };
-    // Only a whole answer is kept: one that failed is asked again next page.
-    if (orgs && apex) try { sessionStorage.setItem(KEPT, JSON.stringify({ id, at: Date.now(), ...answer })); } catch {}
+    // Only a whole answer is kept: one that failed is asked again next page;
+    // while paying, one without the club on its plan too.
+    if (answer.state === "club") try { sessionStorage.removeItem(PAYING); } catch {}
+    if (orgs && apex && !paying()) try { sessionStorage.setItem(KEPT, JSON.stringify({ id, at: Date.now(), ...answer })); } catch {}
     return answer;
   })().finally(() => { asking = null; });
   return asking;
 }
 
-/// Forget it (a club was started, a plan bought, signed out).
-export function forgetWho() {
-  try { sessionStorage.removeItem(KEPT); } catch {}
+/// Forget it (a club was started, a plan bought, signed out); `paying`: a
+/// checkout is opening, so keep nothing until the club is on its plan. The
+/// bar asks again (site-nav.js, on carve:who).
+export function forgetWho({ paying: pay = false } = {}) {
+  try {
+    sessionStorage.removeItem(KEPT);
+    if (pay) sessionStorage.setItem(PAYING, String(Date.now()));
+  } catch {}
+  window.dispatchEvent(new Event("carve:who"));
 }

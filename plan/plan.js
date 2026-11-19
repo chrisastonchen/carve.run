@@ -4463,6 +4463,10 @@ async function start() {
   // Club v2: drives are planned from the club's pages, so no group drafts here.
   else if (!CLUB_V2) startDrafts();
   if (CLUB_V2) $("pd-group-link").setAttribute("href", "/club/");
+  // A Club organizer has Club: no "Upgrade to Carve Club" (a new organizer, 11/18).
+  import("/assets/who.js?v=bb565acd4d").then(({ who }) => who()).then(({ state }) => {
+    if (state === "club") $("pd-group-link").closest(".pd-group").hidden = true;
+  }).catch(() => {});
   render();
   // A guest's check runs while they look at the map, not when they search.
   if (!session) fetchPass();

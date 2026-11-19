@@ -20,7 +20,7 @@ import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=8db8f4b092"
 import { heartButton, wireHearts } from "/assets/hearts.js?v=5c3fca78da";
 import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=a3869ea508";
 import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=b133592880";
-import { who, whoNow } from "/assets/who.js?v=b9cba54760";
+import { who, whoNow } from "/assets/who.js?v=bb565acd4d";
 import { homeMenu } from "/assets/who-words.js?v=65edaf422f";
 
 // The map follows the device's theme, light unless it's set to dark (the
