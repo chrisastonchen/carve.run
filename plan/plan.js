@@ -4286,8 +4286,14 @@ function wire() {
       accountError(failure.message);
     }
   });
+  // One check of a code at a time: a second submit while one is out (a
+  // double tap, or autofill submitting as the button's pressed) is
+  // ignored, never "That code didn't work" (a new organizer, 11/18; Chris, 11/19).
+  let verifying = false;
   $("code-form").addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (verifying) return;
+    verifying = true;
     try {
       const verified = await auth("verify", { type: "email", email: emailForCode, token: $("code").value.trim() });
       keepSession(verified);
@@ -4296,6 +4302,8 @@ function wire() {
       await afterSignIn();
     } catch (failure) {
       accountError(failure.message);
+    } finally {
+      verifying = false;
     }
   });
   // What brings you to Carve? Pick any, or skip; then the name.

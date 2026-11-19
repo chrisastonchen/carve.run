@@ -486,8 +486,14 @@
     q("[data-resend]").addEventListener("click", function () {
       sendCode().then(function () { error("A new code is on its way."); }, function (failure) { error(failure.message); });
     });
+    // One check of a code at a time: a second submit while one is out (a
+    // double tap, or autofill submitting as the button's pressed) is
+    // ignored, never "That code didn't work" (a new organizer, 11/18; Chris, 11/19).
+    var verifying = false;
     q('[data-step="code"]').addEventListener("submit", function (event) {
       event.preventDefault();
+      if (verifying) return;
+      verifying = true;
       auth("verify", { type: "email", email: email, token: q("#cs-code").value.trim() }).then(function (data) {
         if (!data.access_token) throw new Error("That code didn't work. Check it, or send a new one.");
         // The planner's session, as plan.js keepSession writes it.
@@ -503,10 +509,11 @@
           headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token }
         }).then(function (response) { return response.ok ? response.json() : []; });
       }).then(function (rows) {
+        verifying = false;
         if (rows && rows.length) return signedIn();
         // A new account: the one question, then its name (the user, 2026-11-04).
         dialog.step(storedIntents(session.user.id) ? "username" : "intents");
-      }, function (failure) { error(failure.message); });
+      }, function (failure) { verifying = false; error(failure.message); });
     });
     // What brings you to Carve? Pick any, or skip; then the name.
     var intentsForm = q('[data-step="intents"]');
