@@ -169,6 +169,12 @@
   /* The app's button stays in reach (the user, 2026-10-29): a bar locked
      to the bottom of the screen while the page scrolls under it. */
 }
+/* A phone held upright: a 220 px map, as on a club's route, so Drive it
+   in Carve sits above the bottom bar at 360×740 (Chris, 11/19, via
+   Growth). The map refits the route to it. */
+@media (max-width: 699px) {
+  .rv-map { height: 220px; min-height: 0; }
+}
 
 /* On a phone, an "open in the app" bar locked to the bottom while the page
    scrolls (the user, 2026-10-29): white, so it doesn't fight the green
