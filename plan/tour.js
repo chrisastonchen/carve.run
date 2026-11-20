@@ -14,14 +14,16 @@ export const STEPS = [
   { key: "map", title: "Or use the map", body: "Click anywhere on the map.", menuBody: "Start, add a stop or end here." },
   { key: "pills", title: "Find places to stop", body: "Gas, coffee, food, viewpoints and more. Each one has + Stop to add it to your drive." },
   { key: "roads", title: "Take the great roads", body: "Dashed violet lines are great driving roads. Click one to add it to your route." },
-  { key: "save", title: "Save and get the link", body: "No account until you save. Open the link on your phone to drive it in Carve." },
+  // Signed in (every club day too), no "No account until you save" (Product, 11/20).
+  { key: "save", title: "Save and get the link", body: "No account until you save. Open the link on your phone to drive it in Carve.", signedInBody: "Open the link on your phone to drive it in Carve." },
 ];
 
 /// The steps this planner has the controls for (the map and the roads are
-/// always there), each with its place in the count.
-export function tourSteps(has) {
+/// always there), each with its place in the count, in the words for a
+/// guest or someone signed in.
+export function tourSteps(has, { signedIn = false } = {}) {
   const kept = STEPS.filter((s) => s.key === "map" || s.key === "roads" || has(s.key));
-  return kept.map((s, i) => ({ ...s, n: i + 1, of: kept.length, last: i === kept.length - 1 }));
+  return kept.map((s, i) => ({ ...s, body: signedIn && s.signedInBody ? s.signedInBody : s.body, n: i + 1, of: kept.length, last: i === kept.length - 1 }));
 }
 
 /// Whether this open of the planner gets the tour: the first empty one in
@@ -53,7 +55,8 @@ const EDGE = 16; // kept off the window's edges
 
 /// `h`: { $, el, roadPoint() → {x, y} | null (a great road on screen,
 /// window coordinates), mapBox() → DOMRect (the map not under the panel),
-/// saveButton() → this planner's save, over() → true once saved }. Shows
+/// saveButton() → this planner's save, over() → true once saved,
+/// signedIn }. Shows
 /// the tour; → { end() }.
 export function startTour(h) {
   const targets = {
@@ -62,7 +65,7 @@ export function startTour(h) {
     save: () => h.saveButton(),
   };
   const visible = (n) => !!n && !n.hidden && n.getClientRects().length > 0 && n.getBoundingClientRect().width > 0;
-  const steps = tourSteps((key) => visible(targets[key]?.()));
+  const steps = tourSteps((key) => visible(targets[key]?.()), { signedIn: !!h.signedIn });
   let at = 0;
   let menuOpen = false; // step 2, after the visitor's click
   let frame = 0;

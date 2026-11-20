@@ -36,7 +36,7 @@ import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=3";
 import { bestSlot as bestSlotIn, meters } from "./slots.js?v=1";
 import { PHONE, actionSheet, initPhoneChoice, initPhoneSheet, initRowDrag } from "./phone.js?v=5";
-import { markSeen, startTour, wantsTour } from "./tour.js?v=1";
+import { markSeen, startTour, wantsTour } from "./tour.js?v=2";
 
 // The route, impossible to miss (Chris, 11/15: thin white and blue melted
 // into the tan roads near Saratoga): a vivid blue core in a dark casing,
@@ -4558,6 +4558,7 @@ async function firstVisitTour({ arrived, narrow, dayOpened }) {
     roadPoint: greatRoadOnScreen,
     saveButton: () => [$("save"), $("db-done")].find(shown) || null,
     over: () => saved,
+    signedIn: !!session,
   });
   narrow.addEventListener("change", () => tour.end(), { once: true });
 }
