@@ -24,6 +24,10 @@
    "coverage": 0.48,
    "since": "2026-11-05"
   },
+  "cayuse-pass-highway-123": {
+   "coverage": 0.16,
+   "since": "2026-11-19"
+  },
   "chinook-pass": {
    "coverage": 0.56,
    "since": "2026-11-01"
@@ -64,6 +68,10 @@
    "coverage": 0.67,
    "since": "2026-10-28"
   },
+  "highway-3": {
+   "coverage": 0.54,
+   "since": "2026-11-19"
+  },
   "highway-74-whitewater-minnesota": {
    "coverage": 0.72,
    "since": "2026-11-13"
@@ -85,7 +93,7 @@
    "since": "2026-11-17"
   },
   "la-rumorosa-grade-baja": {
-   "coverage": 0.62,
+   "coverage": 0.22,
    "since": "2026-11-07"
   },
   "lake-hughes-road": {
@@ -99,10 +107,6 @@
   "looking-glass-road": {
    "coverage": 0.6,
    "since": "2026-11-06"
-  },
-  "macquarie-pass": {
-   "coverage": 0.15,
-   "since": "2026-11-16"
   },
   "mckenzie-pass": {
    "coverage": 0.01,
@@ -141,7 +145,7 @@
    "since": "2026-11-13"
   },
   "stevens-canyon-road": {
-   "coverage": 0.21,
+   "coverage": 0.2,
    "since": "2026-11-16"
   },
   "storm-king-highway": {
@@ -158,5 +162,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-19T14:11:25Z"
+ "updated": "2026-11-20T14:10:59Z"
 }
