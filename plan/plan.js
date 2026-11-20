@@ -36,6 +36,7 @@ import { initLayers } from "./layers.js?v=1";
 import { initDraftsSync } from "./drafts-sync.js?v=3";
 import { bestSlot as bestSlotIn, meters } from "./slots.js?v=1";
 import { PHONE, actionSheet, initPhoneChoice, initPhoneSheet, initRowDrag } from "./phone.js?v=5";
+import { markSeen, startTour, wantsTour } from "./tour.js?v=1";
 
 // The route, impossible to miss (Chris, 11/15: thin white and blue melted
 // into the tan roads near Saratoga): a vivid blue core in a dark casing,
@@ -4380,6 +4381,10 @@ async function start() {
   }
   osAwareGetApp();
   const narrow = window.matchMedia(PHONE);
+  // Arriving with a route (an edit link, a draft, a guide's road, the home
+  // page's handoff): no first-visit tour.
+  let arrived = ["edit", "route", "draft"].some((k) => new URLSearchParams(location.search).has(k));
+  try { arrived ||= sessionStorage.getItem(HANDOFF_KEY) !== null; } catch {}
   // Phones plan here too since 11/15 (Chris). A phone signing in still gets
   // the sign-in alone: the bar's Sign in on every page comes to
   // /plan/#sign-in, and the phone goes back to Apple or Google from there.
@@ -4466,8 +4471,9 @@ async function start() {
   startPhone(narrow);
   renderWho();
   setUpMap();
+  let dayOpened = null;
   if (GROUP) startGroup();
-  else if (DRIVE) startDriveDay();
+  else if (DRIVE) dayOpened = startDriveDay();
   // Club v2: drives are planned from the club's pages, so no group drafts here.
   else if (!CLUB_V2) startDrafts();
   if (CLUB_V2) $("pd-group-link").setAttribute("href", "/club/");
@@ -4526,7 +4532,72 @@ async function start() {
     if (!session) openAccount("choose", { saving: false, title: "Sign in" });
   }
   await takeHandoff();
+  firstVisitTour({ arrived, narrow, dayOpened });
   if (!storageWorks) toast("This browser isn't keeping data, so a reload starts the route over.");
+}
+
+// ── the first-visit tour (Chris, 11/20; tour.js) ──────────────────────
+
+/// Once per browser, on either planner's first empty open on a computer;
+/// for a guest after Cloudflare's check settles (its box sits where steps
+/// 4 and 5 go), passed or not. A club day's route is read first.
+async function firstVisitTour({ arrived, narrow, dayOpened }) {
+  await dayOpened?.catch(() => {});
+  if (!session) await fetchPass();
+  await new Promise((resolve) => (mapReady ? resolve() : mapReadyHooks.push(resolve)));
+  let storage;
+  try { storage = window.localStorage; } catch { return; }
+  const empty = !saved && !plan.start && !plan.end && !plan.waypoints.length && !plan.path;
+  const phone = narrow.matches || document.documentElement.classList.contains("phone");
+  if (!storageWorks || !wantsTour({ storage, phone, group: GROUP, arrived, empty, dialogOpen: !!document.querySelector("dialog[open]") })) return;
+  if (!markSeen(storage)) return;
+  const shown = (n) => !!n && !n.hidden && n.getClientRects().length > 0;
+  const tour = startTour({
+    $, el,
+    mapBox: openMapBox,
+    roadPoint: greatRoadOnScreen,
+    saveButton: () => [$("save"), $("db-done")].find(shown) || null,
+    over: () => saved,
+  });
+  narrow.addEventListener("change", () => tour.end(), { once: true });
+}
+
+/// The map not under the panel, in the window's coordinates.
+function openMapBox() {
+  const box = map.getContainer().getBoundingClientRect();
+  const left = Math.max(box.left, $("panel").getBoundingClientRect().right);
+  return new DOMRect(left, box.top, Math.max(0, box.right - left), box.height);
+}
+
+/// A point on a great road in the open map, clear of what's over it (the
+/// place pills, the key, the check, the map's buttons), the one nearest
+/// its middle; null with none in view.
+function greatRoadOnScreen() {
+  if (!mapReady || !map.getLayer("good-roads-hit") || map.getZoom() < GOOD_ROADS_ZOOM) return null;
+  const box = map.getContainer().getBoundingClientRect();
+  const open = openMapBox();
+  const over = ["place-bar", "legend", "bot-check", "layers", "toast", "click-menu"].map((id) => $(id)).filter((n) => n && !n.hidden && n.getClientRects().length).map((n) => n.getBoundingClientRect());
+  const controls = map.getContainer().querySelector(".maplibregl-ctrl-top-right")?.getBoundingClientRect();
+  if (controls) over.push(controls);
+  const clear = (x, y) => x > open.left + 40 && x < open.right - 40 && y > open.top + 80 && y < open.bottom - 60 && !over.some((r) => x > r.left - 24 && x < r.right + 24 && y > r.top - 24 && y < r.bottom + 24);
+  const mx = open.left + open.width / 2, my = open.top + open.height / 2;
+  let best = null;
+  for (const f of map.queryRenderedFeatures({ layers: ["good-roads-hit"] })) {
+    const lines = f.geometry.type === "LineString" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    for (const line of lines) {
+      for (let i = 0; i < line.length; i++) {
+        const at = [line[i], ...(i + 1 < line.length ? [[(line[i][0] + line[i + 1][0]) / 2, (line[i][1] + line[i + 1][1]) / 2]] : [])];
+        for (const c of at) {
+          const p = map.project(c);
+          const x = p.x + box.left, y = p.y + box.top;
+          if (!clear(x, y)) continue;
+          const d = (x - mx) ** 2 + (y - my) ** 2;
+          if (!best || d < best.d) best = { x, y, d };
+        }
+      }
+    }
+  }
+  return best && { x: best.x, y: best.y };
 }
 
 /// A road from its guide. Signed in: a new plan with the road, and the one

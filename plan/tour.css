@@ -1,0 +1,22 @@
+/* ── the first-visit tour (Chris, 11/20; tour.js) ──
+   No dimming: a green ring around the step's control and a white card
+   beside it, the planner usable under both. */
+.tour-ring { position: fixed; z-index: 30; pointer-events: none; border-radius: 18px; box-shadow: 0 0 0 3px #2E9E52, 0 0 0 9px rgba(46,158,82,.22); transition: left .3s ease, top .3s ease, width .3s ease, height .3s ease; }
+.tour-ring[hidden] { display: none; }
+.tour-card { position: fixed; z-index: 31; box-sizing: border-box; width: 350px; padding: 20px 22px 18px; border-radius: 18px; background: #fff; color: #17201B; box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 18px 50px rgba(0,0,0,.3); display: grid; gap: 8px; transition: left .3s ease, top .3s ease; }
+.tour-card:focus { outline: none; }
+.tour-card::before { content: ""; position: absolute; width: 18px; height: 18px; background: #fff; transform: rotate(45deg); border-radius: 3px; }
+.tour-card[data-side=""]::before { display: none; }
+.tour-card[data-side="left"]::before { left: -8px; top: var(--arrow, 40px); }
+.tour-card[data-side="right"]::before { right: -8px; top: var(--arrow, 40px); }
+.tour-card[data-side="up"]::before { top: -8px; left: var(--arrow, 40px); }
+.tour-count { margin: 0; font-size: 14px; font-weight: 600; color: #5D665F; letter-spacing: .02em; }
+.tour-title { margin: 0; font-size: 21px; font-weight: 800; line-height: 1.2; color: #17201B; }
+.tour-body { margin: 0; font-size: 16px; line-height: 1.45; color: #3D4640; }
+.tour-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.tour-skip { border: 0; padding: 8px 4px; background: none; font: inherit; font-size: 15px; font-weight: 700; color: #5D665F; cursor: pointer; }
+.tour-skip:hover { color: #17201B; }
+.tour-next { border: 0; padding: 11px 22px; border-radius: 999px; background: #1D5B3A; font: inherit; font-size: 16px; font-weight: 700; color: #fff; cursor: pointer; }
+.tour-next:hover { background: #17492F; }
+.tour-skip:focus-visible, .tour-next:focus-visible { outline: 3px solid #2E9E52; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .tour-ring, .tour-card { transition: none; } }
