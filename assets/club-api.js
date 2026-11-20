@@ -2,7 +2,7 @@
 // org-billing as the signed-in organizer, with failures said plainly.
 // club-org.js (v1, behind CLUB_V2) keeps its own copy.
 
-import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=a3869ea508";
+import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=b314b52348";
 
 export class Failure extends Error {}
 

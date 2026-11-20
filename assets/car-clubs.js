@@ -5,7 +5,7 @@
 // opens /club/.
 
 import { showIntro } from "/assets/club-intro.js?v=f52075dfb7";
-import { signedIn } from "/assets/club-api.js?v=6e024a0fa0";
+import { signedIn } from "/assets/club-api.js?v=7a6f7b0d40";
 
 const START = "/club/?start=1";
 

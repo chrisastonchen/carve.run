@@ -33,7 +33,7 @@ import { initSuggest } from "./suggest.js?v=15";
 import { fitTo } from "./fit.js?v=1";
 import { initPills } from "./place-pills.js?v=11";
 import { initLayers } from "./layers.js?v=1";
-import { initDraftsSync } from "./drafts-sync.js?v=2";
+import { initDraftsSync } from "./drafts-sync.js?v=3";
 import { bestSlot as bestSlotIn, meters } from "./slots.js?v=1";
 import { PHONE, actionSheet, initPhoneChoice, initPhoneSheet, initRowDrag } from "./phone.js?v=5";
 
@@ -4016,7 +4016,7 @@ function renderWho() {
   // "No account until you save" is for guests.
   if (signedIn) $("join").hidden = true;
   if (!signedIn) return;
-  import("/assets/notify-bell.js?v=afa06aa693").then((m) => m.mountBell()).catch(() => {});
+  import("/assets/notify-bell.js?v=732f09842e").then((m) => m.mountBell()).catch(() => {});
   $("who-name").textContent = profile?.username || session.user.email?.split("@")[0] || "Account";
   const avatar = $("avatar");
   const url = profile?.avatar_url;
@@ -4472,7 +4472,7 @@ async function start() {
   else if (!CLUB_V2) startDrafts();
   if (CLUB_V2) $("pd-group-link").setAttribute("href", "/club/");
   // A Club organizer has Club: no "Upgrade to Carve Club" (a new organizer, 11/18).
-  import("/assets/who.js?v=bb565acd4d").then(({ who }) => who()).then(({ state }) => {
+  import("/assets/who.js?v=657e37314e").then(({ who }) => who()).then(({ state }) => {
     if (state === "club") $("pd-group-link").closest(".pd-group").hidden = true;
   }).catch(() => {});
   render();

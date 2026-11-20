@@ -5,13 +5,13 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=6e024a0fa0";
+import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=7a6f7b0d40";
 import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=9b5a1c9d31";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { organizersBox } from "/assets/club-organizers.js?v=564a0fcab6";
+import { organizersBox } from "/assets/club-organizers.js?v=20cb012496";
 import { billsToday } from "/assets/who-words.js?v=65edaf422f";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=f52075dfb7";
-import { forgetWho } from "/assets/who.js?v=bb565acd4d";
+import { forgetWho } from "/assets/who.js?v=657e37314e";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
 import { openCheckout, payingEntry, tidyReturn } from "/assets/club-checkout.js?v=acdc7fe3ae";
@@ -80,7 +80,7 @@ async function answerInvite(accept, { token = null, orgId = null } = {}) {
 /// Ends this sign-in, so the invite's own address can sign in (the token kept in the tab).
 function switchAccount() {
   let session = null;
-  try { session = JSON.parse(localStorage.getItem("carve.plan.session") || "null"); localStorage.removeItem("carve.plan.session"); } catch {}
+  try { session = JSON.parse(localStorage.getItem("carve.plan.session") || "null"); localStorage.removeItem("carve.plan.session"); localStorage.removeItem("carve.who.hint"); } catch {}
   const done = () => location.reload();
   setTimeout(done, 3000);
   if (session?.access_token) fetch("https://uvaabajzkzupecemzsug.supabase.co/auth/v1/logout", { method: "POST", headers: { apikey: "sb_publishable_06nXswMcxyIj4PwTOb_0pg_3_IB5r0U", Authorization: `Bearer ${session.access_token}` } }).then(done, done);

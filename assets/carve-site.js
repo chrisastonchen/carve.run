@@ -245,7 +245,7 @@
         window.carveConfirmSignOut().then(function (yes) { if (yes) signOutNow(); });
       });
       var signOutNow = function () {
-        safe(function () { localStorage.removeItem("carve.plan.session"); });
+        safe(function () { localStorage.removeItem("carve.plan.session"); localStorage.removeItem("carve.who.hint"); });
         // Carve ends the sign-in too, as the planner's Sign out does; a slow
         // answer doesn't hold the page up.
         var done = function () { location.reload(); };
@@ -691,7 +691,7 @@
   // The bar and the phone's menu by who's looking, signed out too (boards
   // N3–N5; Plan ▾ for everyone, Chris 11/12): site-nav.js draws them.
   function siteNav() {
-    safe(function () { import("/assets/site-nav.js?v=c0a5cddc65").catch(function () {}); });
+    safe(function () { import("/assets/site-nav.js?v=7190384c08").catch(function () {}); });
   }
 
   function ready() { tagLinks(); tagBanner(); myDrivesLink(); siteNav(); phoneSignIn(); sheetApp(); whoProfile(); }

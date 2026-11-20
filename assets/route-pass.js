@@ -9,7 +9,7 @@
 // Until App Dev's calls are live, route_drive is missing and nothing shows.
 // Off for now (DRIVE_PASS_UI, Chris 11/10): the page is a plain route page.
 
-import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=a3869ea508";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=b314b52348";
 import { dayText } from "/assets/club-words.js?v=9b5a1c9d31";
 import { DRIVE_PASS_UI } from "/plan/club-flags.js?v=4";
 

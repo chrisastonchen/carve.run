@@ -3,7 +3,7 @@
 // it goes back where they came from, or home. Without JavaScript the page
 // says so (index.html's noscript).
 
-import { openPane } from "/assets/notify-pane.js?v=81c0ca6e0b";
+import { openPane } from "/assets/notify-pane.js?v=0c65cf0e7e";
 
 const back = () => {
   let fromHere = false;

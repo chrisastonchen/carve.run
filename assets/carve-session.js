@@ -25,11 +25,19 @@ export const store = {
 };
 
 /// The planner's sign-in, fresh: the same rules as plan.js accessToken
-/// (another tab's refresh wins; only Carve saying no signs out).
+/// (another tab's refresh wins; only Carve saying no signs out). An expired
+/// one is refreshed once for the page, however many ask at once (the bar,
+/// the bell, the page's own reads: four at a time, 11/20).
+let refreshing = null;
 export async function accessToken() {
   const session = store.get(SESSION_KEY);
   if (!session?.refresh_token) return null;
   if (session.expires_at - 60 > Date.now() / 1000) return session.access_token;
+  refreshing ??= refresh(session).finally(() => { refreshing = null; });
+  return refreshing;
+}
+
+async function refresh(session) {
   let response;
   try {
     response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
@@ -46,7 +54,7 @@ export async function accessToken() {
     // Carve said no (signed out elsewhere, e.g. the app's Sign Out ends every
     // session): forget it, so the site bar offers Sign in, not Sign out.
     if (response.status >= 400 && response.status < 500) {
-      try { localStorage.removeItem(SESSION_KEY); } catch {}
+      try { localStorage.removeItem(SESSION_KEY); localStorage.removeItem("carve.who.hint"); } catch {}
     }
     return null;
   }

@@ -1,7 +1,12 @@
 // Who's looking (who-words.js): the account's clubs (orgs_mine) and its
 // store Apex (apex_mine), asked once and kept for the browser session, so a
 // page load doesn't ask again. → { state, clubs }
-import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=a3869ea508";
+// A club member's clubs are also remembered in this browser (whoHint), so a
+// new tab draws the bar and Plan a drive with them at once, before Carve
+// answers (Chris, 11/20: 3–5 s otherwise); Carve's answer then confirms or
+// corrects them. Only a whole answer with a club sets it; one without, a
+// sign-out or another account clears it.
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=b314b52348";
 import { clubsOf, stateOf } from "/assets/who-words.js?v=65edaf422f";
 import { PLANS } from "/assets/plans.js?v=a1e99a533b";
 
@@ -13,6 +18,8 @@ const KEEP_MS = 10 * 60_000;
 /// offered Club for ten minutes after paying, until he signed out).
 const PAYING = "carve.who.paying";
 const PAYING_MS = 30 * 60_000;
+const HINT = "carve.who.hint";
+const HINT_MS = 30 * 86_400_000;
 const paying = () => {
   try { return Date.now() - Number(sessionStorage.getItem(PAYING) || 0) < PAYING_MS; } catch { return false; }
 };
@@ -29,6 +36,26 @@ export function whoNow() {
     if (kept?.id === id && Date.now() - kept.at < KEEP_MS) return { state: kept.state, clubs: kept.clubs };
   } catch {}
   return null;
+}
+
+/// The clubs this browser last heard this account has, to draw before
+/// Carve answers (null: none, or another account's, or a month old).
+export function whoHint() {
+  const id = userId();
+  if (!id) return null;
+  try {
+    const hint = JSON.parse(localStorage.getItem(HINT) || "null");
+    if (hint?.id === id && hint.state === "club" && Array.isArray(hint.clubs) && hint.clubs.length && Date.now() - hint.at < HINT_MS) {
+      return { state: "club", clubs: hint.clubs };
+    }
+    if (hint) localStorage.removeItem(HINT);
+  } catch {}
+  return null;
+}
+
+/// Forget the hint (signed out, another account).
+export function forgetHint() {
+  try { localStorage.removeItem(HINT); } catch {}
 }
 
 async function rpc(name, token) {
@@ -57,6 +84,15 @@ export function who() {
     // while paying, one without the club on its plan too.
     if (answer.state === "club") try { sessionStorage.removeItem(PAYING); } catch {}
     if (orgs && apex && !paying()) try { sessionStorage.setItem(KEPT, JSON.stringify({ id, at: Date.now(), ...answer })); } catch {}
+    // The hint: a club member's clubs, from a whole answer; one without a
+    // club ends it. Clubs unknown (orgs_mine failed): the hint stands, as
+    // Carve hasn't said otherwise.
+    if (orgs && answer.state === "club") try { localStorage.setItem(HINT, JSON.stringify({ id, at: Date.now(), state: "club", clubs: answer.clubs })); } catch {}
+    else if (orgs) forgetHint();
+    else {
+      const hint = whoHint();
+      if (hint) return hint;
+    }
     return answer;
   })().finally(() => { asking = null; });
   return asking;
@@ -66,6 +102,7 @@ export function who() {
 /// checkout is opening, so keep nothing until the club is on its plan. The
 /// bar asks again (site-nav.js, on carve:who).
 export function forgetWho({ paying: pay = false } = {}) {
+  forgetHint();
   try {
     sessionStorage.removeItem(KEPT);
     if (pay) sessionStorage.setItem(PAYING, String(Date.now()));

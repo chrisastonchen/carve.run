@@ -4,7 +4,7 @@
 // never plans anything itself: what's typed, dropped or pasted goes to
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
 // address bar).
-import "/assets/site-bar.js?v=986ff8abd4";
+import "/assets/site-bar.js?v=ce06c4865a";
 
 // The hero's car screen: CarPlay on an iPhone, Android Auto on Android (the
 // user, 2026-11-02). Here, not in site-bar.js: that file's import isn't
@@ -16,11 +16,11 @@ if (/android/i.test(navigator.userAgent || "")) {
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
-import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=8db8f4b092";
-import { heartButton, wireHearts } from "/assets/hearts.js?v=5c3fca78da";
-import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=a3869ea508";
+import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=676a130c6b";
+import { heartButton, wireHearts } from "/assets/hearts.js?v=636eede2c9";
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=b314b52348";
 import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=b133592880";
-import { who, whoNow } from "/assets/who.js?v=bb565acd4d";
+import { who, whoHint, whoNow } from "/assets/who.js?v=657e37314e";
 import { homeMenu } from "/assets/who-words.js?v=65edaf422f";
 
 // The map follows the device's theme, light unless it's set to dark (the
@@ -772,22 +772,40 @@ async function greet() {
 
 /// Plan a drive (boards N1, N2): the planner, with the Club line under it;
 /// a Club organizer gets a menu instead, a group drive for each club, then
-/// one for themselves, and no Club line.
+/// one for themselves, and no Club line. Drawn at once from what's known
+/// (who.js's hint too), then from Carve's answer, which can take it back.
 function heroPlan() {
   const button = $("hero-plan");
   const menu = $("hero-menu");
   if (!button || !menu) return; // the ad pages keep their own
+  const lines = [$("hero-club-line"), $("share-club-line")].filter(Boolean);
+  let drawn = "";
+  const open = (on) => {
+    menu.hidden = !on;
+    button.setAttribute("aria-expanded", String(on));
+    if (on) menu.querySelector("a")?.focus();
+  };
   const show = ({ state, clubs }) => {
-    if (state !== "club" || button.dataset.menu) return;
-    button.dataset.menu = "1";
-    $("hero-club-line").hidden = true;
+    const items = state === "club" ? homeMenu(clubs) : [];
+    const key = JSON.stringify(items);
+    if (key === drawn) return;
+    drawn = key;
     // …and the Share one link card's trial line too (Product, 11/11).
-    if ($("share-club-line")) $("share-club-line").hidden = true;
+    lines.forEach((line) => { line.hidden = items.length > 0; });
+    if (!items.length) {
+      // Not a club member after all (Carve said so): the plain link again.
+      delete button.dataset.menu;
+      for (const name of ["role", "aria-haspopup", "aria-expanded"]) button.removeAttribute(name);
+      button.querySelector(".chev")?.remove();
+      menu.hidden = true;
+      menu.replaceChildren();
+      return;
+    }
+    button.dataset.menu = "1";
     button.setAttribute("role", "button");
     button.setAttribute("aria-haspopup", "menu");
     button.setAttribute("aria-expanded", "false");
-    button.insertAdjacentHTML("beforeend", '<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>');
-    const items = homeMenu(clubs);
+    if (!button.querySelector(".chev")) button.insertAdjacentHTML("beforeend", '<svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>');
     menu.replaceChildren(...items.flatMap((item, i) => {
       const a = document.createElement("a");
       a.href = item.href;
@@ -796,26 +814,24 @@ function heroPlan() {
       // A rule before the one for themselves.
       return i === items.length - 1 && i > 0 ? [document.createElement("hr"), a] : [a];
     }));
-    const open = (on) => {
-      menu.hidden = !on;
-      button.setAttribute("aria-expanded", String(on));
-      if (on) menu.querySelector("a")?.focus();
-    };
-    button.addEventListener("click", (e) => {
-      e.preventDefault();
-      open(menu.hidden);
-    });
-    document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest(".hero-plan")) open(false); });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !menu.hidden) {
-        open(false);
-        button.focus();
-      }
-    });
   };
+  button.addEventListener("click", (e) => {
+    if (!button.dataset.menu) return;
+    e.preventDefault();
+    open(menu.hidden);
+  });
+  document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest(".hero-plan")) open(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !menu.hidden) {
+      open(false);
+      button.focus();
+    }
+  });
   const known = whoNow();
-  if (known) show(known);
-  else who().then(show).catch(() => {});
+  if (known) return show(known);
+  const hint = whoHint();
+  if (hint) show(hint);
+  who().then(show).catch(() => {});
 }
 
 async function main() {

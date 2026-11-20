@@ -9,7 +9,7 @@
 // and the apps redeem it; a page without one (no token, no network, no
 // WebGL) keeps its picture of the road and still reads.
 import { markerLabels, turnKind, formatDistance, formatDuration, usesMiles } from "/plan/route-wire.js";
-import { session, signedIn } from "/assets/site-bar.js?v=986ff8abd4";
+import { session, signedIn } from "/assets/site-bar.js?v=ce06c4865a";
 
 // The route, impossible to miss (Chris, 11/15: thin white and blue melted
 // into the tan roads near Saratoga): a vivid blue core in a dark casing,

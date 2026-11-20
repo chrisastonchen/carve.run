@@ -4,7 +4,7 @@
 // decides who can see whom, and needs a sign-in. Never indexed (the page's
 // robots meta and robots.txt).
 
-import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=a3869ea508";
+import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=b314b52348";
 import { usesMiles } from "/plan/route-wire.js";
 
 const $ = (id) => document.getElementById(id);

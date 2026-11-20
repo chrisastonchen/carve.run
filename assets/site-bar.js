@@ -82,12 +82,13 @@ function wireBar() {
     // Asked first (the user, 2026-11-04): carve-site.js's dialog.
     $("who-menu").hidden = true;
     if (window.carveConfirmSignOut && !(await window.carveConfirmSignOut())) return;
-    try { localStorage.removeItem(SESSION_KEY); } catch {}
+    // …and who.js's hint of their clubs (Chris, 11/20).
+    try { localStorage.removeItem(SESSION_KEY); localStorage.removeItem("carve.who.hint"); } catch {}
     location.reload();
   });
   loadProfile();
   // The bell, loaded only for someone signed in.
-  import("/assets/notify-bell.js?v=afa06aa693").then((m) => m.mountBell()).catch(() => {});
+  import("/assets/notify-bell.js?v=732f09842e").then((m) => m.mountBell()).catch(() => {});
 }
 
 /// The planner's account, as the planner shows it: username and picture.

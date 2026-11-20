@@ -6,7 +6,7 @@
 // the one draft in this browser stays as it was. The group and drive-day
 // planners have no drafts here (club drives in Draft live on Club home).
 import { DRAFT_LIMIT, WORDS, draftShape, draftable } from "/assets/drafts-words.js?v=45d294d9b7";
-import { DRAFT_CSS, drawDrafts, draftsMine } from "/assets/drafts-list.js?v=d3d9c70b9c";
+import { DRAFT_CSS, drawDrafts, draftsMine } from "/assets/drafts-list.js?v=54c7170788";
 
 const WAIT_MS = 1500;
 

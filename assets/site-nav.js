@@ -4,7 +4,7 @@
 // Support); this draws it from who-words.js navFor for whoever's looking,
 // signed out too (Plan ▾, Chris 11/12): Plan ▾ and My Clubs ▾ menus,
 // Saved, Upgrade.
-import { who, whoNow } from "/assets/who.js?v=bb565acd4d";
+import { who, whoHint, whoNow } from "/assets/who.js?v=657e37314e";
 import { currentKey, navFor } from "/assets/who-words.js?v=65edaf422f";
 
 const CSS = `
@@ -157,7 +157,9 @@ export function startNav() {
       button.focus();
     });
   }
-  const known = whoNow();
+  // Known in this tab, else a club member's clubs as this browser last
+  // heard them (who.js), drawn at once; Carve's answer then confirms them.
+  const known = whoNow() ?? whoHint();
   if (known) drawNav(known);
   // Asked again when it changes on this page (a club paid for, who.js).
   window.addEventListener("carve:who", () => who().then(drawNav).catch(() => {}));
