@@ -1,9 +1,5 @@
 {
  "flagged": {
-  "arthur-highway-sorell-port-arthur": {
-   "coverage": 0.72,
-   "since": "2026-11-14"
-  },
   "badlands-loop-road": {
    "coverage": 0.49,
    "since": "2026-11-14"
@@ -17,7 +13,7 @@
    "since": "2026-11-12"
   },
   "blue-ridge-parkway-roanoke-mabry-mill": {
-   "coverage": 0.58,
+   "coverage": 0.65,
    "since": "2026-11-14"
   },
   "cayuga-lake-highway-90": {
@@ -25,7 +21,7 @@
    "since": "2026-11-05"
   },
   "cayuse-pass-highway-123": {
-   "coverage": 0.16,
+   "coverage": 0.03,
    "since": "2026-11-19"
   },
   "chinook-pass": {
@@ -56,21 +52,13 @@
    "coverage": 0.27,
    "since": "2026-11-01"
   },
-  "highway-1-finland-ely": {
-   "coverage": 0.42,
-   "since": "2026-11-16"
-  },
   "highway-120-east": {
    "coverage": 0.02,
    "since": "2026-11-14"
   },
-  "highway-131-kickapoo-valley": {
-   "coverage": 0.67,
-   "since": "2026-10-28"
-  },
-  "highway-3": {
-   "coverage": 0.54,
-   "since": "2026-11-19"
+  "highway-128-anderson-valley": {
+   "coverage": 0.72,
+   "since": "2026-11-20"
   },
   "highway-74-whitewater-minnesota": {
    "coverage": 0.72,
@@ -93,7 +81,7 @@
    "since": "2026-11-17"
   },
   "la-rumorosa-grade-baja": {
-   "coverage": 0.22,
+   "coverage": 0.59,
    "since": "2026-11-07"
   },
   "lake-hughes-road": {
@@ -117,16 +105,16 @@
    "since": "2026-11-14"
   },
   "monument-valley-us-163": {
-   "coverage": 0.58,
+   "coverage": 0.56,
    "since": "2026-11-06"
   },
   "north-cape-coastal-drive": {
-   "coverage": 0.71,
+   "coverage": 0.29,
    "since": "2026-11-06"
   },
-  "oak-creek-canyon": {
-   "coverage": 0.47,
-   "since": "2026-11-02"
+  "old-kings-highway-6a": {
+   "coverage": 0.11,
+   "since": "2026-11-20"
   },
   "onion-valley-road": {
    "coverage": 0.57,
@@ -144,23 +132,23 @@
    "coverage": 0.69,
    "since": "2026-11-13"
   },
-  "stevens-canyon-road": {
-   "coverage": 0.2,
-   "since": "2026-11-16"
-  },
   "storm-king-highway": {
    "coverage": 0.57,
    "since": "2026-10-24"
+  },
+  "tasman-highway-launceston-st-helens": {
+   "coverage": 0.63,
+   "since": "2026-11-20"
   },
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
   },
   "wolf-creek-pass": {
-   "coverage": 0.21,
+   "coverage": 0.51,
    "since": "2026-11-10"
   }
  },
  "format": 1,
- "updated": "2026-11-20T14:10:59Z"
+ "updated": "2026-11-21T14:08:08Z"
 }
