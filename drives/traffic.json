@@ -1,5 +1,9 @@
 {
  "flagged": {
+  "allegany-state-park-route-1": {
+   "coverage": 0.63,
+   "since": "2026-11-21"
+  },
   "badlands-loop-road": {
    "coverage": 0.49,
    "since": "2026-11-14"
@@ -52,17 +56,13 @@
    "coverage": 0.27,
    "since": "2026-11-01"
   },
+  "highway-1-marin": {
+   "coverage": 0.55,
+   "since": "2026-11-21"
+  },
   "highway-120-east": {
    "coverage": 0.02,
    "since": "2026-11-14"
-  },
-  "highway-128-anderson-valley": {
-   "coverage": 0.72,
-   "since": "2026-11-20"
-  },
-  "highway-74-whitewater-minnesota": {
-   "coverage": 0.72,
-   "since": "2026-11-13"
   },
   "horseshoe-meadow-road": {
    "coverage": 0.35,
@@ -108,6 +108,10 @@
    "coverage": 0.56,
    "since": "2026-11-06"
   },
+  "natchez-trace-tennessee": {
+   "coverage": 0.7,
+   "since": "2026-11-21"
+  },
   "north-cape-coastal-drive": {
    "coverage": 0.29,
    "since": "2026-11-06"
@@ -120,8 +124,16 @@
    "coverage": 0.57,
    "since": "2026-11-01"
   },
+  "page-mill-to-pescadero": {
+   "coverage": 0.59,
+   "since": "2026-11-21"
+  },
+  "qu-appelle-highway-56": {
+   "coverage": 0.61,
+   "since": "2026-11-21"
+  },
   "rockefeller-parkway-west-thumb": {
-   "coverage": 0.06,
+   "coverage": 0.05,
    "since": "2026-11-02"
   },
   "smugglers-notch": {
@@ -136,13 +148,13 @@
    "coverage": 0.57,
    "since": "2026-10-24"
   },
-  "tasman-highway-launceston-st-helens": {
-   "coverage": 0.63,
-   "since": "2026-11-20"
-  },
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
+  },
+  "tunnel-of-trees-m-119": {
+   "coverage": 0.54,
+   "since": "2026-11-21"
   },
   "wolf-creek-pass": {
    "coverage": 0.51,
@@ -150,5 +162,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-21T14:08:08Z"
+ "updated": "2026-11-22T14:08:10Z"
 }
