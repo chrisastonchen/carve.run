@@ -1,8 +1,8 @@
 {
  "flagged": {
-  "allegany-state-park-route-1": {
-   "coverage": 0.63,
-   "since": "2026-11-21"
+  "arthur-highway-sorell-port-arthur": {
+   "coverage": 0.72,
+   "since": "2026-11-22"
   },
   "badlands-loop-road": {
    "coverage": 0.49,
@@ -17,7 +17,7 @@
    "since": "2026-11-12"
   },
   "blue-ridge-parkway-roanoke-mabry-mill": {
-   "coverage": 0.65,
+   "coverage": 0.58,
    "since": "2026-11-14"
   },
   "cayuga-lake-highway-90": {
@@ -25,7 +25,7 @@
    "since": "2026-11-05"
   },
   "cayuse-pass-highway-123": {
-   "coverage": 0.03,
+   "coverage": 0.16,
    "since": "2026-11-19"
   },
   "chinook-pass": {
@@ -56,10 +56,6 @@
    "coverage": 0.27,
    "since": "2026-11-01"
   },
-  "highway-1-marin": {
-   "coverage": 0.55,
-   "since": "2026-11-21"
-  },
   "highway-120-east": {
    "coverage": 0.02,
    "since": "2026-11-14"
@@ -75,10 +71,6 @@
   "kings-canyon-scenic-byway": {
    "coverage": 0.19,
    "since": "2026-11-14"
-  },
-  "klondike-highway-white-pass": {
-   "coverage": 0.48,
-   "since": "2026-11-17"
   },
   "la-rumorosa-grade-baja": {
    "coverage": 0.59,
@@ -96,6 +88,10 @@
    "coverage": 0.6,
    "since": "2026-11-06"
   },
+  "macquarie-pass": {
+   "coverage": 0.15,
+   "since": "2026-11-22"
+  },
   "mckenzie-pass": {
    "coverage": 0.01,
    "since": "2026-11-01"
@@ -105,7 +101,7 @@
    "since": "2026-11-14"
   },
   "monument-valley-us-163": {
-   "coverage": 0.56,
+   "coverage": 0.58,
    "since": "2026-11-06"
   },
   "natchez-trace-tennessee": {
@@ -113,7 +109,7 @@
    "since": "2026-11-21"
   },
   "north-cape-coastal-drive": {
-   "coverage": 0.29,
+   "coverage": 0.71,
    "since": "2026-11-06"
   },
   "old-kings-highway-6a": {
@@ -124,16 +120,8 @@
    "coverage": 0.57,
    "since": "2026-11-01"
   },
-  "page-mill-to-pescadero": {
-   "coverage": 0.59,
-   "since": "2026-11-21"
-  },
-  "qu-appelle-highway-56": {
-   "coverage": 0.61,
-   "since": "2026-11-21"
-  },
   "rockefeller-parkway-west-thumb": {
-   "coverage": 0.05,
+   "coverage": 0.06,
    "since": "2026-11-02"
   },
   "smugglers-notch": {
@@ -151,16 +139,8 @@
   "trail-ridge-road": {
    "coverage": 0.01,
    "since": "2026-10-24"
-  },
-  "tunnel-of-trees-m-119": {
-   "coverage": 0.54,
-   "since": "2026-11-21"
-  },
-  "wolf-creek-pass": {
-   "coverage": 0.51,
-   "since": "2026-11-10"
   }
  },
  "format": 1,
- "updated": "2026-11-22T14:08:10Z"
+ "updated": "2026-11-23T14:11:00Z"
 }
