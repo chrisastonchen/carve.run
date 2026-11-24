@@ -20,6 +20,10 @@
    "coverage": 0.58,
    "since": "2026-11-14"
   },
+  "cane-river-la-494": {
+   "coverage": 0.22,
+   "since": "2026-11-23"
+  },
   "cayuga-lake-highway-90": {
    "coverage": 0.48,
    "since": "2026-11-05"
@@ -55,6 +59,10 @@
   "guardsman-pass": {
    "coverage": 0.27,
    "since": "2026-11-01"
+  },
+  "highway-1-finland-ely": {
+   "coverage": 0.42,
+   "since": "2026-11-23"
   },
   "highway-120-east": {
    "coverage": 0.02,
@@ -100,10 +108,6 @@
    "coverage": 0.52,
    "since": "2026-11-14"
   },
-  "monument-valley-us-163": {
-   "coverage": 0.58,
-   "since": "2026-11-06"
-  },
   "natchez-trace-tennessee": {
    "coverage": 0.7,
    "since": "2026-11-21"
@@ -111,10 +115,6 @@
   "north-cape-coastal-drive": {
    "coverage": 0.71,
    "since": "2026-11-06"
-  },
-  "old-kings-highway-6a": {
-   "coverage": 0.11,
-   "since": "2026-11-20"
   },
   "onion-valley-road": {
    "coverage": 0.57,
@@ -132,6 +132,10 @@
    "coverage": 0.69,
    "since": "2026-11-13"
   },
+  "stevens-canyon-road": {
+   "coverage": 0.2,
+   "since": "2026-11-23"
+  },
   "storm-king-highway": {
    "coverage": 0.57,
    "since": "2026-10-24"
@@ -142,5 +146,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-23T14:11:00Z"
+ "updated": "2026-11-24T14:08:36Z"
 }
