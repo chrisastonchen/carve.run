@@ -9,7 +9,7 @@
 // day's own route link, the same for the crew and for drivers later.
 // Signed out or not an organizer, the page stays as share_page.js drew it.
 
-import { el, myOrgs, rpc, signedIn } from "/assets/club-api.js?v=7a6f7b0d40";
+import { el, myOrgs, rpc, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { crewLine, dayText, shareTitle } from "/assets/club-words.js?v=9b5a1c9d31";
 
 const q = new URLSearchParams(location.search);

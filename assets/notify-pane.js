@@ -10,7 +10,7 @@
 // An invitation to a one-day drive still ahead is answered in place
 // (answer_set with the item's own answer token).
 
-import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=b314b52348";
+import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=96f92e7529";
 import { itemWords, whenText } from "/assets/notification-words.js?v=da8884ae22";
 import { PLANS } from "/assets/plans.js?v=a1e99a533b";
 

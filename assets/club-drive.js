@@ -14,7 +14,7 @@
 // Pages never act on a GET: every change is a tap.
 
 import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
-import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=7a6f7b0d40";
+import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { timeSelects } from "/assets/club-time.js?v=02f4200f94";

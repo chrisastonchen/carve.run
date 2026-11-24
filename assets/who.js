@@ -1,13 +1,13 @@
 // Who's looking (who-words.js): the account's clubs (orgs_mine) and its
 // store Apex (apex_mine), asked once and kept for the browser session, so a
-// page load doesn't ask again. → { state, clubs }
+// page load doesn't ask again. → { state, clubs, setup }
 // A club member's clubs are also remembered in this browser (whoHint), so a
 // new tab draws the bar and Plan a drive with them at once, before Carve
 // answers (Chris, 11/20: 3–5 s otherwise); Carve's answer then confirms or
 // corrects them. Only a whole answer with a club sets it; one without, a
 // sign-out or another account clears it.
-import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=b314b52348";
-import { clubsOf, stateOf } from "/assets/who-words.js?v=65edaf422f";
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=96f92e7529";
+import { clubsOf, setupOf, stateOf } from "/assets/who-words.js?v=63b40f62a6";
 import { PLANS } from "/assets/plans.js?v=a1e99a533b";
 
 const KEPT = "carve.who";
@@ -33,7 +33,7 @@ export function whoNow() {
   if (!id) return { state: "out", clubs: [] };
   try {
     const kept = JSON.parse(sessionStorage.getItem(KEPT) || "null");
-    if (kept?.id === id && Date.now() - kept.at < KEEP_MS) return { state: kept.state, clubs: kept.clubs };
+    if (kept?.id === id && Date.now() - kept.at < KEEP_MS) return { state: kept.state, clubs: kept.clubs, setup: kept.setup || [] };
   } catch {}
   return null;
 }
@@ -46,7 +46,7 @@ export function whoHint() {
   try {
     const hint = JSON.parse(localStorage.getItem(HINT) || "null");
     if (hint?.id === id && hint.state === "club" && Array.isArray(hint.clubs) && hint.clubs.length && Date.now() - hint.at < HINT_MS) {
-      return { state: "club", clubs: hint.clubs };
+      return { state: "club", clubs: hint.clubs, setup: [] };
     }
     if (hint) localStorage.removeItem(HINT);
   } catch {}
@@ -71,15 +71,18 @@ async function rpc(name, token) {
 let asking = null;
 /// The account's state, asked when this session doesn't know it yet. A
 /// failed ask reads as Free (signed in), so nothing is offered that isn't theirs.
+/// One ask at a time per account: one out for another (signed in or out
+/// meanwhile) isn't this one's answer.
 export function who() {
   const known = whoNow();
   if (known) return Promise.resolve(known);
-  asking ??= (async () => {
-    const id = userId();
+  const id = userId();
+  if (asking?.id === id) return asking.promise;
+  const promise = (async () => {
     const token = await accessToken().catch(() => null);
     if (!token) return { state: "out", clubs: [] };
     const [orgs, apex] = await Promise.all([rpc("orgs_mine", token).catch(() => null), rpc("apex_mine", token).catch(() => null)]);
-    const answer = { state: stateOf({ signedIn: true, orgs: orgs || [], apex, clubTiers: CLUB_TIERS }), clubs: clubsOf(orgs || [], CLUB_TIERS) };
+    const answer = { state: stateOf({ signedIn: true, orgs: orgs || [], apex, clubTiers: CLUB_TIERS }), clubs: clubsOf(orgs || [], CLUB_TIERS), setup: setupOf(orgs || [], CLUB_TIERS) };
     // Only a whole answer is kept: one that failed is asked again next page;
     // while paying, one without the club on its plan too.
     if (answer.state === "club") try { sessionStorage.removeItem(PAYING); } catch {}
@@ -94,9 +97,16 @@ export function who() {
       if (hint) return hint;
     }
     return answer;
-  })().finally(() => { asking = null; });
-  return asking;
+  })().finally(() => { if (asking?.promise === promise) asking = null; });
+  asking = { id, promise };
+  return promise;
 }
+
+/// The sign-in changed on this page (signed in, signed out, or Carve ended
+/// it): the bar asks again (site-nav.js, on carve:session; Chris, 11/24:
+/// For Clubs stayed after the planner's sign-in until a reload).
+export const SESSION_CHANGED = "carve:session";
+export const sessionChanged = () => window.dispatchEvent(new Event(SESSION_CHANGED));
 
 /// Forget it (a club was started, a plan bought, signed out); `paying`: a
 /// checkout is opening, so keep nothing until the club is on its plan. The

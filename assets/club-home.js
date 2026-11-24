@@ -5,13 +5,13 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=7a6f7b0d40";
+import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=9b5a1c9d31";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { organizersBox } from "/assets/club-organizers.js?v=20cb012496";
-import { billsToday } from "/assets/who-words.js?v=65edaf422f";
+import { organizersBox } from "/assets/club-organizers.js?v=3155e1381b";
+import { FINISH_SETUP, billsToday, unfinished } from "/assets/who-words.js?v=63b40f62a6";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=f52075dfb7";
-import { forgetWho } from "/assets/who.js?v=657e37314e";
+import { forgetWho } from "/assets/who.js?v=f260ce6368";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
 import { openCheckout, payingEntry, tidyReturn } from "/assets/club-checkout.js?v=acdc7fe3ae";
@@ -522,7 +522,8 @@ function renderHome() {
   trialPanel(plan, trialStatus(org));
   $("v-pick-row").hidden = orgs.length < 2;
   $("v-pick").replaceChildren(...orgs.map((o) => {
-    const option = el("option", "", o.name);
+    // One to finish setting up says so (setupOf, who-words.js).
+    const option = el("option", "", unfinished(o, CLUB_TIERS) ? `${o.name} · ${FINISH_SETUP}` : o.name);
     option.value = o.id;
     option.selected = o.id === org.id;
     return option;

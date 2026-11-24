@@ -504,6 +504,8 @@
           user: { id: data.user && data.user.id, email: data.user && data.user.email }
         };
         localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        // The site's bar asks again at once (who.js), not after the page changes (Chris, 11/24).
+        window.dispatchEvent(new Event("carve:session"));
         window.carveCountSignUp(data.user);
         return fetch(SUPABASE_URL + "/rest/v1/profiles?id=eq." + String(session.user.id).toLowerCase() + "&select=id", {
           headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + session.access_token }
@@ -691,7 +693,7 @@
   // The bar and the phone's menu by who's looking, signed out too (boards
   // N3–N5; Plan ▾ for everyone, Chris 11/12): site-nav.js draws them.
   function siteNav() {
-    safe(function () { import("/assets/site-nav.js?v=7190384c08").catch(function () {}); });
+    safe(function () { import("/assets/site-nav.js?v=ce89a8b3e1").catch(function () {}); });
   }
 
   function ready() { tagLinks(); tagBanner(); myDrivesLink(); siteNav(); phoneSignIn(); sheetApp(); whoProfile(); }

@@ -8,7 +8,7 @@
 // Apex, no account needed, no cap shown). Signed in only; every change is
 // a tap.
 
-import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=b314b52348";
+import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=96f92e7529";
 // The plans' names, limits and prices come from one place, plans.json
 // (scripts/pricing/build_plans.py writes plans.js from it).
 import { CONTACT, PLANS } from "/assets/plans.js?v=a1e99a533b";

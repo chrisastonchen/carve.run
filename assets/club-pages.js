@@ -8,7 +8,7 @@
 // so nothing changes on a page load: the answer page preselects the emailed
 // answer and a tap records it; the unsubscribe page acts on its button.
 
-import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=b314b52348";
+import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=96f92e7529";
 import { CLUB_V2 } from "/plan/club-flags.js?v=4";
 import { linkEnded } from "/assets/link-ended.js?v=930ada191b";
 

@@ -5,7 +5,7 @@
 // (twice, never the owner). The limit is the server's (organizer_cap),
 // else the plan's. A new address gets the invite email (org-invite-send).
 
-import { $, el, inviteSend, rpc } from "/assets/club-api.js?v=7a6f7b0d40";
+import { $, el, inviteSend, rpc } from "/assets/club-api.js?v=3d6e3c082a";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 
 

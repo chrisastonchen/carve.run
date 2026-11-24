@@ -4,7 +4,7 @@
 // apex-words.js's. Nothing to claim: the app reads the same route_apex.
 // route_apex is POST only (the first call in the lead window starts it).
 
-import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=b314b52348";
+import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=96f92e7529";
 import { apexCard } from "/assets/apex-words.js?v=dc3ff3eb05";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { priceText } from "/assets/club-words.js?v=9b5a1c9d31";

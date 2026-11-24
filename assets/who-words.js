@@ -41,6 +41,16 @@ export function stateOf({ signedIn, orgs = [], apex = null, clubTiers = ["club",
   return "free";
 }
 
+/// A club made with no plan yet (Checkout left before paying; Chris, 11/24:
+/// a club's organizer had no way back to it): no plan, no trial, never had
+/// one. My Clubs ▾ lists it with Finish setup, to its Start.
+export const FINISH_SETUP = "Finish setup";
+export const unfinished = (org, clubTiers = ["club", "group"]) =>
+  !!org && org.role !== "member" && !plansFor(org, clubTiers) && (org.tier ?? "none") === "none" && !org.trial_ends_at;
+export const setupOf = (orgs = [], clubTiers = ["club", "group"]) =>
+  (orgs || []).filter((o) => unfinished(o, clubTiers)).map((o) => ({ id: o.id, name: o.name || "", note: FINISH_SETUP }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
 /// The clubs an organizer plans for, by name.
 export const clubsOf = (orgs = [], clubTiers = ["club", "group"], now = Date.now()) =>
   (orgs || []).filter((o) => plansFor(o, clubTiers)).map((o) => ({ id: o.id, name: o.name || "", note: clubNote(o, clubTiers, now) }))
@@ -72,10 +82,12 @@ export function homeMenu(clubs) {
 
 /// The bar's items: { key, label, href } or { key, label, menu: [{ label,
 /// href, note? }] }.
-export function navFor(state, clubs = []) {
+/// `setup`: clubs to finish setting up (setupOf), in My Clubs ▾ too, which
+/// they bring even without a club on a plan.
+export function navFor(state, clubs = [], setup = []) {
   const link = (key, label, href) => ({ key, label, href });
   const plan = { key: "plan", label: "Plan", menu: planMenu(state, clubs) };
-  const clubsItem = state === "club" ? { key: "clubs", label: "My Clubs", menu: myClubsMenu(clubs) } : link("clubs", "For Clubs", "/car-clubs/");
+  const clubsItem = state === "club" || setup.length ? { key: "clubs", label: "My Clubs", menu: myClubsMenu(state === "club" ? clubs : [], setup) } : link("clubs", "For Clubs", "/car-clubs/");
   return [
     plan,
     clubsItem,
@@ -102,11 +114,11 @@ export function planMenu(state, clubs = []) {
   ];
 }
 
-/// My Clubs ▾ (board N5): each club to its Club home, then + Add a club (the
-/// Club page, to start another).
-export function myClubsMenu(clubs = []) {
+/// My Clubs ▾ (board N5): each club to its Club home (one to finish setting
+/// up, to its Start), by name, then + Add a club (the Club page, to start another).
+export function myClubsMenu(clubs = [], setup = []) {
   return [
-    ...clubs.map((c) => ({ label: c.name || NO_CLUB_NAME, href: `/club/?org=${encodeURIComponent(c.id)}`, ...(c.note ? { note: c.note } : {}) })),
+    ...[...clubs, ...setup].sort((a, b) => (a.name || "").localeCompare(b.name || "")).map((c) => ({ label: c.name || NO_CLUB_NAME, href: `/club/?org=${encodeURIComponent(c.id)}`, ...(c.note ? { note: c.note } : {}) })),
     { label: "+ Add a club", href: "/club/?add=1" },
   ];
 }

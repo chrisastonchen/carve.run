@@ -3,7 +3,7 @@
 // guides and other links it saved) and the events it set reminders for.
 // /my-drives/ stays as it was, off the bar (DevOps, 11/13).
 
-import { $, el, myOrgs, rpc, select, signedIn } from "/assets/club-api.js?v=7a6f7b0d40";
+import { $, el, myOrgs, rpc, select, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { savedGroups, routeLine } from "/assets/saved-words.js?v=c0fb5de8b0";
 
 const MOST = 500;

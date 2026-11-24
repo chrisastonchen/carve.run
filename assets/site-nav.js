@@ -4,8 +4,9 @@
 // Support); this draws it from who-words.js navFor for whoever's looking,
 // signed out too (Plan ▾, Chris 11/12): Plan ▾ and My Clubs ▾ menus,
 // Saved, Upgrade.
-import { who, whoHint, whoNow } from "/assets/who.js?v=657e37314e";
-import { currentKey, navFor } from "/assets/who-words.js?v=65edaf422f";
+import { SESSION_CHANGED, who, whoHint, whoNow } from "/assets/who.js?v=f260ce6368";
+import { SESSION_KEY } from "/assets/carve-session.js?v=96f92e7529";
+import { currentKey, navFor } from "/assets/who-words.js?v=63b40f62a6";
 
 const CSS = `
 .bar .links .nav-m { position: relative; display: inline-flex; }
@@ -130,8 +131,8 @@ function sheetItems(items, cur) {
   });
 }
 
-export function drawNav({ state, clubs }) {
-  const items = navFor(state, clubs);
+export function drawNav({ state, clubs, setup = [] }) {
+  const items = navFor(state, clubs, setup);
   const cur = currentKey(location.pathname);
   document.querySelectorAll(".bar nav.links").forEach((nav) => nav.replaceChildren(...items.map((item) => barItem(item, cur))));
   const sheet = document.getElementById("sheet");
@@ -157,13 +158,23 @@ export function startNav() {
       button.focus();
     });
   }
-  // Known in this tab, else a club member's clubs as this browser last
-  // heard them (who.js), drawn at once; Carve's answer then confirms them.
+  // Asked again when it changes on this page (a club paid for, who.js), when
+  // the sign-in does (here, or in another tab), and drawn from the last ask
+  // only: an earlier one for whoever was signed in before doesn't win.
+  window.addEventListener("carve:who", () => ask());
+  window.addEventListener(SESSION_CHANGED, () => ask());
+  window.addEventListener("storage", (e) => { if (e.key === SESSION_KEY || e.key === null) ask(); });
+  return ask();
+}
+
+let asks = 0;
+/// Known in this tab, else a club member's clubs as this browser last heard
+/// them (who.js), drawn at once; Carve's answer then confirms them.
+function ask() {
+  const n = ++asks;
   const known = whoNow() ?? whoHint();
   if (known) drawNav(known);
-  // Asked again when it changes on this page (a club paid for, who.js).
-  window.addEventListener("carve:who", () => who().then(drawNav).catch(() => {}));
-  return who().then(drawNav).catch(() => {});
+  return who().then((answer) => { if (n === asks) drawNav(answer); }).catch(() => {});
 }
 
 startNav();

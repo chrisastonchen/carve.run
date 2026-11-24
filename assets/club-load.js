@@ -3,5 +3,5 @@ import { CLUB_V2 } from "/plan/club-flags.js?v=4";
 
 if (new URLSearchParams(location.search).has("paid")) document.getElementById("cp-status").textContent = "Finishing your payment…";
 
-if (CLUB_V2) import("/assets/club-home.js?v=739bbbb20c");
-else import("/assets/club-org.js?v=086022e726");
+if (CLUB_V2) import("/assets/club-home.js?v=070f528f56");
+else import("/assets/club-org.js?v=3f583e2a6c");

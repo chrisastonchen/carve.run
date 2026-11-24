@@ -504,6 +504,7 @@ function keepSession(data) {
   if (!data?.access_token) return;
   const meta = data.user?.user_metadata || {};
   signInName = String(meta.full_name || meta.name || "").trim().slice(0, 40) || signInName;
+  const was = session?.user?.id;
   session = {
     access_token: data.access_token,
     refresh_token: data.refresh_token,
@@ -511,6 +512,8 @@ function keepSession(data) {
     user: { id: data.user?.id, email: data.user?.email },
   };
   store.set(SESSION_KEY, session);
+  // Signed in (not a refresh): the site's bar asks again (who.js; Chris, 11/24).
+  if (session.user.id !== was) window.dispatchEvent(new Event("carve:session"));
 }
 
 /// The sign-in, fresh. Another tab may have refreshed it already: each
@@ -583,6 +586,7 @@ function signedOut() {
   profile = null;
   store.remove(SESSION_KEY);
   renderWho();
+  window.dispatchEvent(new Event("carve:session"));
 }
 
 /// Back from Apple or Google: GoTrue puts the session in the fragment.
@@ -4017,7 +4021,7 @@ function renderWho() {
   // "No account until you save" is for guests.
   if (signedIn) $("join").hidden = true;
   if (!signedIn) return;
-  import("/assets/notify-bell.js?v=732f09842e").then((m) => m.mountBell()).catch(() => {});
+  import("/assets/notify-bell.js?v=9fa8b18a97").then((m) => m.mountBell()).catch(() => {});
   $("who-name").textContent = profile?.username || session.user.email?.split("@")[0] || "Account";
   const avatar = $("avatar");
   const url = profile?.avatar_url;
@@ -4478,7 +4482,7 @@ async function start() {
   else if (!CLUB_V2) startDrafts();
   if (CLUB_V2) $("pd-group-link").setAttribute("href", "/club/");
   // A Club organizer has Club: no "Upgrade to Carve Club" (a new organizer, 11/18).
-  import("/assets/who.js?v=657e37314e").then(({ who }) => who()).then(({ state }) => {
+  import("/assets/who.js?v=f260ce6368").then(({ who }) => who()).then(({ state }) => {
     if (state === "club") $("pd-group-link").closest(".pd-group").hidden = true;
   }).catch(() => {});
   render();

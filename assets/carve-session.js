@@ -55,6 +55,7 @@ async function refresh(session) {
     // session): forget it, so the site bar offers Sign in, not Sign out.
     if (response.status >= 400 && response.status < 500) {
       try { localStorage.removeItem(SESSION_KEY); localStorage.removeItem("carve.who.hint"); } catch {}
+      window.dispatchEvent(new Event("carve:session"));
     }
     return null;
   }

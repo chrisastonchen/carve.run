@@ -6,7 +6,7 @@
 // shows. Plain route links (no club drive) get none of it.
 // The rules and words are day-words.js's, the apps'.
 
-import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=b314b52348";
+import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=96f92e7529";
 import {
   alertRows, catalogRoads, catalogRows, clock, daysAhead, degrees, forecastChanges, fractionOf, hazardRows, hourlyRows,
   label, nearest, ordered, shows, stretches, units, zonedInstant,
@@ -136,7 +136,7 @@ async function start() {
   if (!drive?.day_date) return;
   drawHeadline(drive);
   // Apex on this route, free from the club (board A1), when it's switched on.
-  if (ROUTE_APEX_UI) import("/assets/apex-card.js?v=5a75105bfe").then((m) => m.drawApexCard(token, drive.time_zone)).catch(() => {});
+  if (ROUTE_APEX_UI) import("/assets/apex-card.js?v=3d9b14b488").then((m) => m.drawApexCard(token, drive.time_zone)).catch(() => {});
   const zone = drive.time_zone || "UTC";
   const ahead = daysAhead(drive.day_date, zone);
   const what = shows(ahead);
