@@ -1014,7 +1014,10 @@ async function startDriveDay() {
   const day = initDriveDay({
     ids: DRIVE, $, el, rpc,
     userId: () => session?.user?.id || null,
-    planFromPayload: (payload) => planFromPayload(payload, "your drive"),
+    // What the planner doesn't make but the day's route has (its photo, its
+    // maker, an app's leave time) kept through a save: a route moved onto
+    // the day from someone's saved routes is still theirs (Chris, 11/25).
+    planFromPayload: (payload) => ({ ...planFromPayload(payload, "your drive"), kept: keptFrom(payload) }),
     hasDraft: () => !!store.get(DRAFT_KEY)?.plan,
     loadPlan: (next) => {
       settle();
@@ -1037,6 +1040,15 @@ async function startDriveDay() {
   try {
     const got = await day.load();
     driveDay = day;
+    // The drive page's Import a route (Chris, 11/25; &import): the day opens
+    // empty on Import, whatever start it would have had. Done with nothing
+    // brought in changes nothing; one brought in is a new route on the day.
+    // Changes kept from before stay as they are.
+    if (new URLSearchParams(location.search).has("import") && !got.kept) {
+      settle();
+      plan = { ...blankPlan(), name: day.routeName(), leaveAt: plan.leaveAt };
+      startMode = "import";
+    }
     // Nothing to show yet: the club's area, else this browser's, else US West.
     if (!plan.start && !plan.end && !plan.path) openNear(got.near || (await browserSpot()));
     driveBaseline = got.kept ? null : driveKey();
@@ -1045,6 +1057,7 @@ async function startDriveDay() {
     toast(failure.message || "Couldn't open this drive.", true);
   }
   render();
+  if (startMode === "import") setStartMode("import");
   // The drive page's Add a note (Chris, 11/15; &note): the day's note, open to type in.
   if (new URLSearchParams(location.search).has("note") && driveDay) {
     noteOpen = true;

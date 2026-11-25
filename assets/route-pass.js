@@ -10,7 +10,7 @@
 // Off for now (DRIVE_PASS_UI, Chris 11/10): the page is a plain route page.
 
 import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=96f92e7529";
-import { dayText } from "/assets/club-words.js?v=9b5a1c9d31";
+import { dayText } from "/assets/club-words.js?v=f405631cb6";
 import { DRIVE_PASS_UI } from "/plan/club-flags.js?v=4";
 
 const segments = location.pathname.split("/").filter(Boolean);

@@ -4,8 +4,9 @@
 //                         Create: one day opens the planner on it; more
 //                         open this drive's page. The drive is the club's
 //                         it was planned from (Product, 11/9).
-//   ?id=<drive>           The drive page: a card per day (Plan route, then
-//                         Edit route; Share once it has a route), the
+//   ?id=<drive>           The drive page: a card per day (Choose from your
+//                         routes or Plan a new route, then Edit route or
+//                         Replace route; Share once it has a route), the
 //                         pre-run card, ⋯ Edit details and Delete drive.
 //   ?id=<drive>&edit      Edit details: the same form, filled in.
 //   ?copy=<drive>         Duplicate (Club home's ⋯): the new-drive form
@@ -18,7 +19,7 @@ import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/as
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
 import { timeSelects } from "/assets/club-time.js?v=02f4200f94";
-import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=9b5a1c9d31";
+import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, libraryParts, libraryRows, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=f405631cb6";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
@@ -513,18 +514,28 @@ async function renderDrive() {
       row.append(...(d.routed ? when.map((t) => el("span", "", t)) : [el("span", "", when.join(" · "))]));
       body.append(row);
     }
-    if (!d.routed) body.append(el("p", "cd-hint", `Plan the route to get ${several ? `Day ${n}'s` : "its"} link and QR code.`));
+    if (!d.routed) body.append(el("p", "cd-hint", `Choose one of your routes or plan a new one to get ${several ? `Day ${n}'s` : "its"} link and QR code.`));
     const acts = el("div", "cd-acts");
-    const plan = el("a", d.routed ? "go ghost" : "go", d.routed ? "Edit route" : "Plan route");
+    // A day's route from the organizer's saved routes, or planned here (Chris, 11/25).
+    // A routed day's Replace route is a quiet link under its buttons.
+    const choose = el("button", d.routed ? "textlink cd-replace" : "go", d.routed ? "Replace route" : "Choose from your routes");
+    choose.type = "button";
+    choose.addEventListener("click", () => openPick(d, n, several));
+    const plan = el("a", "go ghost", d.routed ? "Edit route" : "Plan a new route");
     plan.href = plannerUrl(drive.id, n);
-    acts.append(plan);
+    // The planner on Import (a Carve, Google Maps or Ride with GPS link, a GPX file).
+    const bring = el("a", d.routed ? "textlink cd-replace" : "go ghost", "Import a route");
+    bring.href = `${plannerUrl(drive.id, n)}&import`;
+    acts.append(...(d.routed ? [plan] : [choose, plan, bring]));
     // The route's note, the one anyone with the link sees, here too (Chris, 11/15).
     const note = d.routed ? String(d.route.payload?.note || "").trim() : "";
     if (note) body.append(el("p", "cd-note", note));
     if (d.routed) {
       const write = el("a", "go ghost", note ? "Edit note" : "Add a note");
       write.href = `${plannerUrl(drive.id, n)}&note`;
-      acts.append(write);
+      const others = el("p", "cd-replace-row");
+      others.append(choose, bring);
+      acts.append(write, others);
     }
     body.append(acts);
     card.append(shape, body);
@@ -547,8 +558,143 @@ async function renderDrive() {
   }
 }
 
+// ── Choose from your routes (Chris, 11/25) ──
+// A pick goes on the day as it is (Chris, 11/25 evening: moved, not
+// copied): the same route, so the maker's edits reach drivers and co-
+// organizers edit it as any club route (drive_route_update). It's copied
+// instead, as Duplicate copies, when it's on another drive already or
+// follows someone else's link (a heart).
+
+let library = null; // this organizer's saved routes, once asked
+let onDrives = null; // the ids of theirs already on a live drive's day, once asked
+let picking = null; // { day, n, several }
+let ready = null; // a route made ready and not yet on its day: { from, rid, token }, used again on Try again
+
+/// Their routes already on a day of a live drive, in the clubs they organize.
+async function routesOnDrives() {
+  const ids = new Set();
+  const clubs = await myOrgs();
+  const drives = (await Promise.all(clubs.map((o) => rpc("org_drives", { p_org_id: o.id }).catch(() => [])))).flat().filter(Boolean);
+  const live = drives.filter((d) => d.status !== "cancelled" && (d.days || []).some((x) => x.routed));
+  for (const list of await Promise.all(live.map((d) => rpc("drive_routes", { p_drive_id: d.id }).catch(() => [])))) {
+    for (const r of list || []) ids.add(String(r.route_id).toLowerCase());
+  }
+  return ids;
+}
+
+/// Why a pick is copied, or "" when it goes on the day as it is.
+const copiedBecause = (row) => onDrives?.has(String(row.id).toLowerCase()) ? "on another drive, so it's copied"
+  : row.origin_route_id ? "saved from a link, so it's copied" : "";
+
+async function openPick(day, n, several) {
+  picking = { day, n, several };
+  const replacing = !!day.routed;
+  $("d-pick-h").textContent = replacing ? `Replace ${several ? `Day ${n}'s` : "the"} route` : "Choose from your routes";
+  $("d-pick-line").textContent = replacing
+    ? "The day's links open the route you pick, and drivers are told it changed. The route there now stays in your routes, but its link opens this day's route from now on."
+    : "Your route goes on this day as it is. Changes you make to it reach drivers.";
+  $("d-pick-said").textContent = "";
+  $("d-pick-q").value = "";
+  $("d-pick").showModal();
+  if (!library || !onDrives) {
+    $("d-pick-list").replaceChildren(el("li", "cd-pick-none", "Getting your routes…"));
+    try {
+      [library, onDrives] = await Promise.all([
+        select("routes", `select=id,name,distance_meters,updated_at,origin_route_id&owner_id=eq.${encodeURIComponent(sessionUserId())}&deleted_at=is.null&order=updated_at.desc&limit=500`),
+        routesOnDrives(),
+      ]);
+    } catch (failure) {
+      library = onDrives = null;
+      $("d-pick-list").replaceChildren();
+      $("d-pick-said").textContent = failure.message || "Couldn't get your routes. Try again.";
+      return;
+    }
+  }
+  $("d-pick-q").hidden = libraryRows(library, "", day.route?.route_id).length < 7;
+  drawPick();
+}
+
+function drawPick() {
+  const { day, n } = picking;
+  const rows = libraryRows(library, $("d-pick-q").value, day.route?.route_id);
+  if (!rows.length) {
+    const none = el("li", "cd-pick-none");
+    if ($("d-pick-q").value.trim()) none.textContent = "No routes by that name.";
+    else {
+      none.append("You haven't saved a route yet. ");
+      const plan = el("a", "textlink", "Plan a new route");
+      plan.href = plannerUrl(drive.id, n);
+      none.append(plan);
+    }
+    $("d-pick-list").replaceChildren(none);
+    return;
+  }
+  $("d-pick-list").replaceChildren(...rows.map((r) => {
+    const li = el("li");
+    const b = el("button", "cd-pick-row");
+    b.type = "button";
+    // The distance a figure (Oxanium), the rest words.
+    const { far, ago } = libraryParts(r, miles());
+    const line = el("span");
+    if (far) line.append(el("i", "", far));
+    if (ago) line.append(far ? ` · ${ago}` : ago);
+    b.append(el("b", "", r.name || "Untitled drive"), line);
+    const why = copiedBecause(r);
+    if (why) b.append(el("small", "", why[0].toUpperCase() + why.slice(1) + "."));
+    b.addEventListener("click", () => pickRoute(r));
+    li.append(b);
+    return li;
+  }));
+}
+
+/// The picked route on the day: itself, with its own link (a route has one
+/// live link: shares_guard revokes the others), made if it has none; or,
+/// when copiedBecause says, a copy as Duplicate makes one. A Replace later
+/// retires the day's link, the maker's own too, and it follows the day (0091).
+async function pickRoute(row) {
+  const { day, n } = picking;
+  const buttons = [...$("d-pick-list").querySelectorAll("button")];
+  for (const b of buttons) b.disabled = true;
+  $("d-pick-said").textContent = "Adding it…";
+  try {
+    if (ready?.from !== row.id) {
+      let token = newShareToken((k) => crypto.getRandomValues(new Uint8Array(k)));
+      let rid = String(row.id).toLowerCase();
+      if (!copiedBecause(row)) {
+        const live = await select("shares", `select=token&route_id=eq.${encodeURIComponent(rid)}&revoked_at=is.null&limit=1`);
+        if (live?.[0]?.token) token = live[0].token;
+        else await insert("shares", [{ token, route_id: rid }]);
+      } else {
+        const owner = sessionUserId();
+        const got = await select("routes", `select=payload&id=eq.${encodeURIComponent(row.id)}`);
+        rid = crypto.randomUUID();
+        const copy = owner && routeCopy(got?.[0]?.payload, { id: rid, token, ownerId: owner });
+        if (!copy) throw new Error("That route has no road to drive yet. Open it in the planner first.");
+        // A copy is the club's: its maker's leave time and the link it follows stay theirs.
+        delete copy.row.payload.leaveAt;
+        delete copy.row.payload.followsShareToken;
+        delete copy.row.payload.originRouteId;
+        await insert("routes", [copy.row]);
+        await insert("shares", [{ token, route_id: rid }]);
+      }
+      ready = { from: row.id, rid, token };
+    }
+    await rpc("drive_day_routes_set", { p_day_id: day.id, p_routes: [{ route_id: ready.rid, share_token: ready.token, label: day.route?.label || "" }] });
+    ready = null;
+    [drive, routes] = await Promise.all([rpc("drive_get", { p_drive_id: drive.id }), rpc("drive_routes", { p_drive_id: drive.id }).then((x) => x || [])]);
+    library = onDrives = null; // asked again next time: a copy is one of theirs now, a route on a drive
+    $("d-pick").close();
+    await renderDrive();
+    document.getElementById(`d-day-${n}`)?.scrollIntoView({ block: "start" });
+  } catch (failure) {
+    for (const b of buttons) b.disabled = false;
+    $("d-pick-said").textContent = failure.message || "Couldn't add the route. Try again.";
+  }
+}
+
 function wire() {
   $("f-page").addEventListener("submit", submit);
+  $("d-pick-q").addEventListener("input", () => picking && library && drawPick());
   // What to fix goes once they start fixing it.
   // The top line goes once something changes; a field's note once it's fixed.
   const changed = () => { if (!$("f-go").disabled) { $("f-said").textContent = ""; $("f-err").hidden = true; } };

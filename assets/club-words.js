@@ -464,6 +464,32 @@ export function apexWindow(days = []) {
   return `${short(addDays(dates[0], -30))} to ${short(addDays(dates[dates.length - 1], 1))}`;
 }
 
+/// Choose from your routes (Chris, 11/25): the organizer's saved routes with
+/// a road, newest edit first, those whose name has every word typed.
+/// `rows`: routes rows { id, name, distance_meters, updated_at }; `except`: a
+/// route id to leave out (the day's own).
+export function libraryRows(rows = [], query = "", except = "") {
+  const words = String(query || "").toLowerCase().split(/\s+/).filter(Boolean);
+  return (rows || [])
+    .filter((r) => r?.id && Number(r.distance_meters) > 0 && r.id !== except)
+    .filter((r) => { const name = String(r.name || "").toLowerCase(); return words.every((w) => name.includes(w)); })
+    .sort((a, b) => (Date.parse(b.updated_at || "") || 0) - (Date.parse(a.updated_at || "") || 0));
+}
+
+/// A saved route's line in the picker, in its parts: { far: "84 mi", ago: "edited Nov 12" }.
+export function libraryParts(row, miles = true, now = Date.now()) {
+  const m = Number(row?.distance_meters) || 0;
+  const far = m ? (miles ? `${Math.round(m / 1609.344)} mi` : `${Math.round(m / 1000)} km`) : "";
+  const ago = updatedAgo(row?.updated_at, now).replace(/^Route updated /, "edited ").replace(/\.$/, "");
+  return { far, ago };
+}
+
+/// …and as one line: "84 mi · edited Nov 12", "edited 2 h ago".
+export function libraryLine(row, miles = true, now = Date.now()) {
+  const { far, ago } = libraryParts(row, miles, now);
+  return [far, ago].filter(Boolean).join(" · ");
+}
+
 /// "Route updated 2 min ago." from the route's last save; "" without one.
 export function updatedAgo(iso, now = Date.now()) {
   const t = Date.parse(iso || "");

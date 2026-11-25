@@ -10,7 +10,7 @@
 // Signed out or not an organizer, the page stays as share_page.js drew it.
 
 import { el, myOrgs, rpc, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
-import { crewLine, dayText, shareTitle } from "/assets/club-words.js?v=9b5a1c9d31";
+import { crewLine, dayText, shareTitle } from "/assets/club-words.js?v=f405631cb6";
 
 const q = new URLSearchParams(location.search);
 const driveId = q.get("club");

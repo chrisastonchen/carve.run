@@ -592,6 +592,22 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cd-dlg p { margin: 0; color: #D3D9D5; }
 .cd-dlg form { position: absolute; right: 12px; top: 10px; }
 .cd-x { background: none; border: 0; color: #A3ACA6; font-size: 20px; cursor: pointer; width: 40px; height: 40px; }
+.cd-acts .cd-replace-row { flex-basis: 100%; display: flex; gap: 6px 20px; flex-wrap: wrap; margin: 4px 0 0; }
+.cd-acts .cd-replace { min-height: 32px; display: inline-flex; align-items: center; }
+/* Choose from your routes (Chris, 11/25): the organizer's saved routes, a row each. */
+.cd-pick-dlg { width: min(520px, calc(100% - 32px)); max-height: min(640px, calc(100dvh - 48px)); }
+.cd-pick-dlg h2 { padding-right: 36px; }
+.cd-pick-dlg input[type="search"] { font: inherit; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--rule); background: var(--raised); color: var(--ink); color-scheme: dark; }
+.cd-pick-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; min-height: 0; }
+.cd-pick-row { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; font: inherit; color: var(--ink); background: var(--raised); border: 1px solid var(--rule); border-radius: 14px; padding: 12px 14px; cursor: pointer; }
+.cd-pick-row:hover:not(:disabled), .cd-pick-row:focus-visible { border-color: var(--act); }
+.cd-pick-row:disabled { opacity: .55; cursor: default; }
+.cd-pick-row b { font-weight: 800; overflow-wrap: anywhere; }
+.cd-pick-row span { color: #A3ACA6; font-size: 14.5px; }
+.cd-pick-row small { color: #D3D9D5; font-size: 13.5px; }
+.cd-pick-row i { font-style: normal; font-family: var(--num); font-variant-numeric: tabular-nums; }
+.cd-pick-none { color: #D3D9D5; }
+.cd-pick-said:empty { display: none; }
 .cd-qrbig { align-self: center; width: 168px; height: 168px; background: #fff; border-radius: 14px; padding: 12px; display: block; }
 .cd-qrbig svg { display: block; width: 100%; height: 100%; }
 .cd-stores { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
