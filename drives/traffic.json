@@ -20,14 +20,6 @@
    "coverage": 0.58,
    "since": "2026-11-14"
   },
-  "cane-river-la-494": {
-   "coverage": 0.22,
-   "since": "2026-11-23"
-  },
-  "cayuga-lake-highway-90": {
-   "coverage": 0.48,
-   "since": "2026-11-05"
-  },
   "cayuse-pass-highway-123": {
    "coverage": 0.16,
    "since": "2026-11-19"
@@ -80,6 +72,10 @@
    "coverage": 0.19,
    "since": "2026-11-14"
   },
+  "klondike-highway-white-pass": {
+   "coverage": 0.48,
+   "since": "2026-11-24"
+  },
   "la-rumorosa-grade-baja": {
    "coverage": 0.59,
    "since": "2026-11-07"
@@ -105,12 +101,16 @@
    "since": "2026-11-01"
   },
   "monitor-pass": {
-   "coverage": 0.52,
+   "coverage": 0.03,
    "since": "2026-11-14"
   },
   "natchez-trace-tennessee": {
    "coverage": 0.7,
    "since": "2026-11-21"
+  },
+  "needles-highway": {
+   "coverage": 0.47,
+   "since": "2026-11-24"
   },
   "north-cape-coastal-drive": {
    "coverage": 0.71,
@@ -121,7 +121,7 @@
    "since": "2026-11-01"
   },
   "rockefeller-parkway-west-thumb": {
-   "coverage": 0.06,
+   "coverage": 0.05,
    "since": "2026-11-02"
   },
   "smugglers-notch": {
@@ -146,5 +146,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-24T14:08:36Z"
+ "updated": "2026-11-25T14:10:39Z"
 }
