@@ -11,18 +11,11 @@ import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
 import { heartButton, wireHearts } from "/assets/hearts.js?v=870041539f";
+import { LIGHT_DEVICE, MAP_STYLE, NO_PHOTO, PHONE, addRoadLayers, railArrows as wireRail } from "/assets/explore-map.js?v=8e77971e79";
 import { MAP_DAYS, addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby, nextOn, within } from "/assets/events.js?v=b133592880";
 
-// The map follows the device's theme, light unless it's set to dark (the
-// user, 2026-11-02); map-dark.json is scripts/map_dark_style.py's.
-const LIGHT_DEVICE = !window.matchMedia("(prefers-color-scheme: dark)").matches;
-const MAP_STYLE = LIGHT_DEVICE ? "https://tiles.openfreemap.org/styles/liberty" : "/assets/map-dark.json?v=a36458fffd";
-const PHONE = "(max-width: 699px), (max-height: 560px)";
 const VIEW_KEY = "carve.explore.view";
 const LIST_MAX = 60;
-const NO_PHOTO = "data:image/svg+xml," + encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110"><rect width="160" height="110" fill="#E3EBDA"/>'
-  + '<path d="M18 86C46 30 70 92 98 44c14-24 32-6 44-26" fill="none" stroke="#6A4CFF" stroke-width="6" stroke-linecap="round"/></svg>');
 
 const $ = (id) => document.getElementById(id);
 const phone = () => window.matchMedia(PHONE).matches;
@@ -133,39 +126,7 @@ function renderEvents() {
   railArrows();
 }
 
-// Back and forward arrows over the events, for a mouse (the user, 2026-11-04);
-// a phone or trackpad swipes. A press moves by the cards that fit, so none is skipped.
-const ARROW = (d) => `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-
-function wireRailArrows() {
-  const rail = $("ex-ev");
-  const arrows = document.createElement("div");
-  arrows.className = "ev-arrows";
-  arrows.id = "ex-ev-arrows";
-  arrows.innerHTML = `<button type="button" class="ev-arrow" data-step="-1" aria-label="Back" aria-controls="ex-ev">${ARROW("M15 5l-7 7 7 7")}</button>`
-    + `<button type="button" class="ev-arrow" data-step="1" aria-label="Forward" aria-controls="ex-ev">${ARROW("M9 5l7 7-7 7")}</button>`;
-  $("ex-ev-title").after(arrows);
-  arrows.addEventListener("click", (event) => {
-    const button = event.target.closest(".ev-arrow");
-    const card = rail.firstElementChild;
-    if (!button || !card) return;
-    const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
-    const fit = Math.max(1, Math.floor((rail.clientWidth + gap) / (card.offsetWidth + gap)));
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    rail.scrollBy({ left: Number(button.dataset.step) * fit * (card.offsetWidth + gap), behavior: still ? "auto" : "smooth" });
-  });
-  rail.addEventListener("scroll", railArrows, { passive: true });
-  window.addEventListener("resize", railArrows);
-}
-
-function railArrows() {
-  const rail = $("ex-ev");
-  const [back, forward] = $("ex-ev-arrows").children;
-  const end = rail.scrollWidth - rail.clientWidth;
-  $("ex-ev-arrows").hidden = end <= 1;
-  back.disabled = rail.scrollLeft <= 1;
-  forward.disabled = rail.scrollLeft >= end - 1;
-}
+let railArrows = () => {};
 
 // ── the map ──────────────────────────────────────────────────────────
 
@@ -250,23 +211,7 @@ function buildMap(saved) {
   map.on("load", () => {
     map.addSource("ex-roads", { type: "geojson", data: features() });
     map.addSource("ex-mids", { type: "geojson", data: midpoints() });
-    const on = (a, b) => ["case", ["boolean", ["feature-state", "on"], false], a, b];
-    // The lines load at every zoom, unseen below 5, and the dots fade out
-    // over the zoom after 6: a zoom past 6 then has lines to stretch while
-    // sharper ones are cut. With lines from 6 only and dots up to it, the map
-    // went blank until they came (the user, 2026-10-30, on a phone).
-    map.addLayer({ id: "ex-glow", type: "line", source: "ex-roads", layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#6A4CFF", "line-width": on(16, 0), "line-blur": 6, "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 6, on(0.5, 0)] } });
-    map.addLayer({ id: "ex-casing", type: "line", source: "ex-roads", layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-color": "#fff", "line-width": on(9, 6), "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 6, 0.9] } });
-    map.addLayer({ id: "ex-line", type: "line", source: "ex-roads", layout: { "line-join": "round" },
-      paint: { "line-color": "#6A4CFF", "line-width": ["interpolate", ["linear"], ["zoom"], 4, on(4, 1.5), 9, on(5, 3)],
-        "line-dasharray": ["literal", [2, 1.6]], "line-opacity": ["interpolate", ["linear"], ["zoom"], 5, 0, 6, on(1, 0.8)] } });
-    // Under zoom 6 a road is a speck: a dot shows where each drive is.
-    map.addLayer({ id: "ex-dots", type: "circle", source: "ex-mids", maxzoom: 7,
-      paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 3, on(6, 3), 6, on(8, 5)], "circle-color": "#6A4CFF",
-        "circle-stroke-color": "#fff", "circle-stroke-width": on(2, 1),
-        "circle-opacity": ["interpolate", ["linear"], ["zoom"], 6, 1, 7, 0], "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 6, 1, 7, 0] } });
+    addRoadLayers(map, { lines: "ex-roads", dots: "ex-mids" });
     // Drives the filters leave out sit under a pale veil, not gone.
     map.addLayer({ id: "ex-hidden", type: "line", source: "ex-roads", minzoom: 6, filter: ["==", ["get", "k"], -1], paint: { "line-color": LIGHT_DEVICE ? "#EFEDE6" : "#0E1210", "line-width": 6, "line-opacity": 0.85 } });
     map.addLayer({ id: "ex-hit", type: "line", source: "ex-roads", minzoom: 6, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
@@ -361,7 +306,7 @@ function wire() {
 
 async function main() {
   wire();
-  wireRailArrows();
+  railArrows = wireRail($("ex-ev"), $("ex-ev-title"));
   const saved = store.get(VIEW_KEY, sessionStorage);
   if (saved) {
     filters.query = (saved.query || "").trim().toLowerCase();

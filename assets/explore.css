@@ -113,6 +113,31 @@
   }
 }
 
+/* ── Saved (/saved/), laid out as Explore (Chris, 11/25): its groups of
+   routes in Explore's rows, a Guide link at a row's end on a computer and
+   a Guide tag by the name on a phone; Plan a route by the title. ── */
+.sx-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sx-sub { margin: -4px 0 0; font-size: 15px; }
+.sx-routes { display: flex; flex-direction: column; gap: 14px; }
+.sx-routes:empty { display: none; }
+.sx-group { display: flex; flex-direction: column; gap: 6px; }
+.sx-routes .ex-list > li { display: flex; align-items: center; gap: 4px; }
+.sx-routes .ex-list > li > .ex-row { flex: 1; min-width: 0; }
+.sx-routes .ex-row .n { display: flex; align-items: flex-start; gap: 8px; }
+.sx-routes .ex-row .n b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sx-routes .ex-row .m { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.sx-tag { display: none; flex: none; margin-top: 1px; padding: 2px 8px; border-radius: 999px; background: var(--fill); color: var(--ink-2); font-size: 12px; font-weight: 700; }
+.sx-guide { flex: none; padding: 8px 10px; }
+.sx-state { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 6px 0 10px; }
+.sx-state h2 { font-size: 21px; }
+.sx .ex-events { margin-top: 6px; }
+.sx .evc-bell { display: none; }
+@media (max-width: 699px), (max-height: 560px) {
+  .sx-routes .ex-row .n b { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; line-height: 1.25; }
+  .sx-tag { display: inline-block; }
+  .sx-guide { display: none; }
+}
+
 /* light theme (scripts/light_theme.py): the device's light setting */
 @media not all and (prefers-color-scheme: dark) {
   .rv .rv-back { color: var(--green); }
