@@ -8,7 +8,7 @@
 import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=f405631cb6";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { confirmDelete } from "/assets/drive-delete.js?v=7715c48736";
+import { confirmDelete } from "/assets/drive-delete.js?v=3e8c28ba71";
 import { organizersBox } from "/assets/club-organizers.js?v=3155e1381b";
 import { FINISH_SETUP, billsToday, unfinished } from "/assets/who-words.js?v=63b40f62a6";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=28ac815c05";
@@ -677,7 +677,10 @@ function row(d, routes) {
 }
 
 /// A drive's ⋯ (Chris, 11/10): Duplicate, the new-drive form filled from it;
-/// Delete drive, asked twice (Chris, 11/25 night; drive-delete.js).
+/// Delete drive, asked twice (Chris, 11/25 night; drive-delete.js). The
+/// menu floats over the page, placed under the button (or over it, near the
+/// window's foot), so the drive's card can't cut it off (Chris, 11/25 night);
+/// a scroll closes it.
 function more(d) {
   const box = el("div", "cv-more");
   const btn = el("button", "cv-more-btn", "⋯");
@@ -685,7 +688,7 @@ function more(d) {
   btn.setAttribute("aria-haspopup", "menu");
   btn.setAttribute("aria-expanded", "false");
   btn.setAttribute("aria-label", `More for ${d.name || "this drive"}`);
-  const menu = el("div", "cv-menu");
+  const menu = el("div", "cv-menu cv-menu-float");
   menu.setAttribute("role", "menu");
   menu.hidden = true;
   const copy = el("a", "", "Duplicate");
@@ -704,7 +707,12 @@ function more(d) {
     closeMenus();
     menu.hidden = !open;
     btn.setAttribute("aria-expanded", String(open));
-    if (open) copy.focus();
+    if (!open) return;
+    const at = btn.getBoundingClientRect();
+    const w = menu.offsetWidth, h = menu.offsetHeight;
+    menu.style.left = `${Math.max(16, Math.min(at.right - w, innerWidth - w - 16))}px`;
+    menu.style.top = `${at.bottom + 6 + h <= innerHeight - 8 ? at.bottom + 6 : Math.max(8, at.top - 6 - h)}px`;
+    copy.focus({ preventScroll: true });
   });
   box.append(btn, menu);
   return box;
@@ -723,6 +731,7 @@ function wire() {
   wireNames($("v-name"), $("v-names"), () => loadDirectory(select));
   document.addEventListener("click", (e) => { if (!e.target.closest("#v-home .cv-more")) closeMenus(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenus(); });
+  addEventListener("scroll", () => closeMenus(), { passive: true });
   $("v-pick").addEventListener("change", (e) => {
     history.replaceState(null, "", `/club/?org=${e.target.value}`);
     load(e.target.value);

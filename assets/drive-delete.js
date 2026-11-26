@@ -20,18 +20,44 @@ export function deleteWords(name) {
   };
 }
 
+/// The words for taking a day's route off it (Chris, 11/25 night: Route ▾
+/// Remove from this day). The route stays theirs; the day's link (the old
+/// one follows the day, 0091) opens it with no route until another's set.
+export function removeWords(n, several) {
+  return {
+    h: several ? `Take this route off Day ${n}?` : "Take this route off the drive?",
+    p: `It stays in your routes. Drivers' link opens the ${several ? "day" : "drive"} with no route until you add one.`,
+    go: "Remove",
+  };
+}
+
 /// Asks, then asks again, then deletes. Resolves true once it's gone,
 /// false if they kept it.
 export function confirmDelete(drive) {
   const words = deleteWords(drive.name);
-  const dlg = el("dialog", "cd-dlg cd-del-dlg");
+  return ask([words.first, words.second], () => rpc("drive_delete", { p_drive_id: drive.id }), { busy: "Deleting…", failed: "Couldn't delete it. Try again." });
+}
+
+/// Asks once, then takes the route off the day: `remove` does it.
+/// Resolves true once it's off, false if they kept it.
+export function confirmRemove(n, several, remove) {
+  return ask([removeWords(n, several)], remove, { busy: "Removing…", failed: "Couldn't take it off. Try again.", cls: "cd-remove-dlg" });
+}
+
+/// A dialog asking each of `steps` ({ h, p, go }) in turn, Keep it at any;
+/// past the last, `act()`. Resolves true once it's done, false if kept.
+function ask(steps, act, { busy, failed, cls = "" }) {
+  const dlg = el("dialog", `cd-dlg cd-del-dlg ${cls}`.trim());
   dlg.setAttribute("aria-labelledby", "cd-del-h");
-  const h = el("h2", "", words.first.h);
+  // The dialog itself takes the focus, not a button: Keep it showed a focus
+  // ring as it opened (Chris, 11/25 night). Tab still reaches both buttons.
+  dlg.tabIndex = -1;
+  const h = el("h2", "", steps[0].h);
   h.id = "cd-del-h";
-  const p = el("p", "", words.first.p);
+  const p = el("p", "", steps[0].p);
   const said = el("p", "cd-del-said");
   said.setAttribute("role", "status");
-  const go = el("button", "go danger", words.first.go);
+  const go = el("button", "go danger", steps[0].go);
   go.type = "button";
   const keep = el("button", "textlink", "Keep it");
   keep.type = "button";
@@ -40,32 +66,32 @@ export function confirmDelete(drive) {
   dlg.append(h, p, row, said);
   // Inside the page's main, so the club pages' buttons and colours apply.
   (document.querySelector("main") || document.body).append(dlg);
-  let step = 1;
+  let step = 0;
   return new Promise((resolve) => {
     const done = (gone) => { dlg.close(); dlg.remove(); resolve(gone); };
     keep.addEventListener("click", () => done(false));
     dlg.addEventListener("cancel", (e) => { e.preventDefault(); done(false); });
     go.addEventListener("click", async () => {
-      if (step === 1) {
-        step = 2;
+      if (step < steps.length - 1) {
+        step++;
         dlg.classList.add("second");
-        h.textContent = words.second.h;
-        p.textContent = words.second.p;
-        go.textContent = words.second.go;
-        keep.focus();
+        h.textContent = steps[step].h;
+        p.textContent = steps[step].p;
+        go.textContent = steps[step].go;
+        dlg.focus();
         return;
       }
       go.disabled = true;
-      said.textContent = "Deleting…";
+      said.textContent = busy;
       try {
-        await rpc("drive_delete", { p_drive_id: drive.id });
+        await act();
         done(true);
       } catch (failure) {
         go.disabled = false;
-        said.textContent = failure.message || "Couldn't delete it. Try again.";
+        said.textContent = failure.message || failed;
       }
     });
     dlg.showModal();
-    keep.focus();
+    dlg.focus();
   });
 }

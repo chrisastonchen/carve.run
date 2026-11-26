@@ -1007,6 +1007,9 @@ async function startDriveDay() {
   $("panel").classList.add("drive-mode");
   // Done in the night bar (mock v11): the panel's own Done, which it hides.
   $("db-done").addEventListener("click", () => { if (!$("save").disabled) $("save").click(); });
+  // Start over clears the planner, not the day (Chris, 11/25 night: it
+  // wasn't clear which): the day keeps its route until a new one is Done.
+  $("start-over-dialog").querySelector("p").textContent = "This clears the map so you can plan the day again. The drive keeps this day's route until you plan a new one.";
   // No Name field: the drive is named already (Chris, 11/10).
   $("route-name").hidden = true;
   document.querySelector('label[for="route-name"]').hidden = true;
@@ -1045,16 +1048,19 @@ async function startDriveDay() {
     // or on Plan, whatever route or start it would have had. Done with
     // nothing made changes nothing; one made is a new route on the day.
     // Changes kept from before stay as they are.
+    // They win over changes kept from before (Chris, 11/25 night: Import
+    // opened on Plan, a visit's draft kept in its place).
     const fresh = new URLSearchParams(location.search);
-    if ((fresh.has("import") || fresh.has("new")) && !got.kept) {
+    const empty = fresh.has("import") || fresh.has("new");
+    if (empty) {
       settle();
       plan = { ...blankPlan(), name: day.routeName(), leaveAt: plan.leaveAt };
       if (fresh.has("import")) startMode = "import";
     }
     // Nothing to show yet: the club's area, else this browser's, else US West.
     if (!plan.start && !plan.end && !plan.path) openNear(got.near || (await browserSpot()));
-    driveBaseline = got.kept ? null : driveKey();
-    if (got.kept) toast("Your changes to this day are back. Save and get the link saves them.");
+    driveBaseline = got.kept && !empty ? null : driveKey();
+    if (got.kept && !empty) toast("Your changes to this day are back. Save and get the link saves them.");
   } catch (failure) {
     toast(failure.message || "Couldn't open this drive.", true);
   }
@@ -1103,6 +1109,11 @@ async function driveDone(href = driveDay?.back()) {
   if (!driveDay || driveSaving) return;
   const unchanged = driveBaseline !== null && driveKey() === driveBaseline;
   if (!plan.path || (unchanged && plan.elevationProfile)) {
+    // Nothing to save: no draft left behind either. A day left empty (Start
+    // over, then back) keeps its route, and opens on it next time (Chris,
+    // 11/25 night: Edit route opened blank, the day's route unchanged).
+    clearTimeout(draftTimer);
+    store.remove(DRAFT_KEY);
     location.href = href;
     return;
   }

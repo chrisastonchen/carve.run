@@ -4,10 +4,10 @@
 //                         Create: one day opens the planner on it; more
 //                         open this drive's page. The drive is the club's
 //                         it was planned from (Product, 11/9).
-//   ?id=<drive>           The drive page: a card per day (Choose from your
-//                         routes or Plan a new route, then Edit route or
-//                         Replace route; Share once it has a route), the
-//                         pre-run card, ⋯ Edit details and Delete drive.
+//   ?id=<drive>           The drive page: a card per day (Add a route ▾,
+//                         then Route ▾: edit, replace or remove it; Share
+//                         once it has a route), the pre-run card, More ▾
+//                         Edit details and Delete drive.
 //   ?id=<drive>&edit      Edit details: the same form, filled in.
 //   ?copy=<drive>         Duplicate (Club home's ⋯): the new-drive form
 //                         filled from that drive, dates empty; Create
@@ -18,7 +18,7 @@ import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
 import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { confirmDelete } from "/assets/drive-delete.js?v=7715c48736";
+import { confirmDelete, confirmRemove } from "/assets/drive-delete.js?v=3e8c28ba71";
 import { timeSelects } from "/assets/club-time.js?v=02f4200f94";
 import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, libraryParts, libraryRows, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=f405631cb6";
 
@@ -460,7 +460,8 @@ async function savedTimes(list) {
   }
 }
 
-/// A button with a small menu under it: `items` are [label, href or tap].
+/// A button with a small menu under it: `items` are [label, href or tap,
+/// class?], a null between them a rule.
 /// One open at a time; a tap elsewhere, Escape or a scroll closes it. Placed
 /// on the screen, not in the card (its rounded corners clip what's outside:
 /// a phone's short card cut the menu off): under the button, or over it
@@ -474,8 +475,10 @@ function routeMenu(label, cls, items) {
   const list = el("div", "cv-menu cd-rmenu-list");
   list.setAttribute("role", "menu");
   list.hidden = true;
-  for (const [text, go] of items) {
-    const item = el(typeof go === "string" ? "a" : "button", "", text);
+  for (const entry of items) {
+    if (!entry) { list.append(el("hr", "cd-rmenu-rule")); continue; }
+    const [text, go, cls = ""] = entry;
+    const item = el(typeof go === "string" ? "a" : "button", cls, text);
     item.setAttribute("role", "menuitem");
     if (typeof go === "string") item.href = go;
     else {
@@ -561,24 +564,26 @@ async function renderDrive() {
       body.append(row);
     }
     if (!d.routed) body.append(el("p", "cd-hint", `Add a route to get ${several ? `Day ${n}'s` : "its"} link and QR code.`));
-    // One row (Chris, 11/25 night): Add a route ▾ on a day with none; Edit
-    // route and Replace route ▾ on one with a route, its note a quiet link.
-    // The menu's three ways: one of their routes, a new one, an import.
+    // One row (Chris, 11/25 night): Add a route ▾ on a day with none, its
+    // three ways (one of their routes, a new one, an import); on one with a
+    // route, Route ▾: Edit route, the same three to replace it, and Remove
+    // from this day, asked once; its note a quiet link.
     const acts = el("div", "cd-acts");
-    const ways = routeMenu(d.routed ? "Replace route" : "Add a route", d.routed ? "go ghost" : "go", [
+    const three = [
       ["Choose from your routes", () => openPick(d, n, several)],
       ["Plan a new route", d.routed ? `${plannerUrl(drive.id, n)}&new` : plannerUrl(drive.id, n)],
       ["Import a route", `${plannerUrl(drive.id, n)}&import`],
-    ]);
+    ];
+    const ways = d.routed
+      ? routeMenu("Route", "go ghost", [["Edit route", plannerUrl(drive.id, n)], ...three, null, ["Remove from this day", () => removeRoute(d, n, several), "danger"]])
+      : routeMenu("Add a route", "go", three);
     // The route's note, the one anyone with the link sees, here too (Chris, 11/15).
     const note = d.routed ? String(d.route.payload?.note || "").trim() : "";
     if (note) body.append(el("p", "cd-note", note));
     if (d.routed) {
-      const edit = el("a", "go ghost", "Edit route");
-      edit.href = plannerUrl(drive.id, n);
       const write = el("a", "textlink cd-note-link", note ? "Edit note" : "Add a note");
       write.href = `${plannerUrl(drive.id, n)}&note`;
-      acts.append(edit, ways, write);
+      acts.append(ways, write);
     } else acts.append(ways);
     body.append(acts);
     card.append(shape, body);
@@ -694,6 +699,19 @@ function drawPick() {
 /// live link: shares_guard revokes the others), made if it has none; or,
 /// when copiedBecause says, a copy as Duplicate makes one. A Replace later
 /// retires the day's link, the maker's own too, and it follows the day (0091).
+/// Route ▾ Remove from this day: asked once, then the day has no route; the
+/// route stays in their routes.
+async function removeRoute(day, n, several) {
+  const off = await confirmRemove(n, several, async () => {
+    await rpc("drive_day_routes_set", { p_day_id: day.id, p_routes: [] });
+    [drive, routes] = await Promise.all([rpc("drive_get", { p_drive_id: drive.id }), rpc("drive_routes", { p_drive_id: drive.id }).then((x) => x || [])]);
+  });
+  if (!off) return;
+  library = onDrives = null; // it's off a drive now
+  await renderDrive();
+  document.getElementById(`d-day-${n}`)?.scrollIntoView({ block: "start" });
+}
+
 async function pickRoute(row) {
   const { day, n } = picking;
   const buttons = [...$("d-pick-list").querySelectorAll("button")];
