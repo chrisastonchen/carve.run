@@ -562,10 +562,10 @@ async function renderDrive() {
     }
     if (!d.routed) body.append(el("p", "cd-hint", `Add a route to get ${several ? `Day ${n}'s` : "its"} link and QR code.`));
     // One row (Chris, 11/25 night): Add a route ▾ on a day with none; Edit
-    // route and Change route ▾ on one with a route, its note a quiet link.
+    // route and Replace route ▾ on one with a route, its note a quiet link.
     // The menu's three ways: one of their routes, a new one, an import.
     const acts = el("div", "cd-acts");
-    const ways = routeMenu(d.routed ? "Change route" : "Add a route", d.routed ? "go ghost" : "go", [
+    const ways = routeMenu(d.routed ? "Replace route" : "Add a route", d.routed ? "go ghost" : "go", [
       ["Choose from your routes", () => openPick(d, n, several)],
       ["Plan a new route", d.routed ? `${plannerUrl(drive.id, n)}&new` : plannerUrl(drive.id, n)],
       ["Import a route", `${plannerUrl(drive.id, n)}&import`],

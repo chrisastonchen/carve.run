@@ -1041,7 +1041,7 @@ async function startDriveDay() {
     const got = await day.load();
     driveDay = day;
     // The drive page's Import a route (Chris, 11/25; &import) and a day's
-    // Change route ▾ Plan a new route (&new): the day opens empty, on Import
+    // Replace route ▾ Plan a new route (&new): the day opens empty, on Import
     // or on Plan, whatever route or start it would have had. Done with
     // nothing made changes nothing; one made is a new route on the day.
     // Changes kept from before stay as they are.
