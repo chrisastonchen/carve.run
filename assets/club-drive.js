@@ -18,6 +18,7 @@ import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
 import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
+import { confirmDelete } from "/assets/drive-delete.js?v=7715c48736";
 import { timeSelects } from "/assets/club-time.js?v=02f4200f94";
 import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, libraryParts, libraryRows, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=f405631cb6";
 
@@ -459,6 +460,51 @@ async function savedTimes(list) {
   }
 }
 
+/// A button with a small menu under it: `items` are [label, href or tap].
+/// One open at a time; a tap elsewhere, Escape or a scroll closes it. Placed
+/// on the screen, not in the card (its rounded corners clip what's outside:
+/// a phone's short card cut the menu off): under the button, or over it
+/// with no room below, inside the screen's 16 px edges.
+function routeMenu(label, cls, items) {
+  const box = el("div", "cd-rmenu");
+  const button = el("button", `${cls} cd-rmenu-btn`, label);
+  button.type = "button";
+  button.setAttribute("aria-haspopup", "menu");
+  button.setAttribute("aria-expanded", "false");
+  const list = el("div", "cv-menu cd-rmenu-list");
+  list.setAttribute("role", "menu");
+  list.hidden = true;
+  for (const [text, go] of items) {
+    const item = el(typeof go === "string" ? "a" : "button", "", text);
+    item.setAttribute("role", "menuitem");
+    if (typeof go === "string") item.href = go;
+    else {
+      item.type = "button";
+      item.addEventListener("click", () => { closeRouteMenus(); go(); });
+    }
+    list.append(item);
+  }
+  button.addEventListener("click", () => {
+    const open = list.hidden;
+    closeRouteMenus();
+    list.hidden = !open;
+    button.setAttribute("aria-expanded", String(open));
+    if (!open) return;
+    const at = button.getBoundingClientRect();
+    const w = list.offsetWidth, h = list.offsetHeight;
+    list.style.left = `${Math.max(16, Math.min(at.left, innerWidth - w - 16))}px`;
+    list.style.top = `${at.bottom + 6 + h <= innerHeight - 8 ? at.bottom + 6 : Math.max(8, at.top - 6 - h)}px`;
+    list.querySelector("[role=menuitem]")?.focus({ preventScroll: true });
+  });
+  box.append(button, list);
+  return box;
+}
+
+function closeRouteMenus() {
+  for (const m of document.querySelectorAll(".cd-rmenu-list")) m.hidden = true;
+  for (const b of document.querySelectorAll(".cd-rmenu-btn")) b.setAttribute("aria-expanded", "false");
+}
+
 async function renderDrive() {
   $("d-page").hidden = false;
   document.title = `${drive.name || "Drive"} | Carve`;
@@ -514,29 +560,26 @@ async function renderDrive() {
       row.append(...(d.routed ? when.map((t) => el("span", "", t)) : [el("span", "", when.join(" · "))]));
       body.append(row);
     }
-    if (!d.routed) body.append(el("p", "cd-hint", `Choose one of your routes or plan a new one to get ${several ? `Day ${n}'s` : "its"} link and QR code.`));
+    if (!d.routed) body.append(el("p", "cd-hint", `Add a route to get ${several ? `Day ${n}'s` : "its"} link and QR code.`));
+    // One row (Chris, 11/25 night): Add a route ▾ on a day with none; Edit
+    // route and Change route ▾ on one with a route, its note a quiet link.
+    // The menu's three ways: one of their routes, a new one, an import.
     const acts = el("div", "cd-acts");
-    // A day's route from the organizer's saved routes, or planned here (Chris, 11/25).
-    // A routed day's Replace route is a quiet link under its buttons.
-    const choose = el("button", d.routed ? "textlink cd-replace" : "go", d.routed ? "Replace route" : "Choose from your routes");
-    choose.type = "button";
-    choose.addEventListener("click", () => openPick(d, n, several));
-    const plan = el("a", "go ghost", d.routed ? "Edit route" : "Plan a new route");
-    plan.href = plannerUrl(drive.id, n);
-    // The planner on Import (a Carve, Google Maps or Ride with GPS link, a GPX file).
-    const bring = el("a", d.routed ? "textlink cd-replace" : "go ghost", "Import a route");
-    bring.href = `${plannerUrl(drive.id, n)}&import`;
-    acts.append(...(d.routed ? [plan] : [choose, plan, bring]));
+    const ways = routeMenu(d.routed ? "Change route" : "Add a route", d.routed ? "go ghost" : "go", [
+      ["Choose from your routes", () => openPick(d, n, several)],
+      ["Plan a new route", d.routed ? `${plannerUrl(drive.id, n)}&new` : plannerUrl(drive.id, n)],
+      ["Import a route", `${plannerUrl(drive.id, n)}&import`],
+    ]);
     // The route's note, the one anyone with the link sees, here too (Chris, 11/15).
     const note = d.routed ? String(d.route.payload?.note || "").trim() : "";
     if (note) body.append(el("p", "cd-note", note));
     if (d.routed) {
-      const write = el("a", "go ghost", note ? "Edit note" : "Add a note");
+      const edit = el("a", "go ghost", "Edit route");
+      edit.href = plannerUrl(drive.id, n);
+      const write = el("a", "textlink cd-note-link", note ? "Edit note" : "Add a note");
       write.href = `${plannerUrl(drive.id, n)}&note`;
-      const others = el("p", "cd-replace-row");
-      others.append(choose, bring);
-      acts.append(write, others);
-    }
+      acts.append(edit, ways, write);
+    } else acts.append(ways);
     body.append(acts);
     card.append(shape, body);
     if (d.routed) card.append(sharePanel(n, several, d.route, apex, saved[d.route.route_id]));
@@ -721,19 +764,13 @@ function wire() {
   pickOnTap($("f-pr-pick"), $("f-pr-date"));
   const menu = (open) => { $("d-menu").hidden = !open; $("d-more").setAttribute("aria-expanded", String(open)); };
   $("d-more").addEventListener("click", () => menu($("d-menu").hidden));
-  document.addEventListener("click", (e) => { if (!e.target.closest(".cv-more")) menu(false); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") menu(false); });
-  $("d-delete").addEventListener("click", () => { menu(false); $("d-del-box").hidden = false; $("d-del-go").focus(); });
-  $("d-del-keep").addEventListener("click", () => { $("d-del-box").hidden = true; });
-  $("d-del-go").addEventListener("click", async () => {
-    $("d-del-go").disabled = true;
-    try {
-      await rpc("drive_delete", { p_drive_id: drive.id });
-      location.href = `/club/?org=${encodeURIComponent(org.id)}`;
-    } catch (failure) {
-      $("d-said").textContent = failure.message;
-      $("d-del-go").disabled = false;
-    }
+  document.addEventListener("click", (e) => { if (!e.target.closest(".cv-more")) menu(false); if (!e.target.closest(".cd-rmenu")) closeRouteMenus(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { menu(false); closeRouteMenus(); } });
+  addEventListener("scroll", () => closeRouteMenus(), { passive: true });
+  // Asked twice (drive-delete.js), then back to the club.
+  $("d-delete").addEventListener("click", async () => {
+    menu(false);
+    if (await confirmDelete(drive)) location.href = `/club/?org=${encodeURIComponent(org.id)}`;
   });
 }
 

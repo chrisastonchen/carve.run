@@ -460,6 +460,10 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
   .cd-times-short b { font-family: var(--num); font-weight: 600; color: #EEF1EE; }
   .cd-day .cd-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
   .cd-day .cd-acts .go:only-child { grid-column: 1 / -1; }
+  /* The route menu fills its column; alone (Add a route ▾) the row. */
+  .cd-day .cd-acts .cd-rmenu .go { width: 100%; }
+  .cd-day .cd-acts .cd-rmenu:only-child { grid-column: 1 / -1; }
+  .cd-day .cd-acts .cd-note-link { grid-column: 1 / -1; justify-self: start; margin-left: 0; min-height: 36px; }
   .cd-day .cd-acts .go, .cd-share .go { height: 44px; padding: 0 8px; justify-content: center; font-size: 15px; font-weight: 800; }
   .cd-share { display: flex; flex-direction: column; align-items: stretch; gap: 10px; padding: 16px; }
   .cd-share > .cd-qr { display: none; order: 5; align-self: center; width: 140px; height: 140px; }
@@ -592,8 +596,24 @@ body:has(main.cv-dash.cd-glow) { background: radial-gradient(ellipse 70% 90% at 
 .cd-dlg p { margin: 0; color: #D3D9D5; }
 .cd-dlg form { position: absolute; right: 12px; top: 10px; }
 .cd-x { background: none; border: 0; color: #A3ACA6; font-size: 20px; cursor: pointer; width: 40px; height: 40px; }
-.cd-acts .cd-replace-row { flex-basis: 100%; display: flex; gap: 6px 20px; flex-wrap: wrap; margin: 4px 0 0; }
-.cd-acts .cd-replace { min-height: 32px; display: inline-flex; align-items: center; }
+/* A day's route controls (Chris, 11/25 night): one row, the choices behind a menu, the note a quiet link. */
+.cd-acts { align-items: center; }
+.cd-rmenu { position: relative; }
+.cd-rmenu-btn::after { content: ""; display: inline-block; width: 7px; height: 7px; margin: -3px 0 0 9px; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg); vertical-align: middle; }
+.cd-rmenu-btn[aria-expanded="true"]::after { margin-top: 3px; transform: rotate(-135deg); }
+.cd-rmenu-list { position: fixed; left: 0; right: auto; top: 0; z-index: 30; min-width: 220px; background: var(--raised); box-shadow: 0 12px 30px rgba(0, 0, 0, .45); }
+.cd-rmenu-list a:hover, .cd-rmenu-list button:hover, .cd-rmenu-list a:focus-visible, .cd-rmenu-list button:focus-visible { background: var(--paper-2); }
+.cd-acts .cd-note-link { align-self: center; margin-left: 6px; min-height: 44px; display: inline-flex; align-items: center; }
+/* Delete drive, asked twice (Chris, 11/25 night). */
+.cd-del-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.cd-del-row .textlink { align-self: center; }
+.cd-del-dlg.second h2 { color: #FF8A80; }
+.cd-del-said:empty { display: none; }
+/* The drive page's More ▾: a labelled button, easy to find (Chris missed the ⋯). */
+.cv-more-btn.cd-more-label { width: auto; padding: 0 16px; font-size: 15px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; }
+.cv-more-btn.cd-more-label::after { content: ""; width: 7px; height: 7px; margin-top: -4px; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+/* Club home's ⋯ on a drive: a clearer edge. */
+.cv-dash .v-drive-row .cv-more-btn, .cv-dash .cd-next .cv-more-btn { border-color: rgba(238, 241, 238, .35); color: #EEF1EE; }
 /* Choose from your routes (Chris, 11/25): the organizer's saved routes, a row each. */
 .cd-pick-dlg { width: min(520px, calc(100% - 32px)); max-height: min(640px, calc(100dvh - 48px)); }
 .cd-pick-dlg h2 { padding-right: 36px; }

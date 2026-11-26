@@ -1040,14 +1040,16 @@ async function startDriveDay() {
   try {
     const got = await day.load();
     driveDay = day;
-    // The drive page's Import a route (Chris, 11/25; &import): the day opens
-    // empty on Import, whatever start it would have had. Done with nothing
-    // brought in changes nothing; one brought in is a new route on the day.
+    // The drive page's Import a route (Chris, 11/25; &import) and a day's
+    // Change route ▾ Plan a new route (&new): the day opens empty, on Import
+    // or on Plan, whatever route or start it would have had. Done with
+    // nothing made changes nothing; one made is a new route on the day.
     // Changes kept from before stay as they are.
-    if (new URLSearchParams(location.search).has("import") && !got.kept) {
+    const fresh = new URLSearchParams(location.search);
+    if ((fresh.has("import") || fresh.has("new")) && !got.kept) {
       settle();
       plan = { ...blankPlan(), name: day.routeName(), leaveAt: plan.leaveAt };
-      startMode = "import";
+      if (fresh.has("import")) startMode = "import";
     }
     // Nothing to show yet: the club's area, else this browser's, else US West.
     if (!plan.start && !plan.end && !plan.path) openNear(got.near || (await browserSpot()));

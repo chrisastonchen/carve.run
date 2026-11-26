@@ -8,6 +8,7 @@
 import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
 import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=f405631cb6";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
+import { confirmDelete } from "/assets/drive-delete.js?v=7715c48736";
 import { organizersBox } from "/assets/club-organizers.js?v=3155e1381b";
 import { FINISH_SETUP, billsToday, unfinished } from "/assets/who-words.js?v=63b40f62a6";
 import { hideIntro, showIntro } from "/assets/club-intro.js?v=28ac815c05";
@@ -675,7 +676,8 @@ function row(d, routes) {
   return li;
 }
 
-/// A drive's ⋯ (Chris, 11/10): Duplicate, the new-drive form filled from it.
+/// A drive's ⋯ (Chris, 11/10): Duplicate, the new-drive form filled from it;
+/// Delete drive, asked twice (Chris, 11/25 night; drive-delete.js).
 function more(d) {
   const box = el("div", "cv-more");
   const btn = el("button", "cv-more-btn", "⋯");
@@ -689,7 +691,14 @@ function more(d) {
   const copy = el("a", "", "Duplicate");
   copy.setAttribute("role", "menuitem");
   copy.href = `/club/drive/?copy=${encodeURIComponent(d.id)}`;
-  menu.append(copy);
+  const gone = el("button", "", "Delete drive");
+  gone.type = "button";
+  gone.setAttribute("role", "menuitem");
+  gone.addEventListener("click", async () => {
+    closeMenus();
+    if (await confirmDelete(d)) await loadDrives();
+  });
+  menu.append(copy, gone);
   btn.addEventListener("click", () => {
     const open = menu.hidden;
     closeMenus();
