@@ -12,8 +12,8 @@
 // hidden, html.club-wait, while a signed-in visitor is checked).
 
 import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=96f92e7529";
-import { myOrgs, rpc, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
-import { dayText, timeText } from "/assets/club-words.js?v=f405631cb6";
+import { myOrgs, rpc, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
+import { dayText, timeText } from "/assets/club-words.js?v=0b7743112d";
 
 const segments = location.pathname.split("/").filter(Boolean);
 const params = new URLSearchParams(location.search);

@@ -530,3 +530,19 @@ export function welcomeLine(status, now = Date.now()) {
   const until = Number.isFinite(ends) && ends > now ? `Your free trial runs until ${new Date(ends).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}. ` : "";
   return `${until}Three steps to your first drive.`;
 }
+
+/// Delete this club, asked twice (Chris, 11/25 night: a club left at
+/// Checkout had no way out). Only a club that never had a plan, by its
+/// owner (0140's org_delete). The second step says what goes with it: its
+/// drives (DevOps, 11/25: option b; no line with none) and, when it has
+/// any, its other organizers' access.
+export function clubDeleteWords(name, drives = 0, others = 0) {
+  const what = name ? name : "this club";
+  const lines = [];
+  if (drives > 0) lines.push(`Its ${drives === 1 ? "drive" : `${drives} drives`}, ${drives === 1 ? "its" : "their"} days, sign-ins and notes go too. Drivers' links still open the routes.`);
+  if (others > 0) lines.push(`${others === 1 ? "Its other organizer loses" : `Its ${others} other organizers lose`} it, and invites stop working.`);
+  return {
+    first: { h: "Delete this club?", p: "It isn't set up yet, so nothing is billed. You can't get it back.", go: "Delete club" },
+    second: { h: `Delete ${what} for good?`, p: lines.length ? lines.join(" ") : "Nothing else goes with it.", go: "Yes, delete it" },
+  };
+}

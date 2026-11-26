@@ -5,13 +5,13 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
-import { firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=f405631cb6";
+import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
+import { clubDeleteWords, firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=0b7743112d";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { confirmDelete } from "/assets/drive-delete.js?v=3e8c28ba71";
-import { organizersBox } from "/assets/club-organizers.js?v=3155e1381b";
+import { confirmClubDelete, confirmDelete } from "/assets/drive-delete.js?v=b5efbd4c98";
+import { organizersBox } from "/assets/club-organizers.js?v=7b7eda63a1";
 import { FINISH_SETUP, billsToday, unfinished } from "/assets/who-words.js?v=63b40f62a6";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=28ac815c05";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=cbae308fce";
 import { forgetWho } from "/assets/who.js?v=f260ce6368";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
 import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
@@ -420,6 +420,8 @@ function renderStart() {
   $("v-trial-chip").textContent = `First ${trialDays(BY_TIER.club)} days free`;
   // A club made already, with no plan yet (Checkout left): its name stays.
   if (org && !$("v-name").value) $("v-name").value = org.name;
+  // …and its owner can delete it (Chris, 11/25 night), quietly, under the terms.
+  $("v-delete").hidden = !(org && org.owner === true && unfinished(org, CLUB_TIERS));
   nameTyped();
   $("v-start-changed").hidden = true;
   setTimeout(() => $("v-name").focus({ preventScroll: true }), 0);
@@ -459,6 +461,22 @@ function showTerms({ trial, terms, amount }) {
   // The price is on the line under it (Chris, 11/16: was "Start Club for $499").
   $("v-start-go").textContent = trial ? "Start free trial" : "Start Club";
   $("v-terms").textContent = terms || renewalTerms(BY_TIER.club, trial);
+}
+
+/// Delete this club (0140, through org-billing): asked twice, the second
+/// saying how many drives and other organizers go with it; then where
+/// someone with no club lands (or their other club).
+async function deleteClub() {
+  const [drives, members] = await Promise.all([
+    rpc("org_drives", { p_org_id: org.id }).catch(() => []),
+    rpc("org_members", { p_org_id: org.id }).catch(() => null),
+  ]);
+  const others = (members?.members || []).filter((m) => !m.owner).length;
+  const words = clubDeleteWords(org.name, Array.isArray(drives) ? drives.length : 0, others);
+  const gone = await confirmClubDelete(words, () => billing({ action: "delete", org_id: org.id }));
+  if (!gone) return;
+  forgetWho(); // the bar's My Clubs ▾ without it
+  location.href = "/club/";
 }
 
 /// The button waits for a name (O1 redesign); Enter starts it as a press does.
@@ -726,6 +744,7 @@ function closeMenus() {
 function wire() {
   $("v-start-form").addEventListener("submit", (e) => { e.preventDefault(); if (!$("v-start-go").disabled) startTrial(); });
   $("v-getapp-go").addEventListener("click", openGet);
+  $("v-delete").addEventListener("click", deleteClub);
   $("v-name").addEventListener("input", nameTyped);
   // Names from the club directory as it's typed (Chris via Product, 11/13).
   wireNames($("v-name"), $("v-names"), () => loadDirectory(select));

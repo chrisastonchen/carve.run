@@ -12,7 +12,7 @@
 // stands in until then.
 
 import "/assets/site-bar.js?v=1a5c8ec6a0";
-import { $, el, myOrgs, rpc, select, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
+import { $, el, myOrgs, rpc, select, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
 import { boxOf, matching, pictureOf, routeLine, savedGroups, thinLine } from "/assets/saved-words.js?v=b6e23e2eca";
 import { MAP_STYLE, NO_PHOTO, PHONE, addRoadLayers, railArrows } from "/assets/explore-map.js?v=8e77971e79";
 import { cardHTML as eventCard, finishPictures, pinElement } from "/assets/events.js?v=b133592880";

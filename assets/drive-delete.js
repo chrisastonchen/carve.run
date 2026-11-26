@@ -5,7 +5,7 @@
 // and their links stay, so a driver's link still opens the route, but not
 // the drive: no meet times, no change alerts, and no free Carve Apex (that
 // comes from the drive's dates).
-import { el, rpc } from "/assets/club-api.js?v=3d6e3c082a";
+import { el, rpc } from "/assets/club-api.js?v=2bbd1ab635";
 
 /// The second step's words, by the drive's name.
 export function deleteWords(name) {
@@ -36,6 +36,12 @@ export function removeWords(n, several) {
 export function confirmDelete(drive) {
   const words = deleteWords(drive.name);
   return ask([words.first, words.second], () => rpc("drive_delete", { p_drive_id: drive.id }), { busy: "Deleting…", failed: "Couldn't delete it. Try again." });
+}
+
+/// Delete this club: `words` (club-words.js clubDeleteWords) asked in
+/// turn, then `remove`. Resolves true once it's gone.
+export function confirmClubDelete(words, remove) {
+  return ask([words.first, words.second], remove, { busy: "Deleting…", failed: "Couldn't delete it. Try again.", cls: "cd-club-del-dlg" });
 }
 
 /// Asks once, then takes the route off the day: `remove` does it.

@@ -4,9 +4,9 @@
 // (org-billing). One plan (Chris, 11/10 afternoon): no Change plan, so
 // Cancel plan is the only change. Billing is the owner's alone.
 
-import { $, billing, myOrgs, rpc, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
-import { organizersBox } from "/assets/club-organizers.js?v=3155e1381b";
-import { billingLine, trialStatus } from "/assets/club-words.js?v=f405631cb6";
+import { $, billing, myOrgs, rpc, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
+import { organizersBox } from "/assets/club-organizers.js?v=7b7eda63a1";
+import { billingLine, trialStatus } from "/assets/club-words.js?v=0b7743112d";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };

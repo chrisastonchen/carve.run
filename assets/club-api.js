@@ -18,6 +18,7 @@ export const WORDS = {
   bad_input: "Something in that didn't work. Check it and try again.",
   not_found: "That wasn't found. It may have been deleted.",
   subscribed: "Your club already has a plan.",
+  has_plan: "This club has a plan now, so it can't be deleted here. Cancel it in Club settings.",
   not_configured: "Plans can't be bought yet. Try again soon.",
   needs_plan: "This needs a plan. Start one in Club settings.",
   date_taken: "That day has a drive already.",

@@ -35,6 +35,10 @@
 .o1-terms, .o1-said { max-width: 60ch; }
 .o1-said { margin-top: -22px; }
 .o1-said:empty { display: none; }
+/* Delete this club: quiet, under the terms (Chris, 11/25 night). */
+.o1-delete { justify-self: start; align-self: flex-start; padding: 0; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-3, #8C948F); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.o1-delete:hover { color: var(--ink-2, #B8BFBA); }
+.cv-o1 .o1-delete { margin-left: 42px; }
 .cv-o1 { --o1-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E"); }
 @media (max-width: 480px) {
   .cv-o1 { gap: 22px; padding: 22px 0 0; }
@@ -42,7 +46,7 @@
   .o1-said { margin-top: -12px; }
   .o1-q { gap: 10px; }
   .o1-n { transform: none; }
-  .cv-o1 .o1-name, .cv-o1 .o1-go, .cv-o1 .o1-terms, .cv-o1 .o1-said { margin-left: 0; }
+  .cv-o1 .o1-name, .cv-o1 .o1-go, .cv-o1 .o1-terms, .cv-o1 .o1-said, .cv-o1 .o1-delete { margin-left: 0; }
   .cp .cv-o1 .o1-name { width: 100%; }
 }
 

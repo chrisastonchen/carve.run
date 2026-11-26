@@ -6,8 +6,8 @@
 // server refuses anyone else (not_organizer). Pages never act on a GET:
 // the timers change only on a tap and a yes.
 
-import { $, el, rpc, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
-import { dayText } from "/assets/club-words.js?v=f405631cb6";
+import { $, el, rpc, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
+import { dayText } from "/assets/club-words.js?v=0b7743112d";
 import { dayReviews, dayTabs, dayTimes, earlierTimes, timerChanges, timersSaid, minutesText } from "/assets/club-report-words.js?v=805c8325f0";
 
 const q = new URLSearchParams(location.search);

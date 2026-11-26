@@ -15,12 +15,12 @@
 // Pages never act on a GET: every change is a tap.
 
 import { routeCopy, newShareToken } from "/plan/route-wire.js?v=7";
-import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=3d6e3c082a";
+import { $, el, insert, myOrgs, rpc, select, sessionUserId, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { confirmDelete, confirmRemove } from "/assets/drive-delete.js?v=3e8c28ba71";
+import { confirmDelete, confirmRemove } from "/assets/drive-delete.js?v=b5efbd4c98";
 import { timeSelects } from "/assets/club-time.js?v=02f4200f94";
-import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, libraryParts, libraryRows, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=f405631cb6";
+import { DEFAULT_MEET, TIME_MISSING, addDays, apexWindow, datesText, dayWhenProblem, inDays, zoneNow, leaveAfter, libraryParts, libraryRows, meetLeave, prerunDefault, dayText, blankPattern, formProblemAt, routeFacts, shapeSvg, statusChip, timeText, updatedAgo } from "/assets/club-words.js?v=0b7743112d";
 
 const q = new URLSearchParams(location.search);
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };

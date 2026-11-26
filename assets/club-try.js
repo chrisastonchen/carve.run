@@ -2,7 +2,7 @@
 // in, it goes straight to Start a club; signed out, the site's sign-in
 // first, then Start a club (as /car-clubs/, car-clubs.js).
 
-import { signedIn } from "/assets/club-api.js?v=3d6e3c082a";
+import { signedIn } from "/assets/club-api.js?v=2bbd1ab635";
 
 const START = "/club/?start=1";
 
