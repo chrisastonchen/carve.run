@@ -61,7 +61,7 @@
    "since": "2026-11-23"
   },
   "highway-120-east": {
-   "coverage": 0.02,
+   "coverage": 0.17,
    "since": "2026-11-14"
   },
   "horseshoe-meadow-road": {
@@ -96,10 +96,6 @@
    "coverage": 0.6,
    "since": "2026-11-06"
   },
-  "macquarie-pass": {
-   "coverage": 0.15,
-   "since": "2026-11-22"
-  },
   "mckenzie-pass": {
    "coverage": 0.01,
    "since": "2026-11-01"
@@ -111,10 +107,6 @@
   "natchez-trace-tennessee": {
    "coverage": 0.7,
    "since": "2026-11-21"
-  },
-  "needles-highway": {
-   "coverage": 0.47,
-   "since": "2026-11-24"
   },
   "north-cape-coastal-drive": {
    "coverage": 0.71,
@@ -154,5 +146,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-26T14:08:55Z"
+ "updated": "2026-11-27T14:09:03Z"
 }
