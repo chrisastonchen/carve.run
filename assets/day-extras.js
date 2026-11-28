@@ -137,10 +137,10 @@ async function drawHeadline(drive) {
 async function drawAlbum() {
   const scroll = document.querySelector(".rv .scroll");
   if (!scroll || document.getElementById("dx-album")) return;
-  if (!document.querySelector('link[href^="/assets/club-refresh.css?v=59b2dab200"]')) {
+  if (!document.querySelector('link[href^="/assets/club-refresh.css?v=3a623aac72"]')) {
     const css = document.createElement("link");
     css.rel = "stylesheet";
-    css.href = "/assets/club-refresh.css?v=59b2dab200";
+    css.href = "/assets/club-refresh.css?v=3a623aac72";
     document.head.append(css);
   }
   // Albums off (phase 1): About this drive only, from drive_album's read.

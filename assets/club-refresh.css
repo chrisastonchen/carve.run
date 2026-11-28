@@ -27,6 +27,36 @@ html.club-look .cv .cv-back { color: var(--club-text); }
 html.club-look .cv .cl-cust, html.club-look .cv .cd-settings { color: var(--club-text); }
 html.club-look .cd-meter i, html.club-look .cd-bar i { background: var(--club-text); }
 html.club-look .cd-chip.ok, html.club-look .cv-dash .v-pill.ready, html.club-look .dv-chip.ok { color: var(--club-text); background: color-mix(in srgb, var(--club-text) 16%, transparent); }
+/* Every accent on the organizer pages in the club's color (Chris via DevOps,
+   11/28: Plan a drive's numbers, name field and chosen card stayed green).
+   The dashboard's tokens first: a line, a ring or text is --club-text (light
+   enough on the night page); a fill under #0E1210 is --club-text too, so a
+   dark club color still gets readable ink. Then the rules with Carve's
+   mint written in. The swatches and checkout keep Carve's own. */
+html.club-look body:has(main.cv-dash) { --act: var(--club-text); --green-ink: var(--club-text); --green: var(--club-text); }
+html.club-look .cv-dash .cd-back, html.club-look .cd-ask .cd-back, html.club-look .cd-band .cd-back, html.club-look .cd-n,
+html.club-look .cd-band .cd-eyebrow, html.club-look .cd-welcome .cd-eyebrow, html.club-look .cd-trial .cd-lbl, html.club-look .cv .cd-seqn,
+html.club-look .cd-qr-show, html.club-look .cv-dash .o1-n, html.club-look .cd-fold-n, html.club-look .dv-pill, html.club-look .cd-getapp-go,
+html.club-look .rg-ok, html.club-look .rg-saved, html.club-look .rg-new, html.club-look .rg-st.ok { color: var(--club-text); }
+html.club-look .cp .cd-ask .cd-big { color: var(--club-text); border-bottom-color: var(--club-text); caret-color: var(--club-text); }
+html.club-look .cp.cv-dash .cv-o1 .o1-name { border-bottom-color: var(--club-text); caret-color: var(--club-text); }
+html.club-look .cd-pick:focus-within, html.club-look .cv-dash .cd-tsel select:focus-visible { box-shadow: 0 0 0 2px var(--club-text); }
+html.club-look .cd-opt:has([aria-pressed="true"]) { border-color: var(--club-text); box-shadow: inset 0 0 0 1.5px var(--club-text); }
+html.club-look .cv-dash input[type="text"]:focus, html.club-look .cv-dash input[type="email"]:focus, html.club-look .cv-dash input[type="search"]:focus,
+html.club-look .cv-dash select:focus, html.club-look .cv-dash textarea:focus { border-color: var(--club-text); box-shadow: 0 0 0 2px color-mix(in srgb, var(--club-text) 45%, transparent); }
+html.club-look .cv-dash .cd-tsel select:focus { box-shadow: none; background: color-mix(in srgb, var(--club-text) 18%, transparent); }
+html.club-look .cv-dash .cd-tsel select:focus-visible { box-shadow: 0 0 0 2px var(--club-text); }
+html.club-look .cd-area textarea:focus, html.club-look .cd-drop.over, html.club-look .rg-chip[aria-pressed="true"], html.club-look .rg-cand:hover, html.club-look .rg-group.over { border-color: var(--club-text); }
+html.club-look .rg-chip[aria-pressed="true"] { color: var(--club-text); }
+html.club-look .cd-num { border-color: var(--club-text); color: var(--club-text); }
+html.club-look .cd-step.done .cd-num, html.club-look .cd-meter i, html.club-look .cv-dash .o1-chip { background: var(--club-text); color: #0E1210; }
+html.club-look .rg-mbody .go { background: var(--club); color: var(--club-ink); }
+html.club-look .cd-getapp-go { border-color: color-mix(in srgb, var(--club-text) 50%, transparent); }
+html.club-look .cd-getapp-go:focus-visible, html.club-look .rg-pick .rg-file:focus-visible + .go { outline-color: var(--club-text); }
+html.club-look .rg-find-q:focus { outline-color: var(--club-text); }
+html.club-look .lk-opt.on, html.club-look .ck-unit:hover, html.club-look .rg-group.over { box-shadow: 0 0 0 3px color-mix(in srgb, var(--club-text) 18%, transparent); }
+html.club-look .rg-hit { animation-name: rg-hit-club; }
+@keyframes rg-hit-club { 0%, 40% { background: color-mix(in srgb, var(--club-text) 28%, transparent); box-shadow: 0 0 0 2px var(--club-text); } 100% { background: transparent; box-shadow: none; } }
 
 /* ── the drive page (mock v13) ── */
 .dv { width: 100%; }

@@ -1087,7 +1087,7 @@ const RouteProfile = (() => {
       // A club drive's day: its weather and road conditions (day-extras.js),
       // only with CLUB_V2 on: the live site, without club-flags.js or with it
       // off, asks route_drive nothing.
-      import("/plan/club-flags.js?v=5").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=25cac9059a"); }).catch(() => {});
+      import("/plan/club-flags.js?v=5").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=a1d21fbb97"); }).catch(() => {});
       if (CLUB) import("/assets/club-share.js?v=1f908d760d");
       // A club drive's day, to a driver: the drive pass (P1).
       else import("/assets/route-pass.js?v=080558f767");
