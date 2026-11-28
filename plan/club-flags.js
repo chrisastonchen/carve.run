@@ -17,6 +17,10 @@ export const DRIVE_PASS_UI = false;
 /// no Apex words. On only when both store apps with route Apex are live, on
 /// Chris's yes that day.
 export const ROUTE_APEX_UI = true;
+/// The drive album on the drive page and day links (0141/0142). Off for
+/// phase 1 (Chris, 11/26): the privacy text doesn't cover albums yet, and
+/// 0144 takes the album's writes away from the API. About this drive stays.
+export const ALBUM_UI = false;
 export const CUT = Object.freeze({
   attendees: CLUB_V2,
   invites: CLUB_V2,

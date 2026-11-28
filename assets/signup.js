@@ -5,9 +5,9 @@
 // the drive (App Dev, 11/9). The questions and their checks are
 // signup-form.js's. Nothing is sent until the last question's Sign up.
 
-import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=96f92e7529";
+import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=9c9566882f";
 import { STYLES, driveLine, payload, problem, questions } from "/assets/signup-form.js?v=9df381390a";
-import { CLUB_V2 } from "/plan/club-flags.js?v=4";
+import { CLUB_V2 } from "/plan/club-flags.js?v=5";
 import { linkEnded } from "/assets/link-ended.js?v=930ada191b";
 
 const $ = (id) => document.getElementById(id);

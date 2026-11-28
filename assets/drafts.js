@@ -1,9 +1,9 @@
 // carve.run/drafts/ (board N6, Chris 11/11): the account's drafts, the
 // routes being planned and not yet saved, newest first. Open goes back to
 // the planner with it; Delete asks twice.
-import { DRAFT_CSS, drawDrafts, draftsMine } from "/assets/drafts-list.js?v=1e63fd4ae0";
+import { DRAFT_CSS, drawDrafts, draftsMine } from "/assets/drafts-list.js?v=03afa25bf9";
 import { WORDS, countText } from "/assets/drafts-words.js?v=45d294d9b7";
-import { SESSION_KEY, store } from "/assets/carve-session.js?v=96f92e7529";
+import { SESSION_KEY, store } from "/assets/carve-session.js?v=9c9566882f";
 
 const $ = (id) => document.getElementById(id);
 const style = document.createElement("style");

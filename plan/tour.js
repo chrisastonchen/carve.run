@@ -15,7 +15,7 @@ export const STEPS = [
   { key: "pills", title: "Find places to stop", body: "Gas, coffee, food, viewpoints and more. Each one has + Stop to add it to your drive." },
   { key: "roads", title: "Take the great roads", body: "Dashed violet lines are great driving roads. Click one to add it to your route." },
   // Signed in (every club day too), no "No account until you save" (Product, 11/20).
-  { key: "save", title: "Save and get the link", body: "No account until you save. Open the link on your phone to drive it in Carve.", signedInBody: "Open the link on your phone to drive it in Carve." },
+  { key: "save", title: "Save Route", body: "No account until you save. Open the link on your phone to drive it in Carve.", signedInBody: "Open the link on your phone to drive it in Carve." },
 ];
 
 /// The steps this planner has the controls for (the map and the roads are
@@ -97,7 +97,8 @@ export function startTour(h) {
   function fill() {
     const step = steps[at];
     card.querySelector("#tour-count").textContent = `${step.n} of ${step.of}`;
-    card.querySelector("#tour-title").textContent = step.title;
+    // Save's step says the button as it reads (Save Route, or a club day's Save and get the link).
+    card.querySelector("#tour-title").textContent = step.key === "save" ? (document.getElementById("save")?.textContent.trim() || step.title) : step.title;
     card.querySelector("#tour-body").textContent = step.key === "map" && menuOpen ? step.menuBody : step.body;
     next.textContent = step.last ? "Start planning" : "Next";
     lastKey = "";

@@ -4,8 +4,8 @@
 // Support); this draws it from who-words.js navFor for whoever's looking,
 // signed out too (Plan ▾, Chris 11/12): Plan ▾ and My Clubs ▾ menus,
 // Saved, Upgrade.
-import { SESSION_CHANGED, who, whoHint, whoNow } from "/assets/who.js?v=f260ce6368";
-import { SESSION_KEY } from "/assets/carve-session.js?v=96f92e7529";
+import { SESSION_CHANGED, who, whoHint, whoNow } from "/assets/who.js?v=7f6eff3a19";
+import { SESSION_KEY } from "/assets/carve-session.js?v=9c9566882f";
 import { currentKey, navFor } from "/assets/who-words.js?v=63b40f62a6";
 
 const CSS = `

@@ -4,8 +4,8 @@
 // goes straight there. Log in signs in, then the club's home; signed in, it
 // opens /club/.
 
-import { showIntro } from "/assets/club-intro.js?v=cbae308fce";
-import { signedIn } from "/assets/club-api.js?v=2bbd1ab635";
+import { showIntro } from "/assets/club-intro.js?v=602f4ac048";
+import { signedIn } from "/assets/club-api.js?v=ab5108fda2";
 
 const START = "/club/?start=1";
 

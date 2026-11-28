@@ -546,3 +546,71 @@ export function clubDeleteWords(name, drives = 0, others = 0) {
     second: { h: `Delete ${what} for good?`, p: lines.length ? lines.join(" ") : "Nothing else goes with it.", go: "Yes, delete it" },
   };
 }
+
+// ── A club's look (Chris via Product, 11/25-26: the club pages refresh) ──
+
+/// Carve green, the swatch that keeps today's header; then four more and a
+/// pale grey (the mock's v13 swatches). The list's own color goes first.
+export const CARVE_GREEN = "#6FD39A";
+export const SWATCHES = [CARVE_GREEN, "#2F6FD6", "#E0A12E", "#8C6BD8", "#D8DDE0"];
+/// Carve's stock covers (coast is today's band, the default).
+// The stored address of a stock cover, never stamped (stamp-site.py
+// versions the paths it finds; a club keeps the plain one).
+const STOCK = (file) => ["https://carve.run", "assets", "club", file].join("/");
+export const STOCK_COVERS = [
+  { key: "coast", name: "Coast", url: STOCK("band-coast.jpg") },
+  { key: "desert", name: "Desert", url: STOCK("desert.jpg") },
+  { key: "forest", name: "Forest", url: STOCK("forest.jpg") },
+];
+export const DEFAULT_COVER = STOCK_COVERS[0].url;
+
+const hex6 = (c) => (/^#[0-9a-f]{6}$/i.test(String(c || "")) ? String(c).toUpperCase() : null);
+const channels = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+/// WCAG relative luminance, 0 (black) to 1 (white).
+export function luminance(color) {
+  const h = hex6(color);
+  if (!h) return null;
+  const [r, g, b] = channels(h).map((v) => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+/// `color` mixed toward white by `t` (0 to 1).
+export function lighten(color, t) {
+  const h = hex6(color);
+  if (!h) return null;
+  return "#" + channels(h).map((v) => Math.round(v + (255 - v) * t).toString(16).padStart(2, "0")).join("").toUpperCase();
+}
+
+/// What a club color paints: `club` (buttons, header), `ink` (text on it:
+/// dark on a light color), `text` (the color as text on the dark page,
+/// lightened when it's too dark to read: the mock's #B3162B reads #F08A8F),
+/// and whether the header keeps Carve's own (no color, or Carve green).
+export function lookColors(color) {
+  const club = hex6(color);
+  if (!club || club === CARVE_GREEN) return { club: null, ink: null, text: null, carve: true, light: false };
+  const lum = luminance(club);
+  const light = lum > 0.4;
+  let text = club;
+  for (let t = 0.15; luminance(text) < 0.3 && t <= 0.75; t += 0.15) text = lighten(club, t);
+  return { club, ink: light ? "#0E1210" : "#FFFFFF", text, carve: false, light };
+}
+
+/// A stored picture as the page loads it: carve.run's own by its path (so a
+/// local preview shows them too), anything else as it is.
+export const lookSrc = (url) => (typeof url === "string" ? url.replace(/^https:\/\/carve\.run(?=\/)/, "") : "");
+
+/// The club's line over its name: the parent club when it's on the list and
+/// a region is linked; the name large: the region's, else the club's own.
+export function clubTitle(org) {
+  const region = org?.region_name || "";
+  return region && org?.club_name ? { kicker: org.club_name, name: region } : { kicker: "", name: org?.name || "Your club" };
+}
+
+/// The album's words (drive_album, 0142: anyone signed in with the drive's
+/// link adds, any time): `empty` with no photos, `note` over the photos.
+export function albumWords(album) {
+  switch (album?.refusal) {
+    case "sign_in": return { empty: "No photos yet. Sign in to add yours.", note: "" };
+    case "full": return { empty: "", note: `You've added ${album.most || 20} photos, the most one person can.` };
+    default: return { empty: album?.organizer ? "No photos yet. Add yours; anyone with the drive's link can sign in and add theirs." : "No photos yet. Add yours.", note: "" };
+  }
+}

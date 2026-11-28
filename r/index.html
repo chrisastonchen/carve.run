@@ -1087,20 +1087,20 @@ const RouteProfile = (() => {
       // A club drive's day: its weather and road conditions (day-extras.js),
       // only with CLUB_V2 on: the live site, without club-flags.js or with it
       // off, asks route_drive nothing.
-      import("/plan/club-flags.js?v=4").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=fa4eaa9397"); }).catch(() => {});
-      if (CLUB) import("/assets/club-share.js?v=4fd63f1316");
+      import("/plan/club-flags.js?v=5").then((f) => { if (f.CLUB_V2) import("/assets/day-extras.js?v=25cac9059a"); }).catch(() => {});
+      if (CLUB) import("/assets/club-share.js?v=1f908d760d");
       // A club drive's day, to a driver: the drive pass (P1).
-      else import("/assets/route-pass.js?v=199af1439f");
+      else import("/assets/route-pass.js?v=080558f767");
       // Open in Carve on a club drive's day, on a phone (club-open.js).
-      import("/assets/club-open.js?v=85dddbc634").catch(() => document.documentElement.classList.remove("club-wait"));
+      import("/assets/club-open.js?v=5ee8ea8166").catch(() => document.documentElement.classList.remove("club-wait"));
     } else {
       document.getElementById("missing").textContent =
         "This route couldn’t be loaded. The link may have been removed, or you may be offline.";
     }
   })();
 </script>
-<script type="module" src="/assets/route-view.js?v=7e4764960b"></script>
-<script type="module" src="/assets/share-plan.js?v=8fa3a7821b"></script>
+<script type="module" src="/assets/route-view.js?v=a27c691920"></script>
+<script type="module" src="/assets/share-plan.js?v=7c67426f23"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
 <script src="/plan/vendor/maplibre-gl.js?v=471" defer></script>
 <script>
@@ -1141,6 +1141,6 @@ const RouteProfile = (() => {
     return true;
   }
 </script>
-<script src="/assets/carve-site.js?v=1e74df30bd" defer></script>
+<script src="/assets/carve-site.js?v=e6092b7e6a" defer></script>
 </body>
 </html>

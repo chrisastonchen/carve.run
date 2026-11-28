@@ -88,7 +88,7 @@ function wireBar() {
   });
   loadProfile();
   // The bell, loaded only for someone signed in.
-  import("/assets/notify-bell.js?v=9fa8b18a97").then((m) => m.mountBell()).catch(() => {});
+  import("/assets/notify-bell.js?v=a71e6a88b5").then((m) => m.mountBell()).catch(() => {});
 }
 
 /// The planner's account, as the planner shows it: username and picture.

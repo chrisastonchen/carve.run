@@ -1,0 +1,328 @@
+/* The club pages refresh (Chris via Product, 11/25-26; mock v13): a club's
+   color, logo and cover on its pages; the drive page's hero, its left
+   column (About, each day's route card, Groups, the Album) and its pinned
+   right column (Share, Drivers); the club page's cover and next drive; the
+   new Start a club steps and Customize. club-look.js sets --club (the
+   color), --club-ink (text on it) and --club-text (the color as text on
+   the dark page), and html.club-look when the club has its own color. */
+
+:root { --dv-card: #161C19; --dv-card2: #1B2320; --dv-line: #26302A; --dv-dim: #7F8C85; --dv-ink2: #B9C4BD; }
+
+/* ── the club's color ── */
+html.club-look .bar { background: var(--club); box-shadow: none; }
+html.club-look.club-light .bar { color: #0E1210; }
+html.club-look.club-light .bar .brand, html.club-look.club-light .bar .links a { color: #0E1210; }
+html.club-look.club-light .bar .who-btn, html.club-look.club-light .bar .menu-btn { background: rgba(14, 18, 16, .1); color: #0E1210; }
+/* The rest of the bar on a light club color (QA S2, 11/26): Plan and My Clubs (.nav-b, site-nav.js), the bell, hovers and the current page. */
+html.club-look.club-light .bar .links .nav-b, html.club-look.club-light .bar .bell { color: #0E1210; }
+html.club-look.club-light .bar .links a:hover, html.club-look.club-light .bar .links .nav-b:hover,
+html.club-look.club-light .bar .links .nav-b[aria-expanded="true"] { color: #0E1210; background: rgba(14, 18, 16, .08); }
+html.club-look.club-light .bar .links a[aria-current], html.club-look.club-light .bar .links .nav-b[aria-current="page"] { color: #0E1210; background: rgba(14, 18, 16, .12); }
+html.club-look.club-light .bar .bell { background: rgba(14, 18, 16, .1); }
+html.club-look.club-light .bar .bell:hover, html.club-look.club-light .bar .bell[aria-current] { background: rgba(14, 18, 16, .18); }
+html.club-look .cv .go:not(.ghost):not(.danger):not(.off):not([disabled]), html.club-look .dv .go:not(.ghost):not(.danger):not(.off) { background: var(--club); color: var(--club-ink); }
+html.club-look .cv .textlink, html.club-look .cv-dash .textlink, html.club-look .dv .textlink, html.club-look .dv .linkish { color: var(--club-text); }
+html.club-look .cv .cv-back { color: var(--club-text); }
+/* The rest of the club page in its color (QA, 11/26): Customize, Club settings, the plan meter and bars, the Ready chip. */
+html.club-look .cv .cl-cust, html.club-look .cv .cd-settings { color: var(--club-text); }
+html.club-look .cd-meter i, html.club-look .cd-bar i { background: var(--club-text); }
+html.club-look .cd-chip.ok, html.club-look .cv-dash .v-pill.ready, html.club-look .dv-chip.ok { color: var(--club-text); background: color-mix(in srgb, var(--club-text) 16%, transparent); }
+
+/* ── the drive page (mock v13) ── */
+.dv { width: 100%; }
+.cp.cv:has(.dv:not([hidden])) { max-width: none; padding: 0; }
+.dv-hero { position: relative; min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; padding: 26px 80px 30px; background: var(--hero, none) center / cover no-repeat, #1E2622; color: #fff; isolation: isolate; }
+.dv-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(14,18,16,.35) 0%, rgba(14,18,16,0) 30%, rgba(14,18,16,.45) 62%, #0E1210 100%); }
+.dv-top { display: flex; align-items: center; gap: 10px; }
+.dv-top .grow { flex: 1; }
+.dv-hero .dv-back, .cv .dv-hero a.dv-back { color: #fff; }
+.dv-back { display: inline-flex; align-items: center; gap: 10px; color: #fff; font-weight: 800; text-decoration: none; font-size: 16px; }
+.dv-back:hover .dv-club { text-decoration: underline; }
+.dv-logo { width: 30px; height: 30px; border-radius: 7px; background: #fff; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; flex: none; }
+.dv-logo img { width: 100%; height: 100%; object-fit: contain; padding: 2px; box-sizing: border-box; }
+.dv-logo.letter, .cl-logo.letter { background: var(--club, #6FD39A); color: var(--club-ink, #0E1210); font-weight: 900; }
+.glass { background: rgba(14, 18, 16, .5); border: 1px solid rgba(255, 255, 255, .22); color: #fff; border-radius: 18px; padding: 7px 14px; font: inherit; font-weight: 800; font-size: 14px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.glass:hover { background: rgba(14, 18, 16, .7); }
+.dv-more { position: relative; margin: 0; }
+.dv-more .cv-menu { right: 0; top: 44px; }
+.dv-more .cd-more-label { width: auto; height: auto; }
+.dv-in { max-width: 900px; }
+.dv-kick { margin: 0; font-size: 14px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; opacity: .92; }
+.cp .dv-in h1 { font-size: clamp(40px, 6vw, 68px); font-weight: 900; margin: 8px 0 12px; letter-spacing: -.03em; line-height: 1; color: #fff; }
+.dv-pill { display: inline-block; font-size: 13px; font-weight: 800; border-radius: 14px; padding: 4px 11px; background: rgba(14, 18, 16, .7); color: #6FD39A; }
+.dv-pill.warn { color: #F2C14E; }
+.dv-pill.done { color: #DDE4DF; }
+/* Ready to share in the club's color (QA S3, 11/26), as the chips. */
+html.club-look .dv-pill.ok { color: var(--club-text); }
+.dv #d-said:empty { display: none; }
+.dv #d-said { margin: 14px 80px 0; }
+.dv-body { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 40px; padding: 30px 80px 60px; align-items: start; }
+.dv-main { display: flex; flex-direction: column; gap: 34px; min-width: 0; }
+.dv-side { position: sticky; top: calc(var(--bar, 64px) + 20px); display: flex; flex-direction: column; gap: 16px; }
+.dv-sec { min-width: 0; }
+.dv-head { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; }
+.dv-head .dv-lbl { margin: 0; }
+.dv-head > :last-child:not(:first-child) { margin-left: auto; }
+.cp .dv-lbl, .dv-lbl { font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--dv-dim); margin: 0 0 12px; }
+.dv-k { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--dv-dim); margin: 0; display: block; }
+.dv-chip { font-size: 12.5px; font-weight: 800; border-radius: 12px; padding: 3px 10px; background: #2B3530; color: var(--dv-ink2); }
+.dv-chip.ok { color: #6FD39A; background: rgba(111, 211, 154, .14); }
+.dv-empty { border: 1.5px dashed #34403A; border-radius: 16px; padding: 18px 20px; color: var(--dv-ink2); margin: 0; }
+.dv-about p { margin: 0 0 14px; font-size: 19px; line-height: 1.6; color: #EEF2EF; white-space: pre-wrap; }
+.dv-about p:last-child { margin-bottom: 0; }
+.dv-about.dv-empty .textlink { display: inline; }
+.dv-about-form { display: flex; flex-direction: column; gap: 10px; }
+.dv-about-form textarea, .dv-notes-in { width: 100%; box-sizing: border-box; border: 1.5px solid #34403A; border-radius: 14px; background: var(--dv-card2); color: #EEF2EF; font: inherit; font-size: 16px; line-height: 1.45; padding: 12px 14px; resize: vertical; }
+.dv-about-form textarea:focus, .dv-notes-in:focus { outline: none; border-color: var(--club, #6FD39A); }
+.dv-about-do { display: flex; align-items: center; gap: 16px; justify-content: flex-end; }
+.dv-about-do .dv-count { margin-right: auto; }
+.dv-count { font-family: "Oxanium", "Figtree", sans-serif; font-size: 13px; color: var(--dv-dim); }
+.dv .cd-seq.dv-day { display: block; }
+.dv-day + .dv-day { margin-top: 22px; }
+.dv-day-h { margin: 0 0 10px; font-size: 16px; font-weight: 800; color: #EEF2EF; }
+.dv-rc { display: flex; flex-direction: column; background: var(--dv-card); border: 1px solid var(--dv-line); border-radius: 20px; overflow: visible; }
+.cd-day.dv-rc { grid-template-columns: none; }
+.dv-map { position: relative; height: 330px; border-radius: 20px 20px 0 0; overflow: hidden; background: #1E2622; }
+.dv-rc.unplanned .dv-map { height: 160px; display: flex; align-items: center; justify-content: center; color: var(--dv-dim); font-weight: 700; }
+.dv-map > svg, .dv-map > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dv-map .cd-rmenu { position: absolute; right: 14px; top: 12px; z-index: 3; }
+.dv-ovf { width: 40px; height: 40px; border-radius: 50%; background: rgba(14, 18, 16, .7); border: 1px solid rgba(255, 255, 255, .22); color: #fff; font: inherit; font-weight: 900; font-size: 16px; letter-spacing: 1px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.dv-ovf.cd-rmenu-btn::after { display: none; }
+.dv-rc-body { padding: 0; display: flex; flex-direction: column; }
+.dv-dets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 18px 24px; border-bottom: 1px solid var(--dv-line); gap: 12px; }
+.dv-det { min-width: 0; }
+.dv-det .dv-k { margin-bottom: 2px; }
+.dv-det b { display: block; font-size: 20px; font-weight: 800; color: #EEF2EF; overflow-wrap: anywhere; }
+.dv-det .textlink { font-size: 17px; }
+.dv-notes { padding: 14px 24px 18px; }
+/* Route notes (Chris, 11/26): read on the card, Edit or Add route notes opening the window. */
+.dv-note-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dv-note-edit { font-size: 15px; font-weight: 800; min-height: 44px; }
+.dv-note-text { margin: 2px 0 0; color: #EEF2EF; font-size: 16px; line-height: 1.45; white-space: pre-line; overflow-wrap: anywhere; }
+.dv-note-add { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid #34403A; background: none; color: #EEF2EF; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; }
+.dv-note-add:hover, .dv-note-add:focus-visible { border-color: var(--club, #6FD39A); }
+.dv-note-dlg { width: min(560px, calc(100vw - 32px)); box-sizing: border-box; }
+.dv-note-dlg[open] { display: flex; flex-direction: column; gap: 12px; }
+.dv-note-dlg:focus { outline: none; }
+.dv-note-what { color: #A3ACA6 !important; }
+.dv-note-label { font-weight: 800; }
+.dv-note-label .dim { font-weight: 400; color: #A3ACA6; }
+.dv-note-box { position: relative; }
+.dv-note-box .dv-count { position: absolute; right: 12px; bottom: 10px; font-size: 13px; color: #A3ACA6; }
+.dv-note-box textarea { padding-bottom: 30px; }
+.dv-note-hint { font-size: 14px; color: #A3ACA6 !important; }
+.dv-rc.unplanned .dv-rc-body { padding: 18px 24px; gap: 12px; }
+.dv-latest { margin: 10px 2px 0; color: var(--dv-dim); font-size: 14px; }
+.ck-groups .ck-g { background: var(--dv-card); border: 1px solid var(--dv-line); border-radius: 20px; padding: 18px 22px; }
+.ck-groups .ck-g p { color: var(--dv-ink2); margin: 0 0 14px; }
+.ck-groups .ck-g b { display: block; margin-bottom: 4px; }
+.dv-card { background: var(--dv-card); border: 1px solid var(--dv-line); border-radius: 20px; padding: 24px; }
+.dv-share-h { font-size: 22px; font-weight: 900; margin: 0 0 4px; color: #EEF2EF; }
+.dv-card p { margin: 0 0 16px; color: var(--dv-ink2); font-size: 15px; }
+.dv-qr-wrap { margin: 0 auto 18px; text-align: center; }
+.dv-qr { display: block; width: 168px; height: 168px; padding: 16px; background: #fff; border-radius: 18px; margin: 0 auto; }
+.dv-qr svg { width: 100%; height: 100%; display: block; }
+.dv-qr-day { margin: 8px 0 0 !important; font-size: 13px !important; }
+.dv-link { display: flex; align-items: center; gap: 10px; background: var(--dv-card2); border: 1px solid var(--dv-line); border-radius: 14px; padding: 6px 6px 6px 14px; }
+.dv-link + .dv-link { margin-top: 8px; }
+.dv-link-day { font-size: 12px; font-weight: 800; color: var(--dv-dim); flex: none; }
+.dv-link-t { flex: 1; min-width: 0; font-weight: 700; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #EEF2EF; background: none; padding: 0; margin: 0; }
+.dv-link .go.dv-copy { height: 38px; padding: 0 16px; font-size: 14.5px; flex: none; }
+.dv .dv-share .dv-share-btn, .dv .dv-share .dv-qr-show { display: none; }
+.dv-opened { margin: 8px 0 10px !important; }
+.dv-opened b { color: #EEF2EF; font-size: 22px; font-family: "Oxanium", "Figtree", sans-serif; }
+.dv-pr-line { margin: 0 0 6px !important; font-size: 14px !important; }
+/* After the drive: About first, the album under it, then the routes. */
+.dv.past .dv-about-sec { order: 1; }
+.dv.past .dv-album-sec { order: 2; }
+.dv.past .dv-routes-sec { order: 3; }
+.dv.past .dv-groups-sec { order: 4; }
+.dv.past .dv-map { height: 240px; }
+
+/* ── the album ── */
+.dv-album { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.dv-ph { position: relative; margin: 0; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #1E2622; }
+.dv-ph.wide { grid-column: span 2; grid-row: span 2; }
+.dv-ph a, .dv-ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.dv-ph.hidden img { opacity: .35; }
+.dv-ph-tag { position: absolute; left: 8px; top: 8px; font-size: 12px; font-weight: 800; background: rgba(14, 18, 16, .75); color: #F2C14E; border-radius: 8px; padding: 2px 8px; }
+.dv-ph-acts { position: absolute; right: 6px; bottom: 6px; display: flex; gap: 6px; opacity: 0; transition: opacity .15s; }
+.dv-ph:hover .dv-ph-acts, .dv-ph:focus-within .dv-ph-acts { opacity: 1; }
+.dv-ph-act { border: 0; border-radius: 10px; padding: 5px 10px; background: rgba(14, 18, 16, .8); color: #fff; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+.dv-note, .dv-said { color: var(--dv-ink2); margin: 0 0 12px; }
+.dv-said { margin-top: 10px; }
+.go.dv-add { height: 38px; padding: 0 16px; font-size: 14.5px; }
+.dv-phone-only, .cv-menu .dv-phone-only { display: none; }
+
+/* ── a phone (390): one column, Share first; Photo inside More ── */
+@media (max-width: 699px) {
+  .dv-hero { min-height: 270px; padding: 14px 16px 16px; }
+  .dv-club, .dv-photo-btn { display: none; }
+  .dv-phone-only, .cv-menu .dv-phone-only { display: block; }
+  .cp .dv-in h1 { font-size: 34px; margin: 6px 0 10px; }
+  .dv-kick { font-size: 11.5px; }
+  .dv #d-said { margin: 12px 16px 0; }
+  .dv-body { display: flex; flex-direction: column; gap: 22px; padding: 16px 16px 60px; }
+  .dv-main, .dv-side { display: contents; }
+  .dv-share { order: 1; }
+  .dv-about-sec { order: 2; }
+  .dv-routes-sec { order: 3; }
+  .dv-groups-sec { order: 4; }
+  .dv-drivers { order: 5; }
+  .dv-album-sec { order: 6; }
+  .dv.past .dv-share { order: 1; }
+  .dv.past .dv-about-sec { order: 2; }
+  .dv.past .dv-album-sec { order: 3; }
+  .dv.past .dv-routes-sec { order: 4; }
+  .dv.past .dv-groups-sec { order: 5; }
+  .dv.past .dv-drivers { order: 6; }
+  .dv-card { padding: 18px; box-sizing: border-box; max-width: 100%; min-width: 0; }
+  .dv .dv-share .dv-share-btn { display: flex; width: 100%; box-sizing: border-box; height: 48px; justify-content: center; margin-bottom: 12px; }
+  .dv-share .dv-qr-wrap { display: none; margin: 12px auto 4px; }
+  .dv-share.qr-on .dv-qr-wrap { display: block; }
+  .dv .dv-share .dv-qr-show { display: block; margin-top: 12px; border-top: 1px solid var(--dv-line); padding-top: 12px; width: 100%; text-align: left; }
+  .dv .dv-share.past .dv-qr-show { display: none; }
+  .dv-map { height: 200px; }
+  .dv-dets { padding: 14px 16px; }
+  .dv-det b { font-size: 16px; }
+  .dv-notes { padding: 12px 16px 14px; }
+  .dv-about p { font-size: 17px; }
+  .dv-album { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .dv-ph { border-radius: 10px; }
+  .dv-ph-acts { opacity: 1; }
+  .dv-head .go.dv-add { height: 34px; }
+}
+
+/* ── the club page (mock v13) ── */
+.cl-hero { position: relative; min-height: 470px; display: flex; align-items: flex-end; padding: 26px 80px 34px; margin: 0 calc(50% - 50vw); background: var(--cover, none) center / cover no-repeat, #1E2622; color: #fff; isolation: isolate; box-sizing: border-box; }
+.cl-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(14,18,16,.25) 0%, rgba(14,18,16,0) 30%, rgba(14,18,16,.35) 62%, #0E1210 100%); }
+.cl-cust { position: absolute; right: 80px; top: 26px; }
+.cl-in { display: flex; align-items: flex-end; gap: 24px; width: 100%; max-width: 1120px; margin: 0 auto; }
+.cl-logo { width: 96px; height: 96px; border-radius: 22px; background: #fff; flex: none; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 8px 30px rgba(0, 0, 0, .35); font-size: 44px; }
+.cl-logo img { width: 100%; height: 100%; object-fit: contain; padding: 8px; box-sizing: border-box; }
+.cl-words { flex: 1; min-width: 0; }
+.cl-kick { font-size: 15px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #fff; opacity: .9; display: flex; align-items: center; gap: 10px; }
+.cl-kick::before { content: ""; width: 28px; height: 4px; border-radius: 2px; background: var(--club, #6FD39A); }
+.cp .cl-hero h1 { font-size: clamp(40px, 6.2vw, 78px); font-weight: 900; line-height: .95; letter-spacing: -.03em; margin: 8px 0 12px; color: #fff; text-wrap: balance; }
+.cl-meta { color: #DDE4DF; font-size: 18px; font-weight: 600; margin: 0; display: flex; gap: 8px; flex-wrap: wrap; }
+/* The name and line readable on a bright cover (QA, 11/26). */
+.cl-hero .cl-kick, .cp .cl-hero h1, .cl-meta { text-shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 2px 18px rgba(0, 0, 0, .45); }
+.cl-hero .go { flex: none; }
+.cl-cal { flex: none; display: inline-flex; flex-direction: column; align-items: center; width: 92px; border-radius: 16px; background: var(--dv-card2); border: 1px solid var(--dv-line); padding: 10px 0 12px; text-align: center; }
+.cl-cal .m { font-size: 13px; font-weight: 800; letter-spacing: .14em; color: var(--club-text, #6FD39A); }
+.cl-cal .d { font-family: "Oxanium", "Figtree", sans-serif; font-size: 44px; font-weight: 700; line-height: 1; color: #EEF2EF; }
+.cl-cal .wd { font-size: 13px; color: var(--dv-dim); font-weight: 700; margin-top: 4px; }
+.cl-cal.sm { width: 60px; padding: 6px 0 8px; border-radius: 12px; }
+.cl-cal.sm .d { font-size: 26px; }
+.cl-cal.sm .m { font-size: 11px; }
+.cd-next-body > .cl-cal { float: left; margin: 0 22px 8px 0; }
+.cl-orgz .cl-avs { display: flex; margin: 4px 0 12px; }
+.cl-avs i { width: 38px; height: 38px; border-radius: 50%; background: #2B3530; border: 2px solid var(--dv-card); margin-left: -8px; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: 13px; font-weight: 800; color: var(--dv-ink2); }
+.cl-avs i:first-child { margin-left: 0; }
+.cd-club-pick[data-moved] { display: none !important; }
+
+/* ── Start a club: four steps (mock v13) ── */
+.o1-prog { display: flex; gap: 6px; margin: 0 0 6px; }
+.o1-prog i { height: 5px; flex: 1; border-radius: 3px; background: #26302A; }
+.o1-prog i.on { background: var(--green, #6FD39A); }
+.o1-step { display: flex; flex-direction: column; gap: 36px; }
+.cp .cv-o1 .o1-h { margin: 0; font-size: clamp(34px, 5.4vw, 54px); font-weight: 900; line-height: 1.05; letter-spacing: -.015em; text-wrap: balance; }
+.o1-step h1:focus { outline: none; }
+.o1-hint { margin: -8px 0 0 42px; color: var(--dv-ink2); font-size: 18px; }
+.o1-foot { display: flex; align-items: center; gap: 18px; margin-left: 42px; }
+.cv-o1 .o1-foot .o1-go { margin-left: 0; }
+.cv .o1-foot .o1-back { font-weight: 700; align-self: center; }
+.cv-o1 .o1-terms, .cv-o1 .o1-said { margin-left: 42px; }
+.lk-opts { display: flex; gap: 16px; margin-left: 42px; flex-wrap: wrap; }
+.lk-opt { border-radius: 18px; border: 1.5px solid var(--dv-line); background: var(--dv-card); padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 200px; color: var(--dv-ink2); font: inherit; font-weight: 700; text-align: center; cursor: pointer; }
+.lk-opt.on { border-color: var(--green, #6FD39A); box-shadow: 0 0 0 3px rgba(111, 211, 154, .18); }
+.lk-opt small { color: var(--dv-dim); font-weight: 600; }
+.lk-lg { width: 110px; height: 110px; border-radius: 24px; background: #fff; object-fit: contain; padding: 10px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
+.lk-letter { font-size: 48px; font-weight: 900; padding: 0; }
+.lk-up { border: 2px dashed #3a453f; background: none; font-size: 40px; color: var(--dv-dim); }
+.lk-covers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-left: 42px; }
+.lk-cov { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; background: #1E2622 center / cover no-repeat; border: 0; cursor: pointer; font: inherit; padding: 0; }
+.lk-cov.on { box-shadow: 0 0 0 3px #0E1210, 0 0 0 6px var(--green, #6FD39A); }
+.lk-cov span { position: absolute; left: 10px; bottom: 8px; font-size: 13px; font-weight: 800; color: #fff; text-shadow: 0 1px 6px rgba(0, 0, 0, .6); }
+.lk-cov-up { border: 2px dashed #3a453f; background: var(--dv-card); color: var(--dv-ink2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.lk-cov-up small { font-size: 12px; color: var(--dv-dim); }
+.lk-sws { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-left: 42px; }
+.lk-sw { width: 56px; height: 56px; border-radius: 50%; border: 0; cursor: pointer; }
+.lk-sw.on { box-shadow: 0 0 0 3px #0E1210, 0 0 0 6px #fff; }
+.lk-hex { display: inline-flex; align-items: center; gap: 8px; border: 2px dashed #3a453f; border-radius: 28px; padding: 6px 12px; color: var(--dv-dim); font-size: 13px; font-weight: 800; }
+.lk-hex.on { border-style: solid; border-color: #fff; }
+.cp .lk-hex input, .lk-hex input { width: 92px; height: auto; min-height: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; color: #EEF2EF; font: inherit; font-size: 15px; outline: none; }
+.lk-swl { margin: 10px 0 0 42px; color: var(--dv-dim); font-size: 14px; }
+.lk-preview { position: relative; margin-left: 42px; max-width: 760px; height: 220px; border-radius: 18px; overflow: hidden; background: #1E2622 center / cover no-repeat; isolation: isolate; }
+.lk-preview::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(14,18,16,0) 30%, rgba(14,18,16,.75) 100%); }
+.lk-pv-in { position: absolute; left: 28px; bottom: 22px; right: 200px; display: flex; align-items: flex-end; gap: 16px; }
+.lk-pv-logo { width: 64px; height: 64px; border-radius: 14px; font-size: 30px; }
+.lk-pv-words { display: flex; flex-direction: column; min-width: 0; color: #fff; }
+.lk-pv-words .cl-kick { font-size: 12px; }
+.lk-pv-name { font-size: 34px; font-weight: 900; line-height: 1.05; letter-spacing: -.02em; }
+.lk-pv-btn { position: absolute; right: 24px; bottom: 24px; height: 40px; padding: 0 18px; border-radius: 20px; display: inline-flex; align-items: center; font-weight: 800; font-size: 15px; }
+
+/* ── Customize ── */
+.cv-custom { padding: 34px 0 60px; display: flex; flex-direction: column; gap: 18px; }
+.lk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.lk-card { padding: 20px; }
+.lk-wide { grid-column: span 2; }
+.lk-grid .lk-opts, .lk-grid .lk-covers, .lk-grid .lk-sws, .lk-grid .lk-swl { margin-left: 0; }
+.lk-grid .lk-covers { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.lk-grid .lk-opt { width: 160px; }
+.lk-grid .lk-lg { width: 80px; height: 80px; }
+
+@media (max-width: 699px) {
+  .o1-step { gap: 26px; }
+  .cl-hero { min-height: 340px; padding: 16px 16px 20px; }
+  .cl-hero::after { background: linear-gradient(180deg, rgba(14,18,16,.3) 0%, rgba(14,18,16,.1) 25%, rgba(14,18,16,.55) 55%, #0E1210 100%); }
+  .cl-cust { right: 16px; top: 14px; }
+  .cl-in { flex-wrap: wrap; gap: 14px; }
+  .cl-logo { width: 64px; height: 64px; border-radius: 16px; font-size: 30px; }
+  .cl-hero .go { width: 100%; justify-content: center; }
+  .cl-kick { font-size: 12px; }
+  .o1-hint, .lk-opts, .lk-covers, .lk-sws, .lk-swl, .lk-preview, .o1-foot, .cv-o1 .o1-terms, .cv-o1 .o1-said { margin-left: 0; }
+  .lk-covers { grid-template-columns: 1fr 1fr; }
+  .lk-opt { width: calc(50% - 8px); box-sizing: border-box; }
+  .lk-preview { height: 180px; }
+  .lk-pv-in { right: 16px; bottom: 70px; left: 16px; }
+  .lk-pv-name { font-size: 24px; }
+  .lk-grid { grid-template-columns: 1fr; }
+  .lk-wide { grid-column: auto; }
+  .lk-grid .lk-covers { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Plan a drive: 5 and 6, and answered questions folded (mock v13) ── */
+.cd-qs { display: flex; flex-direction: column; gap: inherit; }
+.cd-ask .cd-qs { gap: 22px; }
+#f-page .folded { display: none !important; }
+.cd-fold { display: flex; align-items: center; gap: 16px; width: 100%; padding: 14px 0; border: 0; border-bottom: 1px solid var(--dv-line); background: none; color: var(--dv-ink2); font: inherit; font-size: 17px; text-align: left; cursor: pointer; }
+.cd-fold:hover b { text-decoration: underline; }
+.cd-fold-n { font-family: "Oxanium", "Figtree", sans-serif; color: var(--green-ink, #6FD39A); font-weight: 700; width: 30px; flex: none; }
+.cd-fold b { margin-left: auto; color: #EEF2EF; font-weight: 800; text-align: right; }
+.cd-opt-l { color: var(--dv-dim); font-weight: 700; font-size: 16px; margin-left: 8px; }
+.cd-area { position: relative; }
+.cd-area textarea { width: 100%; box-sizing: border-box; min-height: 150px; border: 1.5px solid #34403A; border-radius: 16px; background: var(--dv-card); color: #EEF2EF; font: inherit; font-size: 18px; padding: 16px 18px 30px; resize: vertical; }
+.cd-area textarea:focus { outline: none; border-color: var(--green-ink, #6FD39A); }
+.cd-area .dv-count { position: absolute; right: 16px; bottom: 12px; }
+.cd-q-hint { margin: -10px 0 0; font-size: 15px; }
+.cd-drop { width: 100%; min-height: 200px; border: 2px dashed #3a453f; border-radius: 18px; background: var(--dv-card); color: var(--dv-ink2); font: inherit; font-size: 18px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+.cd-drop.over { border-color: var(--green-ink, #6FD39A); }
+.cd-drop small { color: var(--dv-dim); font-weight: 600; font-size: 15px; }
+.cd-drop-plus { font-size: 34px; color: var(--dv-dim); }
+.cd-photo-pick { display: flex; align-items: center; gap: 16px; }
+.cd-photo-pick img { width: 220px; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 14px; background: #1E2622; }
+#f-photo-said:empty { display: none; }
+
+/* ── a drive's day link (day-extras.js): About and the Album ── */
+.dx-about { margin: 6px 0 4px; }
+.dx-about p { margin: 0 0 10px; font-size: 16px; line-height: 1.55; white-space: pre-wrap; }
+.dx-album { margin-top: 10px; padding-top: 16px; border-top: 1px solid var(--line, #26302A); }
+.dx-album .dv-album { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.dx-album .dv-head { justify-content: space-between; }
+
+/* The rows under the Next card: its photo order (Chris, 11/27). */
+.v-thumb.photo { position: relative; overflow: hidden; background: #0B0F0D; }
+.v-thumb.photo > svg { display: none; }
+.v-thumb-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.v-drive-words .v-credit { display: block; font-size: 11px; color: var(--dv-dim); }

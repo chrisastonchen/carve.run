@@ -6,8 +6,9 @@
 // server refuses anyone else (not_organizer). Pages never act on a GET:
 // the timers change only on a tap and a yes.
 
-import { $, el, rpc, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
-import { dayText } from "/assets/club-words.js?v=0b7743112d";
+import { $, el, myOrgs, rpc, signedIn } from "/assets/club-api.js?v=ab5108fda2";
+import { dayText } from "/assets/club-words.js?v=b2e82d803a";
+import { applyLook } from "/assets/club-look.js?v=5a0ad6b0e5";
 import { dayReviews, dayTabs, dayTimes, earlierTimes, timerChanges, timersSaid, minutesText } from "/assets/club-report-words.js?v=805c8325f0";
 
 const q = new URLSearchParams(location.search);
@@ -38,6 +39,9 @@ async function start() {
     return status(failure.message);
   }
   if (!drive?.prerun) return status("This drive has no pre-drive.");
+  // The club's color, the header too, as its other organizer pages (Chris,
+  // 11/26). The page reads on without it.
+  myOrgs().then((orgs) => applyLook(orgs.find((o) => o.id === drive.org_id) || null)).catch(() => {});
   const [r, t] = await Promise.all([loadReviews(), loadTimings()]);
   // Anyone but an organizer: the server's refusal, said once for the page.
   if ([r, t].some((f) => f?.code === "not_organizer")) return status("Only the club's organizers can see the pre-drive report.");

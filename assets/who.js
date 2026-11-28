@@ -6,7 +6,7 @@
 // answers (Chris, 11/20: 3–5 s otherwise); Carve's answer then confirms or
 // corrects them. Only a whole answer with a club sets it; one without, a
 // sign-out or another account clears it.
-import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=96f92e7529";
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken, store } from "/assets/carve-session.js?v=9c9566882f";
 import { clubsOf, setupOf, stateOf } from "/assets/who-words.js?v=63b40f62a6";
 import { PLANS } from "/assets/plans.js?v=a1e99a533b";
 

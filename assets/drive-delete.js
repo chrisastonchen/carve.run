@@ -5,7 +5,7 @@
 // and their links stay, so a driver's link still opens the route, but not
 // the drive: no meet times, no change alerts, and no free Carve Apex (that
 // comes from the drive's dates).
-import { el, rpc } from "/assets/club-api.js?v=2bbd1ab635";
+import { el, rpc } from "/assets/club-api.js?v=ab5108fda2";
 
 /// The second step's words, by the drive's name.
 export function deleteWords(name) {

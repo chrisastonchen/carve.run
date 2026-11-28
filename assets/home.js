@@ -4,7 +4,7 @@
 // never plans anything itself: what's typed, dropped or pasted goes to
 // /plan, which picks it up (sessionStorage "carve.plan.handoff", never the
 // address bar).
-import "/assets/site-bar.js?v=1a5c8ec6a0";
+import "/assets/site-bar.js?v=6fb53398bd";
 
 // The hero's car screen: CarPlay on an iPhone, Android Auto on Android (the
 // user, 2026-11-02). Here, not in site-bar.js: that file's import isn't
@@ -16,11 +16,11 @@ if (/android/i.test(navigator.userAgent || "")) {
 import { level, lineOf } from "/plan/good-roads.js";
 import { usesMiles } from "/plan/route-wire.js";
 import { PLACE_KEY, guessPlace, km, store } from "/assets/where.js?v=5c9e34f7e8";
-import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=d5ae3b9c64";
-import { heartButton, wireHearts } from "/assets/hearts.js?v=870041539f";
-import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=96f92e7529";
+import { attachPlaceSearch, placeOf } from "/assets/home-search.js?v=1a03d359d3";
+import { heartButton, wireHearts } from "/assets/hearts.js?v=483a176e86";
+import { SESSION_KEY, SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=9c9566882f";
 import { addPins, cardHTML as eventCard, finishPictures, loadEvents, nearby } from "/assets/events.js?v=b133592880";
-import { who, whoHint, whoNow } from "/assets/who.js?v=f260ce6368";
+import { who, whoHint, whoNow } from "/assets/who.js?v=7f6eff3a19";
 import { homeMenu } from "/assets/who-words.js?v=63b40f62a6";
 
 // The map follows the device's theme, light unless it's set to dark (the

@@ -23,14 +23,17 @@ export function entries(clubs, regions) {
     if (!c?.name) continue;
     const keys = new Set([...words(c.name), ...words(c.short_name), ...(c.aliases || []).flatMap(words)]);
     const whole = [c.name, c.short_name, ...(c.aliases || [])].filter(Boolean).map(fold);
-    const club = { name: c.name, club: keys, whole, region: [], pop: Number(c.popularity) || 0 };
+    const club = { name: c.name, club: keys, whole, region: [], pop: Number(c.popularity) || 0,
+      // What a pick links (Chris via Product, 11/26): the club, its logo and color.
+      link: { club_id: c.id, region_id: null, club_name: c.name, region_name: null, logo_url: c.logo_url || null, color: c.color || null } };
     byId.set(c.id, club);
     out.push(club);
   }
   for (const r of regions || []) {
     const club = byId.get(r?.club_id);
     if (!club || !r.name) continue;
-    out.push({ name: `${club.name} · ${r.name}`, club: club.club, whole: club.whole, region: words(r.name), pop: club.pop, isRegion: true });
+    out.push({ name: `${club.name} · ${r.name}`, club: club.club, whole: club.whole, region: words(r.name), pop: club.pop, isRegion: true,
+      link: { ...club.link, region_id: r.id || null, region_name: r.name } });
   }
   return out;
 }
@@ -87,13 +90,20 @@ export function suggest(list, typed, most = 8) {
   return out;
 }
 
+/// The list entry a name is exactly (one picked from the suggestions), or
+/// null for a name of its own: what Start a club links and suggests.
+export function listMatch(directory, name) {
+  const typed = String(name || "").trim();
+  return (directory || []).find((e) => e.name === typed)?.link || null;
+}
+
 /// The directory, read whole once: clubs, then the regions 1,000 at a time
 /// (PostgREST's most). select: (table, query) → rows.
 export async function loadDirectory(select) {
-  const clubs = await select("clubs", "select=id,name,short_name,aliases,popularity&active=is.true&order=id&limit=1000");
+  const clubs = await select("clubs", "select=id,name,short_name,aliases,popularity,logo_url,color&active=is.true&order=id&limit=1000");
   const regions = [];
   for (let offset = 0; offset < 20000; offset += 1000) {
-    const page = await select("club_regions", `select=club_id,name&active=is.true&order=id&limit=1000&offset=${offset}`);
+    const page = await select("club_regions", `select=id,club_id,name&active=is.true&order=id&limit=1000&offset=${offset}`);
     regions.push(...(page || []));
     if (!page || page.length < 1000) break;
   }

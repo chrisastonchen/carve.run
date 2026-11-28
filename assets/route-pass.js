@@ -9,9 +9,9 @@
 // Until App Dev's calls are live, route_drive is missing and nothing shows.
 // Off for now (DRIVE_PASS_UI, Chris 11/10): the page is a plain route page.
 
-import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=96f92e7529";
-import { dayText } from "/assets/club-words.js?v=0b7743112d";
-import { DRIVE_PASS_UI } from "/plan/club-flags.js?v=4";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=9c9566882f";
+import { dayText } from "/assets/club-words.js?v=b2e82d803a";
+import { DRIVE_PASS_UI } from "/plan/club-flags.js?v=5";
 
 const segments = location.pathname.split("/").filter(Boolean);
 const token = (segments[0] === "r" ? segments[1] : segments[0]) || "";

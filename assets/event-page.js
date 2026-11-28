@@ -1,7 +1,7 @@
 // An event's page (/e/<token>, scripts/events/build_event_pages.py): the
 // page holds the event's data; this draws the picture, the map with its pin,
 // how far it is, the dates still to come, and the buttons.
-import "/assets/site-bar.js?v=1a5c8ec6a0";
+import "/assets/site-bar.js?v=6fb53398bd";
 import { guessPlace } from "/assets/where.js?v=5c9e34f7e8";
 import {
   distanceText, escapeHTML, finishPictures, icon, kindOf, membersOnly, nextOn, onAndroid, onPhone, openInApp, pictureHTML, pinElement, planThere, safeURL,

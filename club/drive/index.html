@@ -10,11 +10,13 @@
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=397645c569">
+<link rel="stylesheet" href="/styles.css?v=7e1784f650">
 <link rel="stylesheet" href="/assets/site-bar.css?v=3963f7d70b">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
 <link rel="stylesheet" href="/assets/club-v2.css?v=dfac658fab">
 <link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
+<link rel="stylesheet" href="/assets/run-groups.css?v=0164dad621">
+<link rel="stylesheet" href="/assets/club-refresh.css?v=59b2dab200">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 
 </head>
@@ -107,19 +109,23 @@
     <h1 class="cd-title" id="f-title">Plan a drive</h1>
     <p class="cp-note" id="f-copy-note" hidden></p>
     <p class="cd-err" id="f-err" role="alert" hidden></p>
-    <div class="cd-q">
-      <span class="cd-n" aria-hidden="true">1</span>
-      <h2><label for="f-name">What's this Drive called?</label></h2>
-    </div>
-    <input type="text" class="cd-big" id="f-name" maxlength="80" autocomplete="off" placeholder="Coastal Run to Carmel">
-    <div class="cd-q">
-      <span class="cd-n" aria-hidden="true">2</span>
-      <h2 id="f-when-h">When is it?</h2>
-    </div>
-    <div class="cd-days-ask" role="group" aria-labelledby="f-when-h">
-      <div class="cv-days" id="f-days"></div>
-      <button type="button" class="textlink cd-add" id="f-add-day">+ Add a day</button>
-    </div>
+    <section class="cd-qs" id="f-q-name">
+      <div class="cd-q">
+        <span class="cd-n" aria-hidden="true">1</span>
+        <h2><label for="f-name">What's this Drive called?</label></h2>
+      </div>
+      <input type="text" class="cd-big" id="f-name" maxlength="80" autocomplete="off" placeholder="Coastal Run to Carmel">
+    </section>
+    <section class="cd-qs" id="f-q-when">
+      <div class="cd-q">
+        <span class="cd-n" aria-hidden="true">2</span>
+        <h2 id="f-when-h">When is it?</h2>
+      </div>
+      <div class="cd-days-ask" role="group" aria-labelledby="f-when-h">
+        <div class="cv-days" id="f-days"></div>
+        <button type="button" class="textlink cd-add" id="f-add-day">+ Add a day</button>
+      </div>
+    </section>
     <section class="cv-prerun" id="f-prerun" role="group" aria-labelledby="f-pr-h" hidden>
       <div class="cd-q">
         <span class="cd-n" aria-hidden="true">3</span>
@@ -136,40 +142,126 @@
         </div>
       </div>
     </section>
+    <!-- Run groups (spec §1.1, Chris 11/21): one stepper, No groups by
+         default; + goes to 2, then up to 15; − from 2 back to No groups. -->
+    <section class="rg-ask" id="f-groups" role="group" aria-labelledby="f-gr-h">
+      <div class="cd-q">
+        <span class="cd-n" aria-hidden="true" id="f-gr-num">4</span>
+        <div><h2 id="f-gr-h">How many driving groups?</h2>
+        <p class="cp-note">Drivers don't see their group in Carve yet. Tell them at the meet. You can change this later.</p></div>
+      </div>
+      <div class="rg-step">
+        <button type="button" class="rg-sb" id="f-gr-down" aria-label="Fewer groups">−</button>
+        <output class="rg-sv" id="f-gr-val" aria-live="polite">No groups</output>
+        <button type="button" class="rg-sb" id="f-gr-up" aria-label="More groups">+</button>
+      </div>
+    </section>
+    <!-- 5 and 6 (Chris via Product, 11/25-26; mock v13): both optional. -->
+    <section class="cd-qs" id="f-about" role="group" aria-labelledby="f-ab-h">
+      <div class="cd-q">
+        <span class="cd-n" aria-hidden="true" id="f-ab-num">5</span>
+        <h2 id="f-ab-h"><label for="f-about-in">Tell drivers about it</label> <span class="cd-opt-l">Optional</span></h2>
+      </div>
+      <div class="cd-area"><textarea id="f-about-in" maxlength="1000" rows="5" placeholder="The plan for the day, the pace, where you'll end up…"></textarea><span class="dv-count" id="f-about-count">0 / 1000</span></div>
+      <p class="cp-note cd-q-hint">Shown at the top of the drive's page and its link. Notes about the road itself go with the route.</p>
+    </section>
+    <section class="cd-qs" id="f-photo" role="group" aria-labelledby="f-ph-h">
+      <div class="cd-q">
+        <span class="cd-n" aria-hidden="true" id="f-ph-num">6</span>
+        <h2 id="f-ph-h">Add a photo <span class="cd-opt-l">Optional</span></h2>
+      </div>
+      <button type="button" class="cd-drop" id="f-photo-drop"><span class="cd-drop-plus" aria-hidden="true">+</span>Drag a photo here, or choose one<small>Skip it and the drive uses its route's photo</small></button>
+      <div class="cd-photo-pick" id="f-photo-pick" hidden><img id="f-photo-img" alt=""><button type="button" class="textlink" id="f-photo-off">Remove</button></div>
+      <p class="cp-note" id="f-photo-said" role="status" aria-live="polite"></p>
+      <input type="file" id="f-photo-file" accept="image/*" hidden>
+    </section>
     <p class="cp-note cv-said" id="f-said" role="status" aria-live="polite"></p>
     <!-- One primary action, with room above it; Cancel a quiet link on its row (Chris, 11/10). -->
     <div class="cv-actions cd-foot"><a class="cv-cancel" id="f-cancel" href="/club/">Cancel</a><button type="submit" class="go" id="f-go">Create drive</button></div>
   </form>
 
-  <!-- The drive page (club flow mock v11, Chris 11/13): a slim band with the
-       name, dates and countdown; then in order the pre-drive, each day with
-       its route's shape and facts, and a routed day's share panel (QR, link,
-       Copy link, when drivers get Apex, when it last changed) under it. -->
-  <div class="cv-drive" id="d-page" hidden>
-    <header class="cd-band glow">
-      <div class="cd-who">
-        <a class="cd-back" id="d-back" href="/club/">‹ Your club</a>
-        <h1 id="d-name"></h1>
-        <p class="cd-meta" id="d-line"></p>
-      </div>
-      <span class="cd-chip dark" id="d-stage"></span>
-      <div class="cv-more">
-        <button type="button" class="cv-more-btn cd-more-label" id="d-more" aria-haspopup="menu" aria-expanded="false" aria-label="More for this drive">More</button>
-        <div class="cv-menu" id="d-menu" role="menu" hidden>
-          <a role="menuitem" id="d-edit" href="#">Edit details</a>
-          <button type="button" role="menuitem" id="d-delete">Delete drive</button>
+  <!-- The drive page (Chris via Product, 11/25-26; mock v13): the drive's
+       photo and name large in the club's color; on the left About, each
+       day's route card, Groups and the Album; on the right, pinned, the
+       Share card and Drivers. On a phone one column: Share first, then
+       About, the route, Groups, Drivers, the Album. After the drive: Done,
+       the album under About, the share card just the link. -->
+  <div class="cv-drive dv" id="d-page" hidden>
+    <header class="dv-hero" id="d-hero">
+      <div class="dv-top">
+        <a class="dv-back" id="d-back" href="/club/"><span aria-hidden="true">‹</span><span class="dv-logo" id="d-logo" aria-hidden="true"></span><span class="dv-club" id="d-club">Your club</span></a>
+        <span class="grow"></span>
+        <button type="button" class="glass dv-photo-btn" id="d-photo">✎ Photo</button>
+        <div class="cv-more dv-more">
+          <button type="button" class="glass cd-more-label" id="d-more" aria-haspopup="menu" aria-expanded="false" aria-label="More for this drive">More</button>
+          <div class="cv-menu" id="d-menu" role="menu" hidden>
+            <a role="menuitem" id="d-edit" href="#">Edit details</a>
+            <button type="button" role="menuitem" id="d-photo-item" class="dv-phone-only">Change photo</button>
+            <button type="button" role="menuitem" id="d-delete">Delete drive</button>
+          </div>
         </div>
       </div>
+      <div class="dv-in">
+        <p class="dv-kick" id="d-line"></p>
+        <h1 id="d-name"></h1>
+        <span class="dv-pill" id="d-stage"></span>
+      </div>
+      <input type="file" id="d-photo-file" accept="image/*" hidden>
     </header>
     <p class="cp-note" id="d-said" role="status" aria-live="polite"></p>
-    <section class="cd-seq" id="d-pr" aria-labelledby="d-pr-n" hidden>
-      <h2 class="cd-seqn" id="d-pr-n">Pre-drive</h2>
-      <div class="cd-pre">
-        <div class="cd-pre-words"><b id="d-pr-h"></b><span id="d-pr-line"></span></div>
-        <a class="go ghost" id="d-pr-go" href="#">View pre-drive</a>
+    <div class="dv-body">
+      <div class="dv-main">
+        <section class="dv-sec dv-about-sec" id="d-about" aria-labelledby="d-about-h">
+          <div class="dv-head"><h2 class="dv-lbl" id="d-about-h">About this drive</h2><button type="button" class="textlink" id="d-about-edit" hidden>Edit</button></div>
+          <div class="dv-about" id="d-about-text"></div>
+          <form class="dv-about-form" id="d-about-form" hidden>
+            <label for="d-about-in" class="visually-hidden">About this drive</label>
+            <textarea id="d-about-in" maxlength="1000" rows="5" placeholder="The plan for the day, the pace, where you'll end up…"></textarea>
+            <div class="dv-about-do"><span class="dv-count" id="d-about-count">0 / 1000</span><button type="button" class="textlink" id="d-about-cancel">Cancel</button><button type="submit" class="go" id="d-about-save">Save</button></div>
+          </form>
+        </section>
+        <section class="dv-sec dv-routes-sec" id="d-routes" aria-labelledby="d-routes-h">
+          <h2 class="dv-lbl" id="d-routes-h">The route</h2>
+          <div class="cd-days" id="d-days"></div>
+          <p class="dv-latest" id="d-latest">Drivers get the latest route when they open the link.</p>
+        </section>
+        <section class="dv-sec dv-groups-sec" id="ck-groups" aria-labelledby="ck-groups-h" hidden>
+          <div class="dv-head"><h2 class="dv-lbl" id="ck-groups-h">Groups</h2><span class="dv-chip" id="ck-groups-s"></span></div>
+          <div class="ck-groups" id="d-groups"></div>
+        </section>
+        <section class="dv-sec dv-album-sec" id="d-album" aria-labelledby="d-album-h">
+          <div class="dv-head"><h2 class="dv-lbl" id="d-album-h">Album</h2><button type="button" class="go dv-add" id="d-album-add" hidden>+ Add photos</button></div>
+          <div id="d-album-body"></div>
+          <input type="file" id="d-album-file" accept="image/*" multiple hidden>
+        </section>
       </div>
-    </section>
-    <div class="cd-days" id="d-days"></div>
+      <aside class="dv-side">
+        <section class="dv-card dv-share" id="d-share" aria-labelledby="d-share-h"></section>
+        <section class="dv-card dv-drivers" id="d-drivers" aria-labelledby="d-drivers-h">
+          <h2 class="dv-k" id="d-drivers-h">Drivers</h2>
+          <p class="dv-opened"><b class="num" id="d-opened">0</b> <span id="d-opened-w">drivers have opened the link</span></p>
+          <div id="d-pr" hidden><p class="dv-pr-line" id="d-pr-line"></p><b id="d-pr-h" hidden></b><a class="textlink" id="d-pr-go" href="#">Pre-drive report ›</a></div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <!-- The groups board (spec §1.4): ?id=<drive>&groups. -->
+  <div class="cv-drive rg-page" id="g-page" hidden>
+    <header class="cd-band glow">
+      <div class="cd-who">
+        <a class="cd-back" id="g-back" href="#">‹ Drive</a>
+        <h1>Run groups</h1>
+        <p class="cd-meta" id="g-line"></p>
+      </div>
+      <div class="rg-acts">
+        <button type="button" class="go ghost" id="g-update">Update from a list</button>
+        <button type="button" class="go ghost" id="g-add">+ Add a group</button>
+        <button type="button" class="go ghost" id="g-print" hidden>Print</button>
+      </div>
+    </header>
+    <p class="cp-note" id="rg-said" role="status" aria-live="polite"></p>
+    <div id="rg-board"></div>
   </div>
 
   <!-- Choose from your routes (Chris, 11/25): the organizer's own saved
@@ -201,9 +293,9 @@
   </div>
 </footer>
 
-<script src="/assets/carve-site.js?v=1e74df30bd" defer></script>
-<script type="module" src="/assets/site-bar.js?v=1a5c8ec6a0"></script>
+<script src="/assets/carve-site.js?v=e6092b7e6a" defer></script>
+<script type="module" src="/assets/site-bar.js?v=6fb53398bd"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
-<script type="module" src="/assets/club-drive.js?v=f42914abf5"></script>
+<script type="module" src="/assets/club-drive.js?v=d79cfd830d"></script>
 </body>
 </html>

@@ -6,13 +6,13 @@
 // shows. Plain route links (no club drive) get none of it.
 // The rules and words are day-words.js's, the apps'.
 
-import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=96f92e7529";
+import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=9c9566882f";
 import {
   alertRows, catalogRoads, catalogRows, clock, daysAhead, degrees, forecastChanges, fractionOf, hazardRows, hourlyRows,
   label, nearest, ordered, shows, stretches, units, zonedInstant,
 } from "/assets/day-words.js?v=fa3c08a5f0";
-import { dayHeadline } from "/assets/club-words.js?v=0b7743112d";
-import { ROUTE_APEX_UI } from "/plan/club-flags.js?v=4";
+import { dayHeadline } from "/assets/club-words.js?v=b2e82d803a";
+import { ALBUM_UI, ROUTE_APEX_UI } from "/plan/club-flags.js?v=5";
 
 // The token as /r/ reads it (carve.run/<token>, /r/<token>, /r/?t=), or ?k=.
 const segments = location.pathname.split("/").filter(Boolean);
@@ -129,14 +129,64 @@ async function drawHeadline(drive) {
   title.before(p);
 }
 
+/// The drive's words and its album, for anyone with the link (Chris via
+/// Product, 11/25-26; 0141's drive_album by the day's token): About this
+/// drive under the headline when the organizer wrote one; the Album at the
+/// panel's foot, with + Add photos for anyone signed in (0142), Sign in to
+/// add photos for a visitor. A server without 0141: neither shows.
+async function drawAlbum() {
+  const scroll = document.querySelector(".rv .scroll");
+  if (!scroll || document.getElementById("dx-album")) return;
+  if (!document.querySelector('link[href^="/assets/club-refresh.css?v=59b2dab200"]')) {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "/assets/club-refresh.css?v=59b2dab200";
+    document.head.append(css);
+  }
+  // Albums off (phase 1): About this drive only, from drive_album's read.
+  if (!ALBUM_UI) return drawAbout(await rpc("drive_album", { p_drive_id: null, p_token: token }));
+  const sec = el("section", "dx-album dv-album-sec");
+  sec.id = "dx-album";
+  const head = el("div", "dv-head");
+  head.append(el("h2", "dv-lbl", "Album"));
+  const add = el("button", "go dv-add", "+ Add photos");
+  add.type = "button";
+  add.hidden = true;
+  head.append(add);
+  const body = el("div");
+  const file = el("input");
+  file.type = "file";
+  file.accept = "image/*";
+  file.multiple = true;
+  file.hidden = true;
+  sec.append(head, body, file);
+  const links = scroll.querySelector(".rv-links");
+  if (links) links.before(sec); else scroll.append(sec);
+  const { renderAlbum } = await import("/assets/drive-album.js?v=693f7c321a");
+  await renderAlbum({ box: body, add, file, where: { token }, onState: drawAbout });
+  if (!body.childElementCount) sec.remove();
+}
+
+/// About this drive under the headline, when the organizer wrote one.
+function drawAbout(album) {
+  const text = String(album?.description || "").trim();
+  if (!text || document.getElementById("dx-about")) return;
+  const about = el("section", "dx-about");
+  about.id = "dx-about";
+  about.append(el("h2", "dv-lbl", "About this drive"), ...text.split(/\n\s*\n/).map((para) => el("p", "", para.trim())));
+  const title = document.getElementById("dx-day") || document.querySelector(".rv .rv-head h1");
+  (title?.closest(".rv-head") || title)?.after(about);
+}
+
 async function start() {
   if (!token) return;
   let drive = null;
   try { drive = await rpc("route_drive", { p_share_token: token }); } catch { return; }
   if (!drive?.day_date) return;
   drawHeadline(drive);
+  drawAlbum().catch(() => {});
   // Apex on this route, free from the club (board A1), when it's switched on.
-  if (ROUTE_APEX_UI) import("/assets/apex-card.js?v=db273f48d6").then((m) => m.drawApexCard(token, drive.time_zone)).catch(() => {});
+  if (ROUTE_APEX_UI) import("/assets/apex-card.js?v=eaf4d95960").then((m) => m.drawApexCard(token, drive.time_zone)).catch(() => {});
   const zone = drive.time_zone || "UTC";
   const ahead = daysAhead(drive.day_date, zone);
   const what = shows(ahead);

@@ -5,7 +5,7 @@
 // inline; the posters alone for reduced motion or Save-Data.
 
 import { BY_TIER } from "/assets/plans.js?v=a1e99a533b";
-import { priceText, renewalTerms, trialDays } from "/assets/club-words.js?v=0b7743112d";
+import { priceText, renewalTerms, trialDays } from "/assets/club-words.js?v=b2e82d803a";
 
 const $ = (id) => document.getElementById(id);
 

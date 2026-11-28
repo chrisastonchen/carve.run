@@ -11,9 +11,9 @@
 // pitch comes out again (share_page.js draws it for everyone and holds it
 // hidden, html.club-wait, while a signed-in visitor is checked).
 
-import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=96f92e7529";
-import { myOrgs, rpc, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
-import { dayText, timeText } from "/assets/club-words.js?v=0b7743112d";
+import { SUPABASE_KEY, SUPABASE_URL } from "/assets/carve-session.js?v=9c9566882f";
+import { myOrgs, rpc, signedIn } from "/assets/club-api.js?v=ab5108fda2";
+import { dayText, timeText } from "/assets/club-words.js?v=b2e82d803a";
 
 const segments = location.pathname.split("/").filter(Boolean);
 const params = new URLSearchParams(location.search);

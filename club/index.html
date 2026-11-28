@@ -10,12 +10,13 @@
 <link rel="icon" href="/assets/favicon-64.png?v=aabafaa3c5" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=7ff55aa7d9">
 <link rel="preload" href="/assets/fonts/figtree.woff2?v=eddba2ef40" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=397645c569">
+<link rel="stylesheet" href="/styles.css?v=7e1784f650">
 <link rel="stylesheet" href="/assets/site-bar.css?v=3963f7d70b">
 <link rel="stylesheet" href="/assets/club-pages.css?v=61b181d6bc">
 <link rel="stylesheet" href="/assets/club-v2.css?v=dfac658fab">
 <link rel="stylesheet" href="/assets/home.css?v=6d763bf222">
 <link rel="stylesheet" href="/assets/club-intro.css?v=7644d409bf">
+<link rel="stylesheet" href="/assets/club-refresh.css?v=59b2dab200">
 <meta name="apple-itunes-app" content="app-id=6808087716">
 
 </head>
@@ -301,19 +302,46 @@
     <p class="cp-note v-login-note" id="v-login-note" hidden>This account isn't an organizer of a club yet. Start one below, or ask your club's organizer to add you.</p>
     <p class="cp-note" id="v-individual" hidden>Organizers get everything in Individual with Club. You can cancel Individual in your App Store or Google Play settings.</p>
     <p class="cp-note o1-changed" id="v-start-changed" role="status" aria-live="polite" hidden></p>
+    <!-- Start a club (Chris via Product, 11/25-26; mock v13): 1 the name (as
+         today, matches from Carve's club list), then 2 the logo, 3 the cover
+         and 4 the color with a preview, then Start free trial as today. Each
+         has a ready answer, so Next works without doing anything. -->
     <form class="o1-ask" id="v-start-form" autocomplete="off">
-      <div class="o1-q">
-        <span class="o1-n" aria-hidden="true">1</span>
-        <h1><label for="v-name">What's your club called?</label></h1>
+      <div class="o1-prog" id="v-prog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+      <div class="o1-step" id="v-step-1">
+        <div class="o1-q">
+          <span class="o1-n" aria-hidden="true">1</span>
+          <h1><label for="v-name">What's your club called?</label></h1>
+        </div>
+        <div class="o1-name-box">
+          <input type="text" class="o1-name" id="v-name" maxlength="80" autocomplete="off" placeholder="Ridge Road Club">
+          <ul class="o1-names" id="v-names" role="listbox" aria-label="Clubs with this name" hidden></ul>
+        </div>
+        <div class="o1-foot"><button type="button" class="go o1-go o1-next" id="v-next-1" disabled>Next</button></div>
       </div>
-      <div class="o1-name-box">
-        <input type="text" class="o1-name" id="v-name" maxlength="80" autocomplete="off" placeholder="Ridge Road Club">
-        <ul class="o1-names" id="v-names" role="listbox" aria-label="Clubs with this name" hidden></ul>
+      <div class="o1-step" id="v-step-2" hidden>
+        <div class="o1-q"><span class="o1-n" aria-hidden="true">2</span><h2 class="o1-h" id="v-logo-h" tabindex="-1">Your club's logo</h2></div>
+        <p class="o1-hint">Shown on your club page and on every drive you share.</p>
+        <div class="lk-opts" id="v-logo-opts"></div>
+        <div class="o1-foot"><button type="button" class="go o1-go o1-next" id="v-next-2">Next</button><button type="button" class="textlink o1-back" data-back="1">Back</button></div>
       </div>
-      <button type="submit" class="go o1-go" id="v-start-go" disabled>Start free trial</button>
-      <p class="cp-note o1-terms" id="v-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
-      <button type="button" class="o1-delete" id="v-delete" hidden>Delete this club</button>
+      <div class="o1-step" id="v-step-3" hidden>
+        <div class="o1-q"><span class="o1-n" aria-hidden="true">3</span><h2 class="o1-h" id="v-cover-h" tabindex="-1">Pick a cover photo</h2></div>
+        <p class="o1-hint">The wide photo across the top of your club page. A photo from one of your drives works well.</p>
+        <div class="lk-covers" id="v-covers"></div>
+        <div class="o1-foot"><button type="button" class="go o1-go o1-next" id="v-next-3">Next</button><button type="button" class="textlink o1-back" data-back="2">Back</button></div>
+      </div>
+      <div class="o1-step" id="v-step-4" hidden>
+        <div class="o1-q"><span class="o1-n" aria-hidden="true">4</span><h2 class="o1-h" id="v-color-h" tabindex="-1">Pick your club's color</h2></div>
+        <p class="o1-hint">For buttons and highlights on your club and drive pages.</p>
+        <div class="lk-swatches" id="v-swatches"></div>
+        <div class="lk-preview" id="v-preview" aria-label="How your club page will look"></div>
+        <div class="o1-foot"><button type="submit" class="go o1-go" id="v-start-go" disabled>Start free trial</button><button type="button" class="textlink o1-back" data-back="3">Back</button></div>
+        <p class="cp-note o1-terms" id="v-terms">$499/year after a 30-day free trial. Renews every year until you cancel. Cancel any time in Club settings.</p>
+      </div>
       <p class="cp-note o1-said" id="v-start-said" role="status" aria-live="polite"></p>
+      <button type="button" class="o1-delete" id="v-delete" hidden>Delete this club</button>
+      <input type="file" id="v-look-file" accept="image/*" hidden>
     </form>
   </section>
 
@@ -346,18 +374,23 @@
        card, Later and Past with their status, organizers by initials, the
        trial's quiet meter. club-home.js fills it. -->
   <div class="cv-home" id="v-home" hidden>
-    <header class="cd-band cd-photo" id="v-band">
-      <!-- The coast at the band's width on a retina screen (Chris, 11/13: the
-           720 px poster was pixelated): AVIF to 2400 px, the JPG for the rest. -->
-      <picture class="cd-band-pic"><source type="image/avif" srcset="/assets/club/band-coast.w640.avif?v=85439dc657 640w, /assets/club/band-coast.w1280.avif?v=cd126ea409 1280w, /assets/club/band-coast.w1920.avif?v=af2c402f77 1920w, /assets/club/band-coast.w2400.avif?v=33daca3744 2400w" sizes="100vw"><img src="/assets/club/band-coast.jpg?v=9c3a5c9ddc" alt="" width="2400" height="1018" decoding="async"></picture>
-      <div class="cd-who">
-        <span class="cd-eyebrow">Your club</span>
-        <h1 id="v-title"></h1>
-        <p class="cd-meta" id="v-meta"></p>
+    <!-- The club's cover across the top (Chris via Product, 11/25-26; mock
+         v13): its logo, the parent club over the region's name (or the
+         club's own name), how many drives are coming up and organizers,
+         + Plan a drive; ✎ Customize the only way to change the look. -->
+    <header class="cl-hero" id="v-band">
+      <a class="glass cl-cust" id="v-customize" href="#">✎ Customize</a>
+      <div class="cl-in">
+        <span class="cl-logo" id="v-logo" aria-hidden="true"></span>
+        <div class="cl-words">
+          <span class="cl-kick" id="v-kicker" hidden></span>
+          <h1 id="v-title"></h1>
+          <p class="cd-meta cl-meta" id="v-meta"></p>
+        </div>
+        <a class="go" id="v-new" href="/club/drive/">+ Plan a drive</a>
       </div>
-      <a class="go" id="v-new" href="/club/drive/">+ Plan a drive</a>
     </header>
-    <label class="cp-field cd-club-pick" id="v-pick-row" hidden>Your clubs<select id="v-pick"></select></label>
+    <label class="cp-field cd-club-pick" id="v-pick-row" hidden data-moved="My Clubs ▾">Your clubs<select id="v-pick"></select></label>
     <section class="cd-steps-box" id="v-steps-box" aria-labelledby="v-steps-h" hidden>
       <h2 class="cd-lbl" id="v-steps-h">First steps</h2>
       <ol class="cd-steps" id="v-steps"></ol>
@@ -383,11 +416,13 @@
         </section>
       </div>
       <aside class="cv-side">
-        <h2 class="cd-lbl" id="v-orgz-h">Organizers</h2>
-        <section class="cv-box cd-panel" aria-labelledby="v-orgz-h">
-          <ul class="cv-orgz cd-people" id="v-orgz-list"></ul>
-          <button type="button" class="textlink" id="v-orgz-add">+ Invite an organizer</button>
-          <p class="cp-note" id="v-orgz-full" hidden>Club has room for 5 organizers.</p>
+        <section class="cv-box cd-panel cl-orgz" aria-labelledby="v-orgz-head">
+          <h2 class="cd-lbl" id="v-orgz-head">Organizers · <span class="num" id="v-orgz-n"></span></h2>
+          <div class="cl-avs" id="v-avs" aria-hidden="true"></div>
+          <a class="textlink" id="v-orgz-manage" href="/club/settings/">Manage organizers ›</a>
+          <!-- The list stays in Club settings (no emails here); kept, hidden,
+               for the count. The invite form opens here from Welcome's Invite. -->
+          <div hidden><h2 id="v-orgz-h"></h2><ul class="cv-orgz cd-people" id="v-orgz-list"></ul><button type="button" class="textlink" id="v-orgz-add">+ Invite an organizer</button><p class="cp-note" id="v-orgz-full" hidden>Club has room for 5 organizers.</p></div>
           <form class="cv-orgz-form" id="v-orgz-form" hidden>
             <label class="cp-field">Their email<input type="email" id="v-orgz-email" maxlength="120" autocomplete="off"></label>
             <button type="submit" class="go" id="v-orgz-go">Invite</button>
@@ -405,6 +440,20 @@
       </aside>
     </div>
   </div>
+
+  <!-- Customize (✎ Customize on the cover, the only way in; mock v13): the
+       same three choices as at the start, changed any time. -->
+  <section class="cv-custom" id="v-custom" aria-labelledby="v-custom-h" hidden>
+    <a class="cd-back" id="v-custom-back" href="#">‹ Your club</a>
+    <h1 id="v-custom-h">Club look</h1>
+    <div class="lk-grid">
+      <section class="cv-box lk-card"><h2 class="cd-lbl">Logo</h2><div class="lk-opts" id="v-c-logo"></div></section>
+      <section class="cv-box lk-card"><h2 class="cd-lbl">Color</h2><div id="v-c-color"></div></section>
+      <section class="cv-box lk-card lk-wide"><h2 class="cd-lbl">Cover photo</h2><div class="lk-covers" id="v-c-cover"></div></section>
+    </div>
+    <p class="cp-note" id="v-custom-said" role="status" aria-live="polite"></p>
+    <input type="file" id="v-c-file" accept="image/*" hidden>
+  </section>
 
   <section class="cp-sect" id="o-register" hidden>
     <h1>Register your club</h1>
@@ -510,9 +559,9 @@
   </div>
 </footer>
 
-<script src="/assets/carve-site.js?v=1e74df30bd" defer></script>
-<script type="module" src="/assets/site-bar.js?v=1a5c8ec6a0"></script>
+<script src="/assets/carve-site.js?v=e6092b7e6a" defer></script>
+<script type="module" src="/assets/site-bar.js?v=6fb53398bd"></script>
 <script src="/plan/vendor/qrcode.js?v=144" defer></script>
-<script type="module" src="/assets/club-load.js?v=6a8b819af4"></script>
+<script type="module" src="/assets/club-load.js?v=63197cd769"></script>
 </body>
 </html>

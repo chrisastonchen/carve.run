@@ -2,7 +2,7 @@
 // org-billing as the signed-in organizer, with failures said plainly.
 // club-org.js (v1, behind CLUB_V2) keeps its own copy.
 
-import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=96f92e7529";
+import { SUPABASE_KEY, SUPABASE_URL, SESSION_KEY, accessToken } from "/assets/carve-session.js?v=9c9566882f";
 
 export class Failure extends Error {}
 
@@ -18,6 +18,7 @@ export const WORDS = {
   bad_input: "Something in that didn't work. Check it and try again.",
   not_found: "That wasn't found. It may have been deleted.",
   subscribed: "Your club already has a plan.",
+  full: "You've added the most photos one person can.",
   has_plan: "This club has a plan now, so it can't be deleted here. Cancel it in Club settings.",
   not_configured: "Plans can't be bought yet. Try again soon.",
   needs_plan: "This needs a plan. Start one in Club settings.",
@@ -38,6 +39,9 @@ async function call(url, body, method = "POST") {
     throw new Failure("Couldn't reach Carve. Check the connection and try again.");
   }
   const data = await response.json().catch(() => null);
+  // Carve no longer takes this sign-in (it ended while the page was open):
+  // said as signing in again, so pages can offer Sign in (QA 11/23).
+  if (response.status === 401) throw Object.assign(new Failure(WORDS.sign_in), { code: "sign_in" });
   if (!response.ok) {
     const code = data?.error || data?.message;
     if (code === "bad_input" && /the owner/.test(String(data?.details || data?.detail || ""))) throw Object.assign(new Failure("The club's owner can't be removed."), { code: "owner" });
@@ -69,6 +73,8 @@ export const inviteSend = (body) => call(`${SUPABASE_URL}/functions/v1/org-invit
 export const insert = (table, rows) => call(`${SUPABASE_URL}/rest/v1/${table}`, rows);
 /// Rows the organizer may read (RLS), e.g. their own routes' last saves.
 export const select = (table, query) => call(`${SUPABASE_URL}/rest/v1/${table}?${query}`, null, "GET");
+/// Rows the organizer may change (RLS): PATCH, e.g. their own route's note.
+export const update = (table, query, row) => call(`${SUPABASE_URL}/rest/v1/${table}?${query}`, row, "PATCH");
 
 /// A call anyone may make, signed out too (0100's invite preview), with the
 /// site's key. → the answer, or null when it couldn't be asked.

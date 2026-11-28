@@ -6,7 +6,7 @@
 // back (at most once a minute). The site bar (site-bar.js) and the
 // planner's own bar (plan.js) mount it.
 
-import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=96f92e7529";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=9c9566882f";
 
 const BELL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z M10 20.5a2.2 2.2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
 
@@ -56,7 +56,7 @@ export function mountBell(bar = document.querySelector(".bar"), sheet = document
 }
 
 async function toggle(bell) {
-  const pane = await import("/assets/notify-pane.js?v=baa4a75ece");
+  const pane = await import("/assets/notify-pane.js?v=8c0d6dd1bd");
   if (pane.isOpen()) pane.closePane();
   else pane.openPane(bell);
 }

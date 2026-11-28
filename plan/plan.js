@@ -27,7 +27,7 @@ import { initDraftsEntry } from "./drives-list.js?v=2";
 import { initDriveDay } from "./drive-day.js?v=8";
 import { breakLine, clock, legLine, scheduleOf, stayChoices } from "./schedule.js?v=4";
 import { figureNodes } from "./figures.js?v=1";
-import { CLUB_V2 } from "./club-flags.js?v=4";
+import { CLUB_V2 } from "./club-flags.js?v=5";
 import { ALONG_TABS, alongCard } from "./stops.js?v=2";
 import { initSuggest } from "./suggest.js?v=15";
 import { fitTo } from "./fit.js?v=1";
@@ -530,14 +530,20 @@ async function accessToken({ force = false } = {}) {
   if (!force && session.expires_at - 60 > Date.now() / 1000) return session.access_token;
   refreshing ??= (async () => {
     let response;
+    // 10 s at most: a renewal that never answers counts as no connection (QA 11/23).
+    const stop = new AbortController();
+    const timer = setTimeout(() => stop.abort(), 10000);
     try {
       response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
         method: "POST",
         headers: { "content-type": "application/json", apikey: SUPABASE_KEY },
         body: JSON.stringify({ refresh_token: session.refresh_token }),
+        signal: stop.signal,
       });
     } catch {
       return session.access_token;
+    } finally {
+      clearTimeout(timer);
     }
     if (response.ok) {
       keepSession(await response.json());
@@ -654,7 +660,7 @@ function startPhone(narrow) {
   const nameBox = document.createElement("div");
   nameBox.className = "phone-name";
   $("plan-view").querySelector(".scroll").append(nameBox);
-  const named = [document.querySelector('label[for="route-name"]'), $("route-name"), $("note-add"), document.querySelector('label[for="note"]'), $("note")];
+  const named = [document.querySelector('label[for="route-name"]'), $("route-name")];
   // Saved: "+ Plan a new route" at the end of the page, not over Drive it in Carve (QA, 11/16).
   const another = $("plan-another").closest(".foot");
   const savedScroll = $("saved-view").querySelector(".scroll");
@@ -1067,13 +1073,10 @@ async function startDriveDay() {
   render();
   if (startMode === "import") setStartMode("import");
   // The drive page's Add a note (Chris, 11/15; &note): the day's note, open to type in.
+  // Now the Save window's: it opens with the note in it, Save saving the day.
   if (new URLSearchParams(location.search).has("note") && driveDay) {
     noteOpen = true;
-    syncNote(true);
-    sheet?.set("full");
-    $("note").scrollIntoView({ block: "center" });
-    // A phone shows the keyboard only for a tap's focus (QA's iOS pass): there, it waits for one.
-    if (!document.documentElement.classList.contains("phone")) $("note").focus({ preventScroll: true });
+    openSave(() => driveDone(driveDay && `${driveDay.back()}#d-day-${DRIVE.day}`));
   }
 }
 
@@ -1326,24 +1329,37 @@ function wireLeave() {
 
 // ── the note: anyone with the link sees it (Route.note) ───────────────
 
+// Asked in Save Route's window (Chris, 11/25: "Add a note" left the panel),
+// filled in with the route's own when it has one.
 let noteOpen = false;
-function syncNote(hasAny) {
-  const shown = noteOpen || !!(plan.note || "").trim();
-  $("note").hidden = !shown;
-  $("note-add").hidden = shown || !hasAny;
-  if (document.activeElement !== $("note")) $("note").value = plan.note || "";
+function syncNote() {
+  if (!$("save-dialog").open) $("note").value = plan.note || "";
+  noteCount();
+}
+const noteCount = () => { $("note-count").textContent = `${$("note").value.length} / ${MOST_NOTE_CHARACTERS}`; };
+
+/// Save Route: the window first; its Save writes the note, then `then`
+/// (the planner's save, or a drive day's Done).
+function openSave(then) {
+  const dlg = $("save-dialog");
+  $("note").value = plan.note || "";
+  noteCount();
+  const name = clip($("route-name").value, MOST_NAME_CHARACTERS) || plan.name || (DRIVE && driveDay ? driveDay.routeName() : "");
+  const d = Number.isFinite(plan.path?.distanceMeters) ? formatDistance(plan.path.distanceMeters, miles) : null;
+  $("save-what").textContent = [name, d ? `${Math.round(Number(d.value))} ${d.unit === "miles" ? "mi" : "km"}` : ""].filter(Boolean).join(" · ");
+  dlg.onclose = () => {
+    if (dlg.returnValue !== "save") return;
+    plan.note = $("note").value.trim().slice(0, MOST_NOTE_CHARACTERS);
+    saveDraft();
+    then();
+  };
+  dlg.returnValue = "";
+  dlg.showModal();
+  if (!document.documentElement.classList.contains("phone")) $("note").focus({ preventScroll: true });
 }
 
 function wireNote() {
-  $("note-add").addEventListener("click", () => {
-    noteOpen = true;
-    syncNote(true);
-    $("note").focus();
-  });
-  $("note").addEventListener("input", () => {
-    plan.note = $("note").value.slice(0, MOST_NOTE_CHARACTERS);
-    saveDraft();
-  });
+  $("note").addEventListener("input", noteCount);
 }
 
 // ── saved: the route's note, and your own calendar ───────────────────
@@ -2377,7 +2393,7 @@ function render({ keepTyping = false } = {}) {
   $("save").disabled = DRIVE ? !driveDay : !plan.path;
   if (DRIVE) $("db-done").disabled = $("save").disabled;
   // One label for a club day and your own route (Chris, 11/15: was Done on a day).
-  $("save").textContent = DRIVE || !plan.id ? "Save and get the link" : "Save changes";
+  $("save").textContent = DRIVE ? "Save and get the link" : !plan.id ? "Save Route" : "Save changes";
   for (const hook of planHooks) hook();
 }
 
@@ -4047,7 +4063,7 @@ function renderWho() {
   // "No account until you save" is for guests.
   if (signedIn) $("join").hidden = true;
   if (!signedIn) return;
-  import("/assets/notify-bell.js?v=9fa8b18a97").then((m) => m.mountBell()).catch(() => {});
+  import("/assets/notify-bell.js?v=a71e6a88b5").then((m) => m.mountBell()).catch(() => {});
   $("who-name").textContent = profile?.username || session.user.email?.split("@")[0] || "Account";
   const avatar = $("avatar");
   const url = profile?.avatar_url;
@@ -4238,7 +4254,15 @@ function wire() {
   $("drop").addEventListener("click", dropOff);
   document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("drop").hidden) dropOff(); });
   // A day saved: its card on the drive page, with the link and QR code (screen 8).
-  $("save").addEventListener("click", () => (DRIVE ? driveDone(driveDay && `${driveDay.back()}#d-day-${DRIVE.day}`) : save()));
+  // Save Route's window first (Chris, 11/25), a club drive's day too (Chris,
+  // 11/26: the drive page's notes open the same window), except a catalog
+  // road left as it came, which save() turns away with a word.
+  $("save").addEventListener("click", () => {
+    if (DRIVE) return driveDay && openSave(() => driveDone(driveDay && `${driveDay.back()}#d-day-${DRIVE.day}`));
+    if (!plan.path) return;
+    if (plan.fromRoad && plan.fromRoad.shape === roadShape()) return save();
+    openSave(save);
+  });
   $("edit").addEventListener("click", showPlan);
   $("plan-another").addEventListener("click", planAnother);
   $("share-out").addEventListener("click", () => navigator.share?.({ title: plan.name || "A drive on Carve", url: shareLink() }).catch(() => {}));
@@ -4508,7 +4532,7 @@ async function start() {
   else if (!CLUB_V2) startDrafts();
   if (CLUB_V2) $("pd-group-link").setAttribute("href", "/club/");
   // A Club organizer has Club: no "Upgrade to Carve Club" (a new organizer, 11/18).
-  import("/assets/who.js?v=f260ce6368").then(({ who }) => who()).then(({ state }) => {
+  import("/assets/who.js?v=7f6eff3a19").then(({ who }) => who()).then(({ state }) => {
     if (state === "club") $("pd-group-link").closest(".pd-group").hidden = true;
   }).catch(() => {});
   render();

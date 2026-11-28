@@ -215,7 +215,8 @@ details p { padding: 0 0 14px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .doc .cmp-key { font-size: 14px; color: var(--ink-faint); }
 .cmp-cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
-.doc .cmp-cta a.btn { color: var(--ink); text-decoration: none; }
+/* White on the brand green, as .cmp-cta .btn (Chris, 11/27: it was dark on dark green). */
+.doc .cmp-cta a.btn, .doc .cmp-cta a.btn:hover { color: #fff; text-decoration: none; }
 .cmp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 26px 0 10px; }
 .doc a.cmp-card {
   display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border: 2px solid var(--ink);

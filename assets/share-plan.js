@@ -4,7 +4,7 @@
 // time, read only, until its day; nobody answers here any more, and no
 // names or faces show. Otherwise only the route's note, if it has one.
 // plan_view: migration 0046.
-import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=96f92e7529";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=9c9566882f";
 
 const TOKEN_SHAPE = /^([A-Za-z0-9]{10}|[0-9a-fA-F]{32})$/;
 

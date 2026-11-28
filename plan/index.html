@@ -487,11 +487,8 @@
         </div>
         <label for="route-name" class="visually-hidden">Route name</label>
         <input id="route-name" class="field" type="text" maxlength="120" placeholder="Name your drive">
-        <!-- The route's note: anyone with the link sees it (Route.note; the user, 2026-11-07). -->
-        <button type="button" class="textlink note-add" id="note-add">Add a note</button>
-        <label for="note" class="visually-hidden">Note for anyone with the link</label>
-        <textarea id="note" class="field note" maxlength="280" rows="3" placeholder="Where to meet, what to bring. Anyone with the link sees it." hidden></textarea>
-        <button type="button" class="pill green big" id="save" disabled>Save and get the link</button>
+        <!-- The route's notes are asked in the Save window (Chris, 11/25: out of the panel). -->
+        <button type="button" class="pill green big" id="save" disabled>Save Route</button>
         <!-- Someone else changed the same part (QA S2, 11/9): theirs or mine. -->
         <div class="g-conflict" id="g-conflict" role="alert" hidden>
           <p class="small" id="g-conflict-said"></p>
@@ -631,6 +628,25 @@
   <div class="bot-check" id="bot-check" hidden><p>One quick check before you plan.</p><div id="bot-check-widget"></div></div>
 </div>
 
+<!-- Save Route's window (Chris, 11/25): the route's notes (Route.note, 280),
+     optional; Save with nothing typed saves as before. -->
+<dialog class="sheet-dialog save-dialog" id="save-dialog" aria-labelledby="save-title">
+  <form method="dialog">
+    <h2 id="save-title">Save route</h2>
+    <p class="dim" id="save-what"></p>
+    <label for="note" class="save-label">Notes about this route <span class="dim">(optional)</span></label>
+    <div class="save-note">
+      <textarea id="note" class="field note" maxlength="280" rows="4" placeholder="Road surface, fuel, places to regroup, anything drivers should know about the road…"></textarea>
+      <span class="save-count" id="note-count" aria-live="polite">0 / 280</span>
+    </div>
+    <p class="dim small save-hint">Anyone with the route's link sees these. A club drive's own description is written on the drive.</p>
+    <div class="dialog-actions">
+      <button type="submit" class="pill grey" value="cancel">Cancel</button>
+      <button type="submit" class="pill green" value="save" id="save-go">Save</button>
+    </div>
+  </form>
+</dialog>
+
 <dialog class="sheet-dialog" id="start-over-dialog" aria-labelledby="start-over-title">
   <form method="dialog">
     <h2 id="start-over-title">Start over?</h2>
@@ -698,7 +714,7 @@
 
 <script src="/plan/vendor/maplibre-gl.js?v=471"></script>
 <script src="/plan/vendor/qrcode.js?v=144"></script>
-<script type="module" src="/plan/plan.js?v=147"></script>
-<script src="/assets/carve-site.js?v=1e74df30bd" defer></script>
+<script type="module" src="/plan/plan.js?v=146"></script>
+<script src="/assets/carve-site.js?v=e6092b7e6a" defer></script>
 </body>
 </html>

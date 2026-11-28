@@ -761,6 +761,15 @@ a { color: var(--green-ink); }
 .leave #leave-now { align-self: center; }
 .note-add { align-self: flex-start; }
 .field.note { height: auto; min-height: 76px; padding-top: 12px; resize: vertical; line-height: 1.4; font: inherit; }
+/* Save Route's window (Chris, 11/25): the route's notes, with a count. */
+.save-dialog { width: min(560px, calc(100vw - 32px)); }
+.save-dialog p.dim#save-what { font-size: 16px; margin-top: -8px; }
+.save-label { font-weight: 800; font-size: 15px; }
+.save-label .dim { font-weight: 600; }
+.save-note { position: relative; }
+.save-note .field.note { width: 100%; min-height: 130px; padding-bottom: 26px; }
+.save-count { position: absolute; right: 14px; bottom: 10px; font-size: 13px; color: var(--ink-3); font-family: "Oxanium", "Figtree", sans-serif; }
+.save-hint { margin: -4px 0 0; font-size: 14px; }
 .when { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: var(--green-tint); }
 .when svg { width: 18px; height: 18px; color: var(--green-ink); flex: none; }
 .when b { flex: 1; }

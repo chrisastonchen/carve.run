@@ -5,16 +5,18 @@
 // each Draft, Ready or Completed), its organizers and a link to Club
 // settings. No price here, and no member or driver lists.
 
-import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=2bbd1ab635";
-import { clubDeleteWords, firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=0b7743112d";
+import { $, billing, el, inviteSend, myOrgs, publicRpc, rpc, select, sessionEmail, sessionUserId, signedIn } from "/assets/club-api.js?v=ab5108fda2";
+import { clubTitle, lookSrc, clubDeleteWords, firstSteps, initials, nextCard, welcomeLine, planCards, priceText, renewalTerms, rowLine, shapeSvg, splitHome, statusChip, trialDays, trialMeter, trialStatus } from "/assets/club-words.js?v=b2e82d803a";
 import { coverInto } from "/assets/cover.js?v=644e607c2f";
-import { confirmClubDelete, confirmDelete } from "/assets/drive-delete.js?v=b5efbd4c98";
-import { organizersBox } from "/assets/club-organizers.js?v=7b7eda63a1";
+import { confirmClubDelete, confirmDelete } from "/assets/drive-delete.js?v=637335aabd";
+import { organizersBox } from "/assets/club-organizers.js?v=e1fb415116";
 import { FINISH_SETUP, billsToday, unfinished } from "/assets/who-words.js?v=63b40f62a6";
-import { hideIntro, showIntro } from "/assets/club-intro.js?v=cbae308fce";
-import { forgetWho } from "/assets/who.js?v=f260ce6368";
+import { hideIntro, showIntro } from "/assets/club-intro.js?v=602f4ac048";
+import { forgetWho } from "/assets/who.js?v=7f6eff3a19";
 import { BY_TIER, PLANS } from "/assets/plans.js?v=a1e99a533b";
-import { loadDirectory, wireNames } from "/assets/club-names.js?v=0dde3ebad8";
+import { listMatch, loadDirectory, wireNames } from "/assets/club-names.js?v=72347666d4";
+import { applyLook, coverOf, logoInto } from "/assets/club-look.js?v=5a0ad6b0e5";
+import { drawColor, drawCover, drawLogo, drawPreview, picker } from "/assets/club-look-edit.js?v=80e09154d9";
 import { openCheckout, payingEntry, tidyReturn } from "/assets/club-checkout.js?v=acdc7fe3ae";
 
 const status = (text) => { $("cp-status").textContent = text || ""; $("cp-status").hidden = !text; };
@@ -24,7 +26,14 @@ const CLUB_TIERS = [...PLANS.filter((p) => p.for === "organizers").map((p) => p.
 
 let orgs = [];
 let org = null;
-const box = organizersBox("v-orgz", () => org, { avatars: initials, onData: (members, cap) => { organizers = members.length; orgCap = cap?.limit ?? orgCap; meta(); homeSteps(); } });
+const box = organizersBox("v-orgz", () => org, { avatars: initials, onData: (members, cap) => {
+  organizers = members.length;
+  orgCap = cap?.limit ?? orgCap;
+  // Their initials in circles, not their emails (Chris via Product, 11/26).
+  $("v-avs").replaceChildren(...members.slice(0, 6).map((m) => el("i", "", initials(m.email))));
+  meta();
+  homeSteps();
+} });
 let orgCap = 5; // the plan's organizers, once org_members says
 let organizers = null; // the club's organizers, once org_members answers
 let driveCount = null; // the club's live drives, once org_drives answers
@@ -299,10 +308,15 @@ async function load(prefer) {
   $("v-welcome").hidden = true;
   // Back from Checkout, the plan on: Welcome (mock v11), once.
   if (home && new URLSearchParams(location.search).has("paid")) return showWelcome();
+  // The club's color on its pages, the header too (Chris, 11/26); none while starting one.
+  applyLook(home ? org : null);
+  const custom = home && new URLSearchParams(location.search).has("customize");
+  $("v-custom").hidden = !custom;
   $("v-start").hidden = home;
-  $("v-home").hidden = !home;
+  $("v-home").hidden = !home || custom;
   dash(true, !home);
   if (!home) return renderStart();
+  if (custom) return renderCustom();
   renderHome();
 }
 
@@ -420,6 +434,12 @@ function renderStart() {
   $("v-trial-chip").textContent = `First ${trialDays(BY_TIER.club)} days free`;
   // A club made already, with no plan yet (Checkout left): its name stays.
   if (org && !$("v-name").value) $("v-name").value = org.name;
+  // Finishing setup: the look it has; the list match asked again at Next.
+  look = org ? { logo_url: org.logo_url || null, cover_url: org.cover_url || null, color: org.color || null } : { logo_url: null, cover_url: null, color: null };
+  link = org?.club_id ? { club_id: org.club_id, region_id: org.region_id || null, club_name: org.club_name || null, region_name: org.region_name || null, logo_url: org.logo_url || null, color: org.color || null } : null;
+  step = 1;
+  for (const k of [1, 2, 3, 4]) $(`v-step-${k}`).hidden = k !== 1;
+  [...$("v-prog").children].forEach((i, k) => i.classList.toggle("on", k < 1));
   // …and its owner can delete it (Chris, 11/25 night), quietly, under the terms.
   $("v-delete").hidden = !(org && org.owner === true && unfinished(org, CLUB_TIERS));
   nameTyped();
@@ -480,7 +500,106 @@ async function deleteClub() {
 }
 
 /// The button waits for a name (O1 redesign); Enter starts it as a press does.
-const nameTyped = () => { $("v-start-go").disabled = !$("v-name").value.trim(); };
+const nameTyped = () => {
+  const empty = !$("v-name").value.trim();
+  $("v-next-1").disabled = empty;
+  $("v-start-go").disabled = empty;
+};
+
+// ── Start a club's look (Chris via Product, 11/25-26; mock v13) ──
+
+let step = 1;
+/// The logo, cover and color chosen (or the club's own, finishing setup).
+let look = { logo_url: null, cover_url: null, color: null };
+/// The list entry the name is (club, region, logo, color), once Next asks.
+let link = null;
+let dirAsked = null;
+const directory = () => (dirAsked ??= loadDirectory(select).catch((e) => { dirAsked = null; throw e; }));
+const sayStart = (t) => { $("v-start-said").textContent = t; $("v-start-said").classList.remove("err"); };
+const pickLook = picker($("v-look-file"), sayStart);
+
+/// A step of four: the progress, the step's choices, its heading focused.
+async function goStep(n) {
+  if (n > 1 && !$("v-name").value.trim()) return;
+  if (n === 2 && step === 1) {
+    // The list match decides the ready answers: its logo, its color.
+    const was = link;
+    link = listMatch(await directory().catch(() => []), $("v-name").value);
+    if (link && (!was || was.logo_url !== link.logo_url) && (!look.logo_url || look.logo_url === was?.logo_url)) look.logo_url = link.logo_url || look.logo_url;
+    if (link?.color && (!look.color || look.color === was?.color)) look.color = link.color;
+    if (!link && was) { if (look.logo_url === was.logo_url) look.logo_url = null; if (look.color === was.color) look.color = null; }
+  }
+  step = n;
+  for (const k of [1, 2, 3, 4]) $(`v-step-${k}`).hidden = k !== n;
+  [...$("v-prog").children].forEach((i, k) => i.classList.toggle("on", k < n));
+  sayStart("");
+  drawStep();
+  const h = { 2: "v-logo-h", 3: "v-cover-h", 4: "v-color-h" }[n];
+  if (h) $(h).focus({ preventScroll: true });
+  else $("v-name").focus({ preventScroll: true });
+}
+function drawStep() {
+  const name = $("v-name").value.trim();
+  const preview = { name, club_name: link?.region_id ? link.club_name : null, region_name: link?.region_id ? link.region_name : null };
+  if (step === 2) drawLogo($("v-logo-opts"), look, { name, listLogo: link?.logo_url, uploaded: look.uploadedLogo, pick: pickLook, change: drawStep });
+  if (step === 3) drawCover($("v-covers"), look, { uploaded: look.uploadedCover, pick: pickLook, change: drawStep });
+  if (step === 4) {
+    drawColor($("v-swatches"), look, { listColor: link?.color, change: drawStep });
+    drawPreview($("v-preview"), look, preview);
+  }
+}
+
+/// What the club keeps of the steps: its look, and the list match (a club
+/// that never had a plan; 0141's org_update). A server without 0141 says
+/// no, and Checkout goes on without them.
+async function saveLook() {
+  const patch = { logo_url: look.logo_url || null, cover_url: look.cover_url || null, color: look.color || null };
+  if ((org.club_id || null) !== (link?.club_id || null) || (org.region_id || null) !== (link?.region_id || null)) {
+    patch.club_id = link?.club_id || null;
+    patch.region_id = link?.region_id || null;
+  }
+  try {
+    org = { ...org, ...(await rpc("org_update", { p_org_id: org.id, p_patch: patch })) };
+  } catch {}
+}
+
+// ── Customize (✎ Customize on the cover; mock v13) ──
+
+let routePhotos = null;
+async function renderCustom() {
+  const said = (t) => { $("v-custom-said").textContent = t; };
+  const pick = picker($("v-c-file"), said);
+  const lk = { logo_url: org.logo_url || null, cover_url: org.cover_url || null, color: org.color || null };
+  let listed = null;
+  if (org.club_id) {
+    const dir = await directory().catch(() => []);
+    listed = dir.find((e) => e.link.club_id === org.club_id && (!org.region_id || e.link.region_id === org.region_id))?.link || null;
+  }
+  // The club's own route photos for the cover (a few drives' routes).
+  routePhotos ??= rpc("org_drives", { p_org_id: org.id }).then(async (drives) => {
+    const lists = await Promise.all((drives || []).slice(0, 6).map((d) => rpc("drive_routes", { p_drive_id: d.id }).catch(() => [])));
+    return [...new Set(lists.flat().map((r) => r?.payload?.photo?.url).filter(Boolean))].slice(0, 6);
+  }).catch(() => []);
+  const photos = await routePhotos;
+  const save = async () => {
+    draw();
+    said("Saving…");
+    try {
+      org = { ...org, ...(await rpc("org_update", { p_org_id: org.id, p_patch: { logo_url: lk.logo_url, cover_url: lk.cover_url, color: lk.color } })) };
+      applyLook(org);
+      said("Saved");
+    } catch (failure) {
+      said(failure.message || "Couldn't save. Try again.");
+    }
+  };
+  const draw = () => {
+    drawLogo($("v-c-logo"), lk, { name: org.name, listLogo: listed?.logo_url, uploaded: lk.uploadedLogo || (lk.logo_url && lk.logo_url !== listed?.logo_url ? lk.logo_url : null), pick, change: save });
+    drawColor($("v-c-color"), lk, { listColor: listed?.color, change: save });
+    drawCover($("v-c-cover"), lk, { routePhotos: photos, uploaded: lk.uploadedCover, pick, change: save });
+  };
+  $("v-custom-h").textContent = `${clubTitle(org).name}'s look`;
+  draw();
+}
 
 /// org-billing's word on this club's Checkout: {trial, terms, amount, …}.
 const preview = () => billing({ action: "preview", org_id: org.id, plan: "club", interval: "year" });
@@ -503,11 +622,13 @@ async function startTrial() {
   try {
     // One club per name typed; Checkout cancelled and tried again keeps it.
     if (!org) {
-      org = await rpc("org_create", { p_kind: "group", p_name: name, p_contact_email: sessionEmail() || null, p_club_id: null, p_region_id: null });
+      // A list match links the club and its region (Chris via Product, 11/26).
+      org = await rpc("org_create", { p_kind: link?.club_id ? "club" : "group", p_name: name, p_contact_email: sessionEmail() || null, p_club_id: link?.club_id || null, p_region_id: link?.region_id || null });
       history.replaceState(null, "", `/club/?org=${org.id}`);
     } else if (org.name !== name) {
       org = { ...org, ...(await rpc("org_update", { p_org_id: org.id, p_patch: { name } })) };
     }
+    await saveLook();
     // Checkout only on the terms the organizer saw: when org-billing says
     // otherwise, the page says what it will be, and waits for another press.
     const answer = await preview().catch(() => null);
@@ -533,9 +654,18 @@ async function startTrial() {
 
 function renderHome() {
   const plan = BY_TIER[org.tier];
-  $("v-title").textContent = org.name;
+  // The cover, the logo, the parent club over the region (or the club's own name).
+  const t = clubTitle(org);
+  $("v-title").textContent = t.name;
+  $("v-kicker").textContent = t.kicker;
+  $("v-kicker").hidden = !t.kicker;
+  logoInto($("v-logo"), org);
+  $("v-band").style.setProperty("--cover", `url("${coverOf(org).replace(/"/g, "%22")}")`);
+  $("v-customize").setAttribute("href", `/club/?org=${encodeURIComponent(org.id)}&customize`);
+  $("v-orgz-manage").setAttribute("href", `/club/settings/?org=${encodeURIComponent(org.id)}`);
   organizers = null;
   driveCount = null;
+  upcomingCount = null;
   meta();
   // The trial's quiet meter from orgs_mine at once; billing's word when it has one.
   trialPanel(plan, trialStatus(org));
@@ -558,11 +688,14 @@ function renderHome() {
   box.load();
 }
 
-/// The band's line: "3 drives · 2 organizers", each once it's known.
+/// The cover's line: "3 drives coming up · 5 organizers", each once it's
+/// known; the side's organizer count with their initials (no emails).
+let upcomingCount = null;
 function meta() {
   const n = (k, one, many) => `${k} ${k === 1 ? one : many}`;
-  const parts = [driveCount ? n(driveCount, "drive", "drives") : "", organizers !== null ? n(organizers, "organizer", "organizers") : ""].filter(Boolean);
+  const parts = [upcomingCount !== null ? `${n(upcomingCount, "drive", "drives")} coming up` : "", organizers !== null ? n(organizers, "organizer", "organizers") : ""].filter(Boolean);
   $("v-meta").replaceChildren(...parts.flatMap((t, i) => (i ? [el("span", "", "·"), el("span", "", t)] : [el("span", "", t)])));
+  $("v-orgz-n").textContent = organizers !== null ? String(organizers) : "";
 }
 
 function trialPanel(plan, s) {
@@ -602,6 +735,7 @@ async function loadDrives() {
   const routesFor = (d) => (fetched.has(d.id) ? Promise.resolve(fetched.get(d.id)) : rpc("drive_routes", { p_drive_id: d.id }).catch(() => []));
   const { upcoming, past } = splitHome(drives);
   driveCount = upcoming.length + past.length;
+  upcomingCount = upcoming.length;
   meta();
   homeSteps();
   const none = !driveCount;
@@ -618,19 +752,52 @@ async function loadDrives() {
   // The next drive's days with their times, and every row's routes (the
   // first few), at once.
   const rows = [...later, ...past];
-  const [full, nextRoutes, ...rowRoutes] = await Promise.all([
+  // The rows' own photos too (drive_get; org_drives doesn't say them), for the photo order.
+  const shown = rows.slice(0, ROW_SHAPES);
+  const [full, nextRoutes, ...rest] = await Promise.all([
     next ? rpc("drive_get", { p_drive_id: next.id }).catch(() => null) : null,
     next ? routesFor(next) : [],
-    ...rows.slice(0, ROW_SHAPES).map(routesFor),
+    ...shown.map(routesFor),
+    ...shown.map((d) => rpc("drive_get", { p_drive_id: d.id }).then((x) => x?.photo_url || null).catch(() => null)),
   ]);
-  const routesOf = new Map(rows.slice(0, ROW_SHAPES).map((d, i) => [d.id, rowRoutes[i] || []]));
+  const routesOf = new Map(shown.map((d, i) => [d.id, rest[i] || []]));
+  const photoOf = new Map(shown.map((d, i) => [d.id, rest[shown.length + i] || null]));
   if (next) nextUp({ ...next, ...(full || {}), days: mergeDays(next.days, full?.days) }, nextRoutes || []);
-  $("v-up-list").replaceChildren(...later.map((d) => row(d, routesOf.get(d.id))));
-  $("v-past-list").replaceChildren(...past.map((d) => row(d, routesOf.get(d.id))));
+  $("v-up-list").replaceChildren(...later.map((d) => row(d, routesOf.get(d.id), photoOf.get(d.id))));
+  $("v-past-list").replaceChildren(...past.map((d) => row(d, routesOf.get(d.id), photoOf.get(d.id))));
 }
 
 /// org_drives' days (with routed) and drive_get's (with the times).
 const mergeDays = (brief = [], full = []) => brief.map((d) => ({ ...(full || []).find((x) => x.id === d.id), ...d }));
+
+/// A drive's picture, in the photo order (Chris via Product, 11/26), as the
+/// drive page's hero: the route's own photo, then the drive's, then the
+/// Wikimedia one (or the satellite view), once on screen (cover.js). With
+/// no route, the drive's photo, else the box as it is. The Next card and
+/// the rows under it (Chris, 11/27).
+function photoInto(box, payload, drivePhoto) {
+  const photo = payload?.photo?.url || "";
+  const own = /\/route-photos\//.test(photo) && !/\/route-photos\/commons\//.test(photo);
+  if (payload) return coverInto(box, !own && drivePhoto ? { ...payload, photo: { url: lookSrc(drivePhoto) } } : payload);
+  if (!drivePhoto) return;
+  const img = el("img", "cv-photo");
+  img.alt = "";
+  img.decoding = "async";
+  img.src = lookSrc(drivePhoto);
+  box.classList.remove("none");
+  box.classList.add("cv-cover", "cv-cover-photo");
+  box.replaceChildren(img);
+}
+
+/// A row's picture in that order: { url, credit? } or null.
+export function rowPhoto(payload, drivePhoto) {
+  const photo = payload?.photo?.url || "";
+  const own = /\/route-photos\//.test(photo) && !/\/route-photos\/commons\//.test(photo);
+  if (own) return { url: photo };
+  if (drivePhoto) return { url: lookSrc(drivePhoto) };
+  if (photo) return { url: photo, credit: payload.photo.credit || "Wikimedia Commons" };
+  return null;
+}
 
 /// The next drive's card (mock v11): its route's shape, the status chip, the
 /// name, when, the stat strip, how far planned, Plan Day N and Share Day N.
@@ -644,8 +811,7 @@ function nextUp(d, routes) {
   const svg = shown ? shapeSvg(shown) : "";
   if (svg) shape.innerHTML = svg; // numbers and our colours only (shapeSvg)
   else shape.classList.add("none");
-  // The route's photo, or its satellite view, once on screen (cover.js).
-  if (svg) coverInto(shape, shown);
+  photoInto(shape, svg ? shown : null, d.photo_url);
   const body = el("div", "cd-next-body");
   const name = el("h3", "");
   const link = el("a", "", d.name || "Untitled drive");
@@ -670,13 +836,27 @@ function nextUp(d, routes) {
     b.href = a.kind === "plan" ? `/plan/?drive=${encodeURIComponent(d.id)}&day=${a.day}` : `/${encodeURIComponent(a.token)}?club=${encodeURIComponent(d.id)}&day=${a.day}`;
     acts.append(b);
   }
-  body.append(el("span", `cd-chip ${c.chip.tone}`, c.chip.text), name, el("p", "cd-when", c.when));
+  body.append(calendar(d.days), el("span", `cd-chip ${c.chip.tone}`, c.chip.text), name, el("p", "cd-when", c.when));
   if (c.count.length) body.append(count);
   body.append(bar, acts);
   card.replaceChildren(shape, body, more(d));
 }
 
-function row(d, routes) {
+/// A drive's first day as a calendar leaf (mock v13): the month in the
+/// club's color, the day large, the weekday (not on a row's small one).
+function calendar(days, small = false) {
+  const first = (days || []).map((x) => x.date).filter(Boolean).sort()[0];
+  const box = el("span", `cl-cal${small ? " sm" : ""}`);
+  box.setAttribute("aria-hidden", "true");
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(first || "");
+  if (!m) { box.hidden = true; return box; }
+  const date = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  box.append(el("span", "m", date.toLocaleDateString("en-US", { month: "short" }).toUpperCase()), el("span", "d num", String(date.getDate())));
+  if (!small) box.append(el("span", "wd", date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()));
+  return box;
+}
+
+function row(d, routes, drivePhoto = null) {
   const li = el("li");
   const a = el("a", "v-drive");
   a.href = `/club/drive/?id=${encodeURIComponent(d.id)}`;
@@ -688,7 +868,21 @@ function row(d, routes) {
   if (svg) thumb.innerHTML = svg; // numbers and our colours only (shapeSvg)
   const words = el("span", "v-drive-words");
   words.append(el("b", "", d.name || "Untitled drive"), el("span", "", rowLine(d.days, routes || [], miles())));
-  a.append(thumb, words, el("span", `cd-chip ${chip.tone}`, chip.text));
+  // The Next card's photo order (Chris, 11/27): the route's own, the drive's,
+  // Wikimedia (credited under the line); with none, the route's line as before.
+  const pick = rowPhoto(first?.payload, drivePhoto);
+  if (pick) {
+    const img = el("img", "v-thumb-img");
+    img.alt = "";
+    img.decoding = "async";
+    img.loading = "lazy";
+    img.src = pick.url;
+    img.addEventListener("error", () => { img.remove(); thumb.classList.remove("photo"); }, { once: true });
+    thumb.classList.add("photo");
+    thumb.append(img);
+    if (pick.credit) words.append(el("small", "v-credit", `Photo: ${pick.credit}`));
+  }
+  a.append(thumb, calendar(d.days, true), words, el("span", `cd-chip ${chip.tone}`, chip.text));
   li.className = "v-drive-row";
   li.append(a, more(d));
   return li;
@@ -742,12 +936,26 @@ function closeMenus() {
 }
 
 function wire() {
-  $("v-start-form").addEventListener("submit", (e) => { e.preventDefault(); if (!$("v-start-go").disabled) startTrial(); });
+  $("v-start-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (step < 4) { if (!$(`v-next-${step}`).disabled) goStep(step + 1); return; }
+    if (!$("v-start-go").disabled) startTrial();
+  });
   $("v-getapp-go").addEventListener("click", openGet);
   $("v-delete").addEventListener("click", deleteClub);
   $("v-name").addEventListener("input", nameTyped);
   // Names from the club directory as it's typed (Chris via Product, 11/13).
-  wireNames($("v-name"), $("v-names"), () => loadDirectory(select));
+  wireNames($("v-name"), $("v-names"), directory);
+  // Start a club's steps (11/26): Next, Back, and Enter on the name as Next.
+  for (const n of [1, 2, 3]) $(`v-next-${n}`).addEventListener("click", () => goStep(n + 1));
+  for (const b of document.querySelectorAll(".o1-back")) b.addEventListener("click", () => goStep(Number(b.dataset.back)));
+  $("v-customize").addEventListener("click", (e) => { e.preventDefault(); history.pushState(null, "", `/club/?org=${encodeURIComponent(org.id)}&customize`); load(org.id); });
+  $("v-custom-back").addEventListener("click", (e) => { e.preventDefault(); history.pushState(null, "", `/club/?org=${encodeURIComponent(org.id)}`); load(org.id); });
+  // Back and forward between Club home and Customize (nothing else: Checkout keeps its own history).
+  addEventListener("popstate", () => {
+    if (!org || !onPlan(org)) return;
+    if (new URLSearchParams(location.search).has("customize") === $("v-custom").hidden) load(org.id);
+  });
   document.addEventListener("click", (e) => { if (!e.target.closest("#v-home .cv-more")) closeMenus(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenus(); });
   addEventListener("scroll", () => closeMenus(), { passive: true });

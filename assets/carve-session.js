@@ -39,14 +39,22 @@ export async function accessToken() {
 
 async function refresh(session) {
   let response;
+  // 10 s at most (QA 11/23: a page sat on "Loading…" when the renewal never
+  // answered). No answer: the sign-in as it was while it still works, else
+  // none (the page offers Sign in).
+  const stop = new AbortController();
+  const timer = setTimeout(() => stop.abort(), 10000);
   try {
     response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
       method: "POST",
       headers: { "content-type": "application/json", apikey: SUPABASE_KEY },
       body: JSON.stringify({ refresh_token: session.refresh_token }),
+      signal: stop.signal,
     });
   } catch {
-    return session.access_token;
+    return session.expires_at > Date.now() / 1000 ? session.access_token : null;
+  } finally {
+    clearTimeout(timer);
   }
   if (!response.ok) {
     const now = store.get(SESSION_KEY);

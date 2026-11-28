@@ -1,7 +1,7 @@
 // Drafts (0089, board N6): the account's list, for the Drafts page and the
 // planner's "drafts are full" prompt. Each row: name, roads and when it last
 // changed, "Deleted in N days" near the end, Open and Delete (twice).
-import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=96f92e7529";
+import { SUPABASE_KEY, SUPABASE_URL, accessToken } from "/assets/carve-session.js?v=9c9566882f";
 import { WORDS, deletesText, factsText, nameText } from "/assets/drafts-words.js?v=45d294d9b7";
 
 async function rpc(name, body = {}) {
