@@ -17,11 +17,11 @@
    "since": "2026-11-12"
   },
   "blue-ridge-parkway-roanoke-mabry-mill": {
-   "coverage": 0.58,
+   "coverage": 0.65,
    "since": "2026-11-14"
   },
   "cayuse-pass-highway-123": {
-   "coverage": 0.16,
+   "coverage": 0.03,
    "since": "2026-11-19"
   },
   "chinook-pass": {
@@ -48,17 +48,9 @@
    "coverage": 0.02,
    "since": "2026-10-24"
   },
-  "green-gables-shore-route-6-20": {
-   "coverage": 0.53,
-   "since": "2026-11-11"
-  },
   "guardsman-pass": {
    "coverage": 0.27,
    "since": "2026-11-01"
-  },
-  "highway-1-finland-ely": {
-   "coverage": 0.42,
-   "since": "2026-11-23"
   },
   "highway-120-east": {
    "coverage": 0.17,
@@ -79,10 +71,6 @@
   "klondike-highway-white-pass": {
    "coverage": 0.48,
    "since": "2026-11-24"
-  },
-  "la-rumorosa-grade-baja": {
-   "coverage": 0.22,
-   "since": "2026-11-07"
   },
   "lake-hughes-road": {
    "coverage": 0.51,
@@ -109,7 +97,7 @@
    "since": "2026-11-21"
   },
   "north-cape-coastal-drive": {
-   "coverage": 0.71,
+   "coverage": 0.29,
    "since": "2026-11-06"
   },
   "old-kings-highway-6a": {
@@ -132,10 +120,6 @@
    "coverage": 0.69,
    "since": "2026-11-13"
   },
-  "stevens-canyon-road": {
-   "coverage": 0.2,
-   "since": "2026-11-23"
-  },
   "storm-king-highway": {
    "coverage": 0.57,
    "since": "2026-10-24"
@@ -146,5 +130,5 @@
   }
  },
  "format": 1,
- "updated": "2026-11-27T14:09:03Z"
+ "updated": "2026-11-28T14:09:05Z"
 }
