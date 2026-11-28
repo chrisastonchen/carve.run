@@ -1,6 +1,7 @@
 /* The club guides (scripts/club/club_guides.py): screenshots in the steps,
    and the hub's table with seven columns. */
 .club-guide figure { margin: 18px 0 6px; }
+.club-guide figure.narrow { max-width: 360px; }
 .club-guide figure img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(127,127,127,.35); background: #0E1210; }
 .club-guide figcaption { margin-top: 8px; font-size: 14px; color: var(--ink-2, #5D636C); }
 .club-guide .club-try .cmp-fine { margin: 10px 0 0; }

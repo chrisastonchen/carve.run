@@ -197,7 +197,9 @@ details p { padding: 0 0 14px; }
 /* ── compare pages (scripts/compare/build_pages.py) ── */
 .doc.cmp { max-width: 880px; }
 .cmp .eyebrow { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
-.cmp-scroll { overflow-x: auto; margin: 14px -4px; padding: 0 4px; }
+/* position: relative keeps the table's hidden .sr labels (position: absolute) inside the
+   scroll box; without it they hang past the page at phone width (421 px at 390). */
+.cmp-scroll { overflow-x: auto; margin: 14px -4px; padding: 0 4px; position: relative; }
 .doc .cmp-table { min-width: 560px; margin: 0; background: var(--paper); border: 2px solid var(--ink); border-radius: 16px; border-collapse: separate; border-spacing: 0; overflow: hidden; }
 .cmp-table thead th { background: var(--paper-2); color: var(--ink); font-size: 14px; border-bottom: 2px solid var(--ink); }
 .cmp-table thead th:nth-child(2) { background: var(--sky); }
